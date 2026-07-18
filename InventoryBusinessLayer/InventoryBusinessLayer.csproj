@@ -46,5 +46,11 @@
     <Compile Include="clsSupplier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InventoryDataAccessLayer\InventoryDataAccessLayer.csproj">
+      <Project>{51db1060-ea7c-444e-b2f7-90cecc4d3ffb}</Project>
+      <Name>InventoryDataAccessLayer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

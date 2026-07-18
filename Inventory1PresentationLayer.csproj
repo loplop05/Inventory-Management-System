@@ -76,5 +76,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="InventoryBusinessLayer\InventoryBusinessLayer.csproj">
+      <Project>{e218d6e2-7cab-402c-ab61-bbd07f0efc6a}</Project>
+      <Name>InventoryBusinessLayer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
