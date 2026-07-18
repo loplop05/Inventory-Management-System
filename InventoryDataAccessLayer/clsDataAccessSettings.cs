@@ -10,6 +10,10 @@ namespace InventoryDataAccessLayer
     {
 
 
+        public static string connectionString = "Server = .;Database = InventoryDB;User ID = sa ; Password = 123456;";
+
+
+
 
 
 
