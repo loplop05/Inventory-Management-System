@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace InventoryDataAccessLayer
 {
-    internal class clsCategoryData
+    public class clsCategoryData
     {
 
-        public static bool GetCategoryByID(ref int CategoryID ,ref string CaregoryName)
+        public static bool GetCategoryByID(int CategoryID ,ref string CaregoryName)
         {
 
             bool isFound = false;
@@ -73,7 +73,7 @@ namespace InventoryDataAccessLayer
        
 
 
-        public static int AddNewCategory(int CategoryID,string CategoryName)
+       public static int AddNewCategory(int CategoryID,string CategoryName)
         {
 
 
@@ -197,20 +197,8 @@ namespace InventoryDataAccessLayer
 
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-        public static DataTable GetAllContacts()
+        
+        public static DataTable GetAllCategories()
         {
             DataTable dt = new DataTable();
 
