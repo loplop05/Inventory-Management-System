@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Inventory1PresentationLayer.csproj" />
+  <Project Path="InventoryBusinessLayer/InventoryBusinessLayer.csproj" />
+  <Project Path="InventoryDataAccessLayer/InventoryDataAccessLayer.csproj" />
+</Solution>
