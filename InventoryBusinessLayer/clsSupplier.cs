@@ -7,35 +7,17 @@ namespace InventoryBusinessLayer
 
     public class clsSupplier
     {
-
-
-
         public enum enMode
         {
             AddNew = 0,
             Update = 1
         }
-
-
-
-
-
         public enMode Mode = enMode.AddNew;
 
         public int SupplierID;
-
         public string SupplierName;
-
         public string Phone;
-
         public string Email;
-
-
-
-
-
-
-
 
         public clsSupplier()
         {
@@ -50,59 +32,28 @@ namespace InventoryBusinessLayer
 
         }
 
-
-
-
-
-
-
-
         public clsSupplier(
             int SupplierID,
             string SupplierName,
             string Phone,
             string Email)
         {
-
-
             this.SupplierID = SupplierID;
-
             this.SupplierName = SupplierName;
-
             this.Phone = Phone;
-
             this.Email = Email;
-
-
-
             Mode = enMode.Update;
-
-
         }
-
-
-
-
-
-
-
-
-
 
         private bool _AddNewSupplier()
         {
-
-
             SupplierID =
                 clsSupplierData.AddNewSupplier(
                     SupplierName,
                     Phone,
                     Email);
 
-
-
             return SupplierID != -1;
-
 
         }
 
@@ -190,10 +141,37 @@ namespace InventoryBusinessLayer
 
         }
 
+        public enum enValidateSupplier
+        {
+            Success,
+            NameIsEmpty,
+            InvalidEmail,
+            InvalidPhone,
+        }
+
+
+        private enValidateSupplier Validate()
+        {
+            
+            if(string.IsNullOrEmpty(SupplierName))
+            {
+                return enValidateSupplier.NameIsEmpty;
+            }
+
+            if(string.IsNullOrEmpty(Email) || !(Email.Contains("@")))
+            {
+                return enValidateSupplier.InvalidEmail;
+            }
+
+            if ((string.IsNullOrEmpty(Phone)) || !(Phone.StartsWith("+962")))
+            {
+                return enValidateSupplier.InvalidPhone;
+            }
 
 
 
-
+                return enValidateSupplier.Success;
+        }
 
 
 

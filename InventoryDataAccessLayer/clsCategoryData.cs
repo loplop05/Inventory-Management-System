@@ -198,7 +198,7 @@ namespace InventoryDataAccessLayer
         }
 
         
-        public static DataTable GetAllCategories()
+       public static DataTable GetAllCategories()
         {
             DataTable dt = new DataTable();
 
