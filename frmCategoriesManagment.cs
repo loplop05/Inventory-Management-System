@@ -21,7 +21,7 @@ namespace InventoryManagementSystem
             InitializeComponent();
         }
 
-        private void RefreshGridData()
+        public void RefreshGridData()
         {
             try
             {
@@ -58,7 +58,16 @@ namespace InventoryManagementSystem
         private void btnAddCategory_Click(object sender, EventArgs e)
         {
             frmAddCategory frm = new frmAddCategory();
-            frm.Show();
+
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                RefreshGridData();
+            }
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            RefreshGridData();
         }
     }
 }

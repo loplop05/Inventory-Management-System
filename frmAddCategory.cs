@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace InventoryManagementSystem
 {
-    public partial class frmAddCategory : Form
+    public partial class frmAddCategory : frmBase
     {
         public frmAddCategory()
         {
@@ -32,14 +32,7 @@ namespace InventoryManagementSystem
 
         private void txtBoxCategoryName_TextChanged(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtBoxCategoryName.Text))
-            {
-                MessageBox.Show("Category Cant Be Empty !", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
-            if (ContainsNumbersAndSpecial(txtBoxCategoryName.Text))
-            {
-                MessageBox.Show("Category Cant Have Numbers Or Special Chars  !", "", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+           
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -89,6 +82,8 @@ namespace InventoryManagementSystem
 
                         txtBoxCategoryName.Clear();
                         txtBoxCategoryName.Focus();
+                        this.DialogResult = DialogResult.OK;
+                        this.Close();
                     }
                     else
                     {
@@ -99,8 +94,14 @@ namespace InventoryManagementSystem
             }
         }
 
-
-
+        private void txtBoxCategoryName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                btnAdd.PerformClick();
+                e.SuppressKeyPress = true;
+            }
+        }
     }
 }
 

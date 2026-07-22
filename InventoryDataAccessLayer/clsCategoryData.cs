@@ -7,12 +7,138 @@ namespace InventoryDataAccessLayer
     public class clsCategoryData
     {
 
+        public static bool DoesCategoryExist(string CategoryName)
+        {
+            bool isFound = false;
+
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT TOP 1 1 
+                                 FROM Categories 
+                                 WHERE CategoryName = @CategoryName";
+
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@CategoryName", CategoryName);
+
+
+                    try
+                    {
+                        connection.Open();
+
+                        object result = command.ExecuteScalar();
+
+                        isFound = result != null;
+                    }
+                    catch
+                    {
+                        isFound = false;
+                    }
+                }
+            }
+
+
+            return isFound;
+        }
+
+
+
+        public static bool DoesCategoryExist(int CategoryID)
+        {
+            bool isFound = false;
+
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT TOP 1 1 
+                                 FROM Categories 
+                                 WHERE CategoryID = @CategoryID";
+
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@CategoryID", CategoryID);
+
+
+                    try
+                    {
+                        connection.Open();
+
+                        object result = command.ExecuteScalar();
+
+                        isFound = result != null;
+                    }
+                    catch
+                    {
+                        isFound = false;
+                    }
+                }
+            }
+
+
+            return isFound;
+        }
+
+
+
+        public static bool GetCategoryByID(int CategoryID, ref string CategoryName)
+        {
+            bool isFound = false;
+
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT CategoryName 
+                                 FROM Categories 
+                                 WHERE CategoryID = @CategoryID";
+
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@CategoryID", CategoryID);
+
+
+                    try
+                    {
+                        connection.Open();
+
+
+                        SqlDataReader reader = command.ExecuteReader();
+
+
+                        if (reader.Read())
+                        {
+                            isFound = true;
+
+                            CategoryName = reader["CategoryName"].ToString();
+                        }
+
+
+                        reader.Close();
+                    }
+                    catch
+                    {
+                        isFound = false;
+                    }
+                }
+            }
+
+
+            return isFound;
+        }
+
+
+
         public static int AddNewCategory(string CategoryName)
         {
             int CategoryID = -1;
 
-            using (SqlConnection conn = new SqlConnection(clsDataAccessSettings.connectionString))
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
+
                 string query = @"
                 INSERT INTO Categories(CategoryName)
                 VALUES(@CategoryName);
@@ -20,20 +146,25 @@ namespace InventoryDataAccessLayer
                 SELECT SCOPE_IDENTITY();";
 
 
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    cmd.Parameters.AddWithValue("@CategoryName", CategoryName);
+
+                    command.Parameters.AddWithValue("@CategoryName", CategoryName);
+
 
                     try
                     {
-                        conn.Open();
+                        connection.Open();
 
-                        object result = cmd.ExecuteScalar();
+
+                        object result = command.ExecuteScalar();
+
 
                         if (result != null)
                         {
                             CategoryID = Convert.ToInt32(result);
                         }
+
                     }
                     catch
                     {
@@ -42,6 +173,7 @@ namespace InventoryDataAccessLayer
                 }
             }
 
+
             return CategoryID;
         }
 
@@ -49,38 +181,79 @@ namespace InventoryDataAccessLayer
 
         public static bool UpdateCategory(int CategoryID, string CategoryName)
         {
-            bool IsUpdated = false;
+            int RowsAffected = 0;
 
 
-            using (SqlConnection conn = new SqlConnection(clsDataAccessSettings.connectionString))
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
+
                 string query = @"
                 UPDATE Categories
                 SET CategoryName = @CategoryName
                 WHERE CategoryID = @CategoryID";
 
 
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    cmd.Parameters.AddWithValue("@CategoryID", CategoryID);
-                    cmd.Parameters.AddWithValue("@CategoryName", CategoryName);
+
+                    command.Parameters.AddWithValue("@CategoryID", CategoryID);
+
+                    command.Parameters.AddWithValue("@CategoryName", CategoryName);
 
 
                     try
                     {
-                        conn.Open();
+                        connection.Open();
 
-                        IsUpdated = cmd.ExecuteNonQuery() > 0;
+                        RowsAffected = command.ExecuteNonQuery();
                     }
                     catch
                     {
-                        IsUpdated = false;
+                        return false;
                     }
                 }
             }
 
 
-            return IsUpdated;
+            return RowsAffected > 0;
+        }
+
+
+
+        public static bool DeleteCategory(int CategoryID)
+        {
+            int RowsAffected = 0;
+
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+
+                string query = @"
+                DELETE FROM Categories
+                WHERE CategoryID = @CategoryID";
+
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+
+                    command.Parameters.AddWithValue("@CategoryID", CategoryID);
+
+
+                    try
+                    {
+                        connection.Open();
+
+                        RowsAffected = command.ExecuteNonQuery();
+                    }
+                    catch
+                    {
+                        return false;
+                    }
+                }
+            }
+
+
+            return RowsAffected > 0;
         }
 
 
@@ -90,21 +263,37 @@ namespace InventoryDataAccessLayer
             DataTable dt = new DataTable();
 
 
-            using (SqlConnection conn = new SqlConnection(clsDataAccessSettings.connectionString))
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
+
                 string query = @"
                 SELECT CategoryID, CategoryName
                 FROM Categories";
 
 
-                using (SqlCommand cmd = new SqlCommand(query, conn))
+                using (SqlCommand command = new SqlCommand(query, connection))
                 {
-                    conn.Open();
 
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    try
                     {
-                        dt.Load(reader);
+                        connection.Open();
+
+
+                        SqlDataReader reader = command.ExecuteReader();
+
+
+                        if (reader.HasRows)
+                        {
+                            dt.Load(reader);
+                        }
+
+
+                        reader.Close();
+
+                    }
+                    catch
+                    {
+
                     }
                 }
             }
@@ -113,40 +302,5 @@ namespace InventoryDataAccessLayer
             return dt;
         }
 
-
-
-        public static bool DeleteCategory(int CategoryID)
-        {
-            bool IsDeleted = false;
-
-
-            using (SqlConnection conn = new SqlConnection(clsDataAccessSettings.connectionString))
-            {
-                string query = @"
-                DELETE FROM Categories
-                WHERE CategoryID = @CategoryID";
-
-
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@CategoryID", CategoryID);
-
-
-                    try
-                    {
-                        conn.Open();
-
-                        IsDeleted = cmd.ExecuteNonQuery() > 0;
-                    }
-                    catch
-                    {
-                        IsDeleted = false;
-                    }
-                }
-            }
-
-
-            return IsDeleted;
-        }
     }
 }

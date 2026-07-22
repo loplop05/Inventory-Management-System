@@ -56,6 +56,7 @@
             // 
             // txtBoxCategoryName
             // 
+            this.txtBoxCategoryName.AcceptsReturn = true;
             this.txtBoxCategoryName.AllowDrop = true;
             this.txtBoxCategoryName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtBoxCategoryName.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -66,6 +67,7 @@
             this.txtBoxCategoryName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBoxCategoryName.UseWaitCursor = true;
             this.txtBoxCategoryName.TextChanged += new System.EventHandler(this.txtBoxCategoryName_TextChanged);
+            this.txtBoxCategoryName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBoxCategoryName_KeyDown);
             // 
             // btnAdd
             // 

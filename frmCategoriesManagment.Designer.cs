@@ -33,6 +33,7 @@
             this.btnUpdateCategory = new System.Windows.Forms.Button();
             this.btnBackToPrevPage = new System.Windows.Forms.Button();
             this.DataGVCategories = new System.Windows.Forms.DataGridView();
+            this.btnRefresh = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.DataGVCategories)).BeginInit();
             this.SuspendLayout();
             // 
@@ -92,11 +93,23 @@
             this.DataGVCategories.TabIndex = 4;
             this.DataGVCategories.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRefresh.Location = new System.Drawing.Point(95, 54);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(148, 37);
+            this.btnRefresh.TabIndex = 5;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
             // frmCategoriesManagment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1024, 614);
+            this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.DataGVCategories);
             this.Controls.Add(this.btnBackToPrevPage);
             this.Controls.Add(this.btnUpdateCategory);
@@ -117,5 +130,6 @@
         private System.Windows.Forms.Button btnUpdateCategory;
         private System.Windows.Forms.Button btnBackToPrevPage;
         private System.Windows.Forms.DataGridView DataGVCategories;
+        private System.Windows.Forms.Button btnRefresh;
     }
 }
