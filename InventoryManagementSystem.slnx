@@ -1,5 +1,5 @@
 <Solution>
-  <Project Path="Inventory1PresentationLayer.csproj" />
-  <Project Path="InventoryBusinessLayer/InventoryBusinessLayer.csproj" />
-  <Project Path="InventoryDataAccessLayer/InventoryDataAccessLayer.csproj" />
+  <Project Path="Inventory1PresentationLayer.csproj" Id="c5a5d911-6a52-4cf0-811c-cb50a239b7a8" />
+  <Project Path="InventoryBusinessLayer/InventoryBusinessLayer.csproj" Id="e218d6e2-7cab-402c-ab61-bbd07f0efc6a" />
+  <Project Path="InventoryDataAccessLayer/InventoryDataAccessLayer.csproj" Id="51db1060-ea7c-444e-b2f7-90cecc4d3ffb" />
 </Solution>
