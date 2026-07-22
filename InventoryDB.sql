@@ -131,5 +131,13 @@ VALUES
 SELECT * FROM Categories;
 
 
+-- 1. Add a temporary identity column
+ALTER TABLE Categories ADD CategoryID INT IDENTITY(1,1);
+
+-- 2. Drop the original column
+ALTER TABLE Categories DROP COLUMN CategoryID;
+
+-- 3. Rename the temporary column to match your original column name
+EXEC sp_rename 'Categories.CategoryID', 'CategoryID', 'CategoryID';
 
 

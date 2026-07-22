@@ -28,48 +28,49 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
+            this.btnAddCategory = new System.Windows.Forms.Button();
+            this.btnDeleteCategory = new System.Windows.Forms.Button();
+            this.btnUpdateCategory = new System.Windows.Forms.Button();
             this.btnBackToPrevPage = new System.Windows.Forms.Button();
             this.DataGVCategories = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.DataGVCategories)).BeginInit();
             this.SuspendLayout();
             // 
-            // button1
+            // btnAddCategory
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(985, 173);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(219, 82);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "ADD CATEGORY";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnAddCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddCategory.Location = new System.Drawing.Point(761, 187);
+            this.btnAddCategory.Name = "btnAddCategory";
+            this.btnAddCategory.Size = new System.Drawing.Size(219, 82);
+            this.btnAddCategory.TabIndex = 0;
+            this.btnAddCategory.Text = "ADD CATEGORY";
+            this.btnAddCategory.UseVisualStyleBackColor = true;
+            this.btnAddCategory.Click += new System.EventHandler(this.btnAddCategory_Click);
             // 
-            // button2
+            // btnDeleteCategory
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(985, 297);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(219, 82);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "DELETE CATEGORY";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnDeleteCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDeleteCategory.Location = new System.Drawing.Point(761, 311);
+            this.btnDeleteCategory.Name = "btnDeleteCategory";
+            this.btnDeleteCategory.Size = new System.Drawing.Size(219, 82);
+            this.btnDeleteCategory.TabIndex = 1;
+            this.btnDeleteCategory.Text = "DELETE CATEGORY";
+            this.btnDeleteCategory.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // btnUpdateCategory
             // 
-            this.button3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button3.Location = new System.Drawing.Point(985, 428);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(219, 82);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "UPDATE CATEGORY";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnUpdateCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUpdateCategory.Location = new System.Drawing.Point(761, 442);
+            this.btnUpdateCategory.Name = "btnUpdateCategory";
+            this.btnUpdateCategory.Size = new System.Drawing.Size(219, 82);
+            this.btnUpdateCategory.TabIndex = 2;
+            this.btnUpdateCategory.Text = "UPDATE CATEGORY";
+            this.btnUpdateCategory.UseVisualStyleBackColor = true;
             // 
             // btnBackToPrevPage
             // 
             this.btnBackToPrevPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBackToPrevPage.Location = new System.Drawing.Point(1056, 21);
+            this.btnBackToPrevPage.Location = new System.Drawing.Point(778, 35);
             this.btnBackToPrevPage.Name = "btnBackToPrevPage";
             this.btnBackToPrevPage.Size = new System.Drawing.Size(148, 37);
             this.btnBackToPrevPage.TabIndex = 3;
@@ -82,12 +83,12 @@
             this.DataGVCategories.AllowUserToAddRows = false;
             this.DataGVCategories.AllowUserToDeleteRows = false;
             this.DataGVCategories.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGVCategories.Location = new System.Drawing.Point(101, 101);
+            this.DataGVCategories.Location = new System.Drawing.Point(95, 97);
             this.DataGVCategories.Name = "DataGVCategories";
             this.DataGVCategories.ReadOnly = true;
             this.DataGVCategories.RowHeadersWidth = 51;
             this.DataGVCategories.RowTemplate.Height = 24;
-            this.DataGVCategories.Size = new System.Drawing.Size(317, 447);
+            this.DataGVCategories.Size = new System.Drawing.Size(345, 451);
             this.DataGVCategories.TabIndex = 4;
             this.DataGVCategories.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
@@ -95,12 +96,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1242, 614);
+            this.ClientSize = new System.Drawing.Size(1024, 614);
             this.Controls.Add(this.DataGVCategories);
             this.Controls.Add(this.btnBackToPrevPage);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnUpdateCategory);
+            this.Controls.Add(this.btnDeleteCategory);
+            this.Controls.Add(this.btnAddCategory);
             this.Name = "frmCategoriesManagment";
             this.Text = "frmCategoriesManagment";
             this.Load += new System.EventHandler(this.frmCategoriesManagment_Load);
@@ -111,9 +112,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button btnAddCategory;
+        private System.Windows.Forms.Button btnDeleteCategory;
+        private System.Windows.Forms.Button btnUpdateCategory;
         private System.Windows.Forms.Button btnBackToPrevPage;
         private System.Windows.Forms.DataGridView DataGVCategories;
     }

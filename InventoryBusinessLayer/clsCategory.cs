@@ -68,7 +68,7 @@ namespace InventoryBusinessLayer
 
         private bool _AddNewCategory()
         {
-            this.CategoryID = clsCategoryData.AddNewCategory(this.CategoryID, this.CategoryName);
+            this.CategoryID = clsCategoryData.AddNewCategory(this.CategoryName);
             return (this.CategoryID != -1);
         }
 

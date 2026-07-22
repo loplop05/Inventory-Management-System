@@ -54,5 +54,11 @@ namespace InventoryManagementSystem
         {
             RefreshGridData();
         }
+
+        private void btnAddCategory_Click(object sender, EventArgs e)
+        {
+            frmAddCategory frm = new frmAddCategory();
+            frm.Show();
+        }
     }
 }
