@@ -26,7 +26,7 @@ namespace InventoryManagementSystem
         {
             frmCategoriesManagment frm = new frmCategoriesManagment();
             frm.Show();
-            this.Hide();
+            
         }
 
 

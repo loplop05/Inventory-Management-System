@@ -8,7 +8,7 @@ using System.Data.SqlClient;
 
 namespace InventoryDataAccessLayer
 {
-    internal class clsDataAccessSettings
+    public class clsDataAccessSettings
     {
 
 
