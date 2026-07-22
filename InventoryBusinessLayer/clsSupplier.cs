@@ -183,52 +183,29 @@ namespace InventoryBusinessLayer
 
         }
 
-
         public bool Save()
         {
-
+            if (Validate() != enValidateSupplier.Success)
+            {
+                return false;
+            }
 
             switch (Mode)
             {
-
-
                 case enMode.AddNew:
-
-
                     if (_AddNewSupplier())
                     {
-
-
-                        Mode = enMode.Update;
-
-
+                        Mode = enMode.Update; 
                         return true;
-
-
                     }
-
-
                     return false;
 
-
-
-
-
-
-
                 case enMode.Update:
-
-
                     return _UpdateSupplier();
 
-
+                default:
+                    return false;
             }
-
-
-
-            return false;
-
-
         }
 
 
