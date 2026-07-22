@@ -14,6 +14,85 @@ namespace InventoryDataAccessLayer
     public class clsCategoryData
     {
 
+
+        public static bool DoesCategoryExist(string CategoryName)
+        {
+
+            // select Exist = 1 where CategoryName = CategoryName  
+
+
+
+
+            SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString);
+
+
+            string query = @"SELECT TOP 1 1 FROM Categories WHERE CategoryName = @CategoryName";
+
+            SqlCommand command = new SqlCommand(query,connection);
+
+
+
+            bool isFound = false;
+
+
+
+            command.Parameters.AddWithValue(@"CategoryName", CategoryName);
+
+
+
+            try
+            {
+                connection.Open();
+
+                object result = command.ExecuteScalar();
+
+                if (result != null)
+                {
+                    isFound = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                isFound = false;
+            }
+        
+    
+
+            return isFound;
+}
+
+        public static bool DoesCategoryExist(int CategoryID)
+        {
+            bool isFound = false;
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT TOP 1 1 FROM Categories WHERE CategoryID = @CategoryID";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@CategoryID", CategoryID);
+
+                    try
+                    {
+                        connection.Open();
+                        object result = command.ExecuteScalar();
+                        if (result != null)
+                        {
+                            isFound = true;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        isFound = false;
+                    }
+                }
+            }
+
+            return isFound;
+        }
+
+
         public static bool GetCategoryByID(int CategoryID ,ref string CaregoryName)
         {
 
