@@ -108,7 +108,7 @@ namespace InventoryDataAccessLayer
 
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
-                string query = "SELECT ProductID, ProductName, CategoryID, SupplierID, Price, Quantity, Barcode, ImagePath, CreatedDate FROM Products";
+                string query = "SELECT P.ProductID, P.ProductName, P.CategoryID, C.CategoryName, P.SupplierID, S.SupplierName, P.Price, P.Quantity, P.Barcode, P.ImagePath, P.CreatedDate FROM Products P INNER JOIN Categories C ON P.CategoryID = C.CategoryID INNER JOIN Suppliers S ON P.SupplierID = S.SupplierID";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {

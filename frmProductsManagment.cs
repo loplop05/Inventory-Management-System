@@ -99,10 +99,8 @@ namespace InventoryManagementSystem
                 string productID = row["ProductID"].ToString();
                 string productName = row["ProductName"].ToString();
                 string barcode = row["Barcode"].ToString();
-                // Assuming CategoryName and SupplierName are available in the DataTable from GetAllProducts
-                // If not, this would require joining with Category and Supplier tables in DAL
-                string categoryName = row["CategoryID"].ToString(); // Placeholder, ideally would be CategoryName
-                string supplierName = row["SupplierID"].ToString(); // Placeholder, ideally would be SupplierName
+                string categoryName = row["CategoryName"].ToString();
+                string supplierName = row["SupplierName"].ToString();
 
                 if (string.IsNullOrWhiteSpace(searchText) ||
                     productID.Contains(searchText) ||
