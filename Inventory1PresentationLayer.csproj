@@ -84,6 +84,12 @@
     <Compile Include="frmMainMenu.Designer.cs">
       <DependentUpon>frmMainMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmShowCategoryToUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmShowCategoryToUpdate.Designer.cs">
+      <DependentUpon>frmShowCategoryToUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmUpdateCategory.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +109,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmMainMenu.resx">
       <DependentUpon>frmMainMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmShowCategoryToUpdate.resx">
+      <DependentUpon>frmShowCategoryToUpdate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmUpdateCategory.resx">
       <DependentUpon>frmUpdateCategory.cs</DependentUpon>

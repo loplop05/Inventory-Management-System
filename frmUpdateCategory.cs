@@ -16,5 +16,47 @@ namespace InventoryManagementSystem
         {
             InitializeComponent();
         }
+
+
+        private void UpdateCategory()
+        {
+
+            frmShowCategoryToUpdate frm = new frmShowCategoryToUpdate();
+
+            
+            if(int.TryParse(txtUpdateCategoryid.Text.Trim(),out int CategoryID))
+            {
+
+
+
+
+
+            }
+
+
+
+
+
+
+
+        }
+
+
+
+
+        private void txtUpdateCategoryid_KeyDown(object sender, KeyEventArgs e)
+        {
+
+
+            if(e.KeyCode == Keys.Enter)
+            {
+                
+            }
+
+
+
+
+
+        }
     }
 }

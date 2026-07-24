@@ -1,6 +1,6 @@
 ﻿namespace InventoryManagementSystem
 {
-    partial class frmUpdateCategory
+    partial class frmShowCategoryToUpdate
     {
         /// <summary>
         /// Required designer variable.
@@ -29,51 +29,61 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.txtUpdateCategoryid = new System.Windows.Forms.TextBox();
+            this.lblCategory = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.txtBoxNewCategory = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(131, 57);
+            this.label1.Location = new System.Drawing.Point(51, 62);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(251, 32);
+            this.label1.Size = new System.Drawing.Size(154, 32);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Update  Category";
+            this.label1.Text = "Category :";
             // 
-            // txtUpdateCategoryid
+            // lblCategory
             // 
-            this.txtUpdateCategoryid.AcceptsReturn = true;
-            this.txtUpdateCategoryid.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUpdateCategoryid.Location = new System.Drawing.Point(178, 211);
-            this.txtUpdateCategoryid.Name = "txtUpdateCategoryid";
-            this.txtUpdateCategoryid.Size = new System.Drawing.Size(148, 38);
-            this.txtUpdateCategoryid.TabIndex = 0;
-            this.txtUpdateCategoryid.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtUpdateCategoryid.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtUpdateCategoryid_KeyDown);
+            this.lblCategory.AutoSize = true;
+            this.lblCategory.BackColor = System.Drawing.Color.Red;
+            this.lblCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCategory.Location = new System.Drawing.Point(274, 62);
+            this.lblCategory.Name = "lblCategory";
+            this.lblCategory.Size = new System.Drawing.Size(33, 36);
+            this.lblCategory.TabIndex = 1;
+            this.lblCategory.Text = "?";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(131, 152);
+            this.label2.Location = new System.Drawing.Point(28, 188);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(247, 32);
+            this.label2.Size = new System.Drawing.Size(177, 32);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Enter CategoryID";
+            this.label2.Text = "New Name :";
             // 
-            // frmUpdateCategory
+            // txtBoxNewCategory
+            // 
+            this.txtBoxNewCategory.Font = new System.Drawing.Font("Microsoft Tai Le", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBoxNewCategory.Location = new System.Drawing.Point(231, 182);
+            this.txtBoxNewCategory.Name = "txtBoxNewCategory";
+            this.txtBoxNewCategory.Size = new System.Drawing.Size(188, 46);
+            this.txtBoxNewCategory.TabIndex = 0;
+            // 
+            // frmShowCategoryToUpdate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(518, 526);
+            this.ClientSize = new System.Drawing.Size(453, 508);
+            this.Controls.Add(this.txtBoxNewCategory);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.txtUpdateCategoryid);
+            this.Controls.Add(this.lblCategory);
             this.Controls.Add(this.label1);
-            this.Name = "frmUpdateCategory";
-            this.Text = "frmUpdateCategory";
+            this.Name = "frmShowCategoryToUpdate";
+            this.Text = "frmShowCategoryToUpdate";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -82,7 +92,8 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtUpdateCategoryid;
+        private System.Windows.Forms.Label lblCategory;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox txtBoxNewCategory;
     }
 }

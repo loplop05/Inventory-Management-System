@@ -78,7 +78,8 @@ namespace InventoryManagementSystem
 
         private void btnUpdateCategory_Click(object sender, EventArgs e)
         {
-
+            frmUpdateCategory frm = new frmUpdateCategory();
+            frm.Show();
         }
     }
 }
