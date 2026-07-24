@@ -42,9 +42,9 @@
             this.lblPageInfo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.DataGVCategories)).BeginInit();
             this.SuspendLayout();
-            // 
+            //
             // btnAddCategory
-            // 
+            //
             this.btnAddCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAddCategory.Location = new System.Drawing.Point(720, 132);
             this.btnAddCategory.Name = "btnAddCategory";
@@ -53,9 +53,9 @@
             this.btnAddCategory.Text = "Add Category";
             this.btnAddCategory.UseVisualStyleBackColor = true;
             this.btnAddCategory.Click += new System.EventHandler(this.btnAddCategory_Click);
-            // 
+            //
             // btnDeleteCategory
-            // 
+            //
             this.btnDeleteCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDeleteCategory.Location = new System.Drawing.Point(720, 388);
             this.btnDeleteCategory.Name = "btnDeleteCategory";
@@ -64,9 +64,9 @@
             this.btnDeleteCategory.Text = "Delete Category";
             this.btnDeleteCategory.UseVisualStyleBackColor = true;
             this.btnDeleteCategory.Click += new System.EventHandler(this.btnDeleteCategory_Click);
-            // 
+            //
             // btnUpdateCategory
-            // 
+            //
             this.btnUpdateCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUpdateCategory.Location = new System.Drawing.Point(720, 260);
             this.btnUpdateCategory.Name = "btnUpdateCategory";
@@ -75,9 +75,9 @@
             this.btnUpdateCategory.Text = "Update Category";
             this.btnUpdateCategory.UseVisualStyleBackColor = true;
             this.btnUpdateCategory.Click += new System.EventHandler(this.btnUpdateCategory_Click);
-            // 
+            //
             // btnBackToPrevPage
-            // 
+            //
             this.btnBackToPrevPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBackToPrevPage.Location = new System.Drawing.Point(820, 23);
             this.btnBackToPrevPage.Name = "btnBackToPrevPage";
@@ -86,9 +86,9 @@
             this.btnBackToPrevPage.Text = "Back";
             this.btnBackToPrevPage.UseVisualStyleBackColor = true;
             this.btnBackToPrevPage.Click += new System.EventHandler(this.btnBackToPrevPage_Click);
-            // 
+            //
             // DataGVCategories
-            // 
+            //
             this.DataGVCategories.AllowUserToAddRows = false;
             this.DataGVCategories.AllowUserToDeleteRows = false;
             this.DataGVCategories.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -100,9 +100,9 @@
             this.DataGVCategories.Size = new System.Drawing.Size(590, 415);
             this.DataGVCategories.TabIndex = 4;
             this.DataGVCategories.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
+            //
             // btnRefresh
-            // 
+            //
             this.btnRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefresh.Location = new System.Drawing.Point(535, 23);
             this.btnRefresh.Name = "btnRefresh";
@@ -111,9 +111,9 @@
             this.btnRefresh.Text = "Refresh (F5)";
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
+            //
             // labelSearch
-            // 
+            //
             this.labelSearch.AutoSize = true;
             this.labelSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelSearch.Location = new System.Drawing.Point(70, 31);
@@ -121,17 +121,17 @@
             this.labelSearch.Size = new System.Drawing.Size(63, 20);
             this.labelSearch.TabIndex = 9;
             this.labelSearch.Text = "Search";
-            // 
+            //
             // txtSearch
-            // 
+            //
             this.txtSearch.Location = new System.Drawing.Point(145, 25);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(365, 26);
             this.txtSearch.TabIndex = 0;
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
-            // 
+            //
             // lblEmptyState
-            // 
+            //
             this.lblEmptyState.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblEmptyState.ForeColor = System.Drawing.Color.DimGray;
             this.lblEmptyState.Location = new System.Drawing.Point(116, 275);
@@ -140,9 +140,9 @@
             this.lblEmptyState.TabIndex = 10;
             this.lblEmptyState.Text = "No categories found.";
             this.lblEmptyState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // btnPreviousPage
-            // 
+            //
             this.btnPreviousPage.Location = new System.Drawing.Point(70, 527);
             this.btnPreviousPage.Name = "btnPreviousPage";
             this.btnPreviousPage.Size = new System.Drawing.Size(110, 35);
@@ -150,9 +150,9 @@
             this.btnPreviousPage.Text = "Previous";
             this.btnPreviousPage.UseVisualStyleBackColor = true;
             this.btnPreviousPage.Click += new System.EventHandler(this.btnPreviousPage_Click);
-            // 
+            //
             // btnNextPage
-            // 
+            //
             this.btnNextPage.Location = new System.Drawing.Point(550, 527);
             this.btnNextPage.Name = "btnNextPage";
             this.btnNextPage.Size = new System.Drawing.Size(110, 35);
@@ -160,9 +160,9 @@
             this.btnNextPage.Text = "Next";
             this.btnNextPage.UseVisualStyleBackColor = true;
             this.btnNextPage.Click += new System.EventHandler(this.btnNextPage_Click);
-            // 
+            //
             // lblPageInfo
-            // 
+            //
             this.lblPageInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPageInfo.Location = new System.Drawing.Point(210, 531);
             this.lblPageInfo.Name = "lblPageInfo";
@@ -170,9 +170,9 @@
             this.lblPageInfo.TabIndex = 11;
             this.lblPageInfo.Text = "No results";
             this.lblPageInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
+            //
             // frmCategoriesManagment
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1024, 614);

@@ -38,6 +38,7 @@ namespace InventoryManagementSystem
         {
             button.BackColor = backColor;
             button.ForeColor = Color.White;
+            button.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Bold);
             button.FlatStyle = FlatStyle.Flat;
             button.FlatAppearance.BorderSize = 0;
             button.Cursor = Cursors.Hand;
@@ -48,6 +49,7 @@ namespace InventoryManagementSystem
         {
             textBox.BackColor = Color.White;
             textBox.ForeColor = Color.Black;
+            textBox.Font = new Font("Microsoft Sans Serif", 10F);
             textBox.UseWaitCursor = false;
         }
 
