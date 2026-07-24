@@ -68,6 +68,7 @@
             this.btnUpdateCategory.TabIndex = 2;
             this.btnUpdateCategory.Text = "UPDATE CATEGORY";
             this.btnUpdateCategory.UseVisualStyleBackColor = true;
+            this.btnUpdateCategory.Click += new System.EventHandler(this.btnUpdateCategory_Click);
             // 
             // btnBackToPrevPage
             // 

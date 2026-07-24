@@ -75,5 +75,10 @@ namespace InventoryManagementSystem
             frmDeleteCategory frm = new frmDeleteCategory();
             frm.Show();
         }
+
+        private void btnUpdateCategory_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
