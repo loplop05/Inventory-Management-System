@@ -108,7 +108,7 @@ namespace InventoryDataAccessLayer
 
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
-                string query = "SELECT * FROM Products";
+                string query = "SELECT ProductID, ProductName, CategoryID, SupplierID, Price, Quantity, Barcode, ImagePath, CreatedDate FROM Products";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -127,6 +127,74 @@ namespace InventoryDataAccessLayer
         }
 
         
+        public static bool GetProductByID(int ProductID, ref string ProductName, ref int CategoryID, ref int SupplierID, ref decimal Price, ref int Quantity, ref string Barcode, ref string ImagePath, ref DateTime CreatedDate)
+        {
+            bool isFound = false;
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = "SELECT ProductName, CategoryID, SupplierID, Price, Quantity, Barcode, ImagePath, CreatedDate FROM Products WHERE ProductID = @ProductID";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ProductID", ProductID);
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                isFound = true;
+                                ProductName = reader["ProductName"].ToString();
+                                CategoryID = (int)reader["CategoryID"];
+                                SupplierID = (int)reader["SupplierID"];
+                                Price = (decimal)reader["Price"];
+                                Quantity = (int)reader["Quantity"];
+                                Barcode = reader["Barcode"].ToString();
+                                ImagePath = reader["ImagePath"] == DBNull.Value ? "" : reader["ImagePath"].ToString();
+                                CreatedDate = (DateTime)reader["CreatedDate"];
+                            }
+                        }
+                    }
+                    catch { isFound = false; }
+                }
+            }
+            return isFound;
+        }
+
+        public static bool GetProductByBarcode(string Barcode, ref int ProductID, ref string ProductName, ref int CategoryID, ref int SupplierID, ref decimal Price, ref int Quantity, ref string ImagePath, ref DateTime CreatedDate)
+        {
+            bool isFound = false;
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = "SELECT ProductID, ProductName, CategoryID, SupplierID, Price, Quantity, ImagePath, CreatedDate FROM Products WHERE Barcode = @Barcode";
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Barcode", Barcode);
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                isFound = true;
+                                ProductID = (int)reader["ProductID"];
+                                ProductName = reader["ProductName"].ToString();
+                                CategoryID = (int)reader["CategoryID"];
+                                SupplierID = (int)reader["SupplierID"];
+                                Price = (decimal)reader["Price"];
+                                Quantity = (int)reader["Quantity"];
+                                ImagePath = reader["ImagePath"] == DBNull.Value ? "" : reader["ImagePath"].ToString();
+                                CreatedDate = (DateTime)reader["CreatedDate"];
+                            }
+                        }
+                    }
+                    catch { isFound = false; }
+                }
+            }
+            return isFound;
+        }
+
         public static bool DoesProductExist(int ProductID)
         {
             bool isFound = false;

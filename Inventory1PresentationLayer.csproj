@@ -96,6 +96,60 @@
     <Compile Include="frmUpdateCategory.Designer.cs">
       <DependentUpon>frmUpdateCategory.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmSuppliersManagment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSuppliersManagment.Designer.cs">
+      <DependentUpon>frmSuppliersManagment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAddSupplier.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAddSupplier.Designer.cs">
+      <DependentUpon>frmAddSupplier.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmDeleteSupplier.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDeleteSupplier.Designer.cs">
+      <DependentUpon>frmDeleteSupplier.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmUpdateSupplier.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUpdateSupplier.Designer.cs">
+      <DependentUpon>frmUpdateSupplier.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmShowSupplierToUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmShowSupplierToUpdate.Designer.cs">
+      <DependentUpon>frmShowSupplierToUpdate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmProductsManagment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProductsManagment.Designer.cs">
+      <DependentUpon>frmProductsManagment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAddProduct.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAddProduct.Designer.cs">
+      <DependentUpon>frmAddProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmDeleteProduct.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDeleteProduct.Designer.cs">
+      <DependentUpon>frmDeleteProduct.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmShowProductToUpdate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmShowProductToUpdate.Designer.cs">
+      <DependentUpon>frmShowProductToUpdate.cs</DependentUpon>
+    </Compile>
     <Compile Include="clsFormTheme.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -116,6 +170,33 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmUpdateCategory.resx">
       <DependentUpon>frmUpdateCategory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSuppliersManagment.resx">
+      <DependentUpon>frmSuppliersManagment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAddSupplier.resx">
+      <DependentUpon>frmAddSupplier.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDeleteSupplier.resx">
+      <DependentUpon>frmDeleteSupplier.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUpdateSupplier.resx">
+      <DependentUpon>frmUpdateSupplier.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmShowSupplierToUpdate.resx">
+      <DependentUpon>frmShowSupplierToUpdate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProductsManagment.resx">
+      <DependentUpon>frmProductsManagment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAddProduct.resx">
+      <DependentUpon>frmAddProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDeleteProduct.resx">
+      <DependentUpon>frmDeleteProduct.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmShowProductToUpdate.resx">
+      <DependentUpon>frmShowProductToUpdate.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -20,17 +20,17 @@ namespace InventoryManagementSystem
 
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.ApplyPrimaryButtonStyle(btnCategories);
-            clsFormTheme.ApplySecondaryButtonStyle(btnSuppliers);
-            clsFormTheme.ApplySecondaryButtonStyle(btnProducts);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnSuppliers);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnProducts);
             clsFormTheme.ApplyDangerButtonStyle(button4);
 
-            btnSuppliers.Text = "Suppliers (Coming Soon)";
-            btnProducts.Text = "Products (Coming Soon)";
-            btnSuppliers.Enabled = false;
-            btnProducts.Enabled = false;
+            // Remove 'Coming Soon' labels and enable buttons
+            btnSuppliers.Text = "Suppliers";
+            btnProducts.Text = "Products";
+            btnSuppliers.Enabled = true;
+            btnProducts.Enabled = true;
 
-            _toolTip.SetToolTip(btnSuppliers, "Supplier screens have not been added yet.");
-            _toolTip.SetToolTip(btnProducts, "Product screens have not been added yet.");
+            _toolTip.RemoveAll(); // Clear tooltips as buttons are now active
 
             KeyDown += frmMainMenu_KeyDown;
         }
@@ -42,6 +42,18 @@ namespace InventoryManagementSystem
         private void btnCategories_Click(object sender, EventArgs e)
         {
             frmCategoriesManagment frm = new frmCategoriesManagment();
+            frm.Show();
+        }
+
+        private void btnSuppliers_Click(object sender, EventArgs e)
+        {
+            frmSuppliersManagment frm = new frmSuppliersManagment();
+            frm.Show();
+        }
+
+        private void btnProducts_Click(object sender, EventArgs e)
+        {
+            frmProductsManagment frm = new frmProductsManagment();
             frm.Show();
         }
 

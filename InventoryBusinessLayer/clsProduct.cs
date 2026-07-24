@@ -81,6 +81,10 @@ namespace InventoryBusinessLayer
             if (Price < 0) return enValidateProduct.InvalidPrice;
             if (Quantity < 0) return enValidateProduct.InvalidQuantity;
 
+            // 2. Foreign key validations
+            if (!clsCategoryData.DoesCategoryExist(CategoryID)) return enValidateProduct.InvalidCategory;
+            if (!clsSupplierData.DoesSupplierExist(SupplierID)) return enValidateProduct.InvalidSupplier;
+
             // 3. Database rules check based on the current mode
             switch (Mode)
             {
@@ -147,6 +151,42 @@ namespace InventoryBusinessLayer
         public static DataTable GetAllProducts()
         {
             return clsProductData.GetAllProducts();
+        }
+
+        public static clsProduct FindProduct(int ProductID)
+        {
+            string ProductName = "";
+            int CategoryID = -1;
+            int SupplierID = -1;
+            decimal Price = 0;
+            int Quantity = 0;
+            string Barcode = "";
+            string ImagePath = "";
+            DateTime CreatedDate = DateTime.Now;
+
+            if (clsProductData.GetProductByID(ProductID, ref ProductName, ref CategoryID, ref SupplierID, ref Price, ref Quantity, ref Barcode, ref ImagePath, ref CreatedDate))
+            {
+                return new clsProduct(ProductID, ProductName, CategoryID, SupplierID, Price, Quantity, Barcode, ImagePath, CreatedDate);
+            }
+            return null;
+        }
+
+        public static clsProduct FindProductByBarcode(string Barcode)
+        {
+            int ProductID = -1;
+            string ProductName = "";
+            int CategoryID = -1;
+            int SupplierID = -1;
+            decimal Price = 0;
+            int Quantity = 0;
+            string ImagePath = "";
+            DateTime CreatedDate = DateTime.Now;
+
+            if (clsProductData.GetProductByBarcode(Barcode, ref ProductID, ref ProductName, ref CategoryID, ref SupplierID, ref Price, ref Quantity, ref ImagePath, ref CreatedDate))
+            {
+                return new clsProduct(ProductID, ProductName, CategoryID, SupplierID, Price, Quantity, Barcode, ImagePath, CreatedDate);
+            }
+            return null;
         }
 
         public bool Save()

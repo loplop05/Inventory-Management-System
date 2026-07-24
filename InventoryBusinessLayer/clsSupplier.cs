@@ -150,7 +150,7 @@ namespace InventoryBusinessLayer
         }
 
 
-        private enValidateSupplier Validate()
+        public enValidateSupplier Validate()
         {
             
             if(string.IsNullOrEmpty(SupplierName))
@@ -185,7 +185,8 @@ namespace InventoryBusinessLayer
 
         public bool Save()
         {
-            if (Validate() != enValidateSupplier.Success)
+            enValidateSupplier validationResult = Validate();
+            if (validationResult != enValidateSupplier.Success)
             {
                 return false;
             }
