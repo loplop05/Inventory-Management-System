@@ -24,6 +24,7 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyPrimaryButtonStyle(btnAddProduct);
             clsFormTheme.ApplyDangerButtonStyle(btnDeleteProduct);
             clsFormTheme.ApplyPrimaryButtonStyle(btnUpdateProduct);
+            clsFormTheme.ApplySecondaryButtonStyle(btnStockValuationReport);
             clsFormTheme.ApplySecondaryButtonStyle(btnRefresh);
             clsFormTheme.ApplySecondaryButtonStyle(btnBackToPrevPage);
             clsFormTheme.ApplySecondaryButtonStyle(btnPreviousPage);
@@ -33,6 +34,7 @@ namespace InventoryManagementSystem
 
             _toolTip.SetToolTip(txtSearch, "Search by product ID, name, barcode, category, or supplier.");
             _toolTip.SetToolTip(btnRefresh, "Refresh the product list (F5).");
+            _toolTip.SetToolTip(btnStockValuationReport, "Open the stock valuation report (Ctrl+R).");
 
             lblEmptyState.Visible = false;
             KeyDown += frmProductsManagment_KeyDown;
@@ -74,6 +76,7 @@ namespace InventoryManagementSystem
             btnAddProduct.Enabled = !isLoading;
             btnDeleteProduct.Enabled = !isLoading;
             btnUpdateProduct.Enabled = !isLoading;
+            btnStockValuationReport.Enabled = !isLoading;
             btnRefresh.Enabled = !isLoading;
 
             if (isLoading)
@@ -219,6 +222,12 @@ namespace InventoryManagementSystem
             }
         }
 
+        private void btnStockValuationReport_Click(object sender, EventArgs e)
+        {
+            frmStockValuationReport frm = new frmStockValuationReport();
+            frm.ShowDialog();
+        }
+
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
             _currentPage = 1;
@@ -256,6 +265,11 @@ namespace InventoryManagementSystem
             else if (e.Control && e.KeyCode == Keys.N)
             {
                 btnAddProduct.PerformClick();
+                e.SuppressKeyPress = true;
+            }
+            else if (e.Control && e.KeyCode == Keys.R)
+            {
+                btnStockValuationReport.PerformClick();
                 e.SuppressKeyPress = true;
             }
             else if (e.KeyCode == Keys.Escape)

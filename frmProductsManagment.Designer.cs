@@ -31,6 +31,7 @@ namespace InventoryManagementSystem
             this.btnAddProduct = new System.Windows.Forms.Button();
             this.btnDeleteProduct = new System.Windows.Forms.Button();
             this.btnUpdateProduct = new System.Windows.Forms.Button();
+            this.btnStockValuationReport = new System.Windows.Forms.Button();
             this.btnBackToPrevPage = new System.Windows.Forms.Button();
             this.DataGVProducts = new System.Windows.Forms.DataGridView();
             this.btnRefresh = new System.Windows.Forms.Button();
@@ -76,13 +77,24 @@ namespace InventoryManagementSystem
             this.btnUpdateProduct.UseVisualStyleBackColor = true;
             this.btnUpdateProduct.Click += new System.EventHandler(this.btnUpdateProduct_Click);
             // 
+            // btnStockValuationReport
+            // 
+            this.btnStockValuationReport.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnStockValuationReport.Location = new System.Drawing.Point(720, 491);
+            this.btnStockValuationReport.Name = "btnStockValuationReport";
+            this.btnStockValuationReport.Size = new System.Drawing.Size(220, 55);
+            this.btnStockValuationReport.TabIndex = 8;
+            this.btnStockValuationReport.Text = "Stock Valuation Report";
+            this.btnStockValuationReport.UseVisualStyleBackColor = true;
+            this.btnStockValuationReport.Click += new System.EventHandler(this.btnStockValuationReport_Click);
+            // 
             // btnBackToPrevPage
             // 
             this.btnBackToPrevPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBackToPrevPage.Location = new System.Drawing.Point(820, 23);
             this.btnBackToPrevPage.Name = "btnBackToPrevPage";
             this.btnBackToPrevPage.Size = new System.Drawing.Size(120, 35);
-            this.btnBackToPrevPage.TabIndex = 8;
+            this.btnBackToPrevPage.TabIndex = 9;
             this.btnBackToPrevPage.Text = "Back";
             this.btnBackToPrevPage.UseVisualStyleBackColor = true;
             this.btnBackToPrevPage.Click += new System.EventHandler(this.btnBackToPrevPage_Click);
@@ -184,6 +196,7 @@ namespace InventoryManagementSystem
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.DataGVProducts);
             this.Controls.Add(this.btnBackToPrevPage);
+            this.Controls.Add(this.btnStockValuationReport);
             this.Controls.Add(this.btnUpdateProduct);
             this.Controls.Add(this.btnDeleteProduct);
             this.Controls.Add(this.btnAddProduct);
@@ -201,6 +214,7 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button btnAddProduct;
         private System.Windows.Forms.Button btnDeleteProduct;
         private System.Windows.Forms.Button btnUpdateProduct;
+        private System.Windows.Forms.Button btnStockValuationReport;
         private System.Windows.Forms.Button btnBackToPrevPage;
         private System.Windows.Forms.DataGridView DataGVProducts;
         private System.Windows.Forms.Button btnRefresh;

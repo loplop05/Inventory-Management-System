@@ -1,6 +1,8 @@
 using System;
 using System.Data;
 using System.Drawing;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using InventoryBusinessLayer;
@@ -18,10 +20,12 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.ApplySecondaryButtonStyle(btnExportCsv);
             clsFormTheme.ApplySecondaryButtonStyle(btnRefresh);
             clsFormTheme.ApplySecondaryButtonStyle(btnClose);
             clsFormTheme.ApplyGridStyle(DataGVStockValuation);
 
+            _toolTip.SetToolTip(btnExportCsv, "Export the report to a CSV file that can be opened in Excel.");
             _toolTip.SetToolTip(btnRefresh, "Refresh the stock valuation report (F5).");
             _toolTip.SetToolTip(btnClose, "Close this report (Esc).");
 
@@ -59,6 +63,7 @@ namespace InventoryManagementSystem
             _isLoading = isLoading;
             UseWaitCursor = isLoading;
             DataGVStockValuation.Enabled = !isLoading;
+            btnExportCsv.Enabled = !isLoading && _reportTable.Rows.Count > 0;
             btnRefresh.Enabled = !isLoading;
             btnClose.Enabled = !isLoading;
 
@@ -121,11 +126,91 @@ namespace InventoryManagementSystem
             lblTotalStockValue.Text = hasRows
                 ? "Total Stock Value: " + GetTotalStockValue().ToString("N2")
                 : "Total Stock Value: 0.00";
+            btnExportCsv.Enabled = hasRows;
+        }
+
+        private string GetCsvValue(object value)
+        {
+            string text = value == DBNull.Value ? "" : Convert.ToString(value);
+            return "\"" + text.Replace("\"", "\"\"") + "\"";
+        }
+
+        private void ExportReportToCsv()
+        {
+            if (_reportTable.Rows.Count == 0)
+            {
+                MessageBox.Show(
+                    "There is no report data to export.",
+                    "Export Report",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                return;
+            }
+
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "CSV files (*.csv)|*.csv";
+                saveFileDialog.DefaultExt = "csv";
+                saveFileDialog.AddExtension = true;
+                saveFileDialog.FileName = "StockValuationReport_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".csv";
+
+                if (saveFileDialog.ShowDialog() != DialogResult.OK)
+                    return;
+
+                try
+                {
+                    StringBuilder csv = new StringBuilder();
+
+                    for (int columnIndex = 0; columnIndex < _reportTable.Columns.Count; columnIndex++)
+                    {
+                        csv.Append(GetCsvValue(_reportTable.Columns[columnIndex].ColumnName));
+
+                        if (columnIndex < _reportTable.Columns.Count - 1)
+                            csv.Append(",");
+                    }
+
+                    csv.AppendLine();
+
+                    foreach (DataRow row in _reportTable.Rows)
+                    {
+                        for (int columnIndex = 0; columnIndex < _reportTable.Columns.Count; columnIndex++)
+                        {
+                            csv.Append(GetCsvValue(row[columnIndex]));
+
+                            if (columnIndex < _reportTable.Columns.Count - 1)
+                                csv.Append(",");
+                        }
+
+                        csv.AppendLine();
+                    }
+
+                    File.WriteAllText(saveFileDialog.FileName, csv.ToString(), Encoding.UTF8);
+
+                    MessageBox.Show(
+                        "Stock valuation report exported successfully.",
+                        "Export Report",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(
+                        ex.Message,
+                        "Export Error",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
+            }
         }
 
         private async void frmStockValuationReport_Load(object sender, EventArgs e)
         {
             await LoadReportDataAsync();
+        }
+
+        private void btnExportCsv_Click(object sender, EventArgs e)
+        {
+            ExportReportToCsv();
         }
 
         private async void btnRefresh_Click(object sender, EventArgs e)
