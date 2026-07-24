@@ -31,6 +31,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtUpdateCategoryid = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnSearch = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
@@ -64,11 +65,21 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Enter CategoryID";
             // 
+            // btnSearch
+            // 
+            this.btnSearch.Location = new System.Drawing.Point(189, 296);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(127, 42);
+            this.btnSearch.TabIndex = 1;
+            this.btnSearch.Text = "Search";
+            this.btnSearch.UseVisualStyleBackColor = true;
+            // 
             // frmUpdateCategory
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(518, 526);
+            this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtUpdateCategoryid);
             this.Controls.Add(this.label1);
@@ -84,5 +95,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtUpdateCategoryid;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnSearch;
     }
 }

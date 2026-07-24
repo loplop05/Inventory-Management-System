@@ -1,4 +1,5 @@
-﻿using System;
+﻿using InventoryBusinessLayer;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,17 +22,40 @@ namespace InventoryManagementSystem
         private void UpdateCategory()
         {
 
-            frmShowCategoryToUpdate frm = new frmShowCategoryToUpdate();
 
             
-            if(int.TryParse(txtUpdateCategoryid.Text.Trim(),out int CategoryID))
+            if(!int.TryParse(txtUpdateCategoryid.Text.Trim(),out int CategoryID))
             {
 
+                MessageBox.Show(
+                    "Please enter a valid Category ID.",
+                    "Invalid Input",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
 
-
-
+                txtUpdateCategoryid.Focus();
+                return;
 
             }
+
+            clsCategory category = clsCategory.FindCategory(CategoryID);
+
+
+            if (category == null)
+            {
+                MessageBox.Show(
+                    "Category not found.",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                return;
+            }
+
+            frmShowCategoryToUpdate frm = new frmShowCategoryToUpdate(category);
+
+            frm.ShowDialog();
+
 
 
 
@@ -50,7 +74,7 @@ namespace InventoryManagementSystem
 
             if(e.KeyCode == Keys.Enter)
             {
-                
+                UpdateCategory();
             }
 
 
