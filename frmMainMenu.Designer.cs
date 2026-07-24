@@ -55,6 +55,7 @@
             this.btnSuppliers.TabIndex = 1;
             this.btnSuppliers.Text = "Suppliers";
             this.btnSuppliers.UseVisualStyleBackColor = true;
+            this.btnSuppliers.Click += new System.EventHandler(this.btnSuppliers_Click);
             // 
             // btnProducts
             // 
@@ -65,6 +66,7 @@
             this.btnProducts.TabIndex = 2;
             this.btnProducts.Text = "Products";
             this.btnProducts.UseVisualStyleBackColor = true;
+            this.btnProducts.Click += new System.EventHandler(this.btnProducts_Click);
             // 
             // label1
             // 
@@ -101,6 +103,7 @@
             this.Controls.Add(this.btnCategories);
             this.Name = "frmMainMenu";
             this.Text = "Inventory Management System";
+            this.Load += new System.EventHandler(this.frmMainMenu_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

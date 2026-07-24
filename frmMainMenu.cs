@@ -53,6 +53,7 @@ namespace InventoryManagementSystem
 
         private void btnProducts_Click(object sender, EventArgs e)
         {
+            
             frmProductsManagment frm = new frmProductsManagment();
             frm.Show();
         }
@@ -66,6 +67,11 @@ namespace InventoryManagementSystem
         {
             if (e.KeyCode == Keys.Escape)
                 Close();
+        }
+
+        private void frmMainMenu_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
