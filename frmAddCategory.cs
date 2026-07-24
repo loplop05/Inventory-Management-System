@@ -13,9 +13,24 @@ namespace InventoryManagementSystem
 {
     public partial class frmAddCategory : Form
     {
+        private ErrorProvider _errorProvider;
+        private bool _isSaving = false;
+
         public frmAddCategory()
         {
             InitializeComponent();
+
+            _errorProvider = new ErrorProvider();
+            _errorProvider.ContainerControl = this;
+            _errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+
+            clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnAdd);
+            clsFormTheme.ApplyTextBoxStyle(txtBoxCategoryName);
+
+            btnAdd.Enabled = false;
+            AcceptButton = btnAdd;
+            KeyDown += frmAddCategory_KeyDown;
         }
 
         public static bool ContainsNumbersAndSpecial(string input)
@@ -23,86 +38,155 @@ namespace InventoryManagementSystem
             if (string.IsNullOrEmpty(input))
                 return true;
 
-
             return input.Any(ch => char.IsDigit(ch) ||
                                   (!char.IsLetterOrDigit(ch) && !char.IsWhiteSpace(ch)));
         }
 
+        private bool IsCategoryNameValid()
+        {
+            string categoryName = txtBoxCategoryName.Text.Trim();
 
+            return !string.IsNullOrWhiteSpace(categoryName) &&
+                   !ContainsNumbersAndSpecial(categoryName);
+        }
+
+        private bool ValidateCategoryName()
+        {
+            if (string.IsNullOrWhiteSpace(txtBoxCategoryName.Text))
+            {
+                clsFormTheme.ShowInputError(
+                    txtBoxCategoryName,
+                    _errorProvider,
+                    "Please enter a category name.");
+
+                return false;
+            }
+
+            if (ContainsNumbersAndSpecial(txtBoxCategoryName.Text.Trim()))
+            {
+                clsFormTheme.ShowInputError(
+                    txtBoxCategoryName,
+                    _errorProvider,
+                    "Use letters and spaces only.");
+
+                return false;
+            }
+
+            clsFormTheme.ClearInputError(txtBoxCategoryName, _errorProvider);
+            return true;
+        }
+
+        private void SetSavingState(bool isSaving)
+        {
+            _isSaving = isSaving;
+            UseWaitCursor = isSaving;
+            txtBoxCategoryName.Enabled = !isSaving;
+            btnAdd.Enabled = !isSaving && IsCategoryNameValid();
+
+            clsFormTheme.SetButtonBusy(
+                btnAdd,
+                isSaving,
+                "Add",
+                "Adding...");
+        }
 
         private void txtBoxCategoryName_TextChanged(object sender, EventArgs e)
         {
-           
+            bool isValid = ValidateCategoryName();
+            btnAdd.Enabled = isValid && !_isSaving;
         }
 
-        private void btnAdd_Click(object sender, EventArgs e)
+        private async void btnAdd_Click(object sender, EventArgs e)
         {
-            clsCategory category = new clsCategory();
+            if (!ValidateCategoryName())
+                return;
 
+            clsCategory category = new clsCategory();
             category.CategoryName = txtBoxCategoryName.Text.Trim();
 
+            SetSavingState(true);
 
-            clsCategory.enValidateCategory result = category.Validate();
-
-
-            switch (result)
+            try
             {
-                case clsCategory.enValidateCategory.NameAlreadyExists:
+                clsCategory.enValidateCategory result =
+                    await Task.Run(() => category.Validate());
 
+                switch (result)
+                {
+                    case clsCategory.enValidateCategory.NameAlreadyExists:
+                        clsFormTheme.ShowInputError(
+                            txtBoxCategoryName,
+                            _errorProvider,
+                            "This category already exists.");
+                        return;
+
+                    case clsCategory.enValidateCategory.InvalidName:
+                        clsFormTheme.ShowInputError(
+                            txtBoxCategoryName,
+                            _errorProvider,
+                            "Use letters and spaces only.");
+                        return;
+
+                    case clsCategory.enValidateCategory.NotFound:
+                        MessageBox.Show(
+                            "The category could not be found.",
+                            "Error",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+                        return;
+                }
+
+                bool isSaved = await Task.Run(() => category.Save());
+
+                if (isSaved)
+                {
                     MessageBox.Show(
-                        "Category already exists",
+                        "Category added successfully.",
+                        "Success",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    txtBoxCategoryName.Clear();
+                    DialogResult = DialogResult.OK;
+                    Close();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "Failed to add the category.",
                         "Error",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
-
-                    return;
-
-
-                case clsCategory.enValidateCategory.InvalidName:
-
-                    MessageBox.Show(
-                        "Invalid category name",
-                        "Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Warning);
-
-                    return;
-
-
-                case clsCategory.enValidateCategory.Success:
-
-                    if (category.Save())
-                    {
-                        MessageBox.Show(
-                            "Category Added Successfully",
-                            "Success",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
-
-
-                        txtBoxCategoryName.Clear();
-                        txtBoxCategoryName.Focus();
-                        this.DialogResult = DialogResult.OK;
-                        this.Close();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Failed To Add Category");
-                    }
-
-                    break;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    ex.Message,
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+            finally
+            {
+                if (!IsDisposed)
+                    SetSavingState(false);
             }
         }
 
         private void txtBoxCategoryName_KeyDown(object sender, KeyEventArgs e)
         {
-            if(e.KeyCode == Keys.Enter)
+            if (e.KeyCode == Keys.Enter)
             {
                 btnAdd.PerformClick();
                 e.SuppressKeyPress = true;
             }
         }
+
+        private void frmAddCategory_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+                Close();
+        }
     }
 }
-
-

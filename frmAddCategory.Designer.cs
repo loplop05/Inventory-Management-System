@@ -65,7 +65,7 @@
             this.txtBoxCategoryName.Size = new System.Drawing.Size(254, 45);
             this.txtBoxCategoryName.TabIndex = 0;
             this.txtBoxCategoryName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtBoxCategoryName.UseWaitCursor = true;
+            this.txtBoxCategoryName.UseWaitCursor = false;
             this.txtBoxCategoryName.TextChanged += new System.EventHandler(this.txtBoxCategoryName_TextChanged);
             this.txtBoxCategoryName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBoxCategoryName_KeyDown);
             // 
@@ -75,7 +75,7 @@
             this.btnAdd.Location = new System.Drawing.Point(112, 301);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(162, 54);
-            this.btnAdd.TabIndex = 2;
+            this.btnAdd.TabIndex = 1;
             this.btnAdd.Text = "Add";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
@@ -90,7 +90,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "frmAddCategory";
-            this.Text = "frmAddCategory";
+            this.Text = "Add Category";
             this.ResumeLayout(false);
             this.PerformLayout();
 

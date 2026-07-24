@@ -100,7 +100,7 @@
             this.Controls.Add(this.btnSuppliers);
             this.Controls.Add(this.btnCategories);
             this.Name = "frmMainMenu";
-            this.Text = "Form1";
+            this.Text = "Inventory Management System";
             this.ResumeLayout(false);
             this.PerformLayout();
 

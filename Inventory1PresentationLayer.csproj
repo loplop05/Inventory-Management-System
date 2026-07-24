@@ -96,6 +96,7 @@
     <Compile Include="frmUpdateCategory.Designer.cs">
       <DependentUpon>frmUpdateCategory.cs</DependentUpon>
     </Compile>
+    <Compile Include="clsFormTheme.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmAddCategory.resx">

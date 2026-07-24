@@ -71,8 +71,10 @@
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(127, 42);
             this.btnSearch.TabIndex = 1;
-            this.btnSearch.Text = "Search";
+                        this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+
             // 
             // frmUpdateCategory
             // 
@@ -84,7 +86,7 @@
             this.Controls.Add(this.txtUpdateCategoryid);
             this.Controls.Add(this.label1);
             this.Name = "frmUpdateCategory";
-            this.Text = "frmUpdateCategory";
+            this.Text = "Find Category to Update";
             this.ResumeLayout(false);
             this.PerformLayout();
 

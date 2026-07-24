@@ -50,7 +50,7 @@
             // lblCategory
             // 
             this.lblCategory.AutoSize = true;
-            this.lblCategory.BackColor = System.Drawing.Color.Red;
+            this.lblCategory.BackColor = System.Drawing.Color.White;
             this.lblCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCategory.Location = new System.Drawing.Point(274, 62);
             this.lblCategory.Name = "lblCategory";
@@ -89,7 +89,7 @@
             // lblCategoryID
             // 
             this.lblCategoryID.AutoSize = true;
-            this.lblCategoryID.BackColor = System.Drawing.Color.Red;
+            this.lblCategoryID.BackColor = System.Drawing.Color.White;
             this.lblCategoryID.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCategoryID.Location = new System.Drawing.Point(274, 127);
             this.lblCategoryID.Name = "lblCategoryID";
@@ -121,7 +121,7 @@
             this.Controls.Add(this.lblCategory);
             this.Controls.Add(this.label1);
             this.Name = "frmShowCategoryToUpdate";
-            this.Text = "frmShowCategoryToUpdate";
+            this.Text = "Update Category";
             this.Load += new System.EventHandler(this.frmShowCategoryToUpdate_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

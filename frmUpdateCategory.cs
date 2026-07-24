@@ -13,74 +13,132 @@ namespace InventoryManagementSystem
 {
     public partial class frmUpdateCategory : Form
     {
+        private ErrorProvider _errorProvider;
+        private bool _isSearching = false;
+
         public frmUpdateCategory()
         {
             InitializeComponent();
+
+            _errorProvider = new ErrorProvider();
+            _errorProvider.ContainerControl = this;
+            _errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+
+            clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnSearch);
+            clsFormTheme.ApplyTextBoxStyle(txtUpdateCategoryid);
+
+            btnSearch.Enabled = false;
+            AcceptButton = btnSearch;
+            txtUpdateCategoryid.TextChanged += txtUpdateCategoryid_TextChanged;
+            KeyDown += frmUpdateCategory_KeyDown;
         }
 
-
-        private void UpdateCategory()
+        private bool IsCategoryIDValid()
         {
+            return int.TryParse(txtUpdateCategoryid.Text.Trim(), out int categoryID) &&
+                   categoryID > 0;
+        }
 
-
-            
-            if(!int.TryParse(txtUpdateCategoryid.Text.Trim(),out int CategoryID))
+        private bool ValidateCategoryID()
+        {
+            if (!int.TryParse(txtUpdateCategoryid.Text.Trim(), out int categoryID) || categoryID <= 0)
             {
+                clsFormTheme.ShowInputError(
+                    txtUpdateCategoryid,
+                    _errorProvider,
+                    "Please enter a valid category ID.");
 
-                MessageBox.Show(
-                    "Please enter a valid Category ID.",
-                    "Invalid Input",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
-                txtUpdateCategoryid.Focus();
-                return;
-
+                return false;
             }
 
-            clsCategory category = clsCategory.FindCategory(CategoryID);
+            clsFormTheme.ClearInputError(txtUpdateCategoryid, _errorProvider);
+            return true;
+        }
 
+        private void SetSearchingState(bool isSearching)
+        {
+            _isSearching = isSearching;
+            UseWaitCursor = isSearching;
+            txtUpdateCategoryid.Enabled = !isSearching;
+            btnSearch.Enabled = !isSearching && IsCategoryIDValid();
 
-            if (category == null)
+            clsFormTheme.SetButtonBusy(
+                btnSearch,
+                isSearching,
+                "Search",
+                "Searching...");
+        }
+
+        private void txtUpdateCategoryid_TextChanged(object sender, EventArgs e)
+        {
+            bool isValid = ValidateCategoryID();
+            btnSearch.Enabled = isValid && !_isSearching;
+        }
+
+        private async Task UpdateCategory()
+        {
+            if (!ValidateCategoryID())
+                return;
+
+            int categoryID = Convert.ToInt32(txtUpdateCategoryid.Text.Trim());
+
+            SetSearchingState(true);
+
+            try
+            {
+                clsCategory category = await Task.Run(() => clsCategory.FindCategory(categoryID));
+
+                if (category == null)
+                {
+                    clsFormTheme.ShowInputError(
+                        txtUpdateCategoryid,
+                        _errorProvider,
+                        "Category not found.");
+                    return;
+                }
+
+                frmShowCategoryToUpdate frm = new frmShowCategoryToUpdate(category);
+
+                if (frm.ShowDialog() == DialogResult.OK)
+                {
+                    DialogResult = DialogResult.OK;
+                    Close();
+                }
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(
-                    "Category not found.",
+                    ex.Message,
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
-
-                return;
             }
-
-            frmShowCategoryToUpdate frm = new frmShowCategoryToUpdate(category);
-
-            frm.ShowDialog();
-
-
-
-
-
-
-
-
+            finally
+            {
+                if (!IsDisposed)
+                    SetSearchingState(false);
+            }
         }
 
-
-
-
-        private void txtUpdateCategoryid_KeyDown(object sender, KeyEventArgs e)
+        private async void btnSearch_Click(object sender, EventArgs e)
         {
+            await UpdateCategory();
+        }
 
-
-            if(e.KeyCode == Keys.Enter)
+        private async void txtUpdateCategoryid_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
             {
-                UpdateCategory();
+                await UpdateCategory();
+                e.SuppressKeyPress = true;
             }
+        }
 
-
-
-
-
+        private void frmUpdateCategory_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+                Close();
         }
     }
 }

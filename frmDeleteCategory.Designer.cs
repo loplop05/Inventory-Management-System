@@ -63,7 +63,7 @@
             this.txtCategoryID.Size = new System.Drawing.Size(110, 38);
             this.txtCategoryID.TabIndex = 0;
             this.txtCategoryID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtCategoryID.UseWaitCursor = true;
+            this.txtCategoryID.UseWaitCursor = false;
             this.txtCategoryID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtCategoryID_KeyDown);
             // 
             // btnDelete
@@ -88,7 +88,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "frmDeleteCategory";
-            this.Text = "frmDeleteCategory";
+            this.Text = "Delete Category";
             this.ResumeLayout(false);
             this.PerformLayout();
 
