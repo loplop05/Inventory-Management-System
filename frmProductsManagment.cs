@@ -139,6 +139,18 @@ namespace InventoryManagementSystem
 
             DataGVProducts.DataSource = pageTable;
 
+            if (DataGVProducts.Columns.Contains("CategoryID"))
+                DataGVProducts.Columns["CategoryID"].Visible = false;
+
+            if (DataGVProducts.Columns.Contains("SupplierID"))
+                DataGVProducts.Columns["SupplierID"].Visible = false;
+
+            if (DataGVProducts.Columns.Contains("CategoryName"))
+                DataGVProducts.Columns["CategoryName"].HeaderText = "Category";
+
+            if (DataGVProducts.Columns.Contains("SupplierName"))
+                DataGVProducts.Columns["SupplierName"].HeaderText = "Supplier";
+
             foreach (DataGridViewColumn column in DataGVProducts.Columns)
             {
                 column.SortMode = DataGridViewColumnSortMode.Automatic;
