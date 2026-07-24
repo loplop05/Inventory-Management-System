@@ -69,5 +69,11 @@ namespace InventoryManagementSystem
         {
             RefreshGridData();
         }
+
+        private void btnDeleteCategory_Click(object sender, EventArgs e)
+        {
+            frmDeleteCategory frm = new frmDeleteCategory();
+            frm.Show();
+        }
     }
 }

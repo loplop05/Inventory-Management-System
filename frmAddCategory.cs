@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace InventoryManagementSystem
 {
-    public partial class frmAddCategory : frmBase
+    public partial class frmAddCategory : Form
     {
         public frmAddCategory()
         {

@@ -66,17 +66,17 @@
     <Compile Include="frmAddCategory.Designer.cs">
       <DependentUpon>frmAddCategory.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmBase.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmBase.Designer.cs">
-      <DependentUpon>frmBase.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmCategoriesManagment.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmCategoriesManagment.Designer.cs">
       <DependentUpon>frmCategoriesManagment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmDeleteCategory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDeleteCategory.Designer.cs">
+      <DependentUpon>frmDeleteCategory.cs</DependentUpon>
     </Compile>
     <Compile Include="frmMainMenu.cs">
       <SubType>Form</SubType>
@@ -89,11 +89,11 @@
     <EmbeddedResource Include="frmAddCategory.resx">
       <DependentUpon>frmAddCategory.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmBase.resx">
-      <DependentUpon>frmBase.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="frmCategoriesManagment.resx">
       <DependentUpon>frmCategoriesManagment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDeleteCategory.resx">
+      <DependentUpon>frmDeleteCategory.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmMainMenu.resx">
       <DependentUpon>frmMainMenu.cs</DependentUpon>
