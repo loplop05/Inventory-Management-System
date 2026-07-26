@@ -63,6 +63,46 @@ CREATE TABLE Products
 GO
 
 
+-- =========================
+-- POS Orders Table
+-- =========================
+
+CREATE TABLE Orders
+(
+    OrderID INT IDENTITY(1,1) PRIMARY KEY,
+    OrderDate DATETIME NOT NULL DEFAULT GETDATE(),
+    Subtotal DECIMAL(10,2) NOT NULL,
+    TaxAmount DECIMAL(10,2) NOT NULL,
+    TotalAmount DECIMAL(10,2) NOT NULL
+);
+GO
+
+
+-- =========================
+-- POS Order Items Table
+-- =========================
+
+CREATE TABLE OrderItems
+(
+    OrderItemID INT IDENTITY(1,1) PRIMARY KEY,
+    OrderID INT NOT NULL,
+    ProductID INT NOT NULL,
+    ProductName NVARCHAR(100) NOT NULL,
+    Quantity INT NOT NULL,
+    UnitPrice DECIMAL(10,2) NOT NULL,
+    Subtotal DECIMAL(10,2) NOT NULL,
+
+    CONSTRAINT FK_OrderItems_Orders
+    FOREIGN KEY(OrderID)
+    REFERENCES Orders(OrderID),
+
+    CONSTRAINT FK_OrderItems_Products
+    FOREIGN KEY(ProductID)
+    REFERENCES Products(ProductID)
+);
+GO
+
+
 
 -- =========================
 -- Insert Categories
