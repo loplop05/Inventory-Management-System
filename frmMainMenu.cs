@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace InventoryManagementSystem
@@ -19,42 +13,80 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnCategories);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnSuppliers);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnProducts);
-            clsFormTheme.ApplyDangerButtonStyle(button4);
+            label1.Visible = false; // Hide the old label
 
-            // Remove 'Coming Soon' labels and enable buttons
-            btnSuppliers.Text = "Suppliers";
-            btnProducts.Text = "Products";
+            // Header with a stock/inventory icon
+            clsFormTheme.CreateHeaderPanel(this, "Inventory Management System", clsFormTheme.Icons.Stock);
+
+            // ── Categories button ──────────────────────────────────────────────
+            btnCategories.Text = clsFormTheme.Icons.Categories + "\nCategories";
+            btnCategories.Font = new Font(clsFormTheme.IconFontName, 20F);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnCategories);
+            _toolTip.SetToolTip(btnCategories, "Manage product categories");
+
+            // ── Suppliers button ───────────────────────────────────────────────
+            btnSuppliers.Text = clsFormTheme.Icons.Suppliers + "\nSuppliers";
+            btnSuppliers.Font = new Font(clsFormTheme.IconFontName, 20F);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnSuppliers);
+            _toolTip.SetToolTip(btnSuppliers, "Manage suppliers");
+
+            // ── Products button ────────────────────────────────────────────────
+            btnProducts.Text = clsFormTheme.Icons.Products + "\nProducts";
+            btnProducts.Font = new Font(clsFormTheme.IconFontName, 20F);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnProducts);
+            _toolTip.SetToolTip(btnProducts, "Manage products and inventory");
+
+            // ── Exit button ────────────────────────────────────────────────────
+            button4.Text = clsFormTheme.Icons.Exit + "  Exit";
+            button4.Font = new Font(clsFormTheme.IconFontName, 12F);
+            clsFormTheme.ApplyDangerButtonStyle(button4);
+            _toolTip.SetToolTip(button4, "Exit application (Esc)");
+
             btnSuppliers.Enabled = true;
-            btnProducts.Enabled = true;
+            btnProducts.Enabled  = true;
             AddPOSMenuButtons();
 
-            _toolTip.RemoveAll(); // Clear tooltips as buttons are now active
-
             KeyDown += frmMainMenu_KeyDown;
+            Paint   += FrmMainMenu_Paint;
+        }
+
+        private void FrmMainMenu_Paint(object sender, PaintEventArgs e)
+        {
+            // Draw styled cards behind the main navigation buttons
+            clsFormTheme.DrawCard(e.Graphics, new Rectangle(240, 140, 264, 150)); // Categories
+            clsFormTheme.DrawCard(e.Graphics, new Rectangle(657, 140, 264, 150)); // Suppliers
+            clsFormTheme.DrawCard(e.Graphics, new Rectangle(458, 328, 264, 150)); // Products
+            clsFormTheme.DrawCard(e.Graphics, new Rectangle(240, 328, 264, 150)); // POS
+            clsFormTheme.DrawCard(e.Graphics, new Rectangle(657, 328, 264, 150)); // Daily Report
         }
 
         private void AddPOSMenuButtons()
         {
-            Button btnPOS = new Button();
-            btnPOS.Name = "btnPOS";
-            btnPOS.Text = "POS";
-            btnPOS.Font = new Font("Microsoft Sans Serif", 16.2F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
-            btnPOS.Location = new Point(256, 349);
-            btnPOS.Size = new Size(232, 109);
+            // ── POS button ─────────────────────────────────────────────────────
+            Button btnPOS = new Button
+            {
+                Name     = "btnPOS",
+                Text     = clsFormTheme.Icons.POS + "\nPoint of Sale",
+                Font     = new Font(clsFormTheme.IconFontName, 20F),
+                Location = new Point(256, 349),
+                Size     = new Size(232, 109)
+            };
             btnPOS.Click += btnPOS_Click;
-            clsFormTheme.ApplyPrimaryButtonStyle(btnPOS);
+            clsFormTheme.ApplySuccessButtonStyle(btnPOS);
+            _toolTip.SetToolTip(btnPOS, "Open Point of Sale (POS)");
 
-            Button btnDailyReport = new Button();
-            btnDailyReport.Name = "btnDailyReport";
-            btnDailyReport.Text = "Daily Report";
-            btnDailyReport.Font = new Font("Microsoft Sans Serif", 16.2F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
-            btnDailyReport.Location = new Point(673, 349);
-            btnDailyReport.Size = new Size(232, 109);
+            // ── Daily Report button ────────────────────────────────────────────
+            Button btnDailyReport = new Button
+            {
+                Name     = "btnDailyReport",
+                Text     = clsFormTheme.Icons.Reports + "\nDaily Report",
+                Font     = new Font(clsFormTheme.IconFontName, 20F),
+                Location = new Point(673, 349),
+                Size     = new Size(232, 109)
+            };
             btnDailyReport.Click += btnDailyReport_Click;
             clsFormTheme.ApplySecondaryButtonStyle(btnDailyReport);
+            _toolTip.SetToolTip(btnDailyReport, "View today's sales report");
 
             btnProducts.Location = new Point(474, 255);
 
@@ -62,9 +94,9 @@ namespace InventoryManagementSystem
             Controls.Add(btnDailyReport);
         }
 
-        private void label1_Click(object sender, EventArgs e)
-        {
-        }
+        // ── Event handlers ─────────────────────────────────────────────────────
+
+        private void label1_Click(object sender, EventArgs e) { }
 
         private void btnCategories_Click(object sender, EventArgs e)
         {
@@ -80,7 +112,6 @@ namespace InventoryManagementSystem
 
         private void btnProducts_Click(object sender, EventArgs e)
         {
-            
             frmProductsManagment frm = new frmProductsManagment();
             frm.Show();
         }
@@ -108,9 +139,6 @@ namespace InventoryManagementSystem
                 Close();
         }
 
-        private void frmMainMenu_Load(object sender, EventArgs e)
-        {
-
-        }
+        private void frmMainMenu_Load(object sender, EventArgs e) { }
     }
 }

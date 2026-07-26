@@ -1,146 +1,41 @@
 using System;
 using System.Data;
 using System.Drawing;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
 using InventoryBusinessLayer;
 
 namespace InventoryManagementSystem
 {
-    public class frmDailyReport : Form
+    public partial class frmDailyReport : Form
     {
-        private Label _lblOrders;
-        private Label _lblSubtotal;
-        private Label _lblTax;
-        private Label _lblRevenue;
-        private DataGridView _gridOrders;
-        private DataGridView _gridTopProducts;
-        private Button _btnRefresh;
-        private Button _btnClose;
+        private DataTable _summaryTable = new DataTable();
+        private DataTable _ordersTable = new DataTable();
+        private DataTable _topProductsTable = new DataTable();
 
         public frmDailyReport()
         {
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.CreateHeaderPanel(this, "Daily Sales Report", clsFormTheme.Icons.Reports);
             clsFormTheme.ApplyGridStyle(_gridOrders);
             clsFormTheme.ApplyGridStyle(_gridTopProducts);
+
+            _btnRefresh.Text = clsFormTheme.Icons.Refresh + "  Refresh";
+            _btnRefresh.Font = new Font(clsFormTheme.IconFontName, 11F);
             clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh);
-            clsFormTheme.ApplyPrimaryButtonStyle(_btnClose);
+
+            _btnExportCsv.Text = clsFormTheme.Icons.Export + "  Export CSV";
+            _btnExportCsv.Font = new Font(clsFormTheme.IconFontName, 11F);
+            clsFormTheme.ApplySuccessButtonStyle(_btnExportCsv);
+
+            _btnClose.Text = clsFormTheme.Icons.Exit + "  Close";
+            _btnClose.Font = new Font(clsFormTheme.IconFontName, 11F);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnClose);
 
             KeyDown += frmDailyReport_KeyDown;
-        }
-
-        private void InitializeComponent()
-        {
-            Text = "End-of-Day Report";
-            Width = 1040;
-            Height = 700;
-            MinimumSize = new Size(900, 600);
-            Font = new Font("Segoe UI", 10F);
-
-            TableLayoutPanel root = new TableLayoutPanel();
-            root.Dock = DockStyle.Fill;
-            root.ColumnCount = 1;
-            root.RowCount = 3;
-            root.Padding = new Padding(16);
-            root.RowStyles.Add(new RowStyle(SizeType.Absolute, 96F));
-            root.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            root.RowStyles.Add(new RowStyle(SizeType.Absolute, 52F));
-
-            TableLayoutPanel summary = new TableLayoutPanel();
-            summary.Dock = DockStyle.Fill;
-            summary.ColumnCount = 4;
-            summary.RowCount = 1;
-            summary.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            summary.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            summary.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-            summary.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 25F));
-
-            _lblOrders = CreateSummaryLabel("Orders", "0");
-            _lblSubtotal = CreateSummaryLabel("Subtotal", "$0.00");
-            _lblTax = CreateSummaryLabel("Tax", "$0.00");
-            _lblRevenue = CreateSummaryLabel("Revenue", "$0.00");
-
-            summary.Controls.Add(_lblOrders, 0, 0);
-            summary.Controls.Add(_lblSubtotal, 1, 0);
-            summary.Controls.Add(_lblTax, 2, 0);
-            summary.Controls.Add(_lblRevenue, 3, 0);
-
-            SplitContainer split = new SplitContainer();
-            split.Dock = DockStyle.Fill;
-            split.Orientation = Orientation.Horizontal;
-            split.SplitterDistance = 270;
-
-            Panel ordersPanel = CreateSectionPanel("Today's Orders", out _gridOrders);
-            Panel topProductsPanel = CreateSectionPanel("Top-Selling Products", out _gridTopProducts);
-
-            split.Panel1.Controls.Add(ordersPanel);
-            split.Panel2.Controls.Add(topProductsPanel);
-
-            FlowLayoutPanel buttons = new FlowLayoutPanel();
-            buttons.Dock = DockStyle.Fill;
-            buttons.FlowDirection = FlowDirection.RightToLeft;
-
-            _btnClose = new Button();
-            _btnClose.Text = "Close";
-            _btnClose.Size = new Size(100, 34);
-            _btnClose.Click += btnClose_Click;
-
-            _btnRefresh = new Button();
-            _btnRefresh.Text = "Refresh";
-            _btnRefresh.Size = new Size(100, 34);
-            _btnRefresh.Click += btnRefresh_Click;
-
-            buttons.Controls.Add(_btnClose);
-            buttons.Controls.Add(_btnRefresh);
-
-            root.Controls.Add(summary, 0, 0);
-            root.Controls.Add(split, 0, 1);
-            root.Controls.Add(buttons, 0, 2);
-
-            Controls.Add(root);
-            Load += frmDailyReport_Load;
-        }
-
-        private Label CreateSummaryLabel(string caption, string value)
-        {
-            Label label = new Label();
-            label.Dock = DockStyle.Fill;
-            label.Margin = new Padding(6);
-            label.BackColor = Color.White;
-            label.BorderStyle = BorderStyle.FixedSingle;
-            label.TextAlign = ContentAlignment.MiddleCenter;
-            label.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            label.ForeColor = clsFormTheme.HeaderColor;
-            label.Text = caption + Environment.NewLine + value;
-            return label;
-        }
-
-        private Panel CreateSectionPanel(string title, out DataGridView grid)
-        {
-            Panel panel = new Panel();
-            panel.Dock = DockStyle.Fill;
-            panel.BackColor = Color.White;
-            panel.Padding = new Padding(12);
-
-            Label label = new Label();
-            label.Text = title;
-            label.Dock = DockStyle.Top;
-            label.Height = 34;
-            label.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
-            label.ForeColor = clsFormTheme.HeaderColor;
-
-            grid = new DataGridView();
-            grid.Dock = DockStyle.Fill;
-            grid.ReadOnly = true;
-            grid.AllowUserToAddRows = false;
-            grid.AllowUserToDeleteRows = false;
-            grid.RowHeadersVisible = false;
-
-            panel.Controls.Add(grid);
-            panel.Controls.Add(label);
-
-            return panel;
         }
 
         private void LoadReport()
@@ -152,18 +47,22 @@ namespace InventoryManagementSystem
                 return;
             }
 
-            DataTable summary = clsPOS.GetTodayOrderSummary();
-            if (summary.Rows.Count > 0)
+            _summaryTable = clsPOS.GetTodayOrderSummary();
+            if (_summaryTable.Rows.Count > 0)
             {
-                DataRow row = summary.Rows[0];
+                DataRow row = _summaryTable.Rows[0];
                 _lblOrders.Text = "Orders" + Environment.NewLine + Convert.ToInt32(row["OrderCount"]);
                 _lblSubtotal.Text = "Subtotal" + Environment.NewLine + Convert.ToDecimal(row["Subtotal"]).ToString("C2");
                 _lblTax.Text = "Tax" + Environment.NewLine + Convert.ToDecimal(row["TaxAmount"]).ToString("C2");
                 _lblRevenue.Text = "Revenue" + Environment.NewLine + Convert.ToDecimal(row["TotalRevenue"]).ToString("C2");
             }
 
-            _gridOrders.DataSource = clsPOS.GetTodayOrders();
-            _gridTopProducts.DataSource = clsPOS.GetTodayTopSellingProducts();
+            _ordersTable = clsPOS.GetTodayOrders();
+            _topProductsTable = clsPOS.GetTodayTopSellingProducts();
+
+            _gridOrders.DataSource = _ordersTable;
+            _gridTopProducts.DataSource = _topProductsTable;
+            _btnExportCsv.Enabled = _ordersTable.Rows.Count > 0 || _topProductsTable.Rows.Count > 0;
 
             FormatCurrencyColumn(_gridOrders, "Subtotal");
             FormatCurrencyColumn(_gridOrders, "TaxAmount");
@@ -177,6 +76,106 @@ namespace InventoryManagementSystem
                 grid.Columns[columnName].DefaultCellStyle.Format = "C2";
         }
 
+        private void ExportReportCsv()
+        {
+            using (SaveFileDialog dialog = new SaveFileDialog())
+            {
+                dialog.Title = "Export Daily Report";
+                dialog.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+                dialog.FileName = "DailyReport-" + DateTime.Today.ToString("yyyy-MM-dd") + ".csv";
+
+                if (dialog.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                try
+                {
+                    File.WriteAllText(dialog.FileName, BuildCsvReport(), Encoding.UTF8);
+                    MessageBox.Show("Daily report exported successfully.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Export failed: " + ex.Message, "Export", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private string BuildCsvReport()
+        {
+            StringBuilder builder = new StringBuilder();
+
+            builder.AppendLine("End-of-Day Report");
+            builder.AppendLine("Date," + EscapeCsv(DateTime.Today.ToString("yyyy-MM-dd")));
+            builder.AppendLine();
+
+            builder.AppendLine("Summary");
+            if (_summaryTable.Rows.Count > 0)
+            {
+                DataRow row = _summaryTable.Rows[0];
+                builder.AppendLine("Orders," + EscapeCsv(Convert.ToInt32(row["OrderCount"]).ToString()));
+                builder.AppendLine("Subtotal," + EscapeCsv(Convert.ToDecimal(row["Subtotal"]).ToString("0.00")));
+                builder.AppendLine("Tax," + EscapeCsv(Convert.ToDecimal(row["TaxAmount"]).ToString("0.00")));
+                builder.AppendLine("Revenue," + EscapeCsv(Convert.ToDecimal(row["TotalRevenue"]).ToString("0.00")));
+            }
+            builder.AppendLine();
+
+            AppendTable(builder, "Today's Orders", _ordersTable);
+            builder.AppendLine();
+            AppendTable(builder, "Top-Selling Products", _topProductsTable);
+
+            return builder.ToString();
+        }
+
+        private void AppendTable(StringBuilder builder, string title, DataTable table)
+        {
+            builder.AppendLine(title);
+
+            if (table == null || table.Columns.Count == 0)
+            {
+                builder.AppendLine("No data");
+                return;
+            }
+
+            for (int columnIndex = 0; columnIndex < table.Columns.Count; columnIndex++)
+            {
+                if (columnIndex > 0)
+                    builder.Append(",");
+
+                builder.Append(EscapeCsv(table.Columns[columnIndex].ColumnName));
+            }
+
+            builder.AppendLine();
+
+            if (table.Rows.Count == 0)
+            {
+                builder.AppendLine("No rows");
+                return;
+            }
+
+            foreach (DataRow row in table.Rows)
+            {
+                for (int columnIndex = 0; columnIndex < table.Columns.Count; columnIndex++)
+                {
+                    if (columnIndex > 0)
+                        builder.Append(",");
+
+                    builder.Append(EscapeCsv(Convert.ToString(row[columnIndex])));
+                }
+
+                builder.AppendLine();
+            }
+        }
+
+        private string EscapeCsv(string value)
+        {
+            if (value == null)
+                return "";
+
+            bool mustQuote = value.Contains(",") || value.Contains("\"") || value.Contains("\r") || value.Contains("\n");
+            string escaped = value.Replace("\"", "\"\"");
+
+            return mustQuote ? "\"" + escaped + "\"" : escaped;
+        }
+
         private void frmDailyReport_Load(object sender, EventArgs e)
         {
             LoadReport();
@@ -185,6 +184,11 @@ namespace InventoryManagementSystem
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             LoadReport();
+        }
+
+        private void btnExportCsv_Click(object sender, EventArgs e)
+        {
+            ExportReportCsv();
         }
 
         private void btnClose_Click(object sender, EventArgs e)

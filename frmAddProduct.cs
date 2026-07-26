@@ -23,6 +23,9 @@ namespace InventoryManagementSystem
             _errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
             clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.CreateHeaderPanel(this, "Add New Product", clsFormTheme.Icons.Add);
+            btnAdd.Text = clsFormTheme.Icons.Save + "  Save Product";
+            btnAdd.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnAdd);
             clsFormTheme.ApplyTextBoxStyle(txtBoxProductName);
             clsFormTheme.ApplyTextBoxStyle(txtBoxPrice);

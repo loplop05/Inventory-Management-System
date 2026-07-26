@@ -20,9 +20,20 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.ApplySecondaryButtonStyle(btnExportCsv);
+            clsFormTheme.CreateHeaderPanel(this, "Stock Valuation Report", clsFormTheme.Icons.Chart);
+
+            btnExportCsv.Text = clsFormTheme.Icons.Export + "  Export CSV";
+            btnExportCsv.Font = new Font(clsFormTheme.IconFontName, 11F);
+            clsFormTheme.ApplySuccessButtonStyle(btnExportCsv);
+
+            btnRefresh.Text = clsFormTheme.Icons.Refresh + "  Refresh";
+            btnRefresh.Font = new Font(clsFormTheme.IconFontName, 11F);
             clsFormTheme.ApplySecondaryButtonStyle(btnRefresh);
+
+            btnClose.Text = clsFormTheme.Icons.Exit + "  Close";
+            btnClose.Font = new Font(clsFormTheme.IconFontName, 11F);
             clsFormTheme.ApplySecondaryButtonStyle(btnClose);
+
             clsFormTheme.ApplyGridStyle(DataGVStockValuation);
 
             _toolTip.SetToolTip(btnExportCsv, "Export the report to a CSV file that can be opened in Excel.");

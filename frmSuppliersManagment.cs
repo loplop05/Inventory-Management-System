@@ -21,15 +21,37 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.CreateHeaderPanel(this, "Suppliers", clsFormTheme.Icons.Suppliers);
+
+            btnAddSupplier.Text = clsFormTheme.Icons.Add + "  Add";
+            btnAddSupplier.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnAddSupplier);
+
+            btnDeleteSupplier.Text = clsFormTheme.Icons.Delete + "  Delete";
+            btnDeleteSupplier.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyDangerButtonStyle(btnDeleteSupplier);
+
+            btnUpdateSupplier.Text = clsFormTheme.Icons.Update + "  Update";
+            btnUpdateSupplier.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnUpdateSupplier);
+
+            btnRefresh.Text = clsFormTheme.Icons.Refresh + "  Refresh";
+            btnRefresh.Font = new Font(clsFormTheme.IconFontName, 11F);
             clsFormTheme.ApplySecondaryButtonStyle(btnRefresh);
+
+            btnBackToPrevPage.Text = clsFormTheme.Icons.Back + "  Back";
+            btnBackToPrevPage.Font = new Font(clsFormTheme.IconFontName, 11F);
             clsFormTheme.ApplySecondaryButtonStyle(btnBackToPrevPage);
+
+            btnPreviousPage.Text = "\u2039  Prev";
             clsFormTheme.ApplySecondaryButtonStyle(btnPreviousPage);
+
+            btnNextPage.Text = "Next  \u203A";
             clsFormTheme.ApplySecondaryButtonStyle(btnNextPage);
+
             clsFormTheme.ApplyTextBoxStyle(txtSearch);
             clsFormTheme.ApplyGridStyle(DataGVSuppliers);
+            Paint += FrmSuppliersManagment_Paint;
 
             _toolTip.SetToolTip(txtSearch, "Search by supplier ID, name, phone, or email.");
             _toolTip.SetToolTip(btnRefresh, "Refresh the supplier list (F5).");
@@ -230,6 +252,11 @@ namespace InventoryManagementSystem
                 _currentPage++;
                 DisplayCurrentPage();
             }
+        }
+
+        private void FrmSuppliersManagment_Paint(object sender, PaintEventArgs e)
+        {
+            clsFormTheme.DrawCard(e.Graphics, new Rectangle(DataGVSuppliers.Left - 10, DataGVSuppliers.Top - 10, DataGVSuppliers.Width + 20, DataGVSuppliers.Height + 20));
         }
 
         private async void frmSuppliersManagment_KeyDown(object sender, KeyEventArgs e)

@@ -27,15 +27,37 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.CreateHeaderPanel(this, "Categories", clsFormTheme.Icons.Categories);
+
+            btnAddCategory.Text = clsFormTheme.Icons.Add + "  Add";
+            btnAddCategory.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnAddCategory);
+
+            btnDeleteCategory.Text = clsFormTheme.Icons.Delete + "  Delete";
+            btnDeleteCategory.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyDangerButtonStyle(btnDeleteCategory);
+
+            btnUpdateCategory.Text = clsFormTheme.Icons.Update + "  Update";
+            btnUpdateCategory.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnUpdateCategory);
+
+            btnRefresh.Text = clsFormTheme.Icons.Refresh + "  Refresh";
+            btnRefresh.Font = new Font(clsFormTheme.IconFontName, 11F);
             clsFormTheme.ApplySecondaryButtonStyle(btnRefresh);
+
+            btnBackToPrevPage.Text = clsFormTheme.Icons.Back + "  Back";
+            btnBackToPrevPage.Font = new Font(clsFormTheme.IconFontName, 11F);
             clsFormTheme.ApplySecondaryButtonStyle(btnBackToPrevPage);
+
+            btnPreviousPage.Text = "\u2039  Prev";
             clsFormTheme.ApplySecondaryButtonStyle(btnPreviousPage);
+
+            btnNextPage.Text = "Next  \u203A";
             clsFormTheme.ApplySecondaryButtonStyle(btnNextPage);
+
             clsFormTheme.ApplyTextBoxStyle(txtSearch);
             clsFormTheme.ApplyGridStyle(DataGVCategories);
+            Paint += FrmCategoriesManagment_Paint;
 
             _toolTip.SetToolTip(txtSearch, "Search by category ID or name.");
             _toolTip.SetToolTip(btnRefresh, "Refresh the category list (F5).");
@@ -236,6 +258,12 @@ namespace InventoryManagementSystem
                 _currentPage++;
                 DisplayCurrentPage();
             }
+        }
+
+        private void FrmCategoriesManagment_Paint(object sender, PaintEventArgs e)
+        {
+            // Draw a card around the grid area
+            clsFormTheme.DrawCard(e.Graphics, new Rectangle(DataGVCategories.Left - 10, DataGVCategories.Top - 10, DataGVCategories.Width + 20, DataGVCategories.Height + 20));
         }
 
         private async void frmCategoriesManagment_KeyDown(object sender, KeyEventArgs e)

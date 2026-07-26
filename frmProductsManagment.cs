@@ -21,16 +21,41 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.CreateHeaderPanel(this, "Products", clsFormTheme.Icons.Products);
+
+            btnAddProduct.Text = clsFormTheme.Icons.Add + "  Add";
+            btnAddProduct.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnAddProduct);
+
+            btnDeleteProduct.Text = clsFormTheme.Icons.Delete + "  Delete";
+            btnDeleteProduct.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyDangerButtonStyle(btnDeleteProduct);
+
+            btnUpdateProduct.Text = clsFormTheme.Icons.Update + "  Update";
+            btnUpdateProduct.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnUpdateProduct);
+
+            btnStockValuationReport.Text = clsFormTheme.Icons.Chart + "  Stock Report";
+            btnStockValuationReport.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplySecondaryButtonStyle(btnStockValuationReport);
+
+            btnRefresh.Text = clsFormTheme.Icons.Refresh + "  Refresh";
+            btnRefresh.Font = new Font(clsFormTheme.IconFontName, 11F);
             clsFormTheme.ApplySecondaryButtonStyle(btnRefresh);
+
+            btnBackToPrevPage.Text = clsFormTheme.Icons.Back + "  Back";
+            btnBackToPrevPage.Font = new Font(clsFormTheme.IconFontName, 11F);
             clsFormTheme.ApplySecondaryButtonStyle(btnBackToPrevPage);
+
+            btnPreviousPage.Text = "\u2039  Prev";
             clsFormTheme.ApplySecondaryButtonStyle(btnPreviousPage);
+
+            btnNextPage.Text = "Next  \u203A";
             clsFormTheme.ApplySecondaryButtonStyle(btnNextPage);
+
             clsFormTheme.ApplyTextBoxStyle(txtSearch);
             clsFormTheme.ApplyGridStyle(DataGVProducts);
+            Paint += FrmProductsManagment_Paint;
 
             _toolTip.SetToolTip(txtSearch, "Search by product ID, name, barcode, category, or supplier.");
             _toolTip.SetToolTip(btnRefresh, "Refresh the product list (F5).");
@@ -255,6 +280,11 @@ namespace InventoryManagementSystem
             }
         }
 
+        private void FrmProductsManagment_Paint(object sender, PaintEventArgs e)
+        {
+            clsFormTheme.DrawCard(e.Graphics, new Rectangle(DataGVProducts.Left - 10, DataGVProducts.Top - 10, DataGVProducts.Width + 20, DataGVProducts.Height + 20));
+        }
+
         private async void frmProductsManagment_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F5)
@@ -277,5 +307,11 @@ namespace InventoryManagementSystem
                 Close();
             }
         }
+
+        private void DataGVProducts_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
     }
 }

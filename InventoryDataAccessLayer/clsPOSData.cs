@@ -62,8 +62,7 @@ namespace InventoryDataAccessLayer
                         connection.Open();
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            if (reader.HasRows)
-                                dt.Load(reader);
+                            dt.Load(reader);
                         }
                     }
                     catch
@@ -245,8 +244,7 @@ namespace InventoryDataAccessLayer
                         connection.Open();
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            if (reader.HasRows)
-                                dt.Load(reader);
+                            dt.Load(reader);
                         }
                     }
                     catch
@@ -346,18 +344,7 @@ namespace InventoryDataAccessLayer
 
             foreach (string supplier in suppliers)
             {
-                using (SqlCommand command = new SqlCommand(@"
-                    IF NOT EXISTS (SELECT 1 FROM Suppliers WHERE SupplierName = @SupplierName)
-                    BEGIN
-                        INSERT INTO Suppliers (SupplierName, Phone, Email)
-                        VALUES (@SupplierName, @Phone, @Email);
-                    END", connection, transaction))
-                {
-                    command.Parameters.AddWithValue("@SupplierName", supplier);
-                    command.Parameters.AddWithValue("@Phone", "0792000000");
-                    command.Parameters.AddWithValue("@Email", supplier.Replace(" ", "").ToLower() + "@example.com");
-                    command.ExecuteNonQuery();
-                }
+                EnsureSupplier(connection, transaction, supplier);
             }
 
             SeedCategoryProducts(connection, transaction, "Electronics", "ELEC", suppliers, new[]
@@ -484,6 +471,84 @@ namespace InventoryDataAccessLayer
                 command.Parameters.AddWithValue("@SupplierName", supplierName);
                 return Convert.ToInt32(command.ExecuteScalar());
             }
+        }
+
+        private static int EnsureSupplier(SqlConnection connection, SqlTransaction transaction, string supplierName)
+        {
+            object existingID;
+
+            using (SqlCommand findCommand = new SqlCommand(@"
+                SELECT TOP 1 SupplierID
+                FROM Suppliers
+                WHERE SupplierName = @SupplierName
+                ORDER BY SupplierID;", connection, transaction))
+            {
+                findCommand.Parameters.AddWithValue("@SupplierName", supplierName);
+                existingID = findCommand.ExecuteScalar();
+            }
+
+            if (existingID != null)
+                return Convert.ToInt32(existingID);
+
+            bool supplierIDIsIdentity = IsIdentityColumn(connection, transaction, "Suppliers", "SupplierID");
+            string email = supplierName.Replace(" ", "").ToLower() + "@example.com";
+
+            if (supplierIDIsIdentity)
+            {
+                using (SqlCommand insertCommand = new SqlCommand(@"
+                    INSERT INTO Suppliers (SupplierName, Phone, Email)
+                    VALUES (@SupplierName, @Phone, @Email);
+                    SELECT SCOPE_IDENTITY();", connection, transaction))
+                {
+                    insertCommand.Parameters.AddWithValue("@SupplierName", supplierName);
+                    insertCommand.Parameters.AddWithValue("@Phone", "0792000000");
+                    insertCommand.Parameters.AddWithValue("@Email", email);
+                    return Convert.ToInt32(insertCommand.ExecuteScalar());
+                }
+            }
+
+            int supplierID = GetNextIntID(connection, transaction, "Suppliers", "SupplierID");
+
+            using (SqlCommand insertCommand = new SqlCommand(@"
+                INSERT INTO Suppliers (SupplierID, SupplierName, Phone, Email)
+                VALUES (@SupplierID, @SupplierName, @Phone, @Email);", connection, transaction))
+            {
+                insertCommand.Parameters.AddWithValue("@SupplierID", supplierID);
+                insertCommand.Parameters.AddWithValue("@SupplierName", supplierName);
+                insertCommand.Parameters.AddWithValue("@Phone", "0792000000");
+                insertCommand.Parameters.AddWithValue("@Email", email);
+                insertCommand.ExecuteNonQuery();
+            }
+
+            return supplierID;
+        }
+
+        private static bool IsIdentityColumn(SqlConnection connection, SqlTransaction transaction, string tableName, string columnName)
+        {
+            using (SqlCommand command = new SqlCommand(@"
+                SELECT COLUMNPROPERTY(OBJECT_ID(@TableName), @ColumnName, 'IsIdentity');", connection, transaction))
+            {
+                command.Parameters.AddWithValue("@TableName", tableName);
+                command.Parameters.AddWithValue("@ColumnName", columnName);
+                object result = command.ExecuteScalar();
+                return result != null && result != DBNull.Value && Convert.ToInt32(result) == 1;
+            }
+        }
+
+        private static int GetNextIntID(SqlConnection connection, SqlTransaction transaction, string tableName, string columnName)
+        {
+            string safeTableName = WrapSqlIdentifier(tableName);
+            string safeColumnName = WrapSqlIdentifier(columnName);
+
+            using (SqlCommand command = new SqlCommand("SELECT ISNULL(MAX(" + safeColumnName + "), 0) + 1 FROM " + safeTableName + ";", connection, transaction))
+            {
+                return Convert.ToInt32(command.ExecuteScalar());
+            }
+        }
+
+        private static string WrapSqlIdentifier(string name)
+        {
+            return "[" + name.Replace("]", "]]") + "]";
         }
 
         private static int CountProductsInCategory(SqlConnection connection, SqlTransaction transaction, int categoryID)
