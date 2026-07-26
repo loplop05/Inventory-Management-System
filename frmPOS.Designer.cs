@@ -62,7 +62,7 @@ namespace InventoryManagementSystem
             this._rootLayout.Location = new System.Drawing.Point(0, 0);
             this._rootLayout.Name = "_rootLayout";
             this._rootLayout.RowCount = 2;
-            this._rootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 72F));
+            this._rootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 136F));
             this._rootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this._rootLayout.Size = new System.Drawing.Size(1302, 773);
             this._rootLayout.TabIndex = 0;

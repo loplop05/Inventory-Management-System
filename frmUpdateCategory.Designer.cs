@@ -38,7 +38,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(131, 57);
+            this.label1.Location = new System.Drawing.Point(131, 121);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(251, 32);
             this.label1.TabIndex = 0;
@@ -48,7 +48,7 @@
             // 
             this.txtUpdateCategoryid.AcceptsReturn = true;
             this.txtUpdateCategoryid.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtUpdateCategoryid.Location = new System.Drawing.Point(178, 211);
+            this.txtUpdateCategoryid.Location = new System.Drawing.Point(178, 275);
             this.txtUpdateCategoryid.Name = "txtUpdateCategoryid";
             this.txtUpdateCategoryid.Size = new System.Drawing.Size(148, 38);
             this.txtUpdateCategoryid.TabIndex = 0;
@@ -59,7 +59,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(131, 152);
+            this.label2.Location = new System.Drawing.Point(131, 216);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(247, 32);
             this.label2.TabIndex = 2;
@@ -67,7 +67,7 @@
             // 
             // btnSearch
             // 
-            this.btnSearch.Location = new System.Drawing.Point(189, 296);
+            this.btnSearch.Location = new System.Drawing.Point(189, 360);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(127, 42);
             this.btnSearch.TabIndex = 1;
@@ -80,7 +80,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(518, 526);
+            this.ClientSize = new System.Drawing.Size(518, 590);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtUpdateCategoryid);

@@ -38,7 +38,7 @@
             // btnCategories
             // 
             this.btnCategories.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCategories.Location = new System.Drawing.Point(256, 161);
+            this.btnCategories.Location = new System.Drawing.Point(309, 148);
             this.btnCategories.Name = "btnCategories";
             this.btnCategories.Size = new System.Drawing.Size(232, 109);
             this.btnCategories.TabIndex = 0;
@@ -49,7 +49,7 @@
             // btnSuppliers
             // 
             this.btnSuppliers.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSuppliers.Location = new System.Drawing.Point(673, 161);
+            this.btnSuppliers.Location = new System.Drawing.Point(799, 148);
             this.btnSuppliers.Name = "btnSuppliers";
             this.btnSuppliers.Size = new System.Drawing.Size(232, 109);
             this.btnSuppliers.TabIndex = 1;
@@ -60,7 +60,7 @@
             // btnProducts
             // 
             this.btnProducts.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnProducts.Location = new System.Drawing.Point(474, 349);
+            this.btnProducts.Location = new System.Drawing.Point(456, 442);
             this.btnProducts.Name = "btnProducts";
             this.btnProducts.Size = new System.Drawing.Size(232, 109);
             this.btnProducts.TabIndex = 2;
@@ -118,4 +118,3 @@
         private System.Windows.Forms.Button button4;
     }
 }
-
