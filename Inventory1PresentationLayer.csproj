@@ -129,6 +129,12 @@
     <Compile Include="frmProductsManagment.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmPOS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDailyReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmProductsManagment.Designer.cs">
       <DependentUpon>frmProductsManagment.cs</DependentUpon>
     </Compile>

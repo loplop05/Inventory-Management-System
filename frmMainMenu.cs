@@ -29,10 +29,37 @@ namespace InventoryManagementSystem
             btnProducts.Text = "Products";
             btnSuppliers.Enabled = true;
             btnProducts.Enabled = true;
+            AddPOSMenuButtons();
 
             _toolTip.RemoveAll(); // Clear tooltips as buttons are now active
 
             KeyDown += frmMainMenu_KeyDown;
+        }
+
+        private void AddPOSMenuButtons()
+        {
+            Button btnPOS = new Button();
+            btnPOS.Name = "btnPOS";
+            btnPOS.Text = "POS";
+            btnPOS.Font = new Font("Microsoft Sans Serif", 16.2F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            btnPOS.Location = new Point(256, 349);
+            btnPOS.Size = new Size(232, 109);
+            btnPOS.Click += btnPOS_Click;
+            clsFormTheme.ApplyPrimaryButtonStyle(btnPOS);
+
+            Button btnDailyReport = new Button();
+            btnDailyReport.Name = "btnDailyReport";
+            btnDailyReport.Text = "Daily Report";
+            btnDailyReport.Font = new Font("Microsoft Sans Serif", 16.2F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            btnDailyReport.Location = new Point(673, 349);
+            btnDailyReport.Size = new Size(232, 109);
+            btnDailyReport.Click += btnDailyReport_Click;
+            clsFormTheme.ApplySecondaryButtonStyle(btnDailyReport);
+
+            btnProducts.Location = new Point(474, 255);
+
+            Controls.Add(btnPOS);
+            Controls.Add(btnDailyReport);
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -56,6 +83,18 @@ namespace InventoryManagementSystem
             
             frmProductsManagment frm = new frmProductsManagment();
             frm.Show();
+        }
+
+        private void btnPOS_Click(object sender, EventArgs e)
+        {
+            frmPOS frm = new frmPOS();
+            frm.Show();
+        }
+
+        private void btnDailyReport_Click(object sender, EventArgs e)
+        {
+            frmDailyReport frm = new frmDailyReport();
+            frm.ShowDialog();
         }
 
         private void button4_Click(object sender, EventArgs e)

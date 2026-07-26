@@ -1,0 +1,526 @@
+using System;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace InventoryDataAccessLayer
+{
+    public static class clsPOSData
+    {
+        public static bool EnsurePosSetupAndSampleData(out string errorMessage)
+        {
+            errorMessage = "";
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    using (SqlTransaction transaction = connection.BeginTransaction())
+                    {
+                        EnsureOrderTables(connection, transaction);
+                        SeedSampleData(connection, transaction);
+                        transaction.Commit();
+                    }
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = ex.Message;
+                    return false;
+                }
+            }
+        }
+
+        public static DataTable GetProductsForPOS()
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"
+                    SELECT P.ProductID,
+                           P.ProductName,
+                           P.CategoryID,
+                           C.CategoryName,
+                           P.SupplierID,
+                           S.SupplierName,
+                           P.Price,
+                           P.Quantity,
+                           P.Barcode,
+                           P.ImagePath
+                    FROM Products P
+                    INNER JOIN Categories C ON P.CategoryID = C.CategoryID
+                    INNER JOIN Suppliers S ON P.SupplierID = S.SupplierID
+                    ORDER BY C.CategoryName, P.ProductName";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                                dt.Load(reader);
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public static bool CompleteOrder(DataTable orderItems, decimal taxRate, out int orderID, out string errorMessage)
+        {
+            orderID = -1;
+            errorMessage = "";
+
+            if (orderItems == null || orderItems.Rows.Count == 0)
+            {
+                errorMessage = "Receipt is empty.";
+                return false;
+            }
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    using (SqlTransaction transaction = connection.BeginTransaction())
+                    {
+                        decimal subtotal = 0;
+
+                        foreach (DataRow row in orderItems.Rows)
+                        {
+                            int productID = Convert.ToInt32(row["ProductID"]);
+                            int quantity = Convert.ToInt32(row["Quantity"]);
+                            decimal unitPrice = Convert.ToDecimal(row["UnitPrice"]);
+
+                            if (quantity <= 0)
+                            {
+                                errorMessage = "Every receipt item must have a quantity greater than zero.";
+                                transaction.Rollback();
+                                return false;
+                            }
+
+                            int stock = GetCurrentStock(connection, transaction, productID);
+                            if (stock < quantity)
+                            {
+                                errorMessage = "Insufficient stock for " + row["ProductName"] + ". Available: " + stock;
+                                transaction.Rollback();
+                                return false;
+                            }
+
+                            subtotal += quantity * unitPrice;
+                        }
+
+                        decimal taxAmount = Math.Round(subtotal * taxRate, 2);
+                        decimal totalAmount = subtotal + taxAmount;
+
+                        using (SqlCommand orderCommand = new SqlCommand(@"
+                            INSERT INTO Orders (OrderDate, Subtotal, TaxAmount, TotalAmount)
+                            VALUES (GETDATE(), @Subtotal, @TaxAmount, @TotalAmount);
+                            SELECT SCOPE_IDENTITY();", connection, transaction))
+                        {
+                            orderCommand.Parameters.AddWithValue("@Subtotal", subtotal);
+                            orderCommand.Parameters.AddWithValue("@TaxAmount", taxAmount);
+                            orderCommand.Parameters.AddWithValue("@TotalAmount", totalAmount);
+
+                            orderID = Convert.ToInt32(orderCommand.ExecuteScalar());
+                        }
+
+                        foreach (DataRow row in orderItems.Rows)
+                        {
+                            int productID = Convert.ToInt32(row["ProductID"]);
+                            string productName = row["ProductName"].ToString();
+                            int quantity = Convert.ToInt32(row["Quantity"]);
+                            decimal unitPrice = Convert.ToDecimal(row["UnitPrice"]);
+                            decimal itemSubtotal = quantity * unitPrice;
+
+                            using (SqlCommand itemCommand = new SqlCommand(@"
+                                INSERT INTO OrderItems
+                                (OrderID, ProductID, ProductName, Quantity, UnitPrice, Subtotal)
+                                VALUES
+                                (@OrderID, @ProductID, @ProductName, @Quantity, @UnitPrice, @Subtotal);", connection, transaction))
+                            {
+                                itemCommand.Parameters.AddWithValue("@OrderID", orderID);
+                                itemCommand.Parameters.AddWithValue("@ProductID", productID);
+                                itemCommand.Parameters.AddWithValue("@ProductName", productName);
+                                itemCommand.Parameters.AddWithValue("@Quantity", quantity);
+                                itemCommand.Parameters.AddWithValue("@UnitPrice", unitPrice);
+                                itemCommand.Parameters.AddWithValue("@Subtotal", itemSubtotal);
+                                itemCommand.ExecuteNonQuery();
+                            }
+
+                            using (SqlCommand stockCommand = new SqlCommand(@"
+                                UPDATE Products
+                                SET Quantity = Quantity - @Quantity
+                                WHERE ProductID = @ProductID
+                                  AND Quantity >= @Quantity;", connection, transaction))
+                            {
+                                stockCommand.Parameters.AddWithValue("@ProductID", productID);
+                                stockCommand.Parameters.AddWithValue("@Quantity", quantity);
+
+                                if (stockCommand.ExecuteNonQuery() != 1)
+                                {
+                                    errorMessage = "Unable to update stock for " + productName + ".";
+                                    transaction.Rollback();
+                                    return false;
+                                }
+                            }
+                        }
+
+                        transaction.Commit();
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = ex.Message;
+                    orderID = -1;
+                    return false;
+                }
+            }
+        }
+
+        public static DataTable GetTodayOrderSummary()
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"
+                    SELECT COUNT(*) AS OrderCount,
+                           ISNULL(SUM(Subtotal), 0) AS Subtotal,
+                           ISNULL(SUM(TaxAmount), 0) AS TaxAmount,
+                           ISNULL(SUM(TotalAmount), 0) AS TotalRevenue
+                    FROM Orders
+                    WHERE CAST(OrderDate AS DATE) = CAST(GETDATE() AS DATE)";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            dt.Load(reader);
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetTodayOrders()
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"
+                    SELECT OrderID,
+                           OrderDate,
+                           Subtotal,
+                           TaxAmount,
+                           TotalAmount
+                    FROM Orders
+                    WHERE CAST(OrderDate AS DATE) = CAST(GETDATE() AS DATE)
+                    ORDER BY OrderDate DESC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                                dt.Load(reader);
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetTodayTopSellingProducts()
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"
+                    SELECT TOP 10 OI.ProductName,
+                           SUM(OI.Quantity) AS UnitsSold,
+                           SUM(OI.Subtotal) AS Revenue
+                    FROM OrderItems OI
+                    INNER JOIN Orders O ON O.OrderID = OI.OrderID
+                    WHERE CAST(O.OrderDate AS DATE) = CAST(GETDATE() AS DATE)
+                    GROUP BY OI.ProductName
+                    ORDER BY UnitsSold DESC, Revenue DESC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows)
+                                dt.Load(reader);
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        private static void EnsureOrderTables(SqlConnection connection, SqlTransaction transaction)
+        {
+            string query = @"
+                IF OBJECT_ID('Orders', 'U') IS NULL
+                BEGIN
+                    CREATE TABLE Orders
+                    (
+                        OrderID INT IDENTITY(1,1) PRIMARY KEY,
+                        OrderDate DATETIME NOT NULL DEFAULT GETDATE(),
+                        Subtotal DECIMAL(10,2) NOT NULL,
+                        TaxAmount DECIMAL(10,2) NOT NULL,
+                        TotalAmount DECIMAL(10,2) NOT NULL
+                    );
+                END;
+
+                IF OBJECT_ID('OrderItems', 'U') IS NULL
+                BEGIN
+                    CREATE TABLE OrderItems
+                    (
+                        OrderItemID INT IDENTITY(1,1) PRIMARY KEY,
+                        OrderID INT NOT NULL,
+                        ProductID INT NOT NULL,
+                        ProductName NVARCHAR(100) NOT NULL,
+                        Quantity INT NOT NULL,
+                        UnitPrice DECIMAL(10,2) NOT NULL,
+                        Subtotal DECIMAL(10,2) NOT NULL,
+                        CONSTRAINT FK_OrderItems_Orders
+                            FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+                        CONSTRAINT FK_OrderItems_Products
+                            FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+                    );
+                END;";
+
+            using (SqlCommand command = new SqlCommand(query, connection, transaction))
+            {
+                command.ExecuteNonQuery();
+            }
+        }
+
+        private static void SeedSampleData(SqlConnection connection, SqlTransaction transaction)
+        {
+            string[] suppliers = new[]
+            {
+                "Metro POS Supplies",
+                "Prime Wholesale",
+                "City Distribution",
+                "Value Traders",
+                "Global Goods"
+            };
+
+            foreach (string supplier in suppliers)
+            {
+                using (SqlCommand command = new SqlCommand(@"
+                    IF NOT EXISTS (SELECT 1 FROM Suppliers WHERE SupplierName = @SupplierName)
+                    BEGIN
+                        INSERT INTO Suppliers (SupplierName, Phone, Email)
+                        VALUES (@SupplierName, @Phone, @Email);
+                    END", connection, transaction))
+                {
+                    command.Parameters.AddWithValue("@SupplierName", supplier);
+                    command.Parameters.AddWithValue("@Phone", "0792000000");
+                    command.Parameters.AddWithValue("@Email", supplier.Replace(" ", "").ToLower() + "@example.com");
+                    command.ExecuteNonQuery();
+                }
+            }
+
+            SeedCategoryProducts(connection, transaction, "Electronics", "ELEC", suppliers, new[]
+            {
+                "Bluetooth Speaker", "Wireless Earbuds", "USB-C Charger", "Smart Watch", "Power Bank",
+                "HDMI Cable", "Laptop Stand", "Phone Tripod", "Gaming Mouse", "Mechanical Keyboard",
+                "Webcam", "Portable SSD", "WiFi Router", "Tablet Case", "Screen Protector",
+                "Smart Plug", "Desk Microphone", "Monitor Light Bar", "USB Hub", "Memory Card"
+            }, new decimal[]
+            {
+                34.99m, 49.99m, 19.99m, 89.99m, 29.99m, 8.99m, 24.99m, 14.99m, 39.99m, 69.99m,
+                44.99m, 99.99m, 79.99m, 18.99m, 6.99m, 15.99m, 54.99m, 32.99m, 22.99m, 12.99m
+            });
+
+            SeedCategoryProducts(connection, transaction, "Groceries", "GROC", suppliers, new[]
+            {
+                "Basmati Rice", "Olive Oil", "Pasta Pack", "Tomato Sauce", "Canned Tuna",
+                "Breakfast Cereal", "Ground Coffee", "Green Tea", "Chocolate Bar", "Mixed Nuts",
+                "Honey Jar", "Flour Bag", "Brown Sugar", "Lentils", "Chickpeas",
+                "Peanut Butter", "Jam Jar", "Corn Flakes", "Bottled Water", "Orange Juice"
+            }, new decimal[]
+            {
+                7.99m, 12.49m, 2.25m, 1.75m, 3.50m, 4.95m, 8.90m, 3.80m, 1.20m, 6.60m,
+                5.75m, 2.40m, 2.10m, 2.85m, 2.65m, 4.35m, 3.25m, 4.10m, 0.45m, 1.95m
+            });
+
+            SeedCategoryProducts(connection, transaction, "Clothing", "CLOT", suppliers, new[]
+            {
+                "Cotton T-Shirt", "Polo Shirt", "Denim Jeans", "Hoodie", "Light Jacket",
+                "Formal Shirt", "Chino Pants", "Sports Shorts", "Running Socks", "Baseball Cap",
+                "Leather Belt", "Winter Scarf", "Knit Beanie", "Gym Leggings", "Casual Dress",
+                "Track Pants", "Tank Top", "Cardigan", "Raincoat", "Sneakers"
+            }, new decimal[]
+            {
+                9.99m, 18.99m, 34.99m, 29.99m, 49.99m, 24.99m, 31.99m, 16.99m, 4.99m, 8.99m,
+                12.99m, 11.50m, 7.50m, 22.99m, 39.99m, 21.99m, 6.99m, 27.99m, 44.99m, 59.99m
+            });
+
+            SeedCategoryProducts(connection, transaction, "Home Goods", "HOME", suppliers, new[]
+            {
+                "Ceramic Mug", "Dinner Plate Set", "Kitchen Towel", "Storage Basket", "Laundry Hamper",
+                "LED Desk Lamp", "Wall Clock", "Throw Pillow", "Bed Sheet Set", "Bath Mat",
+                "Glass Vase", "Cutting Board", "Food Container", "Scented Candle", "Door Mat",
+                "Ironing Board Cover", "Cleaning Brush", "Soap Dispenser", "Picture Frame", "Plant Pot"
+            }, new decimal[]
+            {
+                3.99m, 22.99m, 5.50m, 8.75m, 16.25m, 21.99m, 13.99m, 10.99m, 35.99m, 9.99m,
+                14.50m, 11.99m, 6.99m, 7.25m, 12.49m, 6.75m, 3.25m, 8.99m, 5.99m, 4.99m
+            });
+
+            SeedCategoryProducts(connection, transaction, "Health & Beauty", "HLTH", suppliers, new[]
+            {
+                "Shampoo", "Conditioner", "Body Wash", "Face Cleanser", "Moisturizer",
+                "Sunscreen", "Toothpaste", "Toothbrush", "Mouthwash", "Hand Cream",
+                "Lip Balm", "Deodorant", "Hair Gel", "Cotton Pads", "Makeup Remover",
+                "Vitamin C", "Bandage Pack", "Hand Sanitizer", "Nail Clippers", "Body Lotion"
+            }, new decimal[]
+            {
+                4.99m, 5.49m, 3.99m, 6.75m, 8.95m, 9.99m, 2.25m, 1.99m, 4.50m, 3.25m,
+                1.75m, 3.80m, 4.20m, 2.10m, 5.95m, 7.99m, 2.50m, 1.60m, 2.99m, 6.50m
+            });
+        }
+
+        private static void SeedCategoryProducts(SqlConnection connection, SqlTransaction transaction, string categoryName, string barcodePrefix, string[] suppliers, string[] productNames, decimal[] prices)
+        {
+            int categoryID = EnsureCategory(connection, transaction, categoryName);
+            int existingCount = CountProductsInCategory(connection, transaction, categoryID);
+
+            for (int index = existingCount; index < 20; index++)
+            {
+                string barcode = "POS-" + barcodePrefix + "-" + (index + 1).ToString("00");
+
+                if (ProductBarcodeExists(connection, transaction, barcode))
+                    continue;
+
+                string supplierName = suppliers[index % suppliers.Length];
+                int supplierID = GetSupplierID(connection, transaction, supplierName);
+                string productName = productNames[index];
+                decimal price = prices[index];
+                int quantity = 25 + (index * 3);
+                string imageUrl = "https://placehold.co/96x96/png?text=" + Uri.EscapeDataString(barcodePrefix + " " + (index + 1).ToString("00"));
+
+                using (SqlCommand command = new SqlCommand(@"
+                    INSERT INTO Products
+                    (ProductName, CategoryID, SupplierID, Price, Quantity, Barcode, ImagePath, CreatedDate)
+                    VALUES
+                    (@ProductName, @CategoryID, @SupplierID, @Price, @Quantity, @Barcode, @ImagePath, GETDATE());", connection, transaction))
+                {
+                    command.Parameters.AddWithValue("@ProductName", productName);
+                    command.Parameters.AddWithValue("@CategoryID", categoryID);
+                    command.Parameters.AddWithValue("@SupplierID", supplierID);
+                    command.Parameters.AddWithValue("@Price", price);
+                    command.Parameters.AddWithValue("@Quantity", quantity);
+                    command.Parameters.AddWithValue("@Barcode", barcode);
+                    command.Parameters.AddWithValue("@ImagePath", imageUrl);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        private static int EnsureCategory(SqlConnection connection, SqlTransaction transaction, string categoryName)
+        {
+            using (SqlCommand command = new SqlCommand(@"
+                IF NOT EXISTS (SELECT 1 FROM Categories WHERE CategoryName = @CategoryName)
+                BEGIN
+                    INSERT INTO Categories (CategoryName) VALUES (@CategoryName);
+                END
+
+                SELECT CategoryID FROM Categories WHERE CategoryName = @CategoryName;", connection, transaction))
+            {
+                command.Parameters.AddWithValue("@CategoryName", categoryName);
+                return Convert.ToInt32(command.ExecuteScalar());
+            }
+        }
+
+        private static int GetSupplierID(SqlConnection connection, SqlTransaction transaction, string supplierName)
+        {
+            using (SqlCommand command = new SqlCommand(@"
+                SELECT TOP 1 SupplierID
+                FROM Suppliers
+                WHERE SupplierName = @SupplierName
+                ORDER BY SupplierID;", connection, transaction))
+            {
+                command.Parameters.AddWithValue("@SupplierName", supplierName);
+                return Convert.ToInt32(command.ExecuteScalar());
+            }
+        }
+
+        private static int CountProductsInCategory(SqlConnection connection, SqlTransaction transaction, int categoryID)
+        {
+            using (SqlCommand command = new SqlCommand(@"
+                SELECT COUNT(*)
+                FROM Products
+                WHERE CategoryID = @CategoryID;", connection, transaction))
+            {
+                command.Parameters.AddWithValue("@CategoryID", categoryID);
+                return Convert.ToInt32(command.ExecuteScalar());
+            }
+        }
+
+        private static bool ProductBarcodeExists(SqlConnection connection, SqlTransaction transaction, string barcode)
+        {
+            using (SqlCommand command = new SqlCommand(@"
+                SELECT TOP 1 1
+                FROM Products
+                WHERE Barcode = @Barcode;", connection, transaction))
+            {
+                command.Parameters.AddWithValue("@Barcode", barcode);
+                return command.ExecuteScalar() != null;
+            }
+        }
+
+        private static int GetCurrentStock(SqlConnection connection, SqlTransaction transaction, int productID)
+        {
+            using (SqlCommand command = new SqlCommand(@"
+                SELECT Quantity
+                FROM Products WITH (UPDLOCK, ROWLOCK)
+                WHERE ProductID = @ProductID;", connection, transaction))
+            {
+                command.Parameters.AddWithValue("@ProductID", productID);
+                object result = command.ExecuteScalar();
+                return result == null ? 0 : Convert.ToInt32(result);
+            }
+        }
+    }
+}
