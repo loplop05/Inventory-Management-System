@@ -25,16 +25,19 @@ namespace InventoryManagementSystem
             _errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
             clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.CreateHeaderPanel(this, "Edit Product", clsFormTheme.Icons.Update);
+            btnUpdate.Text = clsFormTheme.Icons.Save + "  Save Changes";
+            btnUpdate.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnUpdate);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewProductName);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewPrice);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewQuantity);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewBarcode);
 
-            lblProductName.BackColor = Color.White;
+            lblProductName.BackColor = Color.Transparent;
             lblProductName.ForeColor = clsFormTheme.HeaderColor;
-            lblProductID.BackColor = Color.White;
-            lblProductID.ForeColor = clsFormTheme.HeaderColor;
+            lblProductID.BackColor = Color.Transparent;
+            lblProductID.ForeColor = clsFormTheme.TextSecondary;
 
             btnUpdate.Enabled = false;
             AcceptButton = btnUpdate;
