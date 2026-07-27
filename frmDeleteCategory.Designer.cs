@@ -37,7 +37,6 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(83, 46);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(234, 32);
@@ -47,7 +46,6 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(74, 179);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(255, 32);
@@ -56,8 +54,6 @@
             // 
             // txtCategoryID
             // 
-            this.txtCategoryID.BackColor = System.Drawing.SystemColors.InactiveBorder;
-            this.txtCategoryID.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtCategoryID.Location = new System.Drawing.Point(138, 244);
             this.txtCategoryID.Name = "txtCategoryID";
             this.txtCategoryID.Size = new System.Drawing.Size(110, 38);
@@ -81,7 +77,6 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.InactiveCaption;
             this.ClientSize = new System.Drawing.Size(398, 448);
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.txtCategoryID);

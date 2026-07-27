@@ -37,7 +37,6 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(131, 121);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(251, 32);
@@ -47,7 +46,6 @@
             // txtUpdateCategoryid
             // 
             this.txtUpdateCategoryid.AcceptsReturn = true;
-            this.txtUpdateCategoryid.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtUpdateCategoryid.Location = new System.Drawing.Point(178, 275);
             this.txtUpdateCategoryid.Name = "txtUpdateCategoryid";
             this.txtUpdateCategoryid.Size = new System.Drawing.Size(148, 38);
@@ -58,7 +56,6 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(131, 216);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(247, 32);

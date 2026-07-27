@@ -282,7 +282,6 @@ namespace InventoryManagementSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(1024, 758);
             this.Controls.Add(this._rootLayout);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
@@ -291,7 +290,6 @@ namespace InventoryManagementSystem
             this.Padding = new System.Windows.Forms.Padding(16);
             this.Text = "End-of-Day Report";
             this.Load += new System.EventHandler(this.frmDailyReport_Load);
-            this.Scroll += new System.Windows.Forms.ScrollEventHandler(this.frmDailyReport_Scroll);
             this._rootLayout.ResumeLayout(false);
             this._summaryPanel.ResumeLayout(false);
             this._splitContainer.Panel1.ResumeLayout(false);

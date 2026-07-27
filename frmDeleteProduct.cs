@@ -21,7 +21,7 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.ApplyDangerButtonStyle(btnDelete);
             clsFormTheme.ApplyTextBoxStyle(txtProductID);
-
+            
             btnDelete.Enabled = false;
             AcceptButton = btnDelete;
             txtProductID.TextChanged += txtProductID_TextChanged;
@@ -42,7 +42,7 @@ namespace InventoryManagementSystem
                     txtProductID,
                     _errorProvider,
                     "Please enter a valid Product ID.");
-
+            
                 return false;
             }
 

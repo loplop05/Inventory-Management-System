@@ -47,7 +47,6 @@ namespace InventoryManagementSystem
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(180, 84);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(186, 36);
@@ -57,7 +56,6 @@ namespace InventoryManagementSystem
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(40, 144);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(157, 25);
@@ -67,7 +65,6 @@ namespace InventoryManagementSystem
             // txtBoxProductName
             // 
             this.txtBoxProductName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtBoxProductName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBoxProductName.Location = new System.Drawing.Point(200, 143);
             this.txtBoxProductName.Name = "txtBoxProductName";
             this.txtBoxProductName.Size = new System.Drawing.Size(200, 26);
@@ -77,7 +74,6 @@ namespace InventoryManagementSystem
             // 
             // btnAdd
             // 
-            this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAdd.Location = new System.Drawing.Point(190, 514);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(162, 54);
@@ -89,7 +85,6 @@ namespace InventoryManagementSystem
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(40, 184);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(71, 25);
@@ -99,7 +94,6 @@ namespace InventoryManagementSystem
             // txtBoxPrice
             // 
             this.txtBoxPrice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtBoxPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBoxPrice.Location = new System.Drawing.Point(200, 183);
             this.txtBoxPrice.Name = "txtBoxPrice";
             this.txtBoxPrice.Size = new System.Drawing.Size(200, 26);
@@ -110,7 +104,6 @@ namespace InventoryManagementSystem
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(40, 224);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(99, 25);
@@ -120,7 +113,6 @@ namespace InventoryManagementSystem
             // txtBoxQuantity
             // 
             this.txtBoxQuantity.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtBoxQuantity.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBoxQuantity.Location = new System.Drawing.Point(200, 223);
             this.txtBoxQuantity.Name = "txtBoxQuantity";
             this.txtBoxQuantity.Size = new System.Drawing.Size(200, 26);
@@ -131,7 +123,6 @@ namespace InventoryManagementSystem
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(40, 264);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(99, 25);
@@ -141,7 +132,6 @@ namespace InventoryManagementSystem
             // txtBoxBarcode
             // 
             this.txtBoxBarcode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtBoxBarcode.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBoxBarcode.Location = new System.Drawing.Point(200, 263);
             this.txtBoxBarcode.Name = "txtBoxBarcode";
             this.txtBoxBarcode.Size = new System.Drawing.Size(200, 26);
@@ -152,7 +142,6 @@ namespace InventoryManagementSystem
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.Location = new System.Drawing.Point(40, 304);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(106, 25);
@@ -162,7 +151,6 @@ namespace InventoryManagementSystem
             // cmbCategory
             // 
             this.cmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbCategory.FormattingEnabled = true;
             this.cmbCategory.Location = new System.Drawing.Point(200, 303);
             this.cmbCategory.Name = "cmbCategory";
@@ -174,7 +162,6 @@ namespace InventoryManagementSystem
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.Location = new System.Drawing.Point(40, 344);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(99, 25);
@@ -184,7 +171,6 @@ namespace InventoryManagementSystem
             // cmbSupplier
             // 
             this.cmbSupplier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSupplier.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cmbSupplier.FormattingEnabled = true;
             this.cmbSupplier.Location = new System.Drawing.Point(200, 343);
             this.cmbSupplier.Name = "cmbSupplier";

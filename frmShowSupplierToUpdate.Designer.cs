@@ -44,7 +44,6 @@ namespace InventoryManagementSystem
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(51, 62);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(139, 32);
@@ -55,7 +54,6 @@ namespace InventoryManagementSystem
             // 
             this.lblSupplierName.AutoSize = true;
             this.lblSupplierName.BackColor = System.Drawing.Color.White;
-            this.lblSupplierName.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSupplierName.Location = new System.Drawing.Point(274, 62);
             this.lblSupplierName.Name = "lblSupplierName";
             this.lblSupplierName.Size = new System.Drawing.Size(33, 36);
@@ -65,7 +63,6 @@ namespace InventoryManagementSystem
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(28, 200);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(177, 32);
@@ -74,7 +71,6 @@ namespace InventoryManagementSystem
             // 
             // txtBoxNewSupplierName
             // 
-            this.txtBoxNewSupplierName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBoxNewSupplierName.Location = new System.Drawing.Point(231, 200);
             this.txtBoxNewSupplierName.Name = "txtBoxNewSupplierName";
             this.txtBoxNewSupplierName.Size = new System.Drawing.Size(188, 26);
@@ -83,7 +79,6 @@ namespace InventoryManagementSystem
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(51, 127);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(173, 32);
@@ -94,7 +89,6 @@ namespace InventoryManagementSystem
             // 
             this.lblSupplierID.AutoSize = true;
             this.lblSupplierID.BackColor = System.Drawing.Color.White;
-            this.lblSupplierID.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSupplierID.Location = new System.Drawing.Point(274, 127);
             this.lblSupplierID.Name = "lblSupplierID";
             this.lblSupplierID.Size = new System.Drawing.Size(33, 36);
@@ -103,7 +97,6 @@ namespace InventoryManagementSystem
             // 
             // btnUpdate
             // 
-            this.btnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUpdate.Location = new System.Drawing.Point(159, 400);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(131, 53);
@@ -115,7 +108,6 @@ namespace InventoryManagementSystem
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(28, 260);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(177, 32);
@@ -124,7 +116,6 @@ namespace InventoryManagementSystem
             // 
             // txtBoxNewPhone
             // 
-            this.txtBoxNewPhone.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBoxNewPhone.Location = new System.Drawing.Point(231, 260);
             this.txtBoxNewPhone.Name = "txtBoxNewPhone";
             this.txtBoxNewPhone.Size = new System.Drawing.Size(188, 26);
@@ -133,7 +124,6 @@ namespace InventoryManagementSystem
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.Location = new System.Drawing.Point(28, 320);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(165, 32);
@@ -142,7 +132,6 @@ namespace InventoryManagementSystem
             // 
             // txtBoxNewEmail
             // 
-            this.txtBoxNewEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBoxNewEmail.Location = new System.Drawing.Point(231, 320);
             this.txtBoxNewEmail.Name = "txtBoxNewEmail";
             this.txtBoxNewEmail.Size = new System.Drawing.Size(188, 26);

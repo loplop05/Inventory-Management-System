@@ -40,7 +40,6 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(51, 62);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(154, 32);
@@ -51,7 +50,6 @@
             // 
             this.lblCategory.AutoSize = true;
             this.lblCategory.BackColor = System.Drawing.Color.White;
-            this.lblCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCategory.Location = new System.Drawing.Point(274, 62);
             this.lblCategory.Name = "lblCategory";
             this.lblCategory.Size = new System.Drawing.Size(33, 36);
@@ -61,7 +59,6 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(28, 241);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(177, 32);
@@ -70,7 +67,6 @@
             // 
             // txtBoxNewCategory
             // 
-            this.txtBoxNewCategory.Font = new System.Drawing.Font("Microsoft Tai Le", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtBoxNewCategory.Location = new System.Drawing.Point(231, 235);
             this.txtBoxNewCategory.Name = "txtBoxNewCategory";
             this.txtBoxNewCategory.Size = new System.Drawing.Size(188, 46);
@@ -79,7 +75,6 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(51, 127);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(191, 32);
@@ -90,7 +85,6 @@
             // 
             this.lblCategoryID.AutoSize = true;
             this.lblCategoryID.BackColor = System.Drawing.Color.White;
-            this.lblCategoryID.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblCategoryID.Location = new System.Drawing.Point(274, 127);
             this.lblCategoryID.Name = "lblCategoryID";
             this.lblCategoryID.Size = new System.Drawing.Size(33, 36);
@@ -99,7 +93,6 @@
             // 
             // btnUpdate
             // 
-            this.btnUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnUpdate.Location = new System.Drawing.Point(159, 344);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(131, 53);
