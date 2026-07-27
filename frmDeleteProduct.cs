@@ -1,5 +1,6 @@
 using InventoryBusinessLayer;
 using System;
+using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -19,11 +20,17 @@ namespace InventoryManagementSystem
             _errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
             clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.CreateHeaderPanel(this, "Delete Product", clsFormTheme.Icons.Delete);
+            btnDelete.Text = clsFormTheme.Icons.Delete + "  Delete";
+            btnDelete.Font = new Font(clsFormTheme.IconFontName, 11F, FontStyle.Bold);
             clsFormTheme.ApplyDangerButtonStyle(btnDelete);
+            btnDelete.Height = 36;
             clsFormTheme.ApplyTextBoxStyle(txtProductID);
+            txtProductID.Font = new Font(clsFormTheme.MainFontName, 10F);
 
             btnDelete.Enabled = false;
             AcceptButton = btnDelete;
+            CancelButton = null;
             txtProductID.TextChanged += txtProductID_TextChanged;
             KeyDown += frmDeleteProduct_KeyDown;
         }

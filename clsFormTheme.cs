@@ -11,6 +11,7 @@ namespace InventoryManagementSystem
         // Background tones
         public static readonly Color FormBackColor        = Color.FromArgb(245, 247, 250);  // Cool off-white
         public static readonly Color FormBackColorAlt     = Color.FromArgb(235, 239, 245);  // Slightly deeper
+        public static readonly Color FormBackColorDark    = Color.FromArgb(225, 230, 240);  // Deeper for gradients
 
         // Brand / accent
         public static readonly Color PrimaryColor         = Color.FromArgb(37,  99,  235);  // Vivid Royal Blue
@@ -46,6 +47,8 @@ namespace InventoryManagementSystem
         // ─── Typography ─────────────────────────────────────────────────────────
         public static readonly string MainFontName  = "Segoe UI";
         public static readonly string IconFontName  = "Segoe MDL2 Assets";
+        public static readonly int HeaderHeight = 64;
+        public static readonly int ButtonIconSize = 16;
 
         // ─── Icon Codes (Segoe MDL2 Assets) ─────────────────────────────────────
         public static class Icons
@@ -97,15 +100,16 @@ namespace InventoryManagementSystem
             form.Font             = new Font(MainFontName, 10F);
             form.KeyPreview       = true;
 
-            // Subtle diagonal gradient background
+            // Enhanced diagonal gradient background with smoother transitions
             form.Paint += (s, e) =>
             {
                 using (LinearGradientBrush brush = new LinearGradientBrush(
                     form.ClientRectangle,
                     FormBackColor,
-                    FormBackColorAlt,
+                    FormBackColorDark,
                     LinearGradientMode.ForwardDiagonal))
                 {
+                    e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                     e.Graphics.FillRectangle(brush, form.ClientRectangle);
                 }
             };
@@ -120,13 +124,14 @@ namespace InventoryManagementSystem
             Panel header = new Panel
             {
                 Dock      = DockStyle.Top,
-                Height    = 64,
+                Height    = HeaderHeight,
                 BackColor = HeaderColor   // fallback; gradient is painted below
             };
 
-            // Gradient paint
+            // Enhanced gradient paint with smoother rendering
             header.Paint += (s, e) =>
             {
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
                 using (LinearGradientBrush brush = new LinearGradientBrush(
                     header.ClientRectangle,
                     HeaderColor,
@@ -136,9 +141,12 @@ namespace InventoryManagementSystem
                     e.Graphics.FillRectangle(brush, header.ClientRectangle);
                 }
 
-                // Bottom accent line
-                using (Pen pen = new Pen(Color.FromArgb(59, 130, 246), 2))
+                // Bottom accent line with enhanced styling
+                using (Pen pen = new Pen(Color.FromArgb(59, 130, 246), 3))
+                {
+                    pen.EndCap = System.Drawing.Drawing2D.LineCap.Round;
                     e.Graphics.DrawLine(pen, 0, header.Height - 2, header.Width, header.Height - 2);
+                }
             };
 
             int textLeft = 20;
@@ -179,17 +187,24 @@ namespace InventoryManagementSystem
         /// <summary>Draws a white card with a soft border and subtle drop-shadow.</summary>
         public static void DrawCard(Graphics g, Rectangle rect, int radius = 6)
         {
-            // Shadow
-            using (SolidBrush shadow = new SolidBrush(Color.FromArgb(20, 0, 0, 0)))
-                g.FillRectangle(shadow, new Rectangle(rect.X + 2, rect.Y + 2, rect.Width, rect.Height));
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            
+            // Enhanced shadow with better depth
+            using (SolidBrush shadow = new SolidBrush(Color.FromArgb(15, 0, 0, 0)))
+                g.FillRectangle(shadow, new Rectangle(rect.X + 3, rect.Y + 3, rect.Width, rect.Height));
+            using (SolidBrush shadow2 = new SolidBrush(Color.FromArgb(8, 0, 0, 0)))
+                g.FillRectangle(shadow2, new Rectangle(rect.X + 1, rect.Y + 1, rect.Width, rect.Height));
 
-            // Card fill
+            // Card fill with subtle gradient
             using (SolidBrush fill = new SolidBrush(CardColor))
                 g.FillRectangle(fill, rect);
 
-            // Border
-            using (Pen border = new Pen(CardBorderColor, 1))
+            // Enhanced border
+            using (Pen border = new Pen(CardBorderColor, 1.5f))
+            {
+                border.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
                 g.DrawRectangle(border, rect);
+            }
         }
 
         // ════════════════════════════════════════════════════════════════════════
@@ -215,15 +230,30 @@ namespace InventoryManagementSystem
         {
             button.BackColor                           = backColor;
             button.ForeColor                           = Color.White;
-            button.Font                                = new Font(MainFontName, 10F, FontStyle.Bold);
             button.FlatStyle                           = FlatStyle.Flat;
             button.FlatAppearance.BorderSize           = 0;
             button.FlatAppearance.MouseOverBackColor   = hoverColor;
             button.FlatAppearance.MouseDownBackColor   = ControlPaint.Dark(backColor, 0.15f);
             button.Cursor                              = Cursors.Hand;
             button.UseVisualStyleBackColor             = false;
-            button.Padding                             = new Padding(10, 0, 10, 0);
             button.TextImageRelation                   = TextImageRelation.ImageBeforeText;
+            button.AutoSize                            = false;
+            
+            // Only apply standard sizing if button is small (not already sized for large menu buttons)
+            if (button.Height < 100)
+            {
+                if (button.Font == null || button.Font.Size < 11F)
+                    button.Font = new Font(MainFontName, 10F, FontStyle.Bold);
+                if (button.Padding == Padding.Empty)
+                    button.Padding = new Padding(12, 6, 12, 6);
+                if (button.Height < 30)
+                    button.Height = 36;
+            }
+            else
+            {
+                // For large buttons (menu buttons), preserve their size and font
+                // Just apply the styling, don't override dimensions
+            }
         }
 
         /// <summary>

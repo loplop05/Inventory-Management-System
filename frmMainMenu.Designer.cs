@@ -38,9 +38,9 @@
             // btnCategories
             // 
             this.btnCategories.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnCategories.Location = new System.Drawing.Point(309, 148);
+            this.btnCategories.Location = new System.Drawing.Point(1058, 570);
             this.btnCategories.Name = "btnCategories";
-            this.btnCategories.Size = new System.Drawing.Size(232, 109);
+            this.btnCategories.Size = new System.Drawing.Size(10, 10);
             this.btnCategories.TabIndex = 0;
             this.btnCategories.Text = "Categories";
             this.btnCategories.UseVisualStyleBackColor = true;
@@ -49,9 +49,9 @@
             // btnSuppliers
             // 
             this.btnSuppliers.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSuppliers.Location = new System.Drawing.Point(799, 148);
+            this.btnSuppliers.Location = new System.Drawing.Point(1015, 247);
             this.btnSuppliers.Name = "btnSuppliers";
-            this.btnSuppliers.Size = new System.Drawing.Size(232, 109);
+            this.btnSuppliers.Size = new System.Drawing.Size(10, 10);
             this.btnSuppliers.TabIndex = 1;
             this.btnSuppliers.Text = "Suppliers";
             this.btnSuppliers.UseVisualStyleBackColor = true;
@@ -60,9 +60,9 @@
             // btnProducts
             // 
             this.btnProducts.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnProducts.Location = new System.Drawing.Point(456, 442);
+            this.btnProducts.Location = new System.Drawing.Point(1093, 570);
             this.btnProducts.Name = "btnProducts";
-            this.btnProducts.Size = new System.Drawing.Size(232, 109);
+            this.btnProducts.Size = new System.Drawing.Size(10, 10);
             this.btnProducts.TabIndex = 2;
             this.btnProducts.Text = "Products";
             this.btnProducts.UseVisualStyleBackColor = true;
@@ -74,9 +74,8 @@
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(167, 63);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(883, 69);
+            this.label1.Size = new System.Drawing.Size(0, 69);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Inventory Management System";
             this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // button4
@@ -102,7 +101,7 @@
             this.Controls.Add(this.btnSuppliers);
             this.Controls.Add(this.btnCategories);
             this.Name = "frmMainMenu";
-            this.Text = "Inventory Management System";
+            this.Text = "Inventor Management System";
             this.Load += new System.EventHandler(this.frmMainMenu_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

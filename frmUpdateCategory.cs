@@ -27,12 +27,15 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Update Category", clsFormTheme.Icons.Update);
             btnSearch.Text = clsFormTheme.Icons.Search + "  Find Category";
-            btnSearch.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
+            btnSearch.Font = new Font(clsFormTheme.IconFontName, 11F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnSearch);
+            btnSearch.Height = 36;
             clsFormTheme.ApplyTextBoxStyle(txtUpdateCategoryid);
+            txtUpdateCategoryid.Font = new Font(clsFormTheme.MainFontName, 10F);
 
             btnSearch.Enabled = false;
             AcceptButton = btnSearch;
+            CancelButton = null;
             txtUpdateCategoryid.TextChanged += txtUpdateCategoryid_TextChanged;
             KeyDown += frmUpdateCategory_KeyDown;
         }

@@ -24,14 +24,19 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Add New Supplier", clsFormTheme.Icons.Add);
             btnAdd.Text = clsFormTheme.Icons.Save + "  Save Supplier";
-            btnAdd.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
+            btnAdd.Font = new Font(clsFormTheme.IconFontName, 11F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnAdd);
+            btnAdd.Height = 36;
             clsFormTheme.ApplyTextBoxStyle(txtBoxSupplierName);
             clsFormTheme.ApplyTextBoxStyle(txtBoxPhone);
             clsFormTheme.ApplyTextBoxStyle(txtBoxEmail);
+            txtBoxSupplierName.Font = new Font(clsFormTheme.MainFontName, 10F);
+            txtBoxPhone.Font = new Font(clsFormTheme.MainFontName, 10F);
+            txtBoxEmail.Font = new Font(clsFormTheme.MainFontName, 10F);
 
             btnAdd.Enabled = false;
             AcceptButton = btnAdd;
+            CancelButton = null;
             KeyDown += frmAddSupplier_KeyDown;
         }
 

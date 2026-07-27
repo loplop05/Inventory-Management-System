@@ -24,14 +24,17 @@ namespace InventoryManagementSystem
 
             btnExportCsv.Text = clsFormTheme.Icons.Export + "  Export CSV";
             btnExportCsv.Font = new Font(clsFormTheme.IconFontName, 11F);
+            btnExportCsv.Height = 36;
             clsFormTheme.ApplySuccessButtonStyle(btnExportCsv);
 
             btnRefresh.Text = clsFormTheme.Icons.Refresh + "  Refresh";
             btnRefresh.Font = new Font(clsFormTheme.IconFontName, 11F);
+            btnRefresh.Height = 36;
             clsFormTheme.ApplySecondaryButtonStyle(btnRefresh);
 
             btnClose.Text = clsFormTheme.Icons.Exit + "  Close";
             btnClose.Font = new Font(clsFormTheme.IconFontName, 11F);
+            btnClose.Height = 36;
             clsFormTheme.ApplySecondaryButtonStyle(btnClose);
 
             clsFormTheme.ApplyGridStyle(DataGVStockValuation);
