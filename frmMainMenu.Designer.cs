@@ -1,4 +1,4 @@
-﻿namespace InventoryManagementSystem
+namespace InventoryManagementSystem
 {
     partial class frmMainMenu
     {
@@ -37,7 +37,6 @@
             // 
             // btnCategories
             // 
-            this.btnCategories.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCategories.Location = new System.Drawing.Point(309, 148);
             this.btnCategories.Name = "btnCategories";
             this.btnCategories.Size = new System.Drawing.Size(232, 109);
@@ -48,7 +47,6 @@
             // 
             // btnSuppliers
             // 
-            this.btnSuppliers.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSuppliers.Location = new System.Drawing.Point(799, 148);
             this.btnSuppliers.Name = "btnSuppliers";
             this.btnSuppliers.Size = new System.Drawing.Size(232, 109);
@@ -59,7 +57,6 @@
             // 
             // btnProducts
             // 
-            this.btnProducts.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnProducts.Location = new System.Drawing.Point(456, 442);
             this.btnProducts.Name = "btnProducts";
             this.btnProducts.Size = new System.Drawing.Size(232, 109);
@@ -71,7 +68,6 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(167, 63);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(883, 69);
@@ -81,7 +77,6 @@
             // 
             // button4
             // 
-            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button4.Location = new System.Drawing.Point(1015, 12);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(189, 36);
@@ -94,8 +89,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
             this.ClientSize = new System.Drawing.Size(1216, 592);
+            this.MinimumSize = new System.Drawing.Size(900, 500);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.btnProducts);

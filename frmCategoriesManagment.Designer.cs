@@ -1,4 +1,4 @@
-﻿namespace InventoryManagementSystem
+namespace InventoryManagementSystem
 {
     partial class frmCategoriesManagment
     {
@@ -45,7 +45,7 @@
             //
             // btnAddCategory
             //
-            this.btnAddCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAddCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAddCategory.Location = new System.Drawing.Point(720, 196);
             this.btnAddCategory.Name = "btnAddCategory";
             this.btnAddCategory.Size = new System.Drawing.Size(220, 70);
@@ -56,7 +56,7 @@
             //
             // btnDeleteCategory
             //
-            this.btnDeleteCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDeleteCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnDeleteCategory.Location = new System.Drawing.Point(720, 452);
             this.btnDeleteCategory.Name = "btnDeleteCategory";
             this.btnDeleteCategory.Size = new System.Drawing.Size(220, 70);
@@ -67,7 +67,7 @@
             //
             // btnUpdateCategory
             //
-            this.btnUpdateCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnUpdateCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUpdateCategory.Location = new System.Drawing.Point(720, 324);
             this.btnUpdateCategory.Name = "btnUpdateCategory";
             this.btnUpdateCategory.Size = new System.Drawing.Size(220, 70);
@@ -78,7 +78,7 @@
             //
             // btnBackToPrevPage
             //
-            this.btnBackToPrevPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBackToPrevPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnBackToPrevPage.Location = new System.Drawing.Point(820, 87);
             this.btnBackToPrevPage.Name = "btnBackToPrevPage";
             this.btnBackToPrevPage.Size = new System.Drawing.Size(120, 35);
@@ -92,6 +92,7 @@
             this.DataGVCategories.AllowUserToAddRows = false;
             this.DataGVCategories.AllowUserToDeleteRows = false;
             this.DataGVCategories.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DataGVCategories.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.DataGVCategories.Location = new System.Drawing.Point(70, 157);
             this.DataGVCategories.Name = "DataGVCategories";
             this.DataGVCategories.ReadOnly = true;
@@ -103,7 +104,7 @@
             //
             // btnRefresh
             //
-            this.btnRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRefresh.Location = new System.Drawing.Point(535, 87);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(125, 35);
@@ -115,7 +116,6 @@
             // labelSearch
             //
             this.labelSearch.AutoSize = true;
-            this.labelSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelSearch.Location = new System.Drawing.Point(70, 95);
             this.labelSearch.Name = "labelSearch";
             this.labelSearch.Size = new System.Drawing.Size(63, 20);
@@ -132,7 +132,6 @@
             //
             // lblEmptyState
             //
-            this.lblEmptyState.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblEmptyState.ForeColor = System.Drawing.Color.DimGray;
             this.lblEmptyState.Location = new System.Drawing.Point(116, 275);
             this.lblEmptyState.Name = "lblEmptyState";
@@ -143,6 +142,7 @@
             //
             // btnPreviousPage
             //
+            this.btnPreviousPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btnPreviousPage.Location = new System.Drawing.Point(70, 591);
             this.btnPreviousPage.Name = "btnPreviousPage";
             this.btnPreviousPage.Size = new System.Drawing.Size(110, 35);
@@ -153,6 +153,7 @@
             //
             // btnNextPage
             //
+            this.btnNextPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnNextPage.Location = new System.Drawing.Point(550, 591);
             this.btnNextPage.Name = "btnNextPage";
             this.btnNextPage.Size = new System.Drawing.Size(110, 35);
@@ -163,7 +164,7 @@
             //
             // lblPageInfo
             //
-            this.lblPageInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPageInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblPageInfo.Location = new System.Drawing.Point(210, 595);
             this.lblPageInfo.Name = "lblPageInfo";
             this.lblPageInfo.Size = new System.Drawing.Size(300, 25);
@@ -176,6 +177,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1024, 678);
+            this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Controls.Add(this.lblPageInfo);
             this.Controls.Add(this.btnNextPage);
             this.Controls.Add(this.btnPreviousPage);

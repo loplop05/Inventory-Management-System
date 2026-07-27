@@ -47,6 +47,13 @@ namespace InventoryManagementSystem
         public static readonly string MainFontName  = "Segoe UI";
         public static readonly string IconFontName  = "Segoe MDL2 Assets";
 
+        // ─── Shared Fonts ────────────────────────────────────────────────────────
+        public static readonly Font BodyFont        = new Font("Segoe UI", 10F);
+        public static readonly Font BoldFont        = new Font("Segoe UI", 10F, FontStyle.Bold);
+        public static readonly Font HeaderFont      = new Font("Segoe UI", 13F, FontStyle.Bold);
+        public static readonly Font SubtitleFont    = new Font("Segoe UI", 11F, FontStyle.Bold);
+        public static readonly Font SmallFont       = new Font("Segoe UI", 9F);
+
         // ─── Icon Codes (Segoe MDL2 Assets) ─────────────────────────────────────
         public static class Icons
         {
@@ -109,6 +116,62 @@ namespace InventoryManagementSystem
                     e.Graphics.FillRectangle(brush, form.ClientRectangle);
                 }
             };
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
+        //  LABEL / STATIC TEXT STYLING
+        // ════════════════════════════════════════════════════════════════════════
+
+        /// <summary>Applies standard body text style to a Label (Segoe UI 10pt, TextPrimary).</summary>
+        public static void ApplyLabelStyle(Label label)
+        {
+            label.Font      = BodyFont;
+            label.ForeColor = TextPrimary;
+            label.BackColor = Color.Transparent;
+        }
+
+        /// <summary>Applies a bold header style to a Label (Segoe UI 13pt Bold, HeaderColor).</summary>
+        public static void ApplyHeaderLabelStyle(Label label)
+        {
+            label.Font      = HeaderFont;
+            label.ForeColor = HeaderColor;
+            label.BackColor = Color.Transparent;
+        }
+
+        /// <summary>
+        /// Styles a Label as a dashboard stat card — white background, border,
+        /// bold Segoe UI text, centered. Used for summary panels.
+        /// </summary>
+        public static void StyleStatCard(Label label, Color accentColor)
+        {
+            label.BackColor   = CardColor;
+            label.ForeColor   = accentColor;
+            label.Font        = SubtitleFont;
+            label.TextAlign   = System.Drawing.ContentAlignment.MiddleCenter;
+            label.BorderStyle = System.Windows.Forms.BorderStyle.None;
+
+            label.Paint += (s, e) =>
+            {
+                var lbl = (Label)s;
+                // Subtle card border
+                using (Pen pen = new Pen(CardBorderColor, 1))
+                    e.Graphics.DrawRectangle(pen, 0, 0, lbl.Width - 1, lbl.Height - 1);
+                // Top accent bar
+                using (SolidBrush bar = new SolidBrush(accentColor))
+                    e.Graphics.FillRectangle(bar, new Rectangle(0, 0, lbl.Width, 3));
+            };
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
+        //  COMBOBOX STYLING
+        // ════════════════════════════════════════════════════════════════════════
+
+        /// <summary>Applies Segoe UI font and theme colors to a ComboBox.</summary>
+        public static void ApplyComboBoxStyle(System.Windows.Forms.ComboBox comboBox)
+        {
+            comboBox.Font      = BodyFont;
+            comboBox.ForeColor = TextPrimary;
+            comboBox.BackColor = Color.White;
         }
 
         /// <summary>
