@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -15,6 +16,68 @@ namespace InventoryManagementSystem
         private readonly BindingList<ReceiptItem> _receiptItems = new BindingList<ReceiptItem>();
         private DataTable _productsTable = new DataTable();
 
+        // ── Icon+label button rendering ─────────────────────────────────────
+        private class IconButtonInfo
+        {
+            public string Icon;
+            public string Label;
+            public float IconFontSize;
+            public float TextFontSize;
+            public FontStyle TextStyle;
+        }
+
+        private readonly Dictionary<Button, IconButtonInfo> _iconButtons =
+            new Dictionary<Button, IconButtonInfo>();
+
+        private void SetIconButtonText(Button btn, string icon, string label,
+            float iconFontSize = 12F, float textFontSize = 10F, FontStyle textStyle = FontStyle.Bold)
+        {
+            btn.Text = "";
+            _iconButtons[btn] = new IconButtonInfo
+            {
+                Icon = icon,
+                Label = label,
+                IconFontSize = iconFontSize,
+                TextFontSize = textFontSize,
+                TextStyle = textStyle
+            };
+            btn.Paint -= IconButton_Paint; // avoid double subscribe if reused
+            btn.Paint += IconButton_Paint;
+        }
+
+        private void IconButton_Paint(object sender, PaintEventArgs e)
+        {
+            Button btn = sender as Button;
+            IconButtonInfo info;
+            if (btn == null || !_iconButtons.TryGetValue(btn, out info))
+                return;
+
+            using (Font iconFont = new Font(clsFormTheme.IconFontName, info.IconFontSize))
+            using (Font textFont = new Font(clsFormTheme.MainFontName, info.TextFontSize, info.TextStyle))
+            using (SolidBrush brush = new SolidBrush(btn.Enabled ? btn.ForeColor : clsFormTheme.TextMuted))
+            {
+                SizeF iconSize = e.Graphics.MeasureString(info.Icon, iconFont);
+                SizeF textSize = e.Graphics.MeasureString(info.Label, textFont);
+
+                const float gap = 6f;
+                float totalWidth = iconSize.Width + gap + textSize.Width;
+                float startX = (btn.ClientSize.Width - totalWidth) / 2f;
+                float centerY = btn.ClientSize.Height / 2f;
+
+                var iconRect = new RectangleF(startX, centerY - iconSize.Height / 2f, iconSize.Width, iconSize.Height);
+                var textRect = new RectangleF(startX + iconSize.Width + gap, centerY - textSize.Height / 2f, textSize.Width, textSize.Height);
+
+                e.Graphics.DrawString(info.Icon, iconFont, brush, iconRect);
+                e.Graphics.DrawString(info.Label, textFont, brush, textRect);
+            }
+        }
+
+        private void PurgeDisposedIconButtons()
+        {
+            foreach (Button key in _iconButtons.Keys.Where(b => b.IsDisposed).ToList())
+                _iconButtons.Remove(key);
+        }
+
         public frmPOS()
         {
             InitializeComponent();
@@ -23,31 +86,26 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyTextBoxStyle(_txtSearch);
 
             // ── Toolbar buttons ────────────────────────────────────────────────
-            _btnRefresh.Text = clsFormTheme.Icons.Refresh + "  Refresh";
-            _btnRefresh.Font = new Font(clsFormTheme.IconFontName, 11F);
             clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh);
+            SetIconButtonText(_btnRefresh, clsFormTheme.Icons.Refresh, "Refresh", 14F, 10F, FontStyle.Regular);
 
-            _btnReport.Text = clsFormTheme.Icons.Reports + "  Report";
-            _btnReport.Font = new Font(clsFormTheme.IconFontName, 11F);
             clsFormTheme.ApplySecondaryButtonStyle(_btnReport);
+            SetIconButtonText(_btnReport, clsFormTheme.Icons.Reports, "Report", 14F, 10F, FontStyle.Regular);
 
-            _btnRemoveItem.Text = clsFormTheme.Icons.Delete + "  Remove";
-            _btnRemoveItem.Font = new Font(clsFormTheme.IconFontName, 11F);
             clsFormTheme.ApplyDangerButtonStyle(_btnRemoveItem);
+            SetIconButtonText(_btnRemoveItem, clsFormTheme.Icons.Delete, "Remove", 14F, 10F, FontStyle.Regular);
 
-            _btnCompleteOrder.Text = clsFormTheme.Icons.Money + "  Complete Order";
-            _btnCompleteOrder.Font = new Font(clsFormTheme.IconFontName, 12F, FontStyle.Bold);
             clsFormTheme.ApplySuccessButtonStyle(_btnCompleteOrder);
+            SetIconButtonText(_btnCompleteOrder, clsFormTheme.Icons.Money, "Complete Order", 16F, 12F, FontStyle.Bold);
 
-            _btnClose.Text = clsFormTheme.Icons.Exit + "  Close";
-            _btnClose.Font = new Font(clsFormTheme.IconFontName, 11F);
             clsFormTheme.ApplySecondaryButtonStyle(_btnClose);
+            SetIconButtonText(_btnClose, clsFormTheme.Icons.Exit, "Close", 14F, 10F, FontStyle.Regular);
 
             // ── Receipt grid ───────────────────────────────────────────────────
             clsFormTheme.ApplyGridStyle(_gridReceipt);
             _gridReceipt.AutoGenerateColumns = false;
-            _gridReceipt.DataSource          = _receiptItems;
-            _receiptItems.ListChanged       += ReceiptItems_ListChanged;
+            _gridReceipt.DataSource = _receiptItems;
+            _receiptItems.ListChanged += ReceiptItems_ListChanged;
 
             KeyDown += frmPOS_KeyDown;
         }
@@ -74,6 +132,7 @@ namespace InventoryManagementSystem
 
         private void BuildProductTabs()
         {
+            PurgeDisposedIconButtons();
             _tabsProducts.TabPages.Clear();
 
             DataRow[] filteredRows = GetFilteredRows();
@@ -88,10 +147,10 @@ namespace InventoryManagementSystem
                 TabPage page = new TabPage(category);
                 FlowLayoutPanel panel = new FlowLayoutPanel
                 {
-                    Dock        = DockStyle.Fill,
-                    AutoScroll  = true,
-                    BackColor   = clsFormTheme.FormBackColor,
-                    Padding     = new Padding(12)
+                    Dock = DockStyle.Fill,
+                    AutoScroll = true,
+                    BackColor = clsFormTheme.FormBackColor,
+                    Padding = new Padding(12)
                 };
 
                 foreach (DataRow row in filteredRows.Where(r => r["CategoryName"].ToString() == category))
@@ -106,10 +165,10 @@ namespace InventoryManagementSystem
                 TabPage emptyPage = new TabPage("No Products");
                 Label empty = new Label
                 {
-                    Text      = "No products match your search.",
-                    Dock      = DockStyle.Fill,
+                    Text = "No products match your search.",
+                    Dock = DockStyle.Fill,
                     TextAlign = ContentAlignment.MiddleCenter,
-                    Font      = new Font(clsFormTheme.MainFontName, 14F, FontStyle.Bold),
+                    Font = new Font(clsFormTheme.MainFontName, 14F, FontStyle.Bold),
                     ForeColor = clsFormTheme.TextMuted
                 };
                 emptyPage.Controls.Add(empty);
@@ -135,34 +194,33 @@ namespace InventoryManagementSystem
 
         private Control CreateProductTile(DataRow row)
         {
-            int     productID   = Convert.ToInt32(row["ProductID"]);
-            string  productName = row["ProductName"].ToString();
-            string  supplierName = row["SupplierName"].ToString();
-            decimal price       = Convert.ToDecimal(row["Price"]);
-            int     quantity    = Convert.ToInt32(row["Quantity"]);
-            string  imagePath   = row["ImagePath"] == DBNull.Value ? "" : row["ImagePath"].ToString();
-            bool    inStock     = quantity > 0;
+            int productID = Convert.ToInt32(row["ProductID"]);
+            string productName = row["ProductName"].ToString();
+            string supplierName = row["SupplierName"].ToString();
+            decimal price = Convert.ToDecimal(row["Price"]);
+            int quantity = Convert.ToInt32(row["Quantity"]);
+            string imagePath = row["ImagePath"] == DBNull.Value ? "" : row["ImagePath"].ToString();
+            bool inStock = quantity > 0;
 
             // ── Tile container ─────────────────────────────────────────────────
             Panel tile = new Panel
             {
-                Width       = 182,
-                Height      = 260,
-                Margin      = new Padding(8),
-                BackColor   = clsFormTheme.CardColor,
+                Width = 182,
+                Height = 260,
+                Margin = new Padding(8),
+                BackColor = clsFormTheme.CardColor,
                 BorderStyle = BorderStyle.None
             };
 
-            // Apply the theme helper for card styling + hover
             clsFormTheme.StyleProductTile(tile, inStock);
 
             // ── Product image ──────────────────────────────────────────────────
             PictureBox picture = new PictureBox
             {
-                Width     = 100,
-                Height    = 100,
-                Location  = new Point(41, 16),
-                SizeMode  = PictureBoxSizeMode.Zoom,
+                Width = 100,
+                Height = 100,
+                Location = new Point(41, 16),
+                SizeMode = PictureBoxSizeMode.Zoom,
                 BackColor = Color.FromArgb(241, 245, 249)  // Slate 100
             };
 
@@ -175,64 +233,66 @@ namespace InventoryManagementSystem
             // ── Product name ───────────────────────────────────────────────────
             Label name = new Label
             {
-                Text      = productName,
-                Location  = new Point(8, 124),
-                Size      = new Size(166, 40),
+                Text = productName,
+                Location = new Point(8, 124),
+                Size = new Size(166, 40),
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font      = new Font(clsFormTheme.MainFontName, 9F, FontStyle.Bold),
+                Font = new Font(clsFormTheme.MainFontName, 9F, FontStyle.Bold),
                 ForeColor = clsFormTheme.HeaderColor
             };
 
             // ── Supplier name ──────────────────────────────────────────────────
             Label supplier = new Label
             {
-                Text      = supplierName,
-                Location  = new Point(8, 164),
-                Size      = new Size(166, 20),
+                Text = supplierName,
+                Location = new Point(8, 164),
+                Size = new Size(166, 20),
                 TextAlign = ContentAlignment.MiddleCenter,
-                Font      = new Font(clsFormTheme.MainFontName, 8F),
+                Font = new Font(clsFormTheme.MainFontName, 8F),
                 ForeColor = clsFormTheme.TextSecondary
             };
 
             // ── Price label ────────────────────────────────────────────────────
             Label priceLabel = new Label
             {
-                Text      = price.ToString("C2"),
-                Location  = new Point(8, 186),
-                Size      = new Size(90, 24),
-                Font      = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold),
+                Text = price.ToString("C2"),
+                Location = new Point(8, 186),
+                Size = new Size(90, 24),
+                Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold),
                 ForeColor = clsFormTheme.PrimaryColor
             };
 
             // ── Stock label ────────────────────────────────────────────────────
             Label stockLabel = new Label
             {
-                Text      = inStock ? "Stock: " + quantity : "Out of stock",
-                Location  = new Point(88, 186),
-                Size      = new Size(86, 24),
+                Text = inStock ? "Stock: " + quantity : "Out of stock",
+                Location = new Point(88, 186),
+                Size = new Size(86, 24),
                 TextAlign = ContentAlignment.MiddleRight,
-                Font      = new Font(clsFormTheme.MainFontName, 8F, FontStyle.Bold),
+                Font = new Font(clsFormTheme.MainFontName, 8F, FontStyle.Bold),
                 ForeColor = inStock ? clsFormTheme.SuccessColor : clsFormTheme.DangerColor
             };
 
             // ── Add to receipt button ──────────────────────────────────────────
             Button addButton = new Button
             {
-                Text     = inStock ? clsFormTheme.Icons.Add + "  Add" : clsFormTheme.Icons.Warning + "  No Stock",
                 Location = new Point(12, 218),
-                Size     = new Size(158, 30),
-                Enabled  = inStock,
-                Font     = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold)
+                Size = new Size(158, 30),
+                Enabled = inStock
             };
 
             if (inStock)
+            {
                 clsFormTheme.ApplyPrimaryButtonStyle(addButton);
+                SetIconButtonText(addButton, clsFormTheme.Icons.Add, "Add", 13F, 10F, FontStyle.Bold);
+            }
             else
             {
                 addButton.BackColor = Color.FromArgb(226, 232, 240);  // Slate 200
                 addButton.ForeColor = clsFormTheme.TextMuted;
                 addButton.FlatStyle = FlatStyle.Flat;
                 addButton.FlatAppearance.BorderSize = 0;
+                SetIconButtonText(addButton, clsFormTheme.Icons.Warning, "No Stock", 13F, 10F, FontStyle.Bold);
             }
 
             addButton.Click += delegate
@@ -268,10 +328,10 @@ namespace InventoryManagementSystem
             {
                 _receiptItems.Add(new ReceiptItem
                 {
-                    ProductID      = productID,
-                    ProductName    = productName,
-                    Quantity       = 1,
-                    UnitPrice      = unitPrice,
+                    ProductID = productID,
+                    ProductName = productName,
+                    Quantity = 1,
+                    UnitPrice = unitPrice,
                     AvailableStock = availableStock
                 });
             }
@@ -282,25 +342,25 @@ namespace InventoryManagementSystem
         private void RefreshReceiptTotals()
         {
             decimal subtotal = _receiptItems.Sum(item => item.Subtotal);
-            decimal tax      = Math.Round(subtotal * TaxRate, 2);
-            decimal total    = subtotal + tax;
+            decimal tax = Math.Round(subtotal * TaxRate, 2);
+            decimal total = subtotal + tax;
 
             _lblSubtotal.Text = "Subtotal: " + subtotal.ToString("C2");
-            _lblTax.Text      = "Tax (7%): " + tax.ToString("C2");
-            _lblTotal.Text    = "Total: " + total.ToString("C2");
+            _lblTax.Text = "Tax (7%): " + tax.ToString("C2");
+            _lblTotal.Text = "Total: " + total.ToString("C2");
 
             _btnCompleteOrder.Enabled = _receiptItems.Count > 0;
-            _btnRemoveItem.Enabled    = _receiptItems.Count > 0;
+            _btnRemoveItem.Enabled = _receiptItems.Count > 0;
             _gridReceipt.Refresh();
         }
 
         private DataTable BuildOrderItemsTable()
         {
             DataTable table = new DataTable();
-            table.Columns.Add("ProductID",   typeof(int));
+            table.Columns.Add("ProductID", typeof(int));
             table.Columns.Add("ProductName", typeof(string));
-            table.Columns.Add("Quantity",    typeof(int));
-            table.Columns.Add("UnitPrice",   typeof(decimal));
+            table.Columns.Add("Quantity", typeof(int));
+            table.Columns.Add("UnitPrice", typeof(decimal));
 
             foreach (ReceiptItem item in _receiptItems)
                 table.Rows.Add(item.ProductID, item.ProductName, item.Quantity, item.UnitPrice);
@@ -325,9 +385,9 @@ namespace InventoryManagementSystem
                 }
             }
 
-            int    orderID;
+            int orderID;
             string errorMessage;
-            bool   saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, out orderID, out errorMessage);
+            bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, out orderID, out errorMessage);
 
             if (!saved)
             {
@@ -426,19 +486,19 @@ namespace InventoryManagementSystem
             if (panel == null)
                 return;
 
-            _lblSubtotal.Width        = panel.ClientSize.Width;
-            _lblTax.Width             = panel.ClientSize.Width;
-            _lblTotal.Width           = panel.ClientSize.Width;
-            _btnCompleteOrder.Left    = panel.ClientSize.Width - _btnCompleteOrder.Width;
+            _lblSubtotal.Width = panel.ClientSize.Width;
+            _lblTax.Width = panel.ClientSize.Width;
+            _lblTotal.Width = panel.ClientSize.Width;
+            _btnCompleteOrder.Left = panel.ClientSize.Width - _btnCompleteOrder.Width;
         }
 
         private void topPanel_Resize(object sender, EventArgs e)
         {
             int right = _topPanel.ClientSize.Width - 16;
-            _btnClose.Left   = right - _btnClose.Width;
-            _btnReport.Left  = _btnClose.Left - _btnReport.Width - 10;
+            _btnClose.Left = right - _btnClose.Width;
+            _btnReport.Left = _btnClose.Left - _btnReport.Width - 10;
             _btnRefresh.Left = _btnReport.Left - _btnRefresh.Width - 10;
-            _txtSearch.Left  = _btnRefresh.Left - _txtSearch.Width - 12;
+            _txtSearch.Left = _btnRefresh.Left - _txtSearch.Width - 12;
         }
 
         private void frmPOS_KeyDown(object sender, KeyEventArgs e)
@@ -461,13 +521,18 @@ namespace InventoryManagementSystem
 
         private class ReceiptItem
         {
-            public int     ProductID      { get; set; }
-            public string  ProductName    { get; set; }
-            public int     Quantity       { get; set; }
-            public decimal UnitPrice      { get; set; }
-            public int     AvailableStock { get; set; }
+            public int ProductID { get; set; }
+            public string ProductName { get; set; }
+            public int Quantity { get; set; }
+            public decimal UnitPrice { get; set; }
+            public int AvailableStock { get; set; }
 
             public decimal Subtotal => Quantity * UnitPrice;
+        }
+
+        private void _topPanel_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

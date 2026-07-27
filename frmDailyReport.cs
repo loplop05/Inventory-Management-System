@@ -36,10 +36,12 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplySecondaryButtonStyle(_btnClose);
 
             KeyDown += frmDailyReport_KeyDown;
+            this.AutoScroll = true;
         }
 
         private void LoadReport()
         {
+            
             string errorMessage;
             if (!clsPOS.EnsurePosSetupAndSampleData(out errorMessage))
             {
@@ -179,6 +181,9 @@ namespace InventoryManagementSystem
         private void frmDailyReport_Load(object sender, EventArgs e)
         {
             LoadReport();
+            this.AutoScroll = true;
+            this.AutoScrollMinSize = new Size(1200, 1300);
+
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
@@ -207,6 +212,11 @@ namespace InventoryManagementSystem
             {
                 Close();
             }
+        }
+
+        private void frmDailyReport_Scroll(object sender, ScrollEventArgs e)
+        {
+           //  this.AutoScroll = true;
         }
     }
 }

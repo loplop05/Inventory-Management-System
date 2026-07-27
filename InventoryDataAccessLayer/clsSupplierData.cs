@@ -8,32 +8,32 @@ namespace InventoryDataAccessLayer
     {
         public static int AddNewSupplier(string SupplierName, string Phone, string Email)
         {
-            int SupplierID = -1;
+            int SupplierID;
 
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
-                string query = @"INSERT INTO Suppliers (SupplierName, Phone, Email)
-                                 VALUES (@SupplierName, @Phone, @Email);
-                                 SELECT SCOPE_IDENTITY();";
+                connection.Open();
+
+                using (SqlCommand getMaxCommand = new SqlCommand(
+                    "SELECT ISNULL(MAX(SupplierID), 0) + 1 FROM Suppliers", connection))
+                {
+                    SupplierID = (int)getMaxCommand.ExecuteScalar();
+                }
+
+                string query = @"INSERT INTO Suppliers (SupplierID, SupplierName, Phone, Email)
+                         VALUES (@SupplierID, @SupplierName, @Phone, @Email);";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
+                    command.Parameters.AddWithValue("@SupplierID", SupplierID);
                     command.Parameters.AddWithValue("@SupplierName", SupplierName);
                     command.Parameters.AddWithValue("@Phone", string.IsNullOrEmpty(Phone) ? DBNull.Value : (object)Phone);
                     command.Parameters.AddWithValue("@Email", string.IsNullOrEmpty(Email) ? DBNull.Value : (object)Email);
 
-                    try
-                    {
-                        connection.Open();
-                        object result = command.ExecuteScalar();
-                        if (result != null && int.TryParse(result.ToString(), out int id))
-                        {
-                            SupplierID = id;
-                        }
-                    }
-                    catch { SupplierID = -1; }
+                    command.ExecuteNonQuery();
                 }
             }
+
             return SupplierID;
         }
 

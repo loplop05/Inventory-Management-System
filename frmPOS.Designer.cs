@@ -16,8 +16,8 @@ namespace InventoryManagementSystem
 
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle priceCellStyle = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle subtotalCellStyle = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this._rootLayout = new System.Windows.Forms.TableLayoutPanel();
             this._topPanel = new System.Windows.Forms.Panel();
             this._lblTitle = new System.Windows.Forms.Label();
@@ -79,8 +79,9 @@ namespace InventoryManagementSystem
             this._topPanel.Location = new System.Drawing.Point(3, 3);
             this._topPanel.Name = "_topPanel";
             this._topPanel.Padding = new System.Windows.Forms.Padding(16, 14, 16, 10);
-            this._topPanel.Size = new System.Drawing.Size(1296, 66);
+            this._topPanel.Size = new System.Drawing.Size(1296, 130);
             this._topPanel.TabIndex = 0;
+            this._topPanel.Paint += new System.Windows.Forms.PaintEventHandler(this._topPanel_Paint);
             this._topPanel.Resize += new System.EventHandler(this.topPanel_Resize);
             // 
             // _lblTitle
@@ -90,7 +91,7 @@ namespace InventoryManagementSystem
             this._lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this._lblTitle.Location = new System.Drawing.Point(16, 17);
             this._lblTitle.Name = "_lblTitle";
-            this._lblTitle.Size = new System.Drawing.Size(198, 41);
+            this._lblTitle.Size = new System.Drawing.Size(196, 41);
             this._lblTitle.TabIndex = 0;
             this._lblTitle.Text = "Point of Sale";
             // 
@@ -99,7 +100,7 @@ namespace InventoryManagementSystem
             this._txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this._txtSearch.Location = new System.Drawing.Point(612, 22);
             this._txtSearch.Name = "_txtSearch";
-            this._txtSearch.Size = new System.Drawing.Size(360, 29);
+            this._txtSearch.Size = new System.Drawing.Size(360, 30);
             this._txtSearch.TabIndex = 1;
             this._txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
@@ -139,7 +140,7 @@ namespace InventoryManagementSystem
             // _splitContainer
             // 
             this._splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._splitContainer.Location = new System.Drawing.Point(3, 75);
+            this._splitContainer.Location = new System.Drawing.Point(3, 139);
             this._splitContainer.Name = "_splitContainer";
             // 
             // _splitContainer.Panel1
@@ -151,7 +152,7 @@ namespace InventoryManagementSystem
             // 
             this._splitContainer.Panel2.Controls.Add(this._receiptPanel);
             this._splitContainer.Panel2.Padding = new System.Windows.Forms.Padding(0, 14, 14, 14);
-            this._splitContainer.Size = new System.Drawing.Size(1296, 695);
+            this._splitContainer.Size = new System.Drawing.Size(1296, 631);
             this._splitContainer.SplitterDistance = 820;
             this._splitContainer.TabIndex = 1;
             // 
@@ -162,7 +163,7 @@ namespace InventoryManagementSystem
             this._tabsProducts.Location = new System.Drawing.Point(14, 14);
             this._tabsProducts.Name = "_tabsProducts";
             this._tabsProducts.SelectedIndex = 0;
-            this._tabsProducts.Size = new System.Drawing.Size(792, 667);
+            this._tabsProducts.Size = new System.Drawing.Size(792, 603);
             this._tabsProducts.TabIndex = 0;
             // 
             // _receiptPanel
@@ -176,7 +177,7 @@ namespace InventoryManagementSystem
             this._receiptPanel.Location = new System.Drawing.Point(0, 14);
             this._receiptPanel.Name = "_receiptPanel";
             this._receiptPanel.Padding = new System.Windows.Forms.Padding(14);
-            this._receiptPanel.Size = new System.Drawing.Size(458, 667);
+            this._receiptPanel.Size = new System.Drawing.Size(458, 603);
             this._receiptPanel.TabIndex = 0;
             // 
             // _gridReceipt
@@ -195,7 +196,7 @@ namespace InventoryManagementSystem
             this._gridReceipt.RowHeadersVisible = false;
             this._gridReceipt.RowHeadersWidth = 51;
             this._gridReceipt.RowTemplate.Height = 24;
-            this._gridReceipt.Size = new System.Drawing.Size(430, 395);
+            this._gridReceipt.Size = new System.Drawing.Size(430, 331);
             this._gridReceipt.TabIndex = 1;
             this._gridReceipt.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridReceipt_CellEndEdit);
             this._gridReceipt.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.gridReceipt_CellValidating);
@@ -209,6 +210,7 @@ namespace InventoryManagementSystem
             this._colProductName.MinimumWidth = 6;
             this._colProductName.Name = "_colProductName";
             this._colProductName.ReadOnly = true;
+            this._colProductName.Width = 125;
             // 
             // _colQuantity
             // 
@@ -222,30 +224,32 @@ namespace InventoryManagementSystem
             // _colUnitPrice
             // 
             this._colUnitPrice.DataPropertyName = "UnitPrice";
-            priceCellStyle.Format = "C2";
-            this._colUnitPrice.DefaultCellStyle = priceCellStyle;
+            dataGridViewCellStyle1.Format = "C2";
+            this._colUnitPrice.DefaultCellStyle = dataGridViewCellStyle1;
             this._colUnitPrice.FillWeight = 70F;
             this._colUnitPrice.HeaderText = "Price";
             this._colUnitPrice.MinimumWidth = 6;
             this._colUnitPrice.Name = "_colUnitPrice";
             this._colUnitPrice.ReadOnly = true;
+            this._colUnitPrice.Width = 125;
             // 
             // _colSubtotal
             // 
             this._colSubtotal.DataPropertyName = "Subtotal";
-            subtotalCellStyle.Format = "C2";
-            this._colSubtotal.DefaultCellStyle = subtotalCellStyle;
+            dataGridViewCellStyle2.Format = "C2";
+            this._colSubtotal.DefaultCellStyle = dataGridViewCellStyle2;
             this._colSubtotal.FillWeight = 80F;
             this._colSubtotal.HeaderText = "Subtotal";
             this._colSubtotal.MinimumWidth = 6;
             this._colSubtotal.Name = "_colSubtotal";
             this._colSubtotal.ReadOnly = true;
+            this._colSubtotal.Width = 125;
             // 
             // _lblStatus
             // 
             this._lblStatus.Dock = System.Windows.Forms.DockStyle.Bottom;
             this._lblStatus.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(125)))), ((int)(((byte)(139)))));
-            this._lblStatus.Location = new System.Drawing.Point(14, 447);
+            this._lblStatus.Location = new System.Drawing.Point(14, 383);
             this._lblStatus.Name = "_lblStatus";
             this._lblStatus.Size = new System.Drawing.Size(430, 28);
             this._lblStatus.TabIndex = 2;
@@ -259,7 +263,7 @@ namespace InventoryManagementSystem
             this._totalsPanel.Controls.Add(this._btnRemoveItem);
             this._totalsPanel.Controls.Add(this._btnCompleteOrder);
             this._totalsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._totalsPanel.Location = new System.Drawing.Point(14, 475);
+            this._totalsPanel.Location = new System.Drawing.Point(14, 411);
             this._totalsPanel.Name = "_totalsPanel";
             this._totalsPanel.Padding = new System.Windows.Forms.Padding(0, 12, 0, 0);
             this._totalsPanel.Size = new System.Drawing.Size(430, 178);
@@ -339,7 +343,7 @@ namespace InventoryManagementSystem
             // 
             // frmPOS
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1302, 773);
             this.Controls.Add(this._rootLayout);
@@ -359,6 +363,7 @@ namespace InventoryManagementSystem
             ((System.ComponentModel.ISupportInitialize)(this._gridReceipt)).EndInit();
             this._totalsPanel.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         private System.Windows.Forms.TableLayoutPanel _rootLayout;

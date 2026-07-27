@@ -54,13 +54,13 @@ namespace InventoryManagementSystem
             this._rootLayout.Controls.Add(this._splitContainer, 0, 1);
             this._rootLayout.Controls.Add(this._buttonsPanel, 0, 2);
             this._rootLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._rootLayout.Location = new System.Drawing.Point(16, 80);
+            this._rootLayout.Location = new System.Drawing.Point(16, 16);
             this._rootLayout.Name = "_rootLayout";
             this._rootLayout.RowCount = 3;
             this._rootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 96F));
             this._rootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this._rootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52F));
-            this._rootLayout.Size = new System.Drawing.Size(992, 645);
+            this._rootLayout.Size = new System.Drawing.Size(992, 726);
             this._rootLayout.TabIndex = 0;
             // 
             // _summaryPanel
@@ -156,8 +156,8 @@ namespace InventoryManagementSystem
             // _splitContainer.Panel2
             // 
             this._splitContainer.Panel2.Controls.Add(this._topProductsPanel);
-            this._splitContainer.Size = new System.Drawing.Size(986, 491);
-            this._splitContainer.SplitterDistance = 245;
+            this._splitContainer.Size = new System.Drawing.Size(986, 572);
+            this._splitContainer.SplitterDistance = 285;
             this._splitContainer.TabIndex = 1;
             // 
             // _ordersPanel
@@ -169,7 +169,7 @@ namespace InventoryManagementSystem
             this._ordersPanel.Location = new System.Drawing.Point(0, 0);
             this._ordersPanel.Name = "_ordersPanel";
             this._ordersPanel.Padding = new System.Windows.Forms.Padding(12);
-            this._ordersPanel.Size = new System.Drawing.Size(986, 245);
+            this._ordersPanel.Size = new System.Drawing.Size(986, 285);
             this._ordersPanel.TabIndex = 0;
             // 
             // _gridOrders
@@ -184,7 +184,7 @@ namespace InventoryManagementSystem
             this._gridOrders.RowHeadersVisible = false;
             this._gridOrders.RowHeadersWidth = 51;
             this._gridOrders.RowTemplate.Height = 24;
-            this._gridOrders.Size = new System.Drawing.Size(962, 187);
+            this._gridOrders.Size = new System.Drawing.Size(962, 227);
             this._gridOrders.TabIndex = 1;
             // 
             // _lblOrdersTitle
@@ -207,7 +207,7 @@ namespace InventoryManagementSystem
             this._topProductsPanel.Location = new System.Drawing.Point(0, 0);
             this._topProductsPanel.Name = "_topProductsPanel";
             this._topProductsPanel.Padding = new System.Windows.Forms.Padding(12);
-            this._topProductsPanel.Size = new System.Drawing.Size(986, 242);
+            this._topProductsPanel.Size = new System.Drawing.Size(986, 283);
             this._topProductsPanel.TabIndex = 0;
             // 
             // _gridTopProducts
@@ -222,7 +222,7 @@ namespace InventoryManagementSystem
             this._gridTopProducts.RowHeadersVisible = false;
             this._gridTopProducts.RowHeadersWidth = 51;
             this._gridTopProducts.RowTemplate.Height = 24;
-            this._gridTopProducts.Size = new System.Drawing.Size(962, 184);
+            this._gridTopProducts.Size = new System.Drawing.Size(962, 225);
             this._gridTopProducts.TabIndex = 1;
             // 
             // _lblTopProductsTitle
@@ -243,7 +243,7 @@ namespace InventoryManagementSystem
             this._buttonsPanel.Controls.Add(this._btnRefresh);
             this._buttonsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._buttonsPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this._buttonsPanel.Location = new System.Drawing.Point(3, 596);
+            this._buttonsPanel.Location = new System.Drawing.Point(3, 677);
             this._buttonsPanel.Name = "_buttonsPanel";
             this._buttonsPanel.Size = new System.Drawing.Size(986, 46);
             this._buttonsPanel.TabIndex = 2;
@@ -280,9 +280,10 @@ namespace InventoryManagementSystem
             // 
             // frmDailyReport
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1024, 677);
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(1024, 758);
             this.Controls.Add(this._rootLayout);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.MinimumSize = new System.Drawing.Size(900, 600);
@@ -290,6 +291,7 @@ namespace InventoryManagementSystem
             this.Padding = new System.Windows.Forms.Padding(16);
             this.Text = "End-of-Day Report";
             this.Load += new System.EventHandler(this.frmDailyReport_Load);
+            this.Scroll += new System.Windows.Forms.ScrollEventHandler(this.frmDailyReport_Scroll);
             this._rootLayout.ResumeLayout(false);
             this._summaryPanel.ResumeLayout(false);
             this._splitContainer.Panel1.ResumeLayout(false);
@@ -302,6 +304,7 @@ namespace InventoryManagementSystem
             ((System.ComponentModel.ISupportInitialize)(this._gridTopProducts)).EndInit();
             this._buttonsPanel.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         private System.Windows.Forms.TableLayoutPanel _rootLayout;
