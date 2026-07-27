@@ -26,25 +26,24 @@ namespace InventoryManagementSystem
         private void ApplyTheme()
         {
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Search Receipt", clsFormTheme.Icons.Search);
-            clsFormTheme.ApplyTextBoxStyle(txtOrderID);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnSearch);
-            clsFormTheme.ApplySecondaryButtonStyle(btnViewByPhone);
-            clsFormTheme.ApplySecondaryButtonStyle(btnClose);
-            clsFormTheme.ApplySuccessButtonStyle(btnExchange);
-            clsFormTheme.ApplyGridStyle(gridOrderItems);
+            clsFormTheme.ApplyTextBoxStyle(_txtOrderID);
+            clsFormTheme.ApplyPrimaryButtonStyle(_btnSearch);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnViewByPhone);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnClose);
+            clsFormTheme.ApplySuccessButtonStyle(_btnExchange);
+            clsFormTheme.ApplyGridStyle(_gridOrderItems);
 
-            btnSearch.Text = clsFormTheme.Icons.Search + "  Search";
-            btnSearch.Font = new Font(clsFormTheme.IconFontName, 10F);
+            _btnSearch.Text = clsFormTheme.Icons.Search + "  Search";
+            _btnSearch.Font = new Font(clsFormTheme.IconFontName, 10F);
 
-            btnViewByPhone.Text = clsFormTheme.Icons.User + "  By Phone";
-            btnViewByPhone.Font = new Font(clsFormTheme.IconFontName, 10F);
+            _btnViewByPhone.Text = clsFormTheme.Icons.User + "  By Phone";
+            _btnViewByPhone.Font = new Font(clsFormTheme.IconFontName, 10F);
 
-            btnExchange.Text = clsFormTheme.Icons.Exchange + "  Exchange";
-            btnExchange.Font = new Font(clsFormTheme.IconFontName, 10F);
+            _btnExchange.Text = clsFormTheme.Icons.Exchange + "  Exchange";
+            _btnExchange.Font = new Font(clsFormTheme.IconFontName, 10F);
 
-            btnClose.Text = clsFormTheme.Icons.Exit + "  Close";
-            btnClose.Font = new Font(clsFormTheme.IconFontName, 10F);
+            _btnClose.Text = clsFormTheme.Icons.Exit + "  Close";
+            _btnClose.Font = new Font(clsFormTheme.IconFontName, 10F);
 
             KeyDown += frmReceiptSearch_KeyDown;
         }
@@ -55,14 +54,14 @@ namespace InventoryManagementSystem
             _currentOrderDetails = null;
             _currentOrderItems = null;
 
-            txtOrderID.Text = "";
-            lblTitle.Text = "";
-            lblOrderInfo.Text = "";
-            lblCustomerName.Text = "";
-            lblCustomerPhone.Text = "";
-            lblPaymentInfo.Text = "";
-            gridOrderItems.DataSource = null;
-            btnExchange.Enabled = false;
+            _txtOrderID.Text = "";
+            _lblTitle.Text = "";
+            _lblOrderInfo.Text = "";
+            _lblCustomerName.Text = "";
+            _lblCustomerPhone.Text = "";
+            _lblPaymentInfo.Text = "";
+            _gridOrderItems.DataSource = null;
+            _btnExchange.Enabled = false;
         }
 
         private void txtOrderID_KeyDown(object sender, KeyEventArgs e)
@@ -77,18 +76,18 @@ namespace InventoryManagementSystem
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtOrderID.Text))
+            if (string.IsNullOrWhiteSpace(_txtOrderID.Text))
             {
                 MessageBox.Show("Please enter an Order ID.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtOrderID.Focus();
+                _txtOrderID.Focus();
                 return;
             }
 
             int orderID;
-            if (!int.TryParse(txtOrderID.Text.Trim(), out orderID))
+            if (!int.TryParse(_txtOrderID.Text.Trim(), out orderID))
             {
                 MessageBox.Show("Invalid Order ID format.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtOrderID.Focus();
+                _txtOrderID.Focus();
                 return;
             }
 
@@ -124,38 +123,38 @@ namespace InventoryManagementSystem
             decimal taxAmount = Convert.ToDecimal(order["TaxAmount"]);
             decimal totalAmount = Convert.ToDecimal(order["TotalAmount"]);
 
-            lblTitle.Text = "Order #" + _currentOrderID;
-            lblOrderInfo.Text = $"Date: {orderDate:yyyy-MM-dd HH:mm} | Subtotal: {subtotal:C2} | Tax: {taxAmount:C2} | Total: {totalAmount:C2}";
+            _lblTitle.Text = "Order #" + _currentOrderID;
+            _lblOrderInfo.Text = $"Date: {orderDate:yyyy-MM-dd HH:mm} | Subtotal: {subtotal:C2} | Tax: {taxAmount:C2} | Total: {totalAmount:C2}";
 
             // Display customer info
             if (order["CustomerID"] != DBNull.Value && order["CustomerID"] != null)
             {
-                lblCustomerName.Text = "Customer: " + (order["CustomerName"] != DBNull.Value ? order["CustomerName"].ToString() : "Unknown");
-                lblCustomerPhone.Text = "Phone: " + (order["PhoneNumber"] != DBNull.Value ? order["PhoneNumber"].ToString() : "N/A");
+                _lblCustomerName.Text = "Customer: " + (order["CustomerName"] != DBNull.Value ? order["CustomerName"].ToString() : "Unknown");
+                _lblCustomerPhone.Text = "Phone: " + (order["PhoneNumber"] != DBNull.Value ? order["PhoneNumber"].ToString() : "N/A");
             }
             else
             {
-                lblCustomerName.Text = "Customer: Walk-in";
-                lblCustomerPhone.Text = "";
+                _lblCustomerName.Text = "Customer: Walk-in";
+                _lblCustomerPhone.Text = "";
             }
 
             // Display payment info
             string paymentMethod = order["PaymentMethod"] != DBNull.Value ? order["PaymentMethod"].ToString() : "Cash";
             string paymentDetails = order["PaymentDetails"] != DBNull.Value ? order["PaymentDetails"].ToString() : "";
-            lblPaymentInfo.Text = "Payment: " + paymentMethod + (string.IsNullOrEmpty(paymentDetails) ? "" : " (" + paymentDetails + ")");
+            _lblPaymentInfo.Text = "Payment: " + paymentMethod + (string.IsNullOrEmpty(paymentDetails) ? "" : " (" + paymentDetails + ")");
 
             // Display order items
             if (_currentOrderItems != null && _currentOrderItems.Rows.Count > 0)
             {
-                gridOrderItems.AutoGenerateColumns = false;
-                gridOrderItems.DataSource = _currentOrderItems;
-                btnExchange.Enabled = true;
+                _gridOrderItems.AutoGenerateColumns = false;
+                _gridOrderItems.DataSource = _currentOrderItems;
+                _btnExchange.Enabled = true;
             }
             else
             {
-                gridOrderItems.DataSource = null;
+                _gridOrderItems.DataSource = null;
                 MessageBox.Show("No items found for this order.", "Order Items", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                btnExchange.Enabled = false;
+                _btnExchange.Enabled = false;
             }
         }
 
@@ -168,7 +167,7 @@ namespace InventoryManagementSystem
                     // If an order was selected from history, load it
                     if (historyForm.SelectedOrderID.HasValue)
                     {
-                        txtOrderID.Text = historyForm.SelectedOrderID.Value.ToString();
+                        _txtOrderID.Text = historyForm.SelectedOrderID.Value.ToString();
                         LoadOrderDetails(historyForm.SelectedOrderID.Value);
                     }
                 }

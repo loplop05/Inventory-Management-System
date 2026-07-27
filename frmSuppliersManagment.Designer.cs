@@ -28,189 +28,303 @@ namespace InventoryManagementSystem
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnAddSupplier = new System.Windows.Forms.Button();
-            this.btnDeleteSupplier = new System.Windows.Forms.Button();
-            this.btnUpdateSupplier = new System.Windows.Forms.Button();
-            this.btnBackToPrevPage = new System.Windows.Forms.Button();
+            this._mainLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this._headerPanel = new System.Windows.Forms.Panel();
+            this._lblTitle = new System.Windows.Forms.Label();
+            this._btnBack = new System.Windows.Forms.Button();
+            this._searchPanel = new System.Windows.Forms.Panel();
+            this._lblSearch = new System.Windows.Forms.Label();
+            this._txtSearch = new System.Windows.Forms.TextBox();
+            this._btnRefresh = new System.Windows.Forms.Button();
+            this._gridPanel = new System.Windows.Forms.Panel();
             this.DataGVSuppliers = new System.Windows.Forms.DataGridView();
-            this.btnRefresh = new System.Windows.Forms.Button();
-            this.labelSearch = new System.Windows.Forms.Label();
-            this.txtSearch = new System.Windows.Forms.TextBox();
-            this.lblEmptyState = new System.Windows.Forms.Label();
-            this.btnPreviousPage = new System.Windows.Forms.Button();
-            this.btnNextPage = new System.Windows.Forms.Button();
-            this.lblPageInfo = new System.Windows.Forms.Label();
+            this._lblEmptyState = new System.Windows.Forms.Label();
+            this._actionsPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.btnAddSupplier = new System.Windows.Forms.Button();
+            this.btnUpdateSupplier = new System.Windows.Forms.Button();
+            this.btnDeleteSupplier = new System.Windows.Forms.Button();
+            this._paginationPanel = new System.Windows.Forms.Panel();
+            this._btnPreviousPage = new System.Windows.Forms.Button();
+            this._lblPageInfo = new System.Windows.Forms.Label();
+            this._btnNextPage = new System.Windows.Forms.Button();
+            this._mainLayoutPanel.SuspendLayout();
+            this._headerPanel.SuspendLayout();
+            this._searchPanel.SuspendLayout();
+            this._gridPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataGVSuppliers)).BeginInit();
+            this._actionsPanel.SuspendLayout();
+            this._paginationPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // btnAddSupplier
+            // _mainLayoutPanel
             // 
-            this.btnAddSupplier.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddSupplier.Location = new System.Drawing.Point(720, 196);
-            this.btnAddSupplier.Name = "btnAddSupplier";
-            this.btnAddSupplier.Size = new System.Drawing.Size(220, 70);
-            this.btnAddSupplier.TabIndex = 5;
-            this.btnAddSupplier.Text = "Add Supplier";
-            this.btnAddSupplier.UseVisualStyleBackColor = true;
-            this.btnAddSupplier.Click += new System.EventHandler(this.btnAddSupplier_Click);
+            this._mainLayoutPanel.ColumnCount = 1;
+            this._mainLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this._mainLayoutPanel.Controls.Add(this._headerPanel, 0, 0);
+            this._mainLayoutPanel.Controls.Add(this._searchPanel, 0, 1);
+            this._mainLayoutPanel.Controls.Add(this._gridPanel, 0, 2);
+            this._mainLayoutPanel.Controls.Add(this._actionsPanel, 0, 3);
+            this._mainLayoutPanel.Controls.Add(this._paginationPanel, 0, 4);
+            this._mainLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._mainLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this._mainLayoutPanel.Name = "_mainLayoutPanel";
+            this._mainLayoutPanel.Padding = new System.Windows.Forms.Padding(20);
+            this._mainLayoutPanel.RowCount = 5;
+            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this._mainLayoutPanel.Size = new System.Drawing.Size(950, 600);
+            this._mainLayoutPanel.TabIndex = 0;
             // 
-            // btnDeleteSupplier
+            // _headerPanel
             // 
-            this.btnDeleteSupplier.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnDeleteSupplier.Location = new System.Drawing.Point(720, 452);
-            this.btnDeleteSupplier.Name = "btnDeleteSupplier";
-            this.btnDeleteSupplier.Size = new System.Drawing.Size(220, 70);
-            this.btnDeleteSupplier.TabIndex = 7;
-            this.btnDeleteSupplier.Text = "Delete Supplier";
-            this.btnDeleteSupplier.UseVisualStyleBackColor = true;
-            this.btnDeleteSupplier.Click += new System.EventHandler(this.btnDeleteSupplier_Click);
+            this._headerPanel.Controls.Add(this._lblTitle);
+            this._headerPanel.Controls.Add(this._btnBack);
+            this._headerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._headerPanel.Location = new System.Drawing.Point(23, 23);
+            this._headerPanel.Name = "_headerPanel";
+            this._headerPanel.Size = new System.Drawing.Size(904, 60);
+            this._headerPanel.TabIndex = 0;
             // 
-            // btnUpdateSupplier
+            // _lblTitle
             // 
-            this.btnUpdateSupplier.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnUpdateSupplier.Location = new System.Drawing.Point(720, 324);
-            this.btnUpdateSupplier.Name = "btnUpdateSupplier";
-            this.btnUpdateSupplier.Size = new System.Drawing.Size(220, 70);
-            this.btnUpdateSupplier.TabIndex = 6;
-            this.btnUpdateSupplier.Text = "Update Supplier";
-            this.btnUpdateSupplier.UseVisualStyleBackColor = true;
-            this.btnUpdateSupplier.Click += new System.EventHandler(this.btnUpdateSupplier_Click);
+            this._lblTitle.AutoSize = true;
+            this._lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this._lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(58)))), ((int)(((byte)(138)))));
+            this._lblTitle.Location = new System.Drawing.Point(0, 15);
+            this._lblTitle.Name = "_lblTitle";
+            this._lblTitle.Size = new System.Drawing.Size(138, 31);
+            this._lblTitle.TabIndex = 0;
+            this._lblTitle.Text = "Suppliers";
             // 
-            // btnBackToPrevPage
+            // _btnBack
             // 
-            this.btnBackToPrevPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnBackToPrevPage.Location = new System.Drawing.Point(820, 87);
-            this.btnBackToPrevPage.Name = "btnBackToPrevPage";
-            this.btnBackToPrevPage.Size = new System.Drawing.Size(120, 35);
-            this.btnBackToPrevPage.TabIndex = 8;
-            this.btnBackToPrevPage.Text = "Back";
-            this.btnBackToPrevPage.UseVisualStyleBackColor = true;
-            this.btnBackToPrevPage.Click += new System.EventHandler(this.btnBackToPrevPage_Click);
+            this._btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnBack.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this._btnBack.Location = new System.Drawing.Point(818, 13);
+            this._btnBack.Name = "_btnBack";
+            this._btnBack.Size = new System.Drawing.Size(86, 34);
+            this._btnBack.TabIndex = 1;
+            this._btnBack.Text = "Back";
+            this._btnBack.UseVisualStyleBackColor = true;
+            this._btnBack.Click += new System.EventHandler(this.btnBackToPrevPage_Click);
+            // 
+            // _searchPanel
+            // 
+            this._searchPanel.Controls.Add(this._lblSearch);
+            this._searchPanel.Controls.Add(this._txtSearch);
+            this._searchPanel.Controls.Add(this._btnRefresh);
+            this._searchPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._searchPanel.Location = new System.Drawing.Point(23, 83);
+            this._searchPanel.Name = "_searchPanel";
+            this._searchPanel.Size = new System.Drawing.Size(904, 60);
+            this._searchPanel.TabIndex = 1;
+            // 
+            // _lblSearch
+            // 
+            this._lblSearch.AutoSize = true;
+            this._lblSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this._lblSearch.Location = new System.Drawing.Point(0, 15);
+            this._lblSearch.Name = "_lblSearch";
+            this._lblSearch.Size = new System.Drawing.Size(58, 28);
+            this._lblSearch.TabIndex = 0;
+            this._lblSearch.Text = "Search:";
+            // 
+            // _txtSearch
+            // 
+            this._txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this._txtSearch.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this._txtSearch.Location = new System.Drawing.Point(64, 13);
+            this._txtSearch.Name = "_txtSearch";
+            this._txtSearch.Size = new System.Drawing.Size(200, 34);
+            this._txtSearch.TabIndex = 1;
+            this._txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            // 
+            // _btnRefresh
+            // 
+            this._btnRefresh.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this._btnRefresh.Location = new System.Drawing.Point(270, 13);
+            this._btnRefresh.Name = "_btnRefresh";
+            this._btnRefresh.Size = new System.Drawing.Size(100, 34);
+            this._btnRefresh.TabIndex = 2;
+            this._btnRefresh.Text = "Refresh";
+            this._btnRefresh.UseVisualStyleBackColor = true;
+            this._btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // _gridPanel
+            // 
+            this._gridPanel.Controls.Add(this.DataGVSuppliers);
+            this._gridPanel.Controls.Add(this._lblEmptyState);
+            this._gridPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._gridPanel.Location = new System.Drawing.Point(23, 143);
+            this._gridPanel.Name = "_gridPanel";
+            this._gridPanel.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
+            this._gridPanel.Size = new System.Drawing.Size(904, 314);
+            this._gridPanel.TabIndex = 2;
+            this._gridPanel.AutoScroll = true;
             // 
             // DataGVSuppliers
             // 
             this.DataGVSuppliers.AllowUserToAddRows = false;
             this.DataGVSuppliers.AllowUserToDeleteRows = false;
             this.DataGVSuppliers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGVSuppliers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.DataGVSuppliers.Location = new System.Drawing.Point(70, 157);
+            this.DataGVSuppliers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataGVSuppliers.Location = new System.Drawing.Point(0, 10);
             this.DataGVSuppliers.Name = "DataGVSuppliers";
             this.DataGVSuppliers.ReadOnly = true;
             this.DataGVSuppliers.RowHeadersWidth = 51;
             this.DataGVSuppliers.RowTemplate.Height = 24;
-            this.DataGVSuppliers.Size = new System.Drawing.Size(590, 415);
-            this.DataGVSuppliers.TabIndex = 4;
+            this.DataGVSuppliers.Size = new System.Drawing.Size(904, 304);
+            this.DataGVSuppliers.TabIndex = 0;
+            this.DataGVSuppliers.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
-            // btnRefresh
+            // _lblEmptyState
             // 
-            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRefresh.Location = new System.Drawing.Point(535, 87);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(125, 35);
-            this.btnRefresh.TabIndex = 3;
-            this.btnRefresh.Text = "Refresh (F5)";
-            this.btnRefresh.UseVisualStyleBackColor = true;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            this._lblEmptyState.AutoSize = true;
+            this._lblEmptyState.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this._lblEmptyState.ForeColor = System.Drawing.Color.Gray;
+            this._lblEmptyState.Location = new System.Drawing.Point(350, 140);
+            this._lblEmptyState.Name = "_lblEmptyState";
+            this._lblEmptyState.Size = new System.Drawing.Size(204, 28);
+            this._lblEmptyState.TabIndex = 1;
+            this._lblEmptyState.Text = "No suppliers found";
+            this._lblEmptyState.Visible = false;
             // 
-            // labelSearch
+            // _actionsPanel
             // 
-            this.labelSearch.AutoSize = true;
-            this.labelSearch.Location = new System.Drawing.Point(70, 95);
-            this.labelSearch.Name = "labelSearch";
-            this.labelSearch.Size = new System.Drawing.Size(63, 20);
-            this.labelSearch.TabIndex = 9;
-            this.labelSearch.Text = "Search";
+            this._actionsPanel.Controls.Add(this.btnAddSupplier);
+            this._actionsPanel.Controls.Add(this.btnUpdateSupplier);
+            this._actionsPanel.Controls.Add(this.btnDeleteSupplier);
+            this._actionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._actionsPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this._actionsPanel.Location = new System.Drawing.Point(23, 457);
+            this._actionsPanel.Name = "_actionsPanel";
+            this._actionsPanel.Size = new System.Drawing.Size(904, 60);
+            this._actionsPanel.TabIndex = 3;
             // 
-            // txtSearch
+            // btnAddSupplier
             // 
-            this.txtSearch.Location = new System.Drawing.Point(145, 89);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(365, 26);
-            this.txtSearch.TabIndex = 0;
-            this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
+            this.btnAddSupplier.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnAddSupplier.Location = new System.Drawing.Point(754, 13);
+            this.btnAddSupplier.Name = "btnAddSupplier";
+            this.btnAddSupplier.Size = new System.Drawing.Size(150, 34);
+            this.btnAddSupplier.TabIndex = 0;
+            this.btnAddSupplier.Text = "Add Supplier";
+            this.btnAddSupplier.UseVisualStyleBackColor = true;
+            this.btnAddSupplier.Click += new System.EventHandler(this.btnAddSupplier_Click);
             // 
-            // lblEmptyState
+            // btnUpdateSupplier
             // 
-            this.lblEmptyState.ForeColor = System.Drawing.Color.DimGray;
-            this.lblEmptyState.Location = new System.Drawing.Point(116, 275);
-            this.lblEmptyState.Name = "lblEmptyState";
-            this.lblEmptyState.Size = new System.Drawing.Size(500, 40);
-            this.lblEmptyState.TabIndex = 10;
-            this.lblEmptyState.Text = "No suppliers found.";
-            this.lblEmptyState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.btnUpdateSupplier.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnUpdateSupplier.Location = new System.Drawing.Point(598, 13);
+            this.btnUpdateSupplier.Name = "btnUpdateSupplier";
+            this.btnUpdateSupplier.Size = new System.Drawing.Size(150, 34);
+            this.btnUpdateSupplier.TabIndex = 1;
+            this.btnUpdateSupplier.Text = "Update Supplier";
+            this.btnUpdateSupplier.UseVisualStyleBackColor = true;
+            this.btnUpdateSupplier.Click += new System.EventHandler(this.btnUpdateSupplier_Click);
             // 
-            // btnPreviousPage
+            // btnDeleteSupplier
             // 
-            this.btnPreviousPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnPreviousPage.Location = new System.Drawing.Point(70, 591);
-            this.btnPreviousPage.Name = "btnPreviousPage";
-            this.btnPreviousPage.Size = new System.Drawing.Size(110, 35);
-            this.btnPreviousPage.TabIndex = 1;
-            this.btnPreviousPage.Text = "Previous";
-            this.btnPreviousPage.UseVisualStyleBackColor = true;
-            this.btnPreviousPage.Click += new System.EventHandler(this.btnPreviousPage_Click);
+            this.btnDeleteSupplier.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnDeleteSupplier.Location = new System.Drawing.Point(442, 13);
+            this.btnDeleteSupplier.Name = "btnDeleteSupplier";
+            this.btnDeleteSupplier.Size = new System.Drawing.Size(150, 34);
+            this.btnDeleteSupplier.TabIndex = 2;
+            this.btnDeleteSupplier.Text = "Delete Supplier";
+            this.btnDeleteSupplier.UseVisualStyleBackColor = true;
+            this.btnDeleteSupplier.Click += new System.EventHandler(this.btnDeleteSupplier_Click);
             // 
-            // btnNextPage
+            // _paginationPanel
             // 
-            this.btnNextPage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNextPage.Location = new System.Drawing.Point(550, 591);
-            this.btnNextPage.Name = "btnNextPage";
-            this.btnNextPage.Size = new System.Drawing.Size(110, 35);
-            this.btnNextPage.TabIndex = 2;
-            this.btnNextPage.Text = "Next";
-            this.btnNextPage.UseVisualStyleBackColor = true;
-            this.btnNextPage.Click += new System.EventHandler(this.btnNextPage_Click);
+            this._paginationPanel.Controls.Add(this._btnPreviousPage);
+            this._paginationPanel.Controls.Add(this._lblPageInfo);
+            this._paginationPanel.Controls.Add(this._btnNextPage);
+            this._paginationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._paginationPanel.Location = new System.Drawing.Point(23, 517);
+            this._paginationPanel.Name = "_paginationPanel";
+            this._paginationPanel.Size = new System.Drawing.Size(904, 50);
+            this._paginationPanel.TabIndex = 4;
             // 
-            // lblPageInfo
+            // _btnPreviousPage
             // 
-            this.lblPageInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblPageInfo.Location = new System.Drawing.Point(210, 595);
-            this.lblPageInfo.Name = "lblPageInfo";
-            this.lblPageInfo.Size = new System.Drawing.Size(300, 25);
-            this.lblPageInfo.TabIndex = 11;
-            this.lblPageInfo.Text = "No results";
-            this.lblPageInfo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this._btnPreviousPage.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this._btnPreviousPage.Location = new System.Drawing.Point(0, 8);
+            this._btnPreviousPage.Name = "_btnPreviousPage";
+            this._btnPreviousPage.Size = new System.Drawing.Size(100, 34);
+            this._btnPreviousPage.TabIndex = 0;
+            this._btnPreviousPage.Text = "Previous";
+            this._btnPreviousPage.UseVisualStyleBackColor = true;
+            this._btnPreviousPage.Click += new System.EventHandler(this.btnPreviousPage_Click);
+            // 
+            // _lblPageInfo
+            // 
+            this._lblPageInfo.AutoSize = true;
+            this._lblPageInfo.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this._lblPageInfo.Location = new System.Drawing.Point(106, 15);
+            this._lblPageInfo.Name = "_lblPageInfo";
+            this._lblPageInfo.Size = new System.Drawing.Size(0, 24);
+            this._lblPageInfo.TabIndex = 1;
+            this._lblPageInfo.Text = "Page 1 of 1";
+            // 
+            // _btnNextPage
+            // 
+            this._btnNextPage.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this._btnNextPage.Location = new System.Drawing.Point(112, 8);
+            this._btnNextPage.Name = "_btnNextPage";
+            this._btnNextPage.Size = new System.Drawing.Size(100, 34);
+            this._btnNextPage.TabIndex = 2;
+            this._btnNextPage.Text = "Next";
+            this._btnNextPage.UseVisualStyleBackColor = true;
+            this._btnNextPage.Click += new System.EventHandler(this.btnNextPage_Click);
             // 
             // frmSuppliersManagment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1024, 678);
-            this.MinimumSize = new System.Drawing.Size(800, 600);
-            this.Controls.Add(this.lblPageInfo);
-            this.Controls.Add(this.btnNextPage);
-            this.Controls.Add(this.btnPreviousPage);
-            this.Controls.Add(this.lblEmptyState);
-            this.Controls.Add(this.txtSearch);
-            this.Controls.Add(this.labelSearch);
-            this.Controls.Add(this.btnRefresh);
-            this.Controls.Add(this.DataGVSuppliers);
-            this.Controls.Add(this.btnBackToPrevPage);
-            this.Controls.Add(this.btnUpdateSupplier);
-            this.Controls.Add(this.btnDeleteSupplier);
-            this.Controls.Add(this.btnAddSupplier);
+            this.ClientSize = new System.Drawing.Size(950, 600);
+            this.Controls.Add(this._mainLayoutPanel);
+            this.MinimumSize = new System.Drawing.Size(950, 600);
             this.Name = "frmSuppliersManagment";
-            this.Text = "Supplier Management";
+            this.Text = "Suppliers Management";
             this.Load += new System.EventHandler(this.frmSuppliersManagment_Load);
+            this._mainLayoutPanel.ResumeLayout(false);
+            this._headerPanel.ResumeLayout(false);
+            this._headerPanel.PerformLayout();
+            this._searchPanel.ResumeLayout(false);
+            this._searchPanel.PerformLayout();
+            this._gridPanel.ResumeLayout(false);
+            this._gridPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataGVSuppliers)).EndInit();
+            this._actionsPanel.ResumeLayout(false);
+            this._paginationPanel.ResumeLayout(false);
+            this._paginationPanel.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
+        private System.Windows.Forms.TableLayoutPanel _mainLayoutPanel;
+        private System.Windows.Forms.Panel _headerPanel;
+        private System.Windows.Forms.Label _lblTitle;
+        private System.Windows.Forms.Button _btnBack;
+        private System.Windows.Forms.Panel _searchPanel;
+        private System.Windows.Forms.Label _lblSearch;
+        private System.Windows.Forms.TextBox _txtSearch;
+        private System.Windows.Forms.Button _btnRefresh;
+        private System.Windows.Forms.Panel _gridPanel;
+        private System.Windows.Forms.Label _lblEmptyState;
+        private System.Windows.Forms.FlowLayoutPanel _actionsPanel;
+        private System.Windows.Forms.Panel _paginationPanel;
+        private System.Windows.Forms.Button _btnPreviousPage;
+        private System.Windows.Forms.Label _lblPageInfo;
+        private System.Windows.Forms.Button _btnNextPage;
         private System.Windows.Forms.Button btnAddSupplier;
-        private System.Windows.Forms.Button btnDeleteSupplier;
         private System.Windows.Forms.Button btnUpdateSupplier;
-        private System.Windows.Forms.Button btnBackToPrevPage;
+        private System.Windows.Forms.Button btnDeleteSupplier;
         private System.Windows.Forms.DataGridView DataGVSuppliers;
-        private System.Windows.Forms.Button btnRefresh;
-        private System.Windows.Forms.Label labelSearch;
-        private System.Windows.Forms.TextBox txtSearch;
-        private System.Windows.Forms.Label lblEmptyState;
-        private System.Windows.Forms.Button btnPreviousPage;
-        private System.Windows.Forms.Button btnNextPage;
-        private System.Windows.Forms.Label lblPageInfo;
     }
 }

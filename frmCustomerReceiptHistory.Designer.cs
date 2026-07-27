@@ -178,6 +178,7 @@ namespace InventoryManagementSystem
             this.Name = "frmCustomerReceiptHistory";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Customer Receipt History";
+            this.AutoScroll = true;
             this.Load += new System.EventHandler(this.frmCustomerReceiptHistory_Load);
             this.panelCustomerInfo.ResumeLayout(false);
             this.panelCustomerInfo.PerformLayout();

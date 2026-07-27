@@ -27,7 +27,6 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Categories", clsFormTheme.Icons.Categories);
 
             btnAddCategory.Text = clsFormTheme.Icons.Add + "  Add";
             btnAddCategory.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
@@ -41,28 +40,27 @@ namespace InventoryManagementSystem
             btnUpdateCategory.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnUpdateCategory);
 
-            btnRefresh.Text = clsFormTheme.Icons.Refresh + "  Refresh";
-            btnRefresh.Font = new Font(clsFormTheme.IconFontName, 11F);
-            clsFormTheme.ApplySecondaryButtonStyle(btnRefresh);
+            _btnRefresh.Text = clsFormTheme.Icons.Refresh + "  Refresh";
+            _btnRefresh.Font = new Font(clsFormTheme.IconFontName, 11F);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh);
 
-            btnBackToPrevPage.Text = clsFormTheme.Icons.Back + "  Back";
-            btnBackToPrevPage.Font = new Font(clsFormTheme.IconFontName, 11F);
-            clsFormTheme.ApplySecondaryButtonStyle(btnBackToPrevPage);
+            _btnBack.Text = clsFormTheme.Icons.Back + "  Back";
+            _btnBack.Font = new Font(clsFormTheme.IconFontName, 11F);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnBack);
 
-            btnPreviousPage.Text = "\u2039  Prev";
-            clsFormTheme.ApplySecondaryButtonStyle(btnPreviousPage);
+            _btnPreviousPage.Text = "\u2039  Prev";
+            clsFormTheme.ApplySecondaryButtonStyle(_btnPreviousPage);
 
-            btnNextPage.Text = "Next  \u203A";
-            clsFormTheme.ApplySecondaryButtonStyle(btnNextPage);
+            _btnNextPage.Text = "Next  \u203A";
+            clsFormTheme.ApplySecondaryButtonStyle(_btnNextPage);
 
-            clsFormTheme.ApplyTextBoxStyle(txtSearch);
+            clsFormTheme.ApplyTextBoxStyle(_txtSearch);
             clsFormTheme.ApplyGridStyle(DataGVCategories);
-            Paint += FrmCategoriesManagment_Paint;
 
-            _toolTip.SetToolTip(txtSearch, "Search by category ID or name.");
-            _toolTip.SetToolTip(btnRefresh, "Refresh the category list (F5).");
+            _toolTip.SetToolTip(_txtSearch, "Search by category ID or name.");
+            _toolTip.SetToolTip(_btnRefresh, "Refresh the category list (F5).");
 
-            lblEmptyState.Visible = false;
+            _lblEmptyState.Visible = false;
             KeyDown += frmCategoriesManagment_KeyDown;
         }
 
@@ -98,18 +96,18 @@ namespace InventoryManagementSystem
             _isLoading = isLoading;
             UseWaitCursor = isLoading;
             DataGVCategories.Enabled = !isLoading;
-            txtSearch.Enabled = !isLoading;
+            _txtSearch.Enabled = !isLoading;
             btnAddCategory.Enabled = !isLoading;
             btnDeleteCategory.Enabled = !isLoading;
             btnUpdateCategory.Enabled = !isLoading;
-            btnRefresh.Enabled = !isLoading;
+            _btnRefresh.Enabled = !isLoading;
 
             if (isLoading)
             {
-                lblEmptyState.Text = "Loading categories...";
-                lblEmptyState.Visible = true;
-                btnPreviousPage.Enabled = false;
-                btnNextPage.Enabled = false;
+                _lblEmptyState.Text = "Loading categories...";
+                _lblEmptyState.Visible = true;
+                _btnPreviousPage.Enabled = false;
+                _btnNextPage.Enabled = false;
             }
             else
             {
@@ -120,7 +118,7 @@ namespace InventoryManagementSystem
         private DataTable GetFilteredCategories()
         {
             DataTable filteredTable = _categoriesTable.Clone();
-            string searchText = txtSearch.Text.Trim();
+            string searchText = _txtSearch.Text.Trim();
 
             foreach (DataRow row in _categoriesTable.Rows)
             {
@@ -167,21 +165,21 @@ namespace InventoryManagementSystem
             }
 
             bool hasRows = pageTable.Rows.Count > 0;
-            lblEmptyState.Visible = !hasRows;
+            _lblEmptyState.Visible = !hasRows;
 
             if (!hasRows)
             {
-                lblEmptyState.Text = string.IsNullOrWhiteSpace(txtSearch.Text)
+                _lblEmptyState.Text = string.IsNullOrWhiteSpace(_txtSearch.Text)
                     ? "No categories found. Add your first category."
                     : "No categories match your search.";
             }
 
-            lblPageInfo.Text = rowCount == 0
+            _lblPageInfo.Text = rowCount == 0
                 ? "No results"
                 : $"Page {_currentPage} of {totalPages}";
 
-            btnPreviousPage.Enabled = _currentPage > 1;
-            btnNextPage.Enabled = _currentPage < totalPages;
+            _btnPreviousPage.Enabled = _currentPage > 1;
+            _btnNextPage.Enabled = _currentPage < totalPages;
         }
 
         private void btnBackToPrevPage_Click(object sender, EventArgs e)

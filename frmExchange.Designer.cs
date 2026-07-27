@@ -58,6 +58,7 @@ namespace InventoryManagementSystem
             this.panelOriginalOrder.Padding = new System.Windows.Forms.Padding(20);
             this.panelOriginalOrder.Size = new System.Drawing.Size(900, 200);
             this.panelOriginalOrder.TabIndex = 0;
+            this.panelOriginalOrder.AutoScroll = true;
             // 
             // lblOriginalOrderInfo
             // 

@@ -86,6 +86,7 @@ namespace InventoryManagementSystem
             this.DataGVStockValuation.AllowUserToAddRows = false;
             this.DataGVStockValuation.AllowUserToDeleteRows = false;
             this.DataGVStockValuation.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DataGVStockValuation.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.DataGVStockValuation.Location = new System.Drawing.Point(55, 155);
             this.DataGVStockValuation.Name = "DataGVStockValuation";
             this.DataGVStockValuation.ReadOnly = true;
@@ -128,6 +129,7 @@ namespace InventoryManagementSystem
             this.Controls.Add(this.labelTitle);
             this.Name = "frmStockValuationReport";
             this.Text = "Stock Valuation Report";
+            this.AutoScroll = true;
             this.Load += new System.EventHandler(this.frmStockValuationReport_Load);
             ((System.ComponentModel.ISupportInitialize)(this.DataGVStockValuation)).EndInit();
             this.ResumeLayout(false);

@@ -19,6 +19,10 @@ namespace InventoryManagementSystem
         private string _selectedCustomerName = "";
         private int _lastCompletedOrderID = -1;
 
+        // Debounce timer for search
+        private System.Windows.Forms.Timer _searchDebounceTimer;
+        private const int SearchDebounceMs = 300;
+
         // ── Icon+label button rendering ─────────────────────────────────────
         private class IconButtonInfo
         {
@@ -84,6 +88,11 @@ namespace InventoryManagementSystem
         public frmPOS()
         {
             InitializeComponent();
+
+            // Initialize debounce timer
+            _searchDebounceTimer = new System.Windows.Forms.Timer();
+            _searchDebounceTimer.Interval = SearchDebounceMs;
+            _searchDebounceTimer.Tick += SearchDebounceTimer_Tick;
 
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.ApplyTextBoxStyle(_txtSearch);
@@ -483,6 +492,14 @@ namespace InventoryManagementSystem
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
+            // Reset debounce timer on each keystroke
+            _searchDebounceTimer.Stop();
+            _searchDebounceTimer.Start();
+        }
+
+        private void SearchDebounceTimer_Tick(object sender, EventArgs e)
+        {
+            _searchDebounceTimer.Stop();
             BuildProductTabs();
         }
 

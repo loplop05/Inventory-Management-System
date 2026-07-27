@@ -260,7 +260,7 @@ namespace InventoryManagementSystem
         {
             if (e.KeyCode == Keys.Escape)
             {
-                _btnClose_Click(sender, e);
+                btnClose_Click(sender, e);
             }
         }
     }

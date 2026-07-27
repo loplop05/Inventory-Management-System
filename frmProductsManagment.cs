@@ -21,7 +21,6 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Products", clsFormTheme.Icons.Products);
 
             btnAddProduct.Text = clsFormTheme.Icons.Add + "  Add";
             btnAddProduct.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
@@ -39,29 +38,28 @@ namespace InventoryManagementSystem
             btnStockValuationReport.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplySecondaryButtonStyle(btnStockValuationReport);
 
-            btnRefresh.Text = clsFormTheme.Icons.Refresh + "  Refresh";
-            btnRefresh.Font = new Font(clsFormTheme.IconFontName, 11F);
-            clsFormTheme.ApplySecondaryButtonStyle(btnRefresh);
+            _btnRefresh.Text = clsFormTheme.Icons.Refresh + "  Refresh";
+            _btnRefresh.Font = new Font(clsFormTheme.IconFontName, 11F);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh);
 
-            btnBackToPrevPage.Text = clsFormTheme.Icons.Back + "  Back";
-            btnBackToPrevPage.Font = new Font(clsFormTheme.IconFontName, 11F);
-            clsFormTheme.ApplySecondaryButtonStyle(btnBackToPrevPage);
+            _btnBack.Text = clsFormTheme.Icons.Back + "  Back";
+            _btnBack.Font = new Font(clsFormTheme.IconFontName, 11F);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnBack);
 
-            btnPreviousPage.Text = "\u2039  Prev";
-            clsFormTheme.ApplySecondaryButtonStyle(btnPreviousPage);
+            _btnPreviousPage.Text = "\u2039  Prev";
+            clsFormTheme.ApplySecondaryButtonStyle(_btnPreviousPage);
 
-            btnNextPage.Text = "Next  \u203A";
-            clsFormTheme.ApplySecondaryButtonStyle(btnNextPage);
+            _btnNextPage.Text = "Next  \u203A";
+            clsFormTheme.ApplySecondaryButtonStyle(_btnNextPage);
 
-            clsFormTheme.ApplyTextBoxStyle(txtSearch);
+            clsFormTheme.ApplyTextBoxStyle(_txtSearch);
             clsFormTheme.ApplyGridStyle(DataGVProducts);
-            Paint += FrmProductsManagment_Paint;
 
-            _toolTip.SetToolTip(txtSearch, "Search by product ID, name, barcode, category, or supplier.");
-            _toolTip.SetToolTip(btnRefresh, "Refresh the product list (F5).");
+            _toolTip.SetToolTip(_txtSearch, "Search by product ID, name, barcode, category, or supplier.");
+            _toolTip.SetToolTip(_btnRefresh, "Refresh the product list (F5).");
             _toolTip.SetToolTip(btnStockValuationReport, "Open the stock valuation report (Ctrl+R).");
 
-            lblEmptyState.Visible = false;
+            _lblEmptyState.Visible = false;
             KeyDown += frmProductsManagment_KeyDown;
         }
 
@@ -97,19 +95,19 @@ namespace InventoryManagementSystem
             _isLoading = isLoading;
             UseWaitCursor = isLoading;
             DataGVProducts.Enabled = !isLoading;
-            txtSearch.Enabled = !isLoading;
+            _txtSearch.Enabled = !isLoading;
             btnAddProduct.Enabled = !isLoading;
             btnDeleteProduct.Enabled = !isLoading;
             btnUpdateProduct.Enabled = !isLoading;
             btnStockValuationReport.Enabled = !isLoading;
-            btnRefresh.Enabled = !isLoading;
+            _btnRefresh.Enabled = !isLoading;
 
             if (isLoading)
             {
-                lblEmptyState.Text = "Loading products...";
-                lblEmptyState.Visible = true;
-                btnPreviousPage.Enabled = false;
-                btnNextPage.Enabled = false;
+                _lblEmptyState.Text = "Loading products...";
+                _lblEmptyState.Visible = true;
+                _btnPreviousPage.Enabled = false;
+                _btnNextPage.Enabled = false;
             }
             else
             {
@@ -120,7 +118,7 @@ namespace InventoryManagementSystem
         private DataTable GetFilteredProducts()
         {
             DataTable filteredTable = _productsTable.Clone();
-            string searchText = txtSearch.Text.Trim();
+            string searchText = _txtSearch.Text.Trim();
 
             foreach (DataRow row in _productsTable.Rows)
             {
@@ -185,21 +183,21 @@ namespace InventoryManagementSystem
             }
 
             bool hasRows = pageTable.Rows.Count > 0;
-            lblEmptyState.Visible = !hasRows;
+            _lblEmptyState.Visible = !hasRows;
 
             if (!hasRows)
             {
-                lblEmptyState.Text = string.IsNullOrWhiteSpace(txtSearch.Text)
+                _lblEmptyState.Text = string.IsNullOrWhiteSpace(_txtSearch.Text)
                     ? "No products found. Add your first product."
                     : "No products match your search.";
             }
 
-            lblPageInfo.Text = rowCount == 0
+            _lblPageInfo.Text = rowCount == 0
                 ? "No results"
                 : $"Page {_currentPage} of {totalPages}";
 
-            btnPreviousPage.Enabled = _currentPage > 1;
-            btnNextPage.Enabled = _currentPage < totalPages;
+            _btnPreviousPage.Enabled = _currentPage > 1;
+            _btnNextPage.Enabled = _currentPage < totalPages;
         }
 
         private void btnBackToPrevPage_Click(object sender, EventArgs e)

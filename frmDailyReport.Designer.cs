@@ -167,6 +167,7 @@ namespace InventoryManagementSystem
             this._ordersPanel.Padding = new System.Windows.Forms.Padding(12);
             this._ordersPanel.Size = new System.Drawing.Size(1028, 297);
             this._ordersPanel.TabIndex = 0;
+            this._ordersPanel.AutoScroll = true;
             // 
             // _gridOrders
             // 
@@ -205,6 +206,7 @@ namespace InventoryManagementSystem
             this._topProductsPanel.Padding = new System.Windows.Forms.Padding(12);
             this._topProductsPanel.Size = new System.Drawing.Size(1028, 296);
             this._topProductsPanel.TabIndex = 0;
+            this._topProductsPanel.AutoScroll = true;
             // 
             // _gridTopProducts
             // 

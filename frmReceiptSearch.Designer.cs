@@ -17,104 +17,182 @@ namespace InventoryManagementSystem
 
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtOrderID = new System.Windows.Forms.TextBox();
-            this.btnSearch = new System.Windows.Forms.Button();
-            this.btnViewByPhone = new System.Windows.Forms.Button();
-            this.panelOrderDetails = new System.Windows.Forms.Panel();
-            this.lblOrderInfo = new System.Windows.Forms.Label();
-            this.gridOrderItems = new System.Windows.Forms.DataGridView();
+            this._mainLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this._headerPanel = new System.Windows.Forms.Panel();
+            this._lblTitle = new System.Windows.Forms.Label();
+            this._btnClose = new System.Windows.Forms.Button();
+            this._searchPanel = new System.Windows.Forms.Panel();
+            this._lblOrderID = new System.Windows.Forms.Label();
+            this._txtOrderID = new System.Windows.Forms.TextBox();
+            this._btnSearch = new System.Windows.Forms.Button();
+            this._btnViewByPhone = new System.Windows.Forms.Button();
+            this._panelOrderDetails = new System.Windows.Forms.Panel();
+            this._lblOrderInfo = new System.Windows.Forms.Label();
+            this._gridOrderItems = new System.Windows.Forms.DataGridView();
+            this._panelCustomerInfo = new System.Windows.Forms.Panel();
+            this._lblCustomerName = new System.Windows.Forms.Label();
+            this._lblCustomerPhone = new System.Windows.Forms.Label();
+            this._lblPaymentInfo = new System.Windows.Forms.Label();
+            this._actionsPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this._btnExchange = new System.Windows.Forms.Button();
             this.colProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colUnitPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colSubtotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.panelCustomerInfo = new System.Windows.Forms.Panel();
-            this.lblCustomerName = new System.Windows.Forms.Label();
-            this.lblCustomerPhone = new System.Windows.Forms.Label();
-            this.lblPaymentInfo = new System.Windows.Forms.Label();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.btnExchange = new System.Windows.Forms.Button();
-            this.panelOrderDetails.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridOrderItems)).BeginInit();
-            this.panelCustomerInfo.SuspendLayout();
+            this._mainLayoutPanel.SuspendLayout();
+            this._headerPanel.SuspendLayout();
+            this._searchPanel.SuspendLayout();
+            this._panelOrderDetails.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._gridOrderItems)).BeginInit();
+            this._panelCustomerInfo.SuspendLayout();
+            this._actionsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label1
+            // _mainLayoutPanel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(20, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(74, 25);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Order ID:";
+            this._mainLayoutPanel.ColumnCount = 1;
+            this._mainLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this._mainLayoutPanel.Controls.Add(this._headerPanel, 0, 0);
+            this._mainLayoutPanel.Controls.Add(this._searchPanel, 0, 1);
+            this._mainLayoutPanel.Controls.Add(this._panelOrderDetails, 0, 2);
+            this._mainLayoutPanel.Controls.Add(this._actionsPanel, 0, 3);
+            this._mainLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._mainLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this._mainLayoutPanel.Name = "_mainLayoutPanel";
+            this._mainLayoutPanel.Padding = new System.Windows.Forms.Padding(20);
+            this._mainLayoutPanel.RowCount = 4;
+            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this._mainLayoutPanel.Size = new System.Drawing.Size(800, 600);
+            this._mainLayoutPanel.TabIndex = 0;
             // 
-            // txtOrderID
+            // _headerPanel
             // 
-            this.txtOrderID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtOrderID.Location = new System.Drawing.Point(100, 17);
-            this.txtOrderID.Name = "txtOrderID";
-            this.txtOrderID.Size = new System.Drawing.Size(200, 26);
-            this.txtOrderID.TabIndex = 1;
-            this.txtOrderID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtOrderID_KeyDown);
+            this._headerPanel.Controls.Add(this._lblTitle);
+            this._headerPanel.Controls.Add(this._btnClose);
+            this._headerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._headerPanel.Location = new System.Drawing.Point(23, 23);
+            this._headerPanel.Name = "_headerPanel";
+            this._headerPanel.Size = new System.Drawing.Size(754, 60);
+            this._headerPanel.TabIndex = 0;
             // 
-            // btnSearch
+            // _lblTitle
             // 
-            this.btnSearch.Location = new System.Drawing.Point(320, 15);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(100, 34);
-            this.btnSearch.TabIndex = 2;
-            this.btnSearch.Text = "Search";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            this._lblTitle.AutoSize = true;
+            this._lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this._lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(58)))), ((int)(((byte)(138)))));
+            this._lblTitle.Location = new System.Drawing.Point(0, 15);
+            this._lblTitle.Name = "_lblTitle";
+            this._lblTitle.Size = new System.Drawing.Size(145, 31);
+            this._lblTitle.TabIndex = 0;
+            this._lblTitle.Text = "Receipt Search";
             // 
-            // btnViewByPhone
+            // _btnClose
             // 
-            this.btnViewByPhone.Location = new System.Drawing.Point(430, 15);
-            this.btnViewByPhone.Name = "btnViewByPhone";
-            this.btnViewByPhone.Size = new System.Drawing.Size(140, 34);
-            this.btnViewByPhone.TabIndex = 3;
-            this.btnViewByPhone.Text = "View by Phone";
-            this.btnViewByPhone.UseVisualStyleBackColor = true;
-            this.btnViewByPhone.Click += new System.EventHandler(this.btnViewByPhone_Click);
+            this._btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnClose.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this._btnClose.Location = new System.Drawing.Point(668, 13);
+            this._btnClose.Name = "_btnClose";
+            this._btnClose.Size = new System.Drawing.Size(86, 34);
+            this._btnClose.TabIndex = 1;
+            this._btnClose.Text = "Close";
+            this._btnClose.UseVisualStyleBackColor = true;
+            this._btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // panelOrderDetails
+            // _searchPanel
             // 
-            this.panelOrderDetails.Controls.Add(this.lblOrderInfo);
-            this.panelOrderDetails.Controls.Add(this.gridOrderItems);
-            this.panelOrderDetails.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelOrderDetails.Location = new System.Drawing.Point(0, 60);
-            this.panelOrderDetails.Name = "panelOrderDetails";
-            this.panelOrderDetails.Padding = new System.Windows.Forms.Padding(20);
-            this.panelOrderDetails.Size = new System.Drawing.Size(800, 400);
-            this.panelOrderDetails.TabIndex = 4;
+            this._searchPanel.Controls.Add(this._lblOrderID);
+            this._searchPanel.Controls.Add(this._txtOrderID);
+            this._searchPanel.Controls.Add(this._btnSearch);
+            this._searchPanel.Controls.Add(this._btnViewByPhone);
+            this._searchPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._searchPanel.Location = new System.Drawing.Point(23, 83);
+            this._searchPanel.Name = "_searchPanel";
+            this._searchPanel.Size = new System.Drawing.Size(754, 60);
+            this._searchPanel.TabIndex = 1;
             // 
-            // lblOrderInfo
+            // _lblOrderID
             // 
-            this.lblOrderInfo.AutoSize = true;
-            this.lblOrderInfo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblOrderInfo.Location = new System.Drawing.Point(20, 10);
-            this.lblOrderInfo.Name = "lblOrderInfo";
-            this.lblOrderInfo.Size = new System.Drawing.Size(0, 28);
-            this.lblOrderInfo.TabIndex = 0;
+            this._lblOrderID.AutoSize = true;
+            this._lblOrderID.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this._lblOrderID.Location = new System.Drawing.Point(0, 15);
+            this._lblOrderID.Name = "_lblOrderID";
+            this._lblOrderID.Size = new System.Drawing.Size(75, 28);
+            this._lblOrderID.TabIndex = 0;
+            this._lblOrderID.Text = "Order ID:";
             // 
-            // gridOrderItems
+            // _txtOrderID
             // 
-            this.gridOrderItems.AllowUserToAddRows = false;
-            this.gridOrderItems.AllowUserToDeleteRows = false;
-            this.gridOrderItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.gridOrderItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this._txtOrderID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this._txtOrderID.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this._txtOrderID.Location = new System.Drawing.Point(81, 13);
+            this._txtOrderID.Name = "_txtOrderID";
+            this._txtOrderID.Size = new System.Drawing.Size(150, 34);
+            this._txtOrderID.TabIndex = 1;
+            this._txtOrderID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtOrderID_KeyDown);
+            // 
+            // _btnSearch
+            // 
+            this._btnSearch.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this._btnSearch.Location = new System.Drawing.Point(237, 13);
+            this._btnSearch.Name = "_btnSearch";
+            this._btnSearch.Size = new System.Drawing.Size(100, 34);
+            this._btnSearch.TabIndex = 2;
+            this._btnSearch.Text = "Search";
+            this._btnSearch.UseVisualStyleBackColor = true;
+            this._btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // _btnViewByPhone
+            // 
+            this._btnViewByPhone.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this._btnViewByPhone.Location = new System.Drawing.Point(343, 13);
+            this._btnViewByPhone.Name = "_btnViewByPhone";
+            this._btnViewByPhone.Size = new System.Drawing.Size(140, 34);
+            this._btnViewByPhone.TabIndex = 3;
+            this._btnViewByPhone.Text = "View by Phone";
+            this._btnViewByPhone.UseVisualStyleBackColor = true;
+            this._btnViewByPhone.Click += new System.EventHandler(this.btnViewByPhone_Click);
+            // 
+            // _panelOrderDetails
+            // 
+            this._panelOrderDetails.Controls.Add(this._lblOrderInfo);
+            this._panelOrderDetails.Controls.Add(this._gridOrderItems);
+            this._panelOrderDetails.Controls.Add(this._panelCustomerInfo);
+            this._panelOrderDetails.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._panelOrderDetails.Location = new System.Drawing.Point(23, 143);
+            this._panelOrderDetails.Name = "_panelOrderDetails";
+            this._panelOrderDetails.Padding = new System.Windows.Forms.Padding(20);
+            this._panelOrderDetails.Size = new System.Drawing.Size(754, 374);
+            this._panelOrderDetails.TabIndex = 2;
+            // 
+            // _lblOrderInfo
+            // 
+            this._lblOrderInfo.AutoSize = true;
+            this._lblOrderInfo.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this._lblOrderInfo.Location = new System.Drawing.Point(20, 10);
+            this._lblOrderInfo.Name = "_lblOrderInfo";
+            this._lblOrderInfo.Size = new System.Drawing.Size(0, 28);
+            this._lblOrderInfo.TabIndex = 0;
+            // 
+            // _gridOrderItems
+            // 
+            this._gridOrderItems.AllowUserToAddRows = false;
+            this._gridOrderItems.AllowUserToDeleteRows = false;
+            this._gridOrderItems.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this._gridOrderItems.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colProductName,
             this.colQuantity,
             this.colUnitPrice,
             this.colSubtotal});
-            this.gridOrderItems.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gridOrderItems.Location = new System.Drawing.Point(20, 50);
-            this.gridOrderItems.Name = "gridOrderItems";
-            this.gridOrderItems.ReadOnly = true;
-            this.gridOrderItems.RowHeadersVisible = false;
-            this.gridOrderItems.Size = new System.Drawing.Size(760, 330);
-            this.gridOrderItems.TabIndex = 1;
+            this._gridOrderItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._gridOrderItems.Location = new System.Drawing.Point(20, 50);
+            this._gridOrderItems.Name = "gridOrderItems";
+            this._gridOrderItems.ReadOnly = true;
+            this._gridOrderItems.RowHeadersVisible = false;
+            this._gridOrderItems.Size = new System.Drawing.Size(714, 304);
+            this._gridOrderItems.TabIndex = 1;
             // 
             // colProductName
             // 
@@ -144,124 +222,118 @@ namespace InventoryManagementSystem
             this.colSubtotal.Name = "colSubtotal";
             this.colSubtotal.ReadOnly = true;
             // 
-            // panelCustomerInfo
+            // _panelCustomerInfo
             // 
-            this.panelCustomerInfo.Controls.Add(this.lblCustomerName);
-            this.panelCustomerInfo.Controls.Add(this.lblCustomerPhone);
-            this.panelCustomerInfo.Controls.Add(this.lblPaymentInfo);
-            this.panelCustomerInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelCustomerInfo.Location = new System.Drawing.Point(0, 350);
-            this.panelCustomerInfo.Name = "panelCustomerInfo";
-            this.panelCustomerInfo.Padding = new System.Windows.Forms.Padding(20);
-            this.panelCustomerInfo.Size = new System.Drawing.Size(800, 80);
-            this.panelCustomerInfo.TabIndex = 5;
+            this._panelCustomerInfo.Controls.Add(this._lblCustomerName);
+            this._panelCustomerInfo.Controls.Add(this._lblCustomerPhone);
+            this._panelCustomerInfo.Controls.Add(this._lblPaymentInfo);
+            this._panelCustomerInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this._panelCustomerInfo.Location = new System.Drawing.Point(0, 294);
+            this._panelCustomerInfo.Name = "_panelCustomerInfo";
+            this._panelCustomerInfo.Padding = new System.Windows.Forms.Padding(20);
+            this._panelCustomerInfo.Size = new System.Drawing.Size(754, 80);
+            this._panelCustomerInfo.TabIndex = 2;
             // 
-            // lblCustomerName
+            // _lblCustomerName
             // 
-            this.lblCustomerName.AutoSize = true;
-            this.lblCustomerName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblCustomerName.Location = new System.Drawing.Point(20, 10);
-            this.lblCustomerName.Name = "lblCustomerName";
-            this.lblCustomerName.Size = new System.Drawing.Size(0, 24);
-            this.lblCustomerName.TabIndex = 0;
+            this._lblCustomerName.AutoSize = true;
+            this._lblCustomerName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this._lblCustomerName.Location = new System.Drawing.Point(20, 10);
+            this._lblCustomerName.Name = "_lblCustomerName";
+            this._lblCustomerName.Size = new System.Drawing.Size(0, 24);
+            this._lblCustomerName.TabIndex = 0;
             // 
-            // lblCustomerPhone
+            // _lblCustomerPhone
             // 
-            this.lblCustomerPhone.AutoSize = true;
-            this.lblCustomerPhone.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular);
-            this.lblCustomerPhone.Location = new System.Drawing.Point(20, 35);
-            this.lblCustomerPhone.Name = "lblCustomerPhone";
-            this.lblCustomerPhone.Size = new System.Drawing.Size(0, 22);
-            this.lblCustomerPhone.TabIndex = 1;
+            this._lblCustomerPhone.AutoSize = true;
+            this._lblCustomerPhone.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular);
+            this._lblCustomerPhone.Location = new System.Drawing.Point(20, 35);
+            this._lblCustomerPhone.Name = "_lblCustomerPhone";
+            this._lblCustomerPhone.Size = new System.Drawing.Size(0, 22);
+            this._lblCustomerPhone.TabIndex = 1;
             // 
-            // lblPaymentInfo
+            // _lblPaymentInfo
             // 
-            this.lblPaymentInfo.AutoSize = true;
-            this.lblPaymentInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular);
-            this.lblPaymentInfo.Location = new System.Drawing.Point(20, 55);
-            this.lblPaymentInfo.Name = "lblPaymentInfo";
-            this.lblPaymentInfo.Size = new System.Drawing.Size(0, 22);
-            this.lblPaymentInfo.TabIndex = 2;
+            this._lblPaymentInfo.AutoSize = true;
+            this._lblPaymentInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular);
+            this._lblPaymentInfo.Location = new System.Drawing.Point(20, 55);
+            this._lblPaymentInfo.Name = "_lblPaymentInfo";
+            this._lblPaymentInfo.Size = new System.Drawing.Size(0, 22);
+            this._lblPaymentInfo.TabIndex = 2;
             // 
-            // lblTitle
+            // _actionsPanel
             // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.lblTitle.Location = new System.Drawing.Point(20, 60);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(0, 36);
-            this.lblTitle.TabIndex = 6;
+            this._actionsPanel.Controls.Add(this._btnExchange);
+            this._actionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._actionsPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this._actionsPanel.Location = new System.Drawing.Point(23, 517);
+            this._actionsPanel.Name = "_actionsPanel";
+            this._actionsPanel.Size = new System.Drawing.Size(754, 60);
+            this._actionsPanel.TabIndex = 3;
             // 
-            // btnClose
+            // _btnExchange
             // 
-            this.btnClose.Location = new System.Drawing.Point(680, 15);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(100, 34);
-            this.btnClose.TabIndex = 7;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // btnExchange
-            // 
-            this.btnExchange.Location = new System.Drawing.Point(570, 15);
-            this.btnExchange.Name = "btnExchange";
-            this.btnExchange.Size = new System.Drawing.Size(100, 34);
-            this.btnExchange.TabIndex = 8;
-            this.btnExchange.Text = "Exchange";
-            this.btnExchange.UseVisualStyleBackColor = true;
-            this.btnExchange.Click += new System.EventHandler(this.btnExchange_Click);
+            this._btnExchange.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this._btnExchange.Location = new System.Drawing.Point(654, 13);
+            this._btnExchange.Name = "_btnExchange";
+            this._btnExchange.Size = new System.Drawing.Size(100, 34);
+            this._btnExchange.TabIndex = 0;
+            this._btnExchange.Text = "Exchange";
+            this._btnExchange.UseVisualStyleBackColor = true;
+            this._btnExchange.Click += new System.EventHandler(this.btnExchange_Click);
             // 
             // frmReceiptSearch
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(900, 550);
-            this.Controls.Add(this.btnExchange);
-            this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.lblTitle);
-            this.Controls.Add(this.panelCustomerInfo);
-            this.Controls.Add(this.panelOrderDetails);
-            this.Controls.Add(this.btnViewByPhone);
-            this.Controls.Add(this.btnSearch);
-            this.Controls.Add(this.txtOrderID);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(800, 600);
+            this.Controls.Add(this._mainLayoutPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "frmReceiptSearch";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Search Receipt";
             this.Load += new System.EventHandler(this.frmReceiptSearch_Load);
-            this.panelOrderDetails.ResumeLayout(false);
-            this.panelOrderDetails.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gridOrderItems)).EndInit();
-            this.panelCustomerInfo.ResumeLayout(false);
-            this.panelCustomerInfo.PerformLayout();
+            this._mainLayoutPanel.ResumeLayout(false);
+            this._headerPanel.ResumeLayout(false);
+            this._headerPanel.PerformLayout();
+            this._searchPanel.ResumeLayout(false);
+            this._searchPanel.PerformLayout();
+            this._panelOrderDetails.ResumeLayout(false);
+            this._panelOrderDetails.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._gridOrderItems)).EndInit();
+            this._panelCustomerInfo.ResumeLayout(false);
+            this._panelCustomerInfo.PerformLayout();
+            this._actionsPanel.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtOrderID;
-        private System.Windows.Forms.Button btnSearch;
-        private System.Windows.Forms.Button btnViewByPhone;
-        private System.Windows.Forms.Panel panelOrderDetails;
-        private System.Windows.Forms.Label lblOrderInfo;
-        private System.Windows.Forms.DataGridView gridOrderItems;
+        private System.Windows.Forms.TableLayoutPanel _mainLayoutPanel;
+        private System.Windows.Forms.Panel _headerPanel;
+        private System.Windows.Forms.Label _lblTitle;
+        private System.Windows.Forms.Button _btnClose;
+        private System.Windows.Forms.Panel _searchPanel;
+        private System.Windows.Forms.Label _lblOrderID;
+        private System.Windows.Forms.TextBox _txtOrderID;
+        private System.Windows.Forms.Button _btnSearch;
+        private System.Windows.Forms.Button _btnViewByPhone;
+        private System.Windows.Forms.Panel _panelOrderDetails;
+        private System.Windows.Forms.Label _lblOrderInfo;
+        private System.Windows.Forms.DataGridView _gridOrderItems;
         private System.Windows.Forms.DataGridViewTextBoxColumn colProductName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colQuantity;
         private System.Windows.Forms.DataGridViewTextBoxColumn colUnitPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSubtotal;
-        private System.Windows.Forms.Panel panelCustomerInfo;
-        private System.Windows.Forms.Label lblCustomerName;
-        private System.Windows.Forms.Label lblCustomerPhone;
-        private System.Windows.Forms.Label lblPaymentInfo;
-        private System.Windows.Forms.Label lblTitle;
-        private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Button btnExchange;
+        private System.Windows.Forms.Panel _panelCustomerInfo;
+        private System.Windows.Forms.Label _lblCustomerName;
+        private System.Windows.Forms.Label _lblCustomerPhone;
+        private System.Windows.Forms.Label _lblPaymentInfo;
+        private System.Windows.Forms.FlowLayoutPanel _actionsPanel;
+        private System.Windows.Forms.Button _btnExchange;
     }
 }
