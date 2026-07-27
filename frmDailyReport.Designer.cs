@@ -68,8 +68,8 @@ namespace InventoryManagementSystem
             this._summaryPanel.ColumnCount = 4;
             this._summaryPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this._summaryPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this._summaryPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.05071F));
-            this._summaryPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.05071F));
+            this._summaryPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this._summaryPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this._summaryPanel.Controls.Add(this._lblOrders, 0, 0);
             this._summaryPanel.Controls.Add(this._lblSubtotal, 1, 0);
             this._summaryPanel.Controls.Add(this._lblTax, 2, 0);
@@ -84,11 +84,10 @@ namespace InventoryManagementSystem
             // 
             // _lblOrders
             // 
-            this._lblOrders.BackColor = System.Drawing.Color.White;
             this._lblOrders.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this._lblOrders.Dock = System.Windows.Forms.DockStyle.Fill;
             this._lblOrders.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._lblOrders.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this._lblOrders.ForeColor = System.Drawing.Color.White;
             this._lblOrders.Location = new System.Drawing.Point(6, 6);
             this._lblOrders.Margin = new System.Windows.Forms.Padding(6);
             this._lblOrders.Name = "_lblOrders";
@@ -99,11 +98,10 @@ namespace InventoryManagementSystem
             // 
             // _lblSubtotal
             // 
-            this._lblSubtotal.BackColor = System.Drawing.Color.White;
             this._lblSubtotal.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this._lblSubtotal.Dock = System.Windows.Forms.DockStyle.Fill;
             this._lblSubtotal.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._lblSubtotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this._lblSubtotal.ForeColor = System.Drawing.Color.White;
             this._lblSubtotal.Location = new System.Drawing.Point(262, 6);
             this._lblSubtotal.Margin = new System.Windows.Forms.Padding(6);
             this._lblSubtotal.Name = "_lblSubtotal";
@@ -114,11 +112,10 @@ namespace InventoryManagementSystem
             // 
             // _lblTax
             // 
-            this._lblTax.BackColor = System.Drawing.Color.White;
             this._lblTax.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this._lblTax.Dock = System.Windows.Forms.DockStyle.Fill;
             this._lblTax.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._lblTax.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this._lblTax.ForeColor = System.Drawing.Color.White;
             this._lblTax.Location = new System.Drawing.Point(518, 6);
             this._lblTax.Margin = new System.Windows.Forms.Padding(6);
             this._lblTax.Name = "_lblTax";
@@ -129,11 +126,10 @@ namespace InventoryManagementSystem
             // 
             // _lblRevenue
             // 
-            this._lblRevenue.BackColor = System.Drawing.Color.White;
             this._lblRevenue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this._lblRevenue.Dock = System.Windows.Forms.DockStyle.Fill;
             this._lblRevenue.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._lblRevenue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this._lblRevenue.ForeColor = System.Drawing.Color.White;
             this._lblRevenue.Location = new System.Drawing.Point(775, 6);
             this._lblRevenue.Margin = new System.Windows.Forms.Padding(6);
             this._lblRevenue.Name = "_lblRevenue";
@@ -141,7 +137,6 @@ namespace InventoryManagementSystem
             this._lblRevenue.TabIndex = 3;
             this._lblRevenue.Text = "Revenue\r\n$0.00";
             this._lblRevenue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this._lblRevenue.Click += new System.EventHandler(this._lblRevenue_Click);
             // 
             // _splitContainer
             // 
@@ -323,5 +318,6 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button _btnRefresh;
         private System.Windows.Forms.Button _btnExportCsv;
         private System.Windows.Forms.Button _btnClose;
+        
     }
 }

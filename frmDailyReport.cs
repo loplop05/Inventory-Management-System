@@ -97,6 +97,12 @@ namespace InventoryManagementSystem
             _gridTopProducts.DataSource = _topProductsTable;
             _btnExportCsv.Enabled = _ordersTable.Rows.Count > 0 || _topProductsTable.Rows.Count > 0;
 
+            // Ensure PaymentMethod column exists and is properly positioned
+            if (_gridOrders.Columns.Contains("PaymentMethod"))
+            {
+                _gridOrders.Columns["PaymentMethod"].DisplayIndex = 5; // Position after TotalAmount
+            }
+
             FormatCurrencyColumn(_gridOrders, "Subtotal");
             FormatCurrencyColumn(_gridOrders, "TaxAmount");
             FormatCurrencyColumn(_gridOrders, "TotalAmount");
@@ -244,7 +250,7 @@ namespace InventoryManagementSystem
 
         private void _lblRevenue_Click(object sender, EventArgs e)
         {
-
+            // Empty event handler - can be removed if not needed
         }
     }
 }

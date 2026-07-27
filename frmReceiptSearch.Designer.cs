@@ -108,7 +108,7 @@ namespace InventoryManagementSystem
             this.colQuantity,
             this.colUnitPrice,
             this.colSubtotal});
-            this.gridOrderItems.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.gridOrderItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gridOrderItems.Location = new System.Drawing.Point(20, 50);
             this.gridOrderItems.Name = "gridOrderItems";
             this.gridOrderItems.ReadOnly = true;
@@ -153,7 +153,7 @@ namespace InventoryManagementSystem
             this.panelCustomerInfo.Location = new System.Drawing.Point(0, 350);
             this.panelCustomerInfo.Name = "panelCustomerInfo";
             this.panelCustomerInfo.Padding = new System.Windows.Forms.Padding(20);
-            this.panelCustomerInfo.Size = new System.Drawing.Size(800, 50);
+            this.panelCustomerInfo.Size = new System.Drawing.Size(800, 80);
             this.panelCustomerInfo.TabIndex = 5;
             // 
             // lblCustomerName
@@ -169,7 +169,7 @@ namespace InventoryManagementSystem
             // 
             this.lblCustomerPhone.AutoSize = true;
             this.lblCustomerPhone.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular);
-            this.lblCustomerPhone.Location = new System.Drawing.Point(20, 30);
+            this.lblCustomerPhone.Location = new System.Drawing.Point(20, 35);
             this.lblCustomerPhone.Name = "lblCustomerPhone";
             this.lblCustomerPhone.Size = new System.Drawing.Size(0, 22);
             this.lblCustomerPhone.TabIndex = 1;
@@ -178,7 +178,7 @@ namespace InventoryManagementSystem
             // 
             this.lblPaymentInfo.AutoSize = true;
             this.lblPaymentInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular);
-            this.lblPaymentInfo.Location = new System.Drawing.Point(300, 20);
+            this.lblPaymentInfo.Location = new System.Drawing.Point(20, 55);
             this.lblPaymentInfo.Name = "lblPaymentInfo";
             this.lblPaymentInfo.Size = new System.Drawing.Size(0, 22);
             this.lblPaymentInfo.TabIndex = 2;
@@ -216,7 +216,7 @@ namespace InventoryManagementSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 460);
+            this.ClientSize = new System.Drawing.Size(900, 550);
             this.Controls.Add(this.btnExchange);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.lblTitle);

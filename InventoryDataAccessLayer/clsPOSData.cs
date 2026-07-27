@@ -255,7 +255,8 @@ namespace InventoryDataAccessLayer
                            OrderDate,
                            Subtotal,
                            TaxAmount,
-                           TotalAmount
+                           TotalAmount,
+                           PaymentMethod
                     FROM Orders
                     WHERE CAST(OrderDate AS DATE) = CAST(GETDATE() AS DATE)
                     ORDER BY OrderDate DESC";

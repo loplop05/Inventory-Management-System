@@ -2,7 +2,6 @@ using System;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using InventoryBusinessLayer;
 
@@ -43,7 +42,7 @@ namespace InventoryManagementSystem
             _currentOrderDetails = null;
             _currentOrderItems = null;
             txtOrderID.Text = "";
-            lblReceiptContent.Text = "Enter an Order ID to view and print the receipt.";
+            lblReceiptPreview.Text = "Enter an Order ID to view and print the receipt.";
             btnPrint.Enabled = false;
         }
 
@@ -103,7 +102,7 @@ namespace InventoryManagementSystem
             DisplayReceipt();
         }
 
-        private async Task DisplayReceipt()
+        private void DisplayReceipt()
         {
             if (_currentOrderDetails == null || _currentOrderDetails.Rows.Count == 0)
                 return;
@@ -147,7 +146,6 @@ namespace InventoryManagementSystem
             receipt.AppendLine("----------------------------------------");
 
             // Order items
-           
             if (_currentOrderItems != null && _currentOrderItems.Rows.Count > 0)
             {
                 receipt.AppendLine("ITEMS:");
@@ -180,7 +178,7 @@ namespace InventoryManagementSystem
             receipt.AppendLine("          Thank you for shopping!");
             receipt.AppendLine("========================================");
 
-            lblReceiptContent.Text = receipt.ToString();
+            lblReceiptPreview.Text = receipt.ToString();
             btnPrint.Enabled = true;
         }
 
@@ -211,7 +209,8 @@ namespace InventoryManagementSystem
                 float yPos = 20;
                 float leftMargin = 20;
 
-                foreach (string line in lblReceiptContent.Text.Split('\n'))
+                string receiptText = lblReceiptPreview.Text;
+                foreach (string line in receiptText.Split('\n'))
                 {
                     e.Graphics.DrawString(line, font, Brushes.Black, leftMargin, yPos);
                     yPos += lineHeight;
