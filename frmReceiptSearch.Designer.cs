@@ -29,16 +29,16 @@ namespace InventoryManagementSystem
             this._panelOrderDetails = new System.Windows.Forms.Panel();
             this._lblOrderInfo = new System.Windows.Forms.Label();
             this._gridOrderItems = new System.Windows.Forms.DataGridView();
+            this.colProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colUnitPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colSubtotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._panelCustomerInfo = new System.Windows.Forms.Panel();
             this._lblCustomerName = new System.Windows.Forms.Label();
             this._lblCustomerPhone = new System.Windows.Forms.Label();
             this._lblPaymentInfo = new System.Windows.Forms.Label();
             this._actionsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this._btnExchange = new System.Windows.Forms.Button();
-            this.colProductName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colUnitPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colSubtotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._mainLayoutPanel.SuspendLayout();
             this._headerPanel.SuspendLayout();
             this._searchPanel.SuspendLayout();
@@ -75,7 +75,7 @@ namespace InventoryManagementSystem
             this._headerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._headerPanel.Location = new System.Drawing.Point(23, 23);
             this._headerPanel.Name = "_headerPanel";
-            this._headerPanel.Size = new System.Drawing.Size(754, 60);
+            this._headerPanel.Size = new System.Drawing.Size(754, 54);
             this._headerPanel.TabIndex = 0;
             // 
             // _lblTitle
@@ -83,9 +83,9 @@ namespace InventoryManagementSystem
             this._lblTitle.AutoSize = true;
             this._lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this._lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(58)))), ((int)(((byte)(138)))));
-            this._lblTitle.Location = new System.Drawing.Point(0, 15);
+            this._lblTitle.Location = new System.Drawing.Point(13, 10);
             this._lblTitle.Name = "_lblTitle";
-            this._lblTitle.Size = new System.Drawing.Size(145, 31);
+            this._lblTitle.Size = new System.Drawing.Size(205, 37);
             this._lblTitle.TabIndex = 0;
             this._lblTitle.Text = "Receipt Search";
             // 
@@ -93,9 +93,9 @@ namespace InventoryManagementSystem
             // 
             this._btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this._btnClose.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this._btnClose.Location = new System.Drawing.Point(668, 13);
+            this._btnClose.Location = new System.Drawing.Point(620, 0);
             this._btnClose.Name = "_btnClose";
-            this._btnClose.Size = new System.Drawing.Size(86, 34);
+            this._btnClose.Size = new System.Drawing.Size(134, 47);
             this._btnClose.TabIndex = 1;
             this._btnClose.Text = "Close";
             this._btnClose.UseVisualStyleBackColor = true;
@@ -110,16 +110,16 @@ namespace InventoryManagementSystem
             this._searchPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._searchPanel.Location = new System.Drawing.Point(23, 83);
             this._searchPanel.Name = "_searchPanel";
-            this._searchPanel.Size = new System.Drawing.Size(754, 60);
+            this._searchPanel.Size = new System.Drawing.Size(754, 54);
             this._searchPanel.TabIndex = 1;
             // 
             // _lblOrderID
             // 
             this._lblOrderID.AutoSize = true;
             this._lblOrderID.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this._lblOrderID.Location = new System.Drawing.Point(0, 15);
+            this._lblOrderID.Location = new System.Drawing.Point(20, 15);
             this._lblOrderID.Name = "_lblOrderID";
-            this._lblOrderID.Size = new System.Drawing.Size(75, 28);
+            this._lblOrderID.Size = new System.Drawing.Size(98, 28);
             this._lblOrderID.TabIndex = 0;
             this._lblOrderID.Text = "Order ID:";
             // 
@@ -127,7 +127,7 @@ namespace InventoryManagementSystem
             // 
             this._txtOrderID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this._txtOrderID.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this._txtOrderID.Location = new System.Drawing.Point(81, 13);
+            this._txtOrderID.Location = new System.Drawing.Point(154, 13);
             this._txtOrderID.Name = "_txtOrderID";
             this._txtOrderID.Size = new System.Drawing.Size(150, 34);
             this._txtOrderID.TabIndex = 1;
@@ -136,9 +136,9 @@ namespace InventoryManagementSystem
             // _btnSearch
             // 
             this._btnSearch.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._btnSearch.Location = new System.Drawing.Point(237, 13);
+            this._btnSearch.Location = new System.Drawing.Point(426, 7);
             this._btnSearch.Name = "_btnSearch";
-            this._btnSearch.Size = new System.Drawing.Size(100, 34);
+            this._btnSearch.Size = new System.Drawing.Size(106, 40);
             this._btnSearch.TabIndex = 2;
             this._btnSearch.Text = "Search";
             this._btnSearch.UseVisualStyleBackColor = true;
@@ -147,9 +147,9 @@ namespace InventoryManagementSystem
             // _btnViewByPhone
             // 
             this._btnViewByPhone.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._btnViewByPhone.Location = new System.Drawing.Point(343, 13);
+            this._btnViewByPhone.Location = new System.Drawing.Point(603, 7);
             this._btnViewByPhone.Name = "_btnViewByPhone";
-            this._btnViewByPhone.Size = new System.Drawing.Size(140, 34);
+            this._btnViewByPhone.Size = new System.Drawing.Size(148, 44);
             this._btnViewByPhone.TabIndex = 3;
             this._btnViewByPhone.Text = "View by Phone";
             this._btnViewByPhone.UseVisualStyleBackColor = true;
@@ -187,40 +187,49 @@ namespace InventoryManagementSystem
             this.colUnitPrice,
             this.colSubtotal});
             this._gridOrderItems.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._gridOrderItems.Location = new System.Drawing.Point(20, 50);
-            this._gridOrderItems.Name = "gridOrderItems";
+            this._gridOrderItems.Location = new System.Drawing.Point(20, 20);
+            this._gridOrderItems.Name = "_gridOrderItems";
             this._gridOrderItems.ReadOnly = true;
             this._gridOrderItems.RowHeadersVisible = false;
-            this._gridOrderItems.Size = new System.Drawing.Size(714, 304);
+            this._gridOrderItems.RowHeadersWidth = 51;
+            this._gridOrderItems.Size = new System.Drawing.Size(714, 254);
             this._gridOrderItems.TabIndex = 1;
             // 
             // colProductName
             // 
             this.colProductName.DataPropertyName = "ProductName";
             this.colProductName.HeaderText = "Product";
+            this.colProductName.MinimumWidth = 6;
             this.colProductName.Name = "colProductName";
             this.colProductName.ReadOnly = true;
+            this.colProductName.Width = 125;
             // 
             // colQuantity
             // 
             this.colQuantity.DataPropertyName = "Quantity";
             this.colQuantity.HeaderText = "Qty";
+            this.colQuantity.MinimumWidth = 6;
             this.colQuantity.Name = "colQuantity";
             this.colQuantity.ReadOnly = true;
+            this.colQuantity.Width = 125;
             // 
             // colUnitPrice
             // 
             this.colUnitPrice.DataPropertyName = "UnitPrice";
             this.colUnitPrice.HeaderText = "Price";
+            this.colUnitPrice.MinimumWidth = 6;
             this.colUnitPrice.Name = "colUnitPrice";
             this.colUnitPrice.ReadOnly = true;
+            this.colUnitPrice.Width = 125;
             // 
             // colSubtotal
             // 
             this.colSubtotal.DataPropertyName = "Subtotal";
             this.colSubtotal.HeaderText = "Subtotal";
+            this.colSubtotal.MinimumWidth = 6;
             this.colSubtotal.Name = "colSubtotal";
             this.colSubtotal.ReadOnly = true;
+            this.colSubtotal.Width = 125;
             // 
             // _panelCustomerInfo
             // 
@@ -228,10 +237,10 @@ namespace InventoryManagementSystem
             this._panelCustomerInfo.Controls.Add(this._lblCustomerPhone);
             this._panelCustomerInfo.Controls.Add(this._lblPaymentInfo);
             this._panelCustomerInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._panelCustomerInfo.Location = new System.Drawing.Point(0, 294);
+            this._panelCustomerInfo.Location = new System.Drawing.Point(20, 274);
             this._panelCustomerInfo.Name = "_panelCustomerInfo";
             this._panelCustomerInfo.Padding = new System.Windows.Forms.Padding(20);
-            this._panelCustomerInfo.Size = new System.Drawing.Size(754, 80);
+            this._panelCustomerInfo.Size = new System.Drawing.Size(714, 80);
             this._panelCustomerInfo.TabIndex = 2;
             // 
             // _lblCustomerName
@@ -240,25 +249,25 @@ namespace InventoryManagementSystem
             this._lblCustomerName.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this._lblCustomerName.Location = new System.Drawing.Point(20, 10);
             this._lblCustomerName.Name = "_lblCustomerName";
-            this._lblCustomerName.Size = new System.Drawing.Size(0, 24);
+            this._lblCustomerName.Size = new System.Drawing.Size(0, 23);
             this._lblCustomerName.TabIndex = 0;
             // 
             // _lblCustomerPhone
             // 
             this._lblCustomerPhone.AutoSize = true;
-            this._lblCustomerPhone.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular);
+            this._lblCustomerPhone.Font = new System.Drawing.Font("Segoe UI", 9F);
             this._lblCustomerPhone.Location = new System.Drawing.Point(20, 35);
             this._lblCustomerPhone.Name = "_lblCustomerPhone";
-            this._lblCustomerPhone.Size = new System.Drawing.Size(0, 22);
+            this._lblCustomerPhone.Size = new System.Drawing.Size(0, 20);
             this._lblCustomerPhone.TabIndex = 1;
             // 
             // _lblPaymentInfo
             // 
             this._lblPaymentInfo.AutoSize = true;
-            this._lblPaymentInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular);
+            this._lblPaymentInfo.Font = new System.Drawing.Font("Segoe UI", 9F);
             this._lblPaymentInfo.Location = new System.Drawing.Point(20, 55);
             this._lblPaymentInfo.Name = "_lblPaymentInfo";
-            this._lblPaymentInfo.Size = new System.Drawing.Size(0, 22);
+            this._lblPaymentInfo.Size = new System.Drawing.Size(0, 20);
             this._lblPaymentInfo.TabIndex = 2;
             // 
             // _actionsPanel
@@ -266,17 +275,17 @@ namespace InventoryManagementSystem
             this._actionsPanel.Controls.Add(this._btnExchange);
             this._actionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._actionsPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this._actionsPanel.Location = new System.Drawing.Point(23, 517);
+            this._actionsPanel.Location = new System.Drawing.Point(23, 523);
             this._actionsPanel.Name = "_actionsPanel";
-            this._actionsPanel.Size = new System.Drawing.Size(754, 60);
+            this._actionsPanel.Size = new System.Drawing.Size(754, 54);
             this._actionsPanel.TabIndex = 3;
             // 
             // _btnExchange
             // 
             this._btnExchange.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._btnExchange.Location = new System.Drawing.Point(654, 13);
+            this._btnExchange.Location = new System.Drawing.Point(651, 3);
             this._btnExchange.Name = "_btnExchange";
-            this._btnExchange.Size = new System.Drawing.Size(100, 34);
+            this._btnExchange.Size = new System.Drawing.Size(100, 51);
             this._btnExchange.TabIndex = 0;
             this._btnExchange.Text = "Exchange";
             this._btnExchange.UseVisualStyleBackColor = true;

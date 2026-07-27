@@ -85,7 +85,7 @@ namespace InventoryManagementSystem
             this._headerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._headerPanel.Location = new System.Drawing.Point(23, 23);
             this._headerPanel.Name = "_headerPanel";
-            this._headerPanel.Size = new System.Drawing.Size(904, 60);
+            this._headerPanel.Size = new System.Drawing.Size(904, 54);
             this._headerPanel.TabIndex = 0;
             // 
             // _lblTitle
@@ -93,9 +93,9 @@ namespace InventoryManagementSystem
             this._lblTitle.AutoSize = true;
             this._lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this._lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(58)))), ((int)(((byte)(138)))));
-            this._lblTitle.Location = new System.Drawing.Point(0, 15);
+            this._lblTitle.Location = new System.Drawing.Point(14, 7);
             this._lblTitle.Name = "_lblTitle";
-            this._lblTitle.Size = new System.Drawing.Size(138, 31);
+            this._lblTitle.Size = new System.Drawing.Size(136, 37);
             this._lblTitle.TabIndex = 0;
             this._lblTitle.Text = "Suppliers";
             // 
@@ -103,9 +103,9 @@ namespace InventoryManagementSystem
             // 
             this._btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this._btnBack.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this._btnBack.Location = new System.Drawing.Point(818, 13);
+            this._btnBack.Location = new System.Drawing.Point(748, 3);
             this._btnBack.Name = "_btnBack";
-            this._btnBack.Size = new System.Drawing.Size(86, 34);
+            this._btnBack.Size = new System.Drawing.Size(115, 47);
             this._btnBack.TabIndex = 1;
             this._btnBack.Text = "Back";
             this._btnBack.UseVisualStyleBackColor = true;
@@ -119,16 +119,16 @@ namespace InventoryManagementSystem
             this._searchPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._searchPanel.Location = new System.Drawing.Point(23, 83);
             this._searchPanel.Name = "_searchPanel";
-            this._searchPanel.Size = new System.Drawing.Size(904, 60);
+            this._searchPanel.Size = new System.Drawing.Size(904, 54);
             this._searchPanel.TabIndex = 1;
             // 
             // _lblSearch
             // 
             this._lblSearch.AutoSize = true;
             this._lblSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this._lblSearch.Location = new System.Drawing.Point(0, 15);
+            this._lblSearch.Location = new System.Drawing.Point(20, 13);
             this._lblSearch.Name = "_lblSearch";
-            this._lblSearch.Size = new System.Drawing.Size(58, 28);
+            this._lblSearch.Size = new System.Drawing.Size(80, 28);
             this._lblSearch.TabIndex = 0;
             this._lblSearch.Text = "Search:";
             // 
@@ -136,7 +136,7 @@ namespace InventoryManagementSystem
             // 
             this._txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this._txtSearch.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this._txtSearch.Location = new System.Drawing.Point(64, 13);
+            this._txtSearch.Location = new System.Drawing.Point(127, 10);
             this._txtSearch.Name = "_txtSearch";
             this._txtSearch.Size = new System.Drawing.Size(200, 34);
             this._txtSearch.TabIndex = 1;
@@ -145,9 +145,9 @@ namespace InventoryManagementSystem
             // _btnRefresh
             // 
             this._btnRefresh.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._btnRefresh.Location = new System.Drawing.Point(270, 13);
+            this._btnRefresh.Location = new System.Drawing.Point(368, 10);
             this._btnRefresh.Name = "_btnRefresh";
-            this._btnRefresh.Size = new System.Drawing.Size(100, 34);
+            this._btnRefresh.Size = new System.Drawing.Size(107, 44);
             this._btnRefresh.TabIndex = 2;
             this._btnRefresh.Text = "Refresh";
             this._btnRefresh.UseVisualStyleBackColor = true;
@@ -155,30 +155,30 @@ namespace InventoryManagementSystem
             // 
             // _gridPanel
             // 
+            this._gridPanel.AutoScroll = true;
             this._gridPanel.Controls.Add(this.DataGVSuppliers);
             this._gridPanel.Controls.Add(this._lblEmptyState);
             this._gridPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._gridPanel.Location = new System.Drawing.Point(23, 143);
             this._gridPanel.Name = "_gridPanel";
             this._gridPanel.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
-            this._gridPanel.Size = new System.Drawing.Size(904, 314);
+            this._gridPanel.Size = new System.Drawing.Size(904, 324);
             this._gridPanel.TabIndex = 2;
-            this._gridPanel.AutoScroll = true;
             // 
             // DataGVSuppliers
             // 
             this.DataGVSuppliers.AllowUserToAddRows = false;
             this.DataGVSuppliers.AllowUserToDeleteRows = false;
+            this.DataGVSuppliers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.DataGVSuppliers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGVSuppliers.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataGVSuppliers.Location = new System.Drawing.Point(0, 10);
+            this.DataGVSuppliers.Location = new System.Drawing.Point(0, 0);
             this.DataGVSuppliers.Name = "DataGVSuppliers";
             this.DataGVSuppliers.ReadOnly = true;
             this.DataGVSuppliers.RowHeadersWidth = 51;
             this.DataGVSuppliers.RowTemplate.Height = 24;
-            this.DataGVSuppliers.Size = new System.Drawing.Size(904, 304);
+            this.DataGVSuppliers.Size = new System.Drawing.Size(904, 314);
             this.DataGVSuppliers.TabIndex = 0;
-            this.DataGVSuppliers.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             // 
             // _lblEmptyState
             // 
@@ -187,7 +187,7 @@ namespace InventoryManagementSystem
             this._lblEmptyState.ForeColor = System.Drawing.Color.Gray;
             this._lblEmptyState.Location = new System.Drawing.Point(350, 140);
             this._lblEmptyState.Name = "_lblEmptyState";
-            this._lblEmptyState.Size = new System.Drawing.Size(204, 28);
+            this._lblEmptyState.Size = new System.Drawing.Size(179, 28);
             this._lblEmptyState.TabIndex = 1;
             this._lblEmptyState.Text = "No suppliers found";
             this._lblEmptyState.Visible = false;
@@ -199,17 +199,17 @@ namespace InventoryManagementSystem
             this._actionsPanel.Controls.Add(this.btnDeleteSupplier);
             this._actionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._actionsPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this._actionsPanel.Location = new System.Drawing.Point(23, 457);
+            this._actionsPanel.Location = new System.Drawing.Point(23, 473);
             this._actionsPanel.Name = "_actionsPanel";
-            this._actionsPanel.Size = new System.Drawing.Size(904, 60);
+            this._actionsPanel.Size = new System.Drawing.Size(904, 54);
             this._actionsPanel.TabIndex = 3;
             // 
             // btnAddSupplier
             // 
             this.btnAddSupplier.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.btnAddSupplier.Location = new System.Drawing.Point(754, 13);
+            this.btnAddSupplier.Location = new System.Drawing.Point(748, 3);
             this.btnAddSupplier.Name = "btnAddSupplier";
-            this.btnAddSupplier.Size = new System.Drawing.Size(150, 34);
+            this.btnAddSupplier.Size = new System.Drawing.Size(153, 51);
             this.btnAddSupplier.TabIndex = 0;
             this.btnAddSupplier.Text = "Add Supplier";
             this.btnAddSupplier.UseVisualStyleBackColor = true;
@@ -218,9 +218,9 @@ namespace InventoryManagementSystem
             // btnUpdateSupplier
             // 
             this.btnUpdateSupplier.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.btnUpdateSupplier.Location = new System.Drawing.Point(598, 13);
+            this.btnUpdateSupplier.Location = new System.Drawing.Point(592, 3);
             this.btnUpdateSupplier.Name = "btnUpdateSupplier";
-            this.btnUpdateSupplier.Size = new System.Drawing.Size(150, 34);
+            this.btnUpdateSupplier.Size = new System.Drawing.Size(150, 51);
             this.btnUpdateSupplier.TabIndex = 1;
             this.btnUpdateSupplier.Text = "Update Supplier";
             this.btnUpdateSupplier.UseVisualStyleBackColor = true;
@@ -229,9 +229,9 @@ namespace InventoryManagementSystem
             // btnDeleteSupplier
             // 
             this.btnDeleteSupplier.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.btnDeleteSupplier.Location = new System.Drawing.Point(442, 13);
+            this.btnDeleteSupplier.Location = new System.Drawing.Point(436, 3);
             this.btnDeleteSupplier.Name = "btnDeleteSupplier";
-            this.btnDeleteSupplier.Size = new System.Drawing.Size(150, 34);
+            this.btnDeleteSupplier.Size = new System.Drawing.Size(150, 51);
             this.btnDeleteSupplier.TabIndex = 2;
             this.btnDeleteSupplier.Text = "Delete Supplier";
             this.btnDeleteSupplier.UseVisualStyleBackColor = true;
@@ -243,9 +243,9 @@ namespace InventoryManagementSystem
             this._paginationPanel.Controls.Add(this._lblPageInfo);
             this._paginationPanel.Controls.Add(this._btnNextPage);
             this._paginationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._paginationPanel.Location = new System.Drawing.Point(23, 517);
+            this._paginationPanel.Location = new System.Drawing.Point(23, 533);
             this._paginationPanel.Name = "_paginationPanel";
-            this._paginationPanel.Size = new System.Drawing.Size(904, 50);
+            this._paginationPanel.Size = new System.Drawing.Size(904, 44);
             this._paginationPanel.TabIndex = 4;
             // 
             // _btnPreviousPage
@@ -263,9 +263,9 @@ namespace InventoryManagementSystem
             // 
             this._lblPageInfo.AutoSize = true;
             this._lblPageInfo.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this._lblPageInfo.Location = new System.Drawing.Point(106, 15);
+            this._lblPageInfo.Location = new System.Drawing.Point(782, 8);
             this._lblPageInfo.Name = "_lblPageInfo";
-            this._lblPageInfo.Size = new System.Drawing.Size(0, 24);
+            this._lblPageInfo.Size = new System.Drawing.Size(95, 23);
             this._lblPageInfo.TabIndex = 1;
             this._lblPageInfo.Text = "Page 1 of 1";
             // 
