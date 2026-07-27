@@ -1,6 +1,5 @@
 using InventoryBusinessLayer;
 using System;
-using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -20,9 +19,6 @@ namespace InventoryManagementSystem
             _errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Update Product", clsFormTheme.Icons.Update);
-            btnSearch.Text = clsFormTheme.Icons.Search + "  Find Product";
-            btnSearch.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnSearch);
             clsFormTheme.ApplyTextBoxStyle(txtUpdateProductID);
 

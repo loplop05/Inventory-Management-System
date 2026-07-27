@@ -27,16 +27,13 @@ namespace InventoryManagementSystem
             _errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Edit Category", clsFormTheme.Icons.Update);
-            btnUpdate.Text = clsFormTheme.Icons.Save + "  Save Changes";
-            btnUpdate.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnUpdate);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewCategory);
 
-            lblCategory.BackColor = Color.Transparent;
+            lblCategory.BackColor = Color.White;
             lblCategory.ForeColor = clsFormTheme.HeaderColor;
-            lblCategoryID.BackColor = Color.Transparent;
-            lblCategoryID.ForeColor = clsFormTheme.TextSecondary;
+            lblCategoryID.BackColor = Color.White;
+            lblCategoryID.ForeColor = clsFormTheme.HeaderColor;
 
             btnUpdate.Enabled = false;
             AcceptButton = btnUpdate;

@@ -24,18 +24,15 @@ namespace InventoryManagementSystem
             _errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Edit Supplier", clsFormTheme.Icons.Update);
-            btnUpdate.Text = clsFormTheme.Icons.Save + "  Save Changes";
-            btnUpdate.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnUpdate);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewSupplierName);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewPhone);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewEmail);
 
-            lblSupplierName.BackColor = Color.Transparent;
+            lblSupplierName.BackColor = Color.White;
             lblSupplierName.ForeColor = clsFormTheme.HeaderColor;
-            lblSupplierID.BackColor = Color.Transparent;
-            lblSupplierID.ForeColor = clsFormTheme.TextSecondary;
+            lblSupplierID.BackColor = Color.White;
+            lblSupplierID.ForeColor = clsFormTheme.HeaderColor;
 
             btnUpdate.Enabled = false;
             AcceptButton = btnUpdate;
