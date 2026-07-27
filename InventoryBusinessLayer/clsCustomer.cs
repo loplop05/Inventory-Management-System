@@ -116,12 +116,26 @@ namespace InventoryBusinessLayer
             if (phoneNumber.StartsWith("+962"))
             {
                 // +962 followed by 9 digits
-                return phoneNumber.Length == 13 && phoneNumber.Substring(3).All(char.IsDigit);
+                if (phoneNumber.Length != 13)
+                    return false;
+                for (int i = 3; i < phoneNumber.Length; i++)
+                {
+                    if (!char.IsDigit(phoneNumber[i]))
+                        return false;
+                }
+                return true;
             }
             else if (phoneNumber.StartsWith("07"))
             {
                 // 07 followed by 8 digits
-                return phoneNumber.Length == 10 && phoneNumber.Substring(2).All(char.IsDigit);
+                if (phoneNumber.Length != 10)
+                    return false;
+                for (int i = 2; i < phoneNumber.Length; i++)
+                {
+                    if (!char.IsDigit(phoneNumber[i]))
+                        return false;
+                }
+                return true;
             }
 
             return false;

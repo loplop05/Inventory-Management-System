@@ -20,6 +20,11 @@ namespace InventoryBusinessLayer
             return clsPOSData.CompleteOrder(orderItems, taxRate, out orderID, out errorMessage);
         }
 
+        public static bool CompleteOrder(DataTable orderItems, decimal taxRate, int? customerID, string paymentMethod, string paymentDetails, out int orderID, out string errorMessage)
+        {
+            return clsPOSData.CompleteOrder(orderItems, taxRate, customerID, paymentMethod, paymentDetails, out orderID, out errorMessage);
+        }
+
         public static DataTable GetTodayOrderSummary()
         {
             return clsPOSData.GetTodayOrderSummary();

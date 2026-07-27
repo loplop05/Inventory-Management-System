@@ -31,15 +31,17 @@ namespace InventoryManagementSystem
             this.btnCategories = new System.Windows.Forms.Button();
             this.btnSuppliers = new System.Windows.Forms.Button();
             this.btnProducts = new System.Windows.Forms.Button();
+            this.btnReceiptSearch = new System.Windows.Forms.Button();
+            this.btnPrintReceipt = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btnCategories
             // 
-            this.btnCategories.Location = new System.Drawing.Point(309, 148);
+            this.btnCategories.Location = new System.Drawing.Point(150, 150);
             this.btnCategories.Name = "btnCategories";
-            this.btnCategories.Size = new System.Drawing.Size(232, 109);
+            this.btnCategories.Size = new System.Drawing.Size(200, 120);
             this.btnCategories.TabIndex = 0;
             this.btnCategories.Text = "Categories";
             this.btnCategories.UseVisualStyleBackColor = true;
@@ -47,9 +49,9 @@ namespace InventoryManagementSystem
             // 
             // btnSuppliers
             // 
-            this.btnSuppliers.Location = new System.Drawing.Point(799, 148);
+            this.btnSuppliers.Location = new System.Drawing.Point(400, 150);
             this.btnSuppliers.Name = "btnSuppliers";
-            this.btnSuppliers.Size = new System.Drawing.Size(232, 109);
+            this.btnSuppliers.Size = new System.Drawing.Size(200, 120);
             this.btnSuppliers.TabIndex = 1;
             this.btnSuppliers.Text = "Suppliers";
             this.btnSuppliers.UseVisualStyleBackColor = true;
@@ -57,13 +59,23 @@ namespace InventoryManagementSystem
             // 
             // btnProducts
             // 
-            this.btnProducts.Location = new System.Drawing.Point(456, 442);
+            this.btnProducts.Location = new System.Drawing.Point(650, 150);
             this.btnProducts.Name = "btnProducts";
-            this.btnProducts.Size = new System.Drawing.Size(232, 109);
+            this.btnProducts.Size = new System.Drawing.Size(200, 120);
             this.btnProducts.TabIndex = 2;
             this.btnProducts.Text = "Products";
             this.btnProducts.UseVisualStyleBackColor = true;
             this.btnProducts.Click += new System.EventHandler(this.btnProducts_Click);
+            // 
+            // btnReceiptSearch
+            // 
+            this.btnReceiptSearch.Location = new System.Drawing.Point(900, 150);
+            this.btnReceiptSearch.Name = "btnReceiptSearch";
+            this.btnReceiptSearch.Size = new System.Drawing.Size(200, 120);
+            this.btnReceiptSearch.TabIndex = 3;
+            this.btnReceiptSearch.Text = "Receipt Search";
+            this.btnReceiptSearch.UseVisualStyleBackColor = true;
+            this.btnReceiptSearch.Click += new System.EventHandler(this.btnReceiptSearch_Click);
             // 
             // label1
             // 
@@ -93,6 +105,7 @@ namespace InventoryManagementSystem
             this.MinimumSize = new System.Drawing.Size(900, 500);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.btnReceiptSearch);
             this.Controls.Add(this.btnProducts);
             this.Controls.Add(this.btnSuppliers);
             this.Controls.Add(this.btnCategories);
@@ -109,6 +122,7 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button btnCategories;
         private System.Windows.Forms.Button btnSuppliers;
         private System.Windows.Forms.Button btnProducts;
+        private System.Windows.Forms.Button btnReceiptSearch;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button4;
     }

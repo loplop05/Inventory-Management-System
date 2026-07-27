@@ -174,6 +174,36 @@
     <Compile Include="frmShowProductToUpdate.Designer.cs">
       <DependentUpon>frmShowProductToUpdate.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmAddCustomer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAddCustomer.Designer.cs">
+      <DependentUpon>frmAddCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmReceiptSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmReceiptSearch.Designer.cs">
+      <DependentUpon>frmReceiptSearch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCustomerReceiptHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCustomerReceiptHistory.Designer.cs">
+      <DependentUpon>frmCustomerReceiptHistory.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmExchange.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmExchange.Designer.cs">
+      <DependentUpon>frmExchange.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmPrintReceipt.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPrintReceipt.Designer.cs">
+      <DependentUpon>frmPrintReceipt.cs</DependentUpon>
+    </Compile>
     <Compile Include="clsFormTheme.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -235,6 +265,21 @@
     <EmbeddedResource Include="frmShowProductToUpdate.resx">
       <DependentUpon>frmShowProductToUpdate.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAddCustomer.resx">
+      <DependentUpon>frmAddCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmReceiptSearch.resx">
+      <DependentUpon>frmReceiptSearch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCustomerReceiptHistory.resx">
+      <DependentUpon>frmCustomerReceiptHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmExchange.resx">
+      <DependentUpon>frmExchange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPrintReceipt.resx">
+      <DependentUpon>frmPrintReceipt.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

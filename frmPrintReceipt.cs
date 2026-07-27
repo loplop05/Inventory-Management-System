@@ -1,0 +1,235 @@
+using System;
+using System.Data;
+using System.Drawing;
+using System.Drawing.Printing;
+using System.Windows.Forms;
+using InventoryBusinessLayer;
+
+namespace InventoryManagementSystem
+{
+    public partial class frmPrintReceipt : Form
+    {
+        private int _currentOrderID = -1;
+        private DataTable _currentOrderDetails = null;
+        private DataTable _currentOrderItems = null;
+
+        public frmPrintReceipt()
+        {
+            InitializeComponent();
+        }
+
+        private void frmPrintReceipt_Load(object sender, EventArgs e)
+        {
+            ApplyTheme();
+            ClearDisplay();
+        }
+
+        private void ApplyTheme()
+        {
+            clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.CreateHeaderPanel(this, "Print Receipt", clsFormTheme.Icons.Print);
+            clsFormTheme.ApplyTextBoxStyle(txtOrderID);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnSearch);
+            clsFormTheme.ApplySuccessButtonStyle(btnPrint);
+            clsFormTheme.ApplySecondaryButtonStyle(btnClose);
+
+            KeyDown += frmPrintReceipt_KeyDown;
+        }
+
+        private void ClearDisplay()
+        {
+            _currentOrderID = -1;
+            _currentOrderDetails = null;
+            _currentOrderItems = null;
+            txtOrderID.Text = "";
+            lblReceiptContent.Text = "Enter an Order ID to view and print the receipt.";
+            btnPrint.Enabled = false;
+        }
+
+        private void txtOrderID_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnSearch_Click(sender, e);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtOrderID.Text))
+            {
+                MessageBox.Show("Please enter an Order ID.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtOrderID.Focus();
+                return;
+            }
+
+            int orderID;
+            if (!int.TryParse(txtOrderID.Text.Trim(), out orderID))
+            {
+                MessageBox.Show("Invalid Order ID format.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtOrderID.Focus();
+                return;
+            }
+
+            LoadOrderDetails(orderID);
+        }
+
+        private void LoadOrderDetails(int orderID)
+        {
+            _currentOrderDetails = clsCustomer.GetOrderDetails(orderID);
+            _currentOrderItems = clsCustomer.GetOrderItems(orderID);
+
+            if (_currentOrderDetails == null || _currentOrderDetails.Rows.Count == 0)
+            {
+                MessageBox.Show("Order not found.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ClearDisplay();
+                return;
+            }
+
+            _currentOrderID = orderID;
+            DisplayReceipt();
+        }
+
+        private void DisplayReceipt()
+        {
+            if (_currentOrderDetails == null || _currentOrderDetails.Rows.Count == 0)
+                return;
+
+            DataRow order = _currentOrderDetails.Rows[0];
+
+            // Build receipt text
+            System.Text.StringBuilder receipt = new System.Text.StringBuilder();
+
+            receipt.AppendLine("========================================");
+            receipt.AppendLine("        INVENTORY MANAGEMENT SYSTEM");
+            receipt.AppendLine("========================================");
+            receipt.AppendLine();
+
+            DateTime orderDate = Convert.ToDateTime(order["OrderDate"]);
+            receipt.AppendLine($"Order ID: {_currentOrderID}");
+            receipt.AppendLine($"Date: {orderDate:yyyy-MM-dd HH:mm}");
+            receipt.AppendLine();
+
+            // Customer info
+            if (order["CustomerID"] != DBNull.Value && order["CustomerID"] != null)
+            {
+                string customerName = order["CustomerName"] != DBNull.Value ? order["CustomerName"].ToString() : "Unknown";
+                string phoneNumber = order["PhoneNumber"] != DBNull.Value ? order["PhoneNumber"].ToString() : "N/A";
+                receipt.AppendLine($"Customer: {customerName}");
+                receipt.AppendLine($"Phone: {phoneNumber}");
+            }
+            else
+            {
+                receipt.AppendLine("Customer: Walk-in");
+            }
+            receipt.AppendLine();
+
+            // Payment info
+            string paymentMethod = order["PaymentMethod"] != DBNull.Value ? order["PaymentMethod"].ToString() : "Cash";
+            string paymentDetails = order["PaymentDetails"] != DBNull.Value ? order["PaymentDetails"].ToString() : "";
+            receipt.AppendLine($"Payment: {paymentMethod}");
+            if (!string.IsNullOrEmpty(paymentDetails))
+                receipt.AppendLine($"Card: {paymentDetails}");
+            receipt.AppendLine();
+            receipt.AppendLine("----------------------------------------");
+
+            // Order items
+            if (_currentOrderItems != null && _currentOrderItems.Rows.Count > 0)
+            {
+                receipt.AppendLine("ITEMS:");
+                receipt.AppendLine();
+
+                foreach (DataRow item in _currentOrderItems.Rows)
+                {
+                    string productName = item["ProductName"].ToString();
+                    int quantity = Convert.ToInt32(item["Quantity"]);
+                    decimal unitPrice = Convert.ToDecimal(item["UnitPrice"]);
+                    decimal subtotal = Convert.ToDecimal(item["Subtotal"]);
+
+                    receipt.AppendLine($"{productName}");
+                    receipt.AppendLine($"  Qty: {quantity} x {unitPrice:C2} = {subtotal:C2}");
+                }
+            }
+            receipt.AppendLine();
+            receipt.AppendLine("----------------------------------------");
+
+            // Totals
+            decimal subtotal = Convert.ToDecimal(order["Subtotal"]);
+            decimal taxAmount = Convert.ToDecimal(order["TaxAmount"]);
+            decimal totalAmount = Convert.ToDecimal(order["TotalAmount"]);
+
+            receipt.AppendLine($"Subtotal: {subtotal:C2}");
+            receipt.AppendLine($"Tax (7%): {taxAmount:C2}");
+            receipt.AppendLine($"TOTAL: {totalAmount:C2}");
+            receipt.AppendLine();
+            receipt.AppendLine("========================================");
+            receipt.AppendLine("          Thank you for shopping!");
+            receipt.AppendLine("========================================");
+
+            lblReceiptContent.Text = receipt.ToString();
+            btnPrint.Enabled = true;
+        }
+
+        private void btnPrint_Click(object sender, EventArgs e)
+        {
+            if (_currentOrderID == -1)
+                return;
+
+            DialogResult result = MessageBox.Show(
+                "Do you want to print this receipt?",
+                "Print Receipt",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                PrintReceipt();
+            }
+        }
+
+        private void PrintReceipt()
+        {
+            PrintDocument printDoc = new PrintDocument();
+            printDoc.PrintPage += (sender, e) =>
+            {
+                Font font = new Font("Consolas", 10);
+                float lineHeight = font.GetHeight(e.Graphics);
+                float yPos = 20;
+                float leftMargin = 20;
+
+                foreach (string line in lblReceiptContent.Text.Split('\n'))
+                {
+                    e.Graphics.DrawString(line, font, Brushes.Black, leftMargin, yPos);
+                    yPos += lineHeight;
+                }
+            };
+
+            PrintDialog printDialog = new PrintDialog
+            {
+                Document = printDoc
+            };
+
+            if (printDialog.ShowDialog() == DialogResult.OK)
+            {
+                printDoc.Print();
+                MessageBox.Show("Receipt printed successfully.", "Print", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void frmPrintReceipt_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                btnClose_Click(sender, e);
+            }
+        }
+    }
+}

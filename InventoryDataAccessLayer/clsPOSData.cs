@@ -76,6 +76,11 @@ namespace InventoryDataAccessLayer
 
         public static bool CompleteOrder(DataTable orderItems, decimal taxRate, out int orderID, out string errorMessage)
         {
+            return CompleteOrder(orderItems, taxRate, null, null, null, out orderID, out errorMessage);
+        }
+
+        public static bool CompleteOrder(DataTable orderItems, decimal taxRate, int? customerID, string paymentMethod, string paymentDetails, out int orderID, out string errorMessage)
+        {
             orderID = -1;
             errorMessage = "";
 
@@ -122,14 +127,19 @@ namespace InventoryDataAccessLayer
                         decimal taxAmount = Math.Round(subtotal * taxRate, 2);
                         decimal totalAmount = subtotal + taxAmount;
 
-                        using (SqlCommand orderCommand = new SqlCommand(@"
-                            INSERT INTO Orders (OrderDate, Subtotal, TaxAmount, TotalAmount)
-                            VALUES (GETDATE(), @Subtotal, @TaxAmount, @TotalAmount);
-                            SELECT SCOPE_IDENTITY();", connection, transaction))
+                        string orderQuery = @"
+                            INSERT INTO Orders (OrderDate, Subtotal, TaxAmount, TotalAmount, CustomerID, PaymentMethod, PaymentDetails)
+                            VALUES (GETDATE(), @Subtotal, @TaxAmount, @TotalAmount, @CustomerID, @PaymentMethod, @PaymentDetails);
+                            SELECT SCOPE_IDENTITY();";
+
+                        using (SqlCommand orderCommand = new SqlCommand(orderQuery, connection, transaction))
                         {
                             orderCommand.Parameters.AddWithValue("@Subtotal", subtotal);
                             orderCommand.Parameters.AddWithValue("@TaxAmount", taxAmount);
                             orderCommand.Parameters.AddWithValue("@TotalAmount", totalAmount);
+                            orderCommand.Parameters.AddWithValue("@CustomerID", customerID.HasValue ? (object)customerID.Value : DBNull.Value);
+                            orderCommand.Parameters.AddWithValue("@PaymentMethod", paymentMethod ?? (object)DBNull.Value);
+                            orderCommand.Parameters.AddWithValue("@PaymentDetails", paymentDetails ?? (object)DBNull.Value);
 
                             orderID = Convert.ToInt32(orderCommand.ExecuteScalar());
                         }
@@ -172,6 +182,19 @@ namespace InventoryDataAccessLayer
                                     transaction.Rollback();
                                     return false;
                                 }
+                            }
+                        }
+
+                        // Update customer's last purchase date if customerID is provided
+                        if (customerID.HasValue)
+                        {
+                            using (SqlCommand updateCustomerCommand = new SqlCommand(@"
+                                UPDATE Customers
+                                SET LastPurchaseDate = GETDATE()
+                                WHERE CustomerID = @CustomerID;", connection, transaction))
+                            {
+                                updateCustomerCommand.Parameters.AddWithValue("@CustomerID", customerID.Value);
+                                updateCustomerCommand.ExecuteNonQuery();
                             }
                         }
 

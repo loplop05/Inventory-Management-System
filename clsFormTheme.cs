@@ -80,6 +80,7 @@ namespace InventoryManagementSystem
 
             // Status / misc
             public const string Success     = "\uE73E";  // Accept (checkmark)
+            public const string Check       = "\uE73E";  // Accept (checkmark)
             public const string Warning     = "\uE7BA";  // Warning
             public const string Info        = "\uE946";  // Info
             public const string Export      = "\uEDE1";  // Download
@@ -90,6 +91,9 @@ namespace InventoryManagementSystem
             public const string Money       = "\uE8A4";  // Money
             public const string Calendar    = "\uE787";  // Calendar
             public const string Chart       = "\uE9D9";  // BarChart
+            public const string User        = "\uE77B";  // Contact
+            public const string Exchange    = "\uE77C";  // Switch
+            public const string Plus        = "\uE710";  // Add
         }
 
         // ════════════════════════════════════════════════════════════════════════

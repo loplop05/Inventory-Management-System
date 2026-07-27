@@ -15,6 +15,8 @@ namespace InventoryManagementSystem
 
         private readonly BindingList<ReceiptItem> _receiptItems = new BindingList<ReceiptItem>();
         private DataTable _productsTable = new DataTable();
+        private int? _selectedCustomerID = null;
+        private string _selectedCustomerName = "";
 
         // ── Icon+label button rendering ─────────────────────────────────────
         private class IconButtonInfo
@@ -84,6 +86,9 @@ namespace InventoryManagementSystem
 
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.ApplyTextBoxStyle(_txtSearch);
+            clsFormTheme.ApplyTextBoxStyle(_txtCustomerPhone);
+            clsFormTheme.ApplyTextBoxStyle(_txtPaymentDetails);
+            clsFormTheme.ApplyPrimaryButtonStyle(_btnAddCustomer);
 
             // ── Toolbar buttons ────────────────────────────────────────────────
             clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh);
@@ -122,6 +127,7 @@ namespace InventoryManagementSystem
 
             LoadProducts();
             RefreshReceiptTotals();
+            ClearCustomerInfo();
         }
 
         private void LoadProducts()
@@ -385,9 +391,27 @@ namespace InventoryManagementSystem
                 }
             }
 
+            // Validate payment details if Visa is selected
+            if (_rbVisa.Checked && string.IsNullOrWhiteSpace(_txtPaymentDetails.Text))
+            {
+                MessageBox.Show("Please enter the last 4 digits of the card.", "Payment", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                _txtPaymentDetails.Focus();
+                return;
+            }
+
+            if (_rbVisa.Checked && _txtPaymentDetails.Text.Length != 4)
+            {
+                MessageBox.Show("Please enter exactly 4 digits for the card.", "Payment", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                _txtPaymentDetails.Focus();
+                return;
+            }
+
+            string paymentMethod = _rbCash.Checked ? "Cash" : "Visa";
+            string paymentDetails = _rbCash.Checked ? null : "****" + _txtPaymentDetails.Text;
+
             int orderID;
             string errorMessage;
-            bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, out orderID, out errorMessage);
+            bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, _selectedCustomerID, paymentMethod, paymentDetails, out orderID, out errorMessage);
 
             if (!saved)
             {
@@ -399,7 +423,21 @@ namespace InventoryManagementSystem
             _receiptItems.Clear();
             RefreshReceiptTotals();
             LoadProducts();
+            ClearCustomerInfo();
             MessageBox.Show("Order #" + orderID + " completed successfully.", "POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void ClearCustomerInfo()
+        {
+            _selectedCustomerID = null;
+            _selectedCustomerName = "";
+            _txtCustomerPhone.Text = "";
+            _lblCustomerName.Text = "";
+            _btnAddCustomer.Text = "+ New";
+            _rbCash.Checked = true;
+            _txtPaymentDetails.Text = "";
+            _txtPaymentDetails.Enabled = false;
+            _lblPaymentDetails.Text = "";
         }
 
         // ── Event handlers ─────────────────────────────────────────────────────
@@ -412,6 +450,74 @@ namespace InventoryManagementSystem
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             LoadProducts();
+        }
+
+        private void txtCustomerPhone_TextChanged(object sender, EventArgs e)
+        {
+            string phoneNumber = _txtCustomerPhone.Text.Trim();
+
+            if (string.IsNullOrEmpty(phoneNumber))
+            {
+                ClearCustomerInfo();
+                return;
+            }
+
+            // Auto-lookup customer when phone number is entered
+            DataTable customer = clsCustomer.GetCustomerByPhone(phoneNumber);
+            if (customer != null && customer.Rows.Count > 0)
+            {
+                _selectedCustomerID = Convert.ToInt32(customer.Rows[0]["CustomerID"]);
+                _selectedCustomerName = customer.Rows[0]["CustomerName"].ToString();
+                _lblCustomerName.Text = _selectedCustomerName;
+                _lblCustomerName.ForeColor = Color.FromArgb(44, 62, 80);
+                _btnAddCustomer.Text = "Change";
+            }
+            else
+            {
+                _selectedCustomerID = null;
+                _selectedCustomerName = "";
+                _lblCustomerName.Text = "New customer";
+                _lblCustomerName.ForeColor = Color.FromArgb(96, 125, 139);
+                _btnAddCustomer.Text = "+ New";
+            }
+        }
+
+        private void btnAddCustomer_Click(object sender, EventArgs e)
+        {
+            using (frmAddCustomer addCustomerForm = new frmAddCustomer())
+            {
+                // Pre-fill phone number if entered
+                if (!string.IsNullOrWhiteSpace(_txtCustomerPhone.Text))
+                {
+                    addCustomerForm.PhoneNumber = _txtCustomerPhone.Text.Trim();
+                }
+
+                DialogResult result = addCustomerForm.ShowDialog(this);
+
+                if (result == DialogResult.OK)
+                {
+                    _selectedCustomerID = addCustomerForm.CustomerID;
+                    _selectedCustomerName = addCustomerForm.CustomerName;
+                    _txtCustomerPhone.Text = addCustomerForm.PhoneNumber;
+                    _lblCustomerName.Text = _selectedCustomerName;
+                    _lblCustomerName.ForeColor = Color.FromArgb(44, 62, 80);
+                    _btnAddCustomer.Text = "Change";
+                }
+            }
+        }
+
+        private void rbPayment_CheckedChanged(object sender, EventArgs e)
+        {
+            _txtPaymentDetails.Enabled = _rbVisa.Checked;
+            if (_rbCash.Checked)
+            {
+                _txtPaymentDetails.Text = "";
+                _lblPaymentDetails.Text = "";
+            }
+            else
+            {
+                _txtPaymentDetails.Focus();
+            }
         }
 
         private void btnReport_Click(object sender, EventArgs e)
