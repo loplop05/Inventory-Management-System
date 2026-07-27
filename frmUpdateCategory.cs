@@ -25,6 +25,9 @@ namespace InventoryManagementSystem
             _errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
             clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.CreateHeaderPanel(this, "Update Category", clsFormTheme.Icons.Update);
+            btnSearch.Text = clsFormTheme.Icons.Search + "  Find Category";
+            btnSearch.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnSearch);
             clsFormTheme.ApplyTextBoxStyle(txtUpdateCategoryid);
 

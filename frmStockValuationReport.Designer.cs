@@ -42,7 +42,7 @@ namespace InventoryManagementSystem
             // 
             this.labelTitle.AutoSize = true;
             this.labelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTitle.Location = new System.Drawing.Point(55, 30);
+            this.labelTitle.Location = new System.Drawing.Point(55, 94);
             this.labelTitle.Name = "labelTitle";
             this.labelTitle.Size = new System.Drawing.Size(285, 32);
             this.labelTitle.TabIndex = 0;
@@ -51,7 +51,7 @@ namespace InventoryManagementSystem
             // btnExportCsv
             // 
             this.btnExportCsv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExportCsv.Location = new System.Drawing.Point(536, 25);
+            this.btnExportCsv.Location = new System.Drawing.Point(536, 89);
             this.btnExportCsv.Name = "btnExportCsv";
             this.btnExportCsv.Size = new System.Drawing.Size(122, 38);
             this.btnExportCsv.TabIndex = 0;
@@ -62,7 +62,7 @@ namespace InventoryManagementSystem
             // btnRefresh
             // 
             this.btnRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRefresh.Location = new System.Drawing.Point(672, 25);
+            this.btnRefresh.Location = new System.Drawing.Point(672, 89);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(130, 38);
             this.btnRefresh.TabIndex = 1;
@@ -73,7 +73,7 @@ namespace InventoryManagementSystem
             // btnClose
             // 
             this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClose.Location = new System.Drawing.Point(816, 25);
+            this.btnClose.Location = new System.Drawing.Point(816, 89);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(130, 38);
             this.btnClose.TabIndex = 2;
@@ -86,7 +86,7 @@ namespace InventoryManagementSystem
             this.DataGVStockValuation.AllowUserToAddRows = false;
             this.DataGVStockValuation.AllowUserToDeleteRows = false;
             this.DataGVStockValuation.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGVStockValuation.Location = new System.Drawing.Point(55, 91);
+            this.DataGVStockValuation.Location = new System.Drawing.Point(55, 155);
             this.DataGVStockValuation.Name = "DataGVStockValuation";
             this.DataGVStockValuation.ReadOnly = true;
             this.DataGVStockValuation.RowHeadersWidth = 51;
@@ -97,7 +97,7 @@ namespace InventoryManagementSystem
             // lblTotalStockValue
             // 
             this.lblTotalStockValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalStockValue.Location = new System.Drawing.Point(55, 505);
+            this.lblTotalStockValue.Location = new System.Drawing.Point(55, 569);
             this.lblTotalStockValue.Name = "lblTotalStockValue";
             this.lblTotalStockValue.Size = new System.Drawing.Size(500, 32);
             this.lblTotalStockValue.TabIndex = 4;
@@ -118,7 +118,7 @@ namespace InventoryManagementSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1002, 586);
+            this.ClientSize = new System.Drawing.Size(1002, 650);
             this.Controls.Add(this.lblEmptyState);
             this.Controls.Add(this.lblTotalStockValue);
             this.Controls.Add(this.DataGVStockValuation);

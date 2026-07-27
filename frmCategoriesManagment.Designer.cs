@@ -46,7 +46,7 @@
             // btnAddCategory
             //
             this.btnAddCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddCategory.Location = new System.Drawing.Point(720, 132);
+            this.btnAddCategory.Location = new System.Drawing.Point(720, 196);
             this.btnAddCategory.Name = "btnAddCategory";
             this.btnAddCategory.Size = new System.Drawing.Size(220, 70);
             this.btnAddCategory.TabIndex = 5;
@@ -57,7 +57,7 @@
             // btnDeleteCategory
             //
             this.btnDeleteCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDeleteCategory.Location = new System.Drawing.Point(720, 388);
+            this.btnDeleteCategory.Location = new System.Drawing.Point(720, 452);
             this.btnDeleteCategory.Name = "btnDeleteCategory";
             this.btnDeleteCategory.Size = new System.Drawing.Size(220, 70);
             this.btnDeleteCategory.TabIndex = 7;
@@ -68,7 +68,7 @@
             // btnUpdateCategory
             //
             this.btnUpdateCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpdateCategory.Location = new System.Drawing.Point(720, 260);
+            this.btnUpdateCategory.Location = new System.Drawing.Point(720, 324);
             this.btnUpdateCategory.Name = "btnUpdateCategory";
             this.btnUpdateCategory.Size = new System.Drawing.Size(220, 70);
             this.btnUpdateCategory.TabIndex = 6;
@@ -79,7 +79,7 @@
             // btnBackToPrevPage
             //
             this.btnBackToPrevPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBackToPrevPage.Location = new System.Drawing.Point(820, 23);
+            this.btnBackToPrevPage.Location = new System.Drawing.Point(820, 87);
             this.btnBackToPrevPage.Name = "btnBackToPrevPage";
             this.btnBackToPrevPage.Size = new System.Drawing.Size(120, 35);
             this.btnBackToPrevPage.TabIndex = 8;
@@ -92,7 +92,7 @@
             this.DataGVCategories.AllowUserToAddRows = false;
             this.DataGVCategories.AllowUserToDeleteRows = false;
             this.DataGVCategories.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGVCategories.Location = new System.Drawing.Point(70, 93);
+            this.DataGVCategories.Location = new System.Drawing.Point(70, 157);
             this.DataGVCategories.Name = "DataGVCategories";
             this.DataGVCategories.ReadOnly = true;
             this.DataGVCategories.RowHeadersWidth = 51;
@@ -104,7 +104,7 @@
             // btnRefresh
             //
             this.btnRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRefresh.Location = new System.Drawing.Point(535, 23);
+            this.btnRefresh.Location = new System.Drawing.Point(535, 87);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(125, 35);
             this.btnRefresh.TabIndex = 3;
@@ -116,7 +116,7 @@
             //
             this.labelSearch.AutoSize = true;
             this.labelSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelSearch.Location = new System.Drawing.Point(70, 31);
+            this.labelSearch.Location = new System.Drawing.Point(70, 95);
             this.labelSearch.Name = "labelSearch";
             this.labelSearch.Size = new System.Drawing.Size(63, 20);
             this.labelSearch.TabIndex = 9;
@@ -124,7 +124,7 @@
             //
             // txtSearch
             //
-            this.txtSearch.Location = new System.Drawing.Point(145, 25);
+            this.txtSearch.Location = new System.Drawing.Point(145, 89);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(365, 26);
             this.txtSearch.TabIndex = 0;
@@ -143,7 +143,7 @@
             //
             // btnPreviousPage
             //
-            this.btnPreviousPage.Location = new System.Drawing.Point(70, 527);
+            this.btnPreviousPage.Location = new System.Drawing.Point(70, 591);
             this.btnPreviousPage.Name = "btnPreviousPage";
             this.btnPreviousPage.Size = new System.Drawing.Size(110, 35);
             this.btnPreviousPage.TabIndex = 1;
@@ -153,7 +153,7 @@
             //
             // btnNextPage
             //
-            this.btnNextPage.Location = new System.Drawing.Point(550, 527);
+            this.btnNextPage.Location = new System.Drawing.Point(550, 591);
             this.btnNextPage.Name = "btnNextPage";
             this.btnNextPage.Size = new System.Drawing.Size(110, 35);
             this.btnNextPage.TabIndex = 2;
@@ -164,7 +164,7 @@
             // lblPageInfo
             //
             this.lblPageInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPageInfo.Location = new System.Drawing.Point(210, 531);
+            this.lblPageInfo.Location = new System.Drawing.Point(210, 595);
             this.lblPageInfo.Name = "lblPageInfo";
             this.lblPageInfo.Size = new System.Drawing.Size(300, 25);
             this.lblPageInfo.TabIndex = 11;
@@ -175,7 +175,7 @@
             //
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1024, 614);
+            this.ClientSize = new System.Drawing.Size(1024, 678);
             this.Controls.Add(this.lblPageInfo);
             this.Controls.Add(this.btnNextPage);
             this.Controls.Add(this.btnPreviousPage);

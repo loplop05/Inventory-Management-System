@@ -25,7 +25,8 @@ namespace InventoryManagementSystem
             _errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
             clsFormTheme.ApplyFormStyle(this);
-            btnAdd.Text = clsFormTheme.Icons.Add + " Add";
+            clsFormTheme.CreateHeaderPanel(this, "Add New Category", clsFormTheme.Icons.Add);
+            btnAdd.Text = clsFormTheme.Icons.Save + "  Save Category";
             btnAdd.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnAdd);
             clsFormTheme.ApplyTextBoxStyle(txtBoxCategoryName);

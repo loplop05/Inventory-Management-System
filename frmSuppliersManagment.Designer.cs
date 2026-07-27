@@ -46,7 +46,7 @@ namespace InventoryManagementSystem
             // btnAddSupplier
             // 
             this.btnAddSupplier.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAddSupplier.Location = new System.Drawing.Point(720, 132);
+            this.btnAddSupplier.Location = new System.Drawing.Point(720, 196);
             this.btnAddSupplier.Name = "btnAddSupplier";
             this.btnAddSupplier.Size = new System.Drawing.Size(220, 70);
             this.btnAddSupplier.TabIndex = 5;
@@ -57,7 +57,7 @@ namespace InventoryManagementSystem
             // btnDeleteSupplier
             // 
             this.btnDeleteSupplier.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDeleteSupplier.Location = new System.Drawing.Point(720, 388);
+            this.btnDeleteSupplier.Location = new System.Drawing.Point(720, 452);
             this.btnDeleteSupplier.Name = "btnDeleteSupplier";
             this.btnDeleteSupplier.Size = new System.Drawing.Size(220, 70);
             this.btnDeleteSupplier.TabIndex = 7;
@@ -68,7 +68,7 @@ namespace InventoryManagementSystem
             // btnUpdateSupplier
             // 
             this.btnUpdateSupplier.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnUpdateSupplier.Location = new System.Drawing.Point(720, 260);
+            this.btnUpdateSupplier.Location = new System.Drawing.Point(720, 324);
             this.btnUpdateSupplier.Name = "btnUpdateSupplier";
             this.btnUpdateSupplier.Size = new System.Drawing.Size(220, 70);
             this.btnUpdateSupplier.TabIndex = 6;
@@ -79,7 +79,7 @@ namespace InventoryManagementSystem
             // btnBackToPrevPage
             // 
             this.btnBackToPrevPage.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBackToPrevPage.Location = new System.Drawing.Point(820, 23);
+            this.btnBackToPrevPage.Location = new System.Drawing.Point(820, 87);
             this.btnBackToPrevPage.Name = "btnBackToPrevPage";
             this.btnBackToPrevPage.Size = new System.Drawing.Size(120, 35);
             this.btnBackToPrevPage.TabIndex = 8;
@@ -92,7 +92,7 @@ namespace InventoryManagementSystem
             this.DataGVSuppliers.AllowUserToAddRows = false;
             this.DataGVSuppliers.AllowUserToDeleteRows = false;
             this.DataGVSuppliers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGVSuppliers.Location = new System.Drawing.Point(70, 93);
+            this.DataGVSuppliers.Location = new System.Drawing.Point(70, 157);
             this.DataGVSuppliers.Name = "DataGVSuppliers";
             this.DataGVSuppliers.ReadOnly = true;
             this.DataGVSuppliers.RowHeadersWidth = 51;
@@ -103,7 +103,7 @@ namespace InventoryManagementSystem
             // btnRefresh
             // 
             this.btnRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRefresh.Location = new System.Drawing.Point(535, 23);
+            this.btnRefresh.Location = new System.Drawing.Point(535, 87);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(125, 35);
             this.btnRefresh.TabIndex = 3;
@@ -115,7 +115,7 @@ namespace InventoryManagementSystem
             // 
             this.labelSearch.AutoSize = true;
             this.labelSearch.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelSearch.Location = new System.Drawing.Point(70, 31);
+            this.labelSearch.Location = new System.Drawing.Point(70, 95);
             this.labelSearch.Name = "labelSearch";
             this.labelSearch.Size = new System.Drawing.Size(63, 20);
             this.labelSearch.TabIndex = 9;
@@ -123,7 +123,7 @@ namespace InventoryManagementSystem
             // 
             // txtSearch
             // 
-            this.txtSearch.Location = new System.Drawing.Point(145, 25);
+            this.txtSearch.Location = new System.Drawing.Point(145, 89);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(365, 26);
             this.txtSearch.TabIndex = 0;
@@ -142,7 +142,7 @@ namespace InventoryManagementSystem
             // 
             // btnPreviousPage
             // 
-            this.btnPreviousPage.Location = new System.Drawing.Point(70, 527);
+            this.btnPreviousPage.Location = new System.Drawing.Point(70, 591);
             this.btnPreviousPage.Name = "btnPreviousPage";
             this.btnPreviousPage.Size = new System.Drawing.Size(110, 35);
             this.btnPreviousPage.TabIndex = 1;
@@ -152,7 +152,7 @@ namespace InventoryManagementSystem
             // 
             // btnNextPage
             // 
-            this.btnNextPage.Location = new System.Drawing.Point(550, 527);
+            this.btnNextPage.Location = new System.Drawing.Point(550, 591);
             this.btnNextPage.Name = "btnNextPage";
             this.btnNextPage.Size = new System.Drawing.Size(110, 35);
             this.btnNextPage.TabIndex = 2;
@@ -163,7 +163,7 @@ namespace InventoryManagementSystem
             // lblPageInfo
             // 
             this.lblPageInfo.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPageInfo.Location = new System.Drawing.Point(210, 531);
+            this.lblPageInfo.Location = new System.Drawing.Point(210, 595);
             this.lblPageInfo.Name = "lblPageInfo";
             this.lblPageInfo.Size = new System.Drawing.Size(300, 25);
             this.lblPageInfo.TabIndex = 11;
@@ -174,7 +174,7 @@ namespace InventoryManagementSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1024, 614);
+            this.ClientSize = new System.Drawing.Size(1024, 678);
             this.Controls.Add(this.lblPageInfo);
             this.Controls.Add(this.btnNextPage);
             this.Controls.Add(this.btnPreviousPage);

@@ -38,7 +38,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(106, 37);
+            this.label1.Location = new System.Drawing.Point(106, 101);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(210, 36);
             this.label1.TabIndex = 0;
@@ -48,7 +48,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(83, 153);
+            this.label2.Location = new System.Drawing.Point(83, 217);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(233, 36);
             this.label2.TabIndex = 1;
@@ -60,7 +60,7 @@
             this.txtBoxCategoryName.AllowDrop = true;
             this.txtBoxCategoryName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtBoxCategoryName.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtBoxCategoryName.Location = new System.Drawing.Point(74, 221);
+            this.txtBoxCategoryName.Location = new System.Drawing.Point(74, 285);
             this.txtBoxCategoryName.Name = "txtBoxCategoryName";
             this.txtBoxCategoryName.Size = new System.Drawing.Size(254, 45);
             this.txtBoxCategoryName.TabIndex = 0;
@@ -72,7 +72,7 @@
             // btnAdd
             // 
             this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnAdd.Location = new System.Drawing.Point(112, 301);
+            this.btnAdd.Location = new System.Drawing.Point(112, 365);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(162, 54);
             this.btnAdd.TabIndex = 1;
@@ -84,7 +84,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(424, 488);
+            this.ClientSize = new System.Drawing.Size(424, 552);
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.txtBoxCategoryName);
             this.Controls.Add(this.label2);
