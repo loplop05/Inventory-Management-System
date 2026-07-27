@@ -17,124 +17,205 @@ namespace InventoryManagementSystem
 
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.txtOrderID = new System.Windows.Forms.TextBox();
-            this.btnSearch = new System.Windows.Forms.Button();
-            this.btnPrint = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.lblReceiptPreview = new System.Windows.Forms.Label();
-            this.panelReceipt = new System.Windows.Forms.Panel();
-            this.panelReceipt.SuspendLayout();
+            this._mainLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this._headerPanel = new System.Windows.Forms.Panel();
+            this._lblTitle = new System.Windows.Forms.Label();
+            this._btnClose = new System.Windows.Forms.Button();
+            this._searchPanel = new System.Windows.Forms.Panel();
+            this._lblOrderID = new System.Windows.Forms.Label();
+            this._txtOrderID = new System.Windows.Forms.TextBox();
+            this._btnSearch = new System.Windows.Forms.Button();
+            this._panelReceipt = new System.Windows.Forms.Panel();
+            this._lblReceiptPreview = new System.Windows.Forms.Label();
+            this._actionsPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this._btnPrint = new System.Windows.Forms.Button();
+            this._mainLayoutPanel.SuspendLayout();
+            this._headerPanel.SuspendLayout();
+            this._searchPanel.SuspendLayout();
+            this._panelReceipt.SuspendLayout();
+            this._actionsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label1
+            // _mainLayoutPanel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(45, 115);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(98, 28);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Order ID:";
+            this._mainLayoutPanel.ColumnCount = 1;
+            this._mainLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this._mainLayoutPanel.Controls.Add(this._headerPanel, 0, 0);
+            this._mainLayoutPanel.Controls.Add(this._searchPanel, 0, 1);
+            this._mainLayoutPanel.Controls.Add(this._panelReceipt, 0, 2);
+            this._mainLayoutPanel.Controls.Add(this._actionsPanel, 0, 3);
+            this._mainLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._mainLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this._mainLayoutPanel.Name = "_mainLayoutPanel";
+            this._mainLayoutPanel.Padding = new System.Windows.Forms.Padding(20);
+            this._mainLayoutPanel.RowCount = 4;
+            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this._mainLayoutPanel.Size = new System.Drawing.Size(500, 460);
+            this._mainLayoutPanel.TabIndex = 0;
             // 
-            // txtOrderID
+            // _headerPanel
             // 
-            this.txtOrderID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtOrderID.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.txtOrderID.Location = new System.Drawing.Point(160, 113);
-            this.txtOrderID.Name = "txtOrderID";
-            this.txtOrderID.Size = new System.Drawing.Size(150, 34);
-            this.txtOrderID.TabIndex = 0;
-            this.txtOrderID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtOrderID_KeyDown);
+            this._headerPanel.Controls.Add(this._lblTitle);
+            this._headerPanel.Controls.Add(this._btnClose);
+            this._headerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._headerPanel.Location = new System.Drawing.Point(23, 23);
+            this._headerPanel.Name = "_headerPanel";
+            this._headerPanel.Size = new System.Drawing.Size(454, 54);
+            this._headerPanel.TabIndex = 0;
             // 
-            // btnSearch
+            // _lblTitle
             // 
-            this.btnSearch.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.btnSearch.Location = new System.Drawing.Point(180, 224);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(100, 34);
-            this.btnSearch.TabIndex = 1;
-            this.btnSearch.Text = "Search";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            this._lblTitle.AutoSize = true;
+            this._lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this._lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(58)))), ((int)(((byte)(138)))));
+            this._lblTitle.Location = new System.Drawing.Point(0, 15);
+            this._lblTitle.Name = "_lblTitle";
+            this._lblTitle.Size = new System.Drawing.Size(183, 37);
+            this._lblTitle.TabIndex = 0;
+            this._lblTitle.Text = "Print Receipt";
             // 
-            // btnPrint
+            // _btnClose
             // 
-            this.btnPrint.Enabled = false;
-            this.btnPrint.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.btnPrint.Location = new System.Drawing.Point(169, 352);
-            this.btnPrint.Name = "btnPrint";
-            this.btnPrint.Size = new System.Drawing.Size(120, 34);
-            this.btnPrint.TabIndex = 4;
-            this.btnPrint.Text = "Print Receipt";
-            this.btnPrint.UseVisualStyleBackColor = true;
-            this.btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
+            this._btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnClose.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this._btnClose.Location = new System.Drawing.Point(368, 13);
+            this._btnClose.Name = "_btnClose";
+            this._btnClose.Size = new System.Drawing.Size(86, 34);
+            this._btnClose.TabIndex = 1;
+            this._btnClose.Text = "Close";
+            this._btnClose.UseVisualStyleBackColor = true;
+            this._btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // btnClose
+            // _searchPanel
             // 
-            this.btnClose.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this.btnClose.Location = new System.Drawing.Point(344, 28);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(100, 34);
-            this.btnClose.TabIndex = 5;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this._searchPanel.Controls.Add(this._lblOrderID);
+            this._searchPanel.Controls.Add(this._txtOrderID);
+            this._searchPanel.Controls.Add(this._btnSearch);
+            this._searchPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._searchPanel.Location = new System.Drawing.Point(23, 83);
+            this._searchPanel.Name = "_searchPanel";
+            this._searchPanel.Size = new System.Drawing.Size(454, 54);
+            this._searchPanel.TabIndex = 1;
             // 
-            // panelReceipt
+            // _lblOrderID
             // 
-            this.panelReceipt.BackColor = System.Drawing.Color.White;
-            this.panelReceipt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panelReceipt.Controls.Add(this.lblReceiptPreview);
-            this.panelReceipt.Location = new System.Drawing.Point(20, 160);
-            this.panelReceipt.Name = "panelReceipt";
-            this.panelReceipt.Size = new System.Drawing.Size(460, 180);
-            this.panelReceipt.TabIndex = 6;
+            this._lblOrderID.AutoSize = true;
+            this._lblOrderID.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this._lblOrderID.Location = new System.Drawing.Point(0, 15);
+            this._lblOrderID.Name = "_lblOrderID";
+            this._lblOrderID.Size = new System.Drawing.Size(98, 28);
+            this._lblOrderID.TabIndex = 0;
+            this._lblOrderID.Text = "Order ID:";
             // 
-            // lblReceiptPreview
+            // _txtOrderID
             // 
-            this.lblReceiptPreview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblReceiptPreview.Font = new System.Drawing.Font("Consolas", 9F);
-            this.lblReceiptPreview.Location = new System.Drawing.Point(0, 0);
-            this.lblReceiptPreview.Name = "lblReceiptPreview";
-            this.lblReceiptPreview.Padding = new System.Windows.Forms.Padding(10);
-            this.lblReceiptPreview.Size = new System.Drawing.Size(458, 178);
-            this.lblReceiptPreview.TabIndex = 0;
-            this.lblReceiptPreview.Text = "Enter an Order ID to view the receipt.";
-            this.lblReceiptPreview.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this._txtOrderID.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this._txtOrderID.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this._txtOrderID.Location = new System.Drawing.Point(81, 13);
+            this._txtOrderID.Name = "_txtOrderID";
+            this._txtOrderID.Size = new System.Drawing.Size(150, 34);
+            this._txtOrderID.TabIndex = 1;
+            this._txtOrderID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtOrderID_KeyDown);
+            // 
+            // _btnSearch
+            // 
+            this._btnSearch.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this._btnSearch.Location = new System.Drawing.Point(237, 13);
+            this._btnSearch.Name = "_btnSearch";
+            this._btnSearch.Size = new System.Drawing.Size(100, 34);
+            this._btnSearch.TabIndex = 2;
+            this._btnSearch.Text = "Search";
+            this._btnSearch.UseVisualStyleBackColor = true;
+            this._btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // _panelReceipt
+            // 
+            this._panelReceipt.AutoScroll = true;
+            this._panelReceipt.BackColor = System.Drawing.Color.White;
+            this._panelReceipt.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this._panelReceipt.Controls.Add(this._lblReceiptPreview);
+            this._panelReceipt.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._panelReceipt.Location = new System.Drawing.Point(23, 143);
+            this._panelReceipt.Name = "_panelReceipt";
+            this._panelReceipt.Size = new System.Drawing.Size(454, 234);
+            this._panelReceipt.TabIndex = 2;
+            // 
+            // _lblReceiptPreview
+            // 
+            this._lblReceiptPreview.AutoSize = true;
+            this._lblReceiptPreview.Dock = System.Windows.Forms.DockStyle.Top;
+            this._lblReceiptPreview.Font = new System.Drawing.Font("Consolas", 9F);
+            this._lblReceiptPreview.Location = new System.Drawing.Point(0, 0);
+            this._lblReceiptPreview.Name = "_lblReceiptPreview";
+            this._lblReceiptPreview.Padding = new System.Windows.Forms.Padding(10);
+            this._lblReceiptPreview.Size = new System.Drawing.Size(332, 38);
+            this._lblReceiptPreview.TabIndex = 0;
+            this._lblReceiptPreview.Text = "Enter an Order ID to view the receipt.";
+            // 
+            // _actionsPanel
+            // 
+            this._actionsPanel.Controls.Add(this._btnPrint);
+            this._actionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._actionsPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this._actionsPanel.Location = new System.Drawing.Point(23, 383);
+            this._actionsPanel.Name = "_actionsPanel";
+            this._actionsPanel.Size = new System.Drawing.Size(454, 54);
+            this._actionsPanel.TabIndex = 3;
+            // 
+            // _btnPrint
+            // 
+            this._btnPrint.Enabled = false;
+            this._btnPrint.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this._btnPrint.Location = new System.Drawing.Point(331, 3);
+            this._btnPrint.Name = "_btnPrint";
+            this._btnPrint.Size = new System.Drawing.Size(120, 34);
+            this._btnPrint.TabIndex = 0;
+            this._btnPrint.Text = "Print Receipt";
+            this._btnPrint.UseVisualStyleBackColor = true;
+            this._btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
             // 
             // frmPrintReceipt
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(500, 460);
-            this.Controls.Add(this.panelReceipt);
-            this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.btnPrint);
-            this.Controls.Add(this.btnSearch);
-            this.Controls.Add(this.txtOrderID);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this._mainLayoutPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(500, 460);
             this.Name = "frmPrintReceipt";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Print Receipt";
             this.Load += new System.EventHandler(this.frmPrintReceipt_Load);
-            this.panelReceipt.ResumeLayout(false);
+            this._mainLayoutPanel.ResumeLayout(false);
+            this._headerPanel.ResumeLayout(false);
+            this._headerPanel.PerformLayout();
+            this._searchPanel.ResumeLayout(false);
+            this._searchPanel.PerformLayout();
+            this._panelReceipt.ResumeLayout(false);
+            this._panelReceipt.PerformLayout();
+            this._actionsPanel.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox txtOrderID;
-        private System.Windows.Forms.Button btnSearch;
-        private System.Windows.Forms.Button btnPrint;
-        private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Panel panelReceipt;
-        private System.Windows.Forms.Label lblReceiptPreview;
+        private System.Windows.Forms.TableLayoutPanel _mainLayoutPanel;
+        private System.Windows.Forms.Panel _headerPanel;
+        private System.Windows.Forms.Label _lblTitle;
+        private System.Windows.Forms.Button _btnClose;
+        private System.Windows.Forms.Panel _searchPanel;
+        private System.Windows.Forms.Label _lblOrderID;
+        private System.Windows.Forms.TextBox _txtOrderID;
+        private System.Windows.Forms.Button _btnSearch;
+        private System.Windows.Forms.Panel _panelReceipt;
+        private System.Windows.Forms.Label _lblReceiptPreview;
+        private System.Windows.Forms.FlowLayoutPanel _actionsPanel;
+        private System.Windows.Forms.Button _btnPrint;
     }
 }

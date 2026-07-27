@@ -28,20 +28,98 @@ namespace InventoryManagementSystem
         /// </summary>
         private void InitializeComponent()
         {
+            this._mainLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this._headerPanel = new System.Windows.Forms.Panel();
+            this._lblTitle = new System.Windows.Forms.Label();
+            this._btnExit = new System.Windows.Forms.Button();
+            this._buttonsPanel = new System.Windows.Forms.TableLayoutPanel();
             this.btnCategories = new System.Windows.Forms.Button();
             this.btnSuppliers = new System.Windows.Forms.Button();
             this.btnProducts = new System.Windows.Forms.Button();
             this.btnReceiptSearch = new System.Windows.Forms.Button();
             this.btnPrintReceipt = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
+            this._mainLayoutPanel.SuspendLayout();
+            this._headerPanel.SuspendLayout();
+            this._buttonsPanel.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // _mainLayoutPanel
+            // 
+            this._mainLayoutPanel.ColumnCount = 1;
+            this._mainLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this._mainLayoutPanel.Controls.Add(this._headerPanel, 0, 0);
+            this._mainLayoutPanel.Controls.Add(this._buttonsPanel, 0, 1);
+            this._mainLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._mainLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this._mainLayoutPanel.Name = "_mainLayoutPanel";
+            this._mainLayoutPanel.RowCount = 2;
+            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this._mainLayoutPanel.Size = new System.Drawing.Size(1216, 592);
+            this._mainLayoutPanel.TabIndex = 0;
+            // 
+            // _headerPanel
+            // 
+            this._headerPanel.Controls.Add(this._lblTitle);
+            this._headerPanel.Controls.Add(this._btnExit);
+            this._headerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._headerPanel.Location = new System.Drawing.Point(0, 0);
+            this._headerPanel.Name = "_headerPanel";
+            this._headerPanel.Padding = new System.Windows.Forms.Padding(20);
+            this._headerPanel.Size = new System.Drawing.Size(1216, 80);
+            this._headerPanel.TabIndex = 0;
+            // 
+            // _lblTitle
+            // 
+            this._lblTitle.AutoSize = true;
+            this._lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            this._lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(58)))), ((int)(((byte)(138)))));
+            this._lblTitle.Location = new System.Drawing.Point(20, 25);
+            this._lblTitle.Name = "_lblTitle";
+            this._lblTitle.Size = new System.Drawing.Size(285, 32);
+            this._lblTitle.TabIndex = 0;
+            this._lblTitle.Text = "Inventory Management System";
+            // 
+            // _btnExit
+            // 
+            this._btnExit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnExit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this._btnExit.Location = new System.Drawing.Point(1110, 20);
+            this._btnExit.Name = "_btnExit";
+            this._btnExit.Size = new System.Drawing.Size(86, 34);
+            this._btnExit.TabIndex = 1;
+            this._btnExit.Text = "Exit";
+            this._btnExit.UseVisualStyleBackColor = true;
+            this._btnExit.Click += new System.EventHandler(this.btnExit_Click);
+            // 
+            // _buttonsPanel
+            // 
+            this._buttonsPanel.ColumnCount = 3;
+            this._buttonsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this._buttonsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this._buttonsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this._buttonsPanel.Controls.Add(this.btnCategories, 0, 0);
+            this._buttonsPanel.Controls.Add(this.btnSuppliers, 1, 0);
+            this._buttonsPanel.Controls.Add(this.btnProducts, 2, 0);
+            this._buttonsPanel.Controls.Add(this.btnReceiptSearch, 0, 1);
+            this._buttonsPanel.Controls.Add(this.btnPrintReceipt, 1, 1);
+            this._buttonsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._buttonsPanel.Location = new System.Drawing.Point(0, 80);
+            this._buttonsPanel.Name = "_buttonsPanel";
+            this._buttonsPanel.Padding = new System.Windows.Forms.Padding(40);
+            this._buttonsPanel.RowCount = 2;
+            this._buttonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this._buttonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this._buttonsPanel.Size = new System.Drawing.Size(1216, 512);
+            this._buttonsPanel.TabIndex = 1;
             // 
             // btnCategories
             // 
-            this.btnCategories.Location = new System.Drawing.Point(150, 150);
+            this.btnCategories.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnCategories.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnCategories.Location = new System.Drawing.Point(43, 43);
             this.btnCategories.Name = "btnCategories";
-            this.btnCategories.Size = new System.Drawing.Size(200, 120);
+            this.btnCategories.Size = new System.Drawing.Size(343, 213);
             this.btnCategories.TabIndex = 0;
             this.btnCategories.Text = "Categories";
             this.btnCategories.UseVisualStyleBackColor = true;
@@ -49,9 +127,11 @@ namespace InventoryManagementSystem
             // 
             // btnSuppliers
             // 
-            this.btnSuppliers.Location = new System.Drawing.Point(400, 150);
+            this.btnSuppliers.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnSuppliers.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnSuppliers.Location = new System.Drawing.Point(392, 43);
             this.btnSuppliers.Name = "btnSuppliers";
-            this.btnSuppliers.Size = new System.Drawing.Size(200, 120);
+            this.btnSuppliers.Size = new System.Drawing.Size(343, 213);
             this.btnSuppliers.TabIndex = 1;
             this.btnSuppliers.Text = "Suppliers";
             this.btnSuppliers.UseVisualStyleBackColor = true;
@@ -59,9 +139,11 @@ namespace InventoryManagementSystem
             // 
             // btnProducts
             // 
-            this.btnProducts.Location = new System.Drawing.Point(650, 150);
+            this.btnProducts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnProducts.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnProducts.Location = new System.Drawing.Point(741, 43);
             this.btnProducts.Name = "btnProducts";
-            this.btnProducts.Size = new System.Drawing.Size(200, 120);
+            this.btnProducts.Size = new System.Drawing.Size(432, 213);
             this.btnProducts.TabIndex = 2;
             this.btnProducts.Text = "Products";
             this.btnProducts.UseVisualStyleBackColor = true;
@@ -69,9 +151,11 @@ namespace InventoryManagementSystem
             // 
             // btnReceiptSearch
             // 
-            this.btnReceiptSearch.Location = new System.Drawing.Point(150, 300);
+            this.btnReceiptSearch.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnReceiptSearch.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnReceiptSearch.Location = new System.Drawing.Point(43, 256);
             this.btnReceiptSearch.Name = "btnReceiptSearch";
-            this.btnReceiptSearch.Size = new System.Drawing.Size(200, 120);
+            this.btnReceiptSearch.Size = new System.Drawing.Size(343, 213);
             this.btnReceiptSearch.TabIndex = 3;
             this.btnReceiptSearch.Text = "Receipt Search";
             this.btnReceiptSearch.UseVisualStyleBackColor = true;
@@ -79,63 +163,45 @@ namespace InventoryManagementSystem
             // 
             // btnPrintReceipt
             // 
-            this.btnPrintReceipt.Location = new System.Drawing.Point(400, 300);
+            this.btnPrintReceipt.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnPrintReceipt.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnPrintReceipt.Location = new System.Drawing.Point(392, 256);
             this.btnPrintReceipt.Name = "btnPrintReceipt";
-            this.btnPrintReceipt.Size = new System.Drawing.Size(200, 120);
+            this.btnPrintReceipt.Size = new System.Drawing.Size(343, 213);
             this.btnPrintReceipt.TabIndex = 4;
             this.btnPrintReceipt.Text = "Print Receipt";
             this.btnPrintReceipt.UseVisualStyleBackColor = true;
             this.btnPrintReceipt.Click += new System.EventHandler(this.btnPrintReceipt_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(167, 63);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(191, 16);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Inventory Management System";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(1015, 12);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(189, 36);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "Exit";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // frmMainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1216, 592);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnPrintReceipt);
-            this.Controls.Add(this.btnReceiptSearch);
-            this.Controls.Add(this.btnProducts);
-            this.Controls.Add(this.btnSuppliers);
-            this.Controls.Add(this.btnCategories);
+            this.Controls.Add(this._mainLayoutPanel);
             this.MinimumSize = new System.Drawing.Size(900, 500);
             this.Name = "frmMainMenu";
             this.Text = "Inventory Management System";
             this.Load += new System.EventHandler(this.frmMainMenu_Load);
+            this._mainLayoutPanel.ResumeLayout(false);
+            this._headerPanel.ResumeLayout(false);
+            this._headerPanel.PerformLayout();
+            this._buttonsPanel.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
+        private System.Windows.Forms.TableLayoutPanel _mainLayoutPanel;
+        private System.Windows.Forms.Panel _headerPanel;
+        private System.Windows.Forms.Label _lblTitle;
+        private System.Windows.Forms.Button _btnExit;
+        private System.Windows.Forms.TableLayoutPanel _buttonsPanel;
         private System.Windows.Forms.Button btnCategories;
         private System.Windows.Forms.Button btnSuppliers;
         private System.Windows.Forms.Button btnProducts;
         private System.Windows.Forms.Button btnReceiptSearch;
         private System.Windows.Forms.Button btnPrintReceipt;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button4;
     }
 }

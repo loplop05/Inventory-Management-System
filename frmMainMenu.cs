@@ -13,10 +13,16 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
-            label1.Visible = false; // Hide the old label
 
-            // Header with a stock/inventory icon
-            clsFormTheme.CreateHeaderPanel(this, "Inventory Management System", clsFormTheme.Icons.Stock);
+            // Style the header title
+            _lblTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            _lblTitle.ForeColor = Color.FromArgb(30, 58, 138);
+
+            // Style the exit button
+            _btnExit.Text = clsFormTheme.Icons.Exit + "  Exit";
+            _btnExit.Font = new Font(clsFormTheme.IconFontName, 11F);
+            clsFormTheme.ApplyDangerButtonStyle(_btnExit);
+            _toolTip.SetToolTip(_btnExit, "Exit application (Esc)");
 
             // ── Categories button ──────────────────────────────────────────────
             btnCategories.Text = "Categories";
@@ -68,30 +74,11 @@ namespace InventoryManagementSystem
             btnPrintReceipt.TextAlign = ContentAlignment.MiddleCenter;
             _toolTip.SetToolTip(btnPrintReceipt, "Print order receipts");
 
-            // ── Exit button ────────────────────────────────────────────────────
-            button4.Text = clsFormTheme.Icons.Exit + "  Exit";
-            button4.Font = new Font(clsFormTheme.IconFontName, 12F);
-            clsFormTheme.ApplyDangerButtonStyle(button4);
-            _toolTip.SetToolTip(button4, "Exit application (Esc)");
-
             btnSuppliers.Enabled = true;
             btnProducts.Enabled  = true;
             AddPOSMenuButtons();
 
             KeyDown += frmMainMenu_KeyDown;
-            Paint   += FrmMainMenu_Paint;
-        }
-
-        private void FrmMainMenu_Paint(object sender, PaintEventArgs e)
-        {
-            // Draw styled cards behind the main navigation buttons
-            clsFormTheme.DrawCard(e.Graphics, new Rectangle(140, 140, 220, 140)); // Categories
-            clsFormTheme.DrawCard(e.Graphics, new Rectangle(390, 140, 220, 140)); // Suppliers
-            clsFormTheme.DrawCard(e.Graphics, new Rectangle(640, 140, 220, 140)); // Products
-            clsFormTheme.DrawCard(e.Graphics, new Rectangle(140, 290, 220, 140)); // Receipt Search
-            clsFormTheme.DrawCard(e.Graphics, new Rectangle(390, 290, 220, 140)); // Print Receipt
-            clsFormTheme.DrawCard(e.Graphics, new Rectangle(640, 290, 220, 140)); // POS
-            clsFormTheme.DrawCard(e.Graphics, new Rectangle(890, 290, 220, 140)); // Daily Report
         }
 
         private void AddPOSMenuButtons()
@@ -102,8 +89,7 @@ namespace InventoryManagementSystem
                 Name     = "btnPOS",
                 Text     = clsFormTheme.Icons.POS + "\nPoint of Sale",
                 Font     = new Font(clsFormTheme.IconFontName, 20F),
-                Location = new Point(650, 290),
-                Size     = new Size(200, 120)
+                Dock     = DockStyle.Fill
             };
             btnPOS.Click += btnPOS_Click;
             clsFormTheme.ApplySuccessButtonStyle(btnPOS);
@@ -115,23 +101,18 @@ namespace InventoryManagementSystem
                 Name     = "btnDailyReport",
                 Text     = clsFormTheme.Icons.Reports + "\nDaily Report",
                 Font     = new Font(clsFormTheme.IconFontName, 20F),
-                Location = new Point(900, 290),
-                Size     = new Size(200, 120)
+                Dock     = DockStyle.Fill
             };
             btnDailyReport.Click += btnDailyReport_Click;
             clsFormTheme.ApplySecondaryButtonStyle(btnDailyReport);
             _toolTip.SetToolTip(btnDailyReport, "View today's sales report");
 
-            // Adjust form size to accommodate all buttons
-            this.ClientSize = new Size(1200, 500);
-
-            Controls.Add(btnPOS);
-            Controls.Add(btnDailyReport);
+            // Add to buttons panel (3rd column, rows 0 and 1)
+            _buttonsPanel.Controls.Add(btnPOS, 2, 0);
+            _buttonsPanel.Controls.Add(btnDailyReport, 2, 1);
         }
 
         // ── Event handlers ─────────────────────────────────────────────────────
-
-        private void label1_Click(object sender, EventArgs e) { }
 
         private void btnCategories_Click(object sender, EventArgs e)
         {
@@ -175,7 +156,7 @@ namespace InventoryManagementSystem
             frm.ShowDialog();
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btnExit_Click(object sender, EventArgs e)
         {
             Close();
         }

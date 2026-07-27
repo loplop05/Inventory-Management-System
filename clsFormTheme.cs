@@ -184,6 +184,9 @@ namespace InventoryManagementSystem
         /// </summary>
         public static void CreateHeaderPanel(Form form, string title, string iconGlyph = null)
         {
+            // Adjust form padding to accommodate header instead of using Dock
+            form.Padding = new Padding(form.Padding.Left, 64, form.Padding.Right, form.Padding.Bottom);
+
             Panel header = new Panel
             {
                 Dock      = DockStyle.Top,
@@ -236,7 +239,6 @@ namespace InventoryManagementSystem
 
             header.Controls.Add(lblTitle);
             form.Controls.Add(header);
-            header.BringToFront();
         }
 
         // ════════════════════════════════════════════════════════════════════════

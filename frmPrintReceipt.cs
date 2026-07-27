@@ -27,11 +27,10 @@ namespace InventoryManagementSystem
         private void ApplyTheme()
         {
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Print Receipt", clsFormTheme.Icons.Print);
-            clsFormTheme.ApplyTextBoxStyle(txtOrderID);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnSearch);
-            clsFormTheme.ApplySuccessButtonStyle(btnPrint);
-            clsFormTheme.ApplySecondaryButtonStyle(btnClose);
+            clsFormTheme.ApplyTextBoxStyle(_txtOrderID);
+            clsFormTheme.ApplyPrimaryButtonStyle(_btnSearch);
+            clsFormTheme.ApplySuccessButtonStyle(_btnPrint);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnClose);
 
             KeyDown += frmPrintReceipt_KeyDown;
         }
@@ -41,14 +40,14 @@ namespace InventoryManagementSystem
             _currentOrderID = -1;
             _currentOrderDetails = null;
             _currentOrderItems = null;
-            txtOrderID.Text = "";
-            lblReceiptPreview.Text = "Enter an Order ID to view and print the receipt.";
-            btnPrint.Enabled = false;
+            _txtOrderID.Text = "";
+            _lblReceiptPreview.Text = "Enter an Order ID to view and print the receipt.";
+            _btnPrint.Enabled = false;
         }
 
         public TextBox OrderIDTextBox
         {
-            get { return txtOrderID; }
+            get { return _txtOrderID; }
         }
 
         public void SearchOrder()
@@ -68,18 +67,18 @@ namespace InventoryManagementSystem
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtOrderID.Text))
+            if (string.IsNullOrWhiteSpace(_txtOrderID.Text))
             {
                 MessageBox.Show("Please enter an Order ID.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtOrderID.Focus();
+                _txtOrderID.Focus();
                 return;
             }
 
             int orderID;
-            if (!int.TryParse(txtOrderID.Text.Trim(), out orderID))
+            if (!int.TryParse(_txtOrderID.Text.Trim(), out orderID))
             {
                 MessageBox.Show("Invalid Order ID format.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtOrderID.Focus();
+                _txtOrderID.Focus();
                 return;
             }
 
@@ -178,8 +177,8 @@ namespace InventoryManagementSystem
             receipt.AppendLine("          Thank you for shopping!");
             receipt.AppendLine("========================================");
 
-            lblReceiptPreview.Text = receipt.ToString();
-            btnPrint.Enabled = true;
+            _lblReceiptPreview.Text = receipt.ToString();
+            _btnPrint.Enabled = true;
         }
 
         private void btnPrint_Click(object sender, EventArgs e)
@@ -205,16 +204,38 @@ namespace InventoryManagementSystem
             printDoc.PrintPage += (sender, e) =>
             {
                 Font font = new Font("Consolas", 10);
+                Font boldFont = new Font("Consolas", 10, FontStyle.Bold);
                 float lineHeight = font.GetHeight(e.Graphics);
                 float yPos = 20;
                 float leftMargin = 20;
+                float pageWidth = e.PageBounds.Width - 2 * leftMargin;
 
-                string receiptText = lblReceiptPreview.Text;
-                foreach (string line in receiptText.Split('\n'))
+                string receiptText = _lblReceiptPreview.Text;
+                string[] lines = receiptText.Split('\n');
+
+                foreach (string line in lines)
                 {
-                    e.Graphics.DrawString(line, font, Brushes.Black, leftMargin, yPos);
+                    if (yPos > e.PageBounds.Height - 50)
+                    {
+                        e.HasMorePages = true;
+                        return;
+                    }
+
+                    // Check if line contains header/footer (use bold font)
+                    if (line.Contains("=") || line.Contains("-") || 
+                        line.Contains("INVENTORY MANAGEMENT SYSTEM") ||
+                        line.Contains("Thank you") ||
+                        line.Contains("TOTAL"))
+                    {
+                        e.Graphics.DrawString(line, boldFont, Brushes.Black, leftMargin, yPos);
+                    }
+                    else
+                    {
+                        e.Graphics.DrawString(line, font, Brushes.Black, leftMargin, yPos);
+                    }
                     yPos += lineHeight;
                 }
+                e.HasMorePages = false;
             };
 
             PrintDialog printDialog = new PrintDialog
@@ -239,7 +260,7 @@ namespace InventoryManagementSystem
         {
             if (e.KeyCode == Keys.Escape)
             {
-                btnClose_Click(sender, e);
+                _btnClose_Click(sender, e);
             }
         }
     }

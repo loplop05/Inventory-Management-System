@@ -211,9 +211,23 @@ namespace InventoryManagementSystem
         {
             string search = _txtSearch.Text.Trim();
 
+            if (string.IsNullOrWhiteSpace(search))
+                return _productsTable.AsEnumerable().ToArray();
+
+            // Check if search is a numeric barcode (exact match for barcodes)
+            if (search.All(char.IsDigit))
+            {
+                var exactBarcodeMatch = _productsTable.AsEnumerable()
+                    .Where(row => row["Barcode"].ToString().Trim() == search)
+                    .ToArray();
+                
+                if (exactBarcodeMatch.Length > 0)
+                    return exactBarcodeMatch;
+            }
+
+            // Otherwise, do partial match on name, category, supplier, and barcode
             return _productsTable.AsEnumerable()
                 .Where(row =>
-                    string.IsNullOrWhiteSpace(search) ||
                     row["ProductName"].ToString().IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 ||
                     row["CategoryName"].ToString().IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 ||
                     row["SupplierName"].ToString().IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 ||
