@@ -2,6 +2,7 @@ using System;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Printing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using InventoryBusinessLayer;
 
@@ -44,6 +45,16 @@ namespace InventoryManagementSystem
             txtOrderID.Text = "";
             lblReceiptContent.Text = "Enter an Order ID to view and print the receipt.";
             btnPrint.Enabled = false;
+        }
+
+        public TextBox OrderIDTextBox
+        {
+            get { return txtOrderID; }
+        }
+
+        public void SearchOrder()
+        {
+            btnSearch_Click(null, null);
         }
 
         private void txtOrderID_KeyDown(object sender, KeyEventArgs e)
@@ -92,7 +103,7 @@ namespace InventoryManagementSystem
             DisplayReceipt();
         }
 
-        private void DisplayReceipt()
+        private async Task DisplayReceipt()
         {
             if (_currentOrderDetails == null || _currentOrderDetails.Rows.Count == 0)
                 return;
@@ -136,6 +147,7 @@ namespace InventoryManagementSystem
             receipt.AppendLine("----------------------------------------");
 
             // Order items
+           
             if (_currentOrderItems != null && _currentOrderItems.Rows.Count > 0)
             {
                 receipt.AppendLine("ITEMS:");
@@ -146,10 +158,10 @@ namespace InventoryManagementSystem
                     string productName = item["ProductName"].ToString();
                     int quantity = Convert.ToInt32(item["Quantity"]);
                     decimal unitPrice = Convert.ToDecimal(item["UnitPrice"]);
-                    decimal subtotal = Convert.ToDecimal(item["Subtotal"]);
+                    decimal itemSubtotal = Convert.ToDecimal(item["Subtotal"]);
 
                     receipt.AppendLine($"{productName}");
-                    receipt.AppendLine($"  Qty: {quantity} x {unitPrice:C2} = {subtotal:C2}");
+                    receipt.AppendLine($"  Qty: {quantity} x {unitPrice:C2} = {itemSubtotal:C2}");
                 }
             }
             receipt.AppendLine();

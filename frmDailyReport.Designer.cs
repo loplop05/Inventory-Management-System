@@ -60,7 +60,7 @@ namespace InventoryManagementSystem
             this._rootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 96F));
             this._rootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this._rootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52F));
-            this._rootLayout.Size = new System.Drawing.Size(992, 726);
+            this._rootLayout.Size = new System.Drawing.Size(1034, 751);
             this._rootLayout.TabIndex = 0;
             // 
             // _summaryPanel
@@ -68,8 +68,8 @@ namespace InventoryManagementSystem
             this._summaryPanel.ColumnCount = 4;
             this._summaryPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this._summaryPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this._summaryPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this._summaryPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this._summaryPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.05071F));
+            this._summaryPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25.05071F));
             this._summaryPanel.Controls.Add(this._lblOrders, 0, 0);
             this._summaryPanel.Controls.Add(this._lblSubtotal, 1, 0);
             this._summaryPanel.Controls.Add(this._lblTax, 2, 0);
@@ -79,7 +79,7 @@ namespace InventoryManagementSystem
             this._summaryPanel.Name = "_summaryPanel";
             this._summaryPanel.RowCount = 1;
             this._summaryPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._summaryPanel.Size = new System.Drawing.Size(986, 90);
+            this._summaryPanel.Size = new System.Drawing.Size(1028, 90);
             this._summaryPanel.TabIndex = 0;
             // 
             // _lblOrders
@@ -92,7 +92,7 @@ namespace InventoryManagementSystem
             this._lblOrders.Location = new System.Drawing.Point(6, 6);
             this._lblOrders.Margin = new System.Windows.Forms.Padding(6);
             this._lblOrders.Name = "_lblOrders";
-            this._lblOrders.Size = new System.Drawing.Size(234, 78);
+            this._lblOrders.Size = new System.Drawing.Size(244, 78);
             this._lblOrders.TabIndex = 0;
             this._lblOrders.Text = "Orders\r\n0";
             this._lblOrders.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -104,10 +104,10 @@ namespace InventoryManagementSystem
             this._lblSubtotal.Dock = System.Windows.Forms.DockStyle.Fill;
             this._lblSubtotal.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this._lblSubtotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this._lblSubtotal.Location = new System.Drawing.Point(252, 6);
+            this._lblSubtotal.Location = new System.Drawing.Point(262, 6);
             this._lblSubtotal.Margin = new System.Windows.Forms.Padding(6);
             this._lblSubtotal.Name = "_lblSubtotal";
-            this._lblSubtotal.Size = new System.Drawing.Size(234, 78);
+            this._lblSubtotal.Size = new System.Drawing.Size(244, 78);
             this._lblSubtotal.TabIndex = 1;
             this._lblSubtotal.Text = "Subtotal\r\n$0.00";
             this._lblSubtotal.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -119,10 +119,10 @@ namespace InventoryManagementSystem
             this._lblTax.Dock = System.Windows.Forms.DockStyle.Fill;
             this._lblTax.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this._lblTax.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this._lblTax.Location = new System.Drawing.Point(498, 6);
+            this._lblTax.Location = new System.Drawing.Point(518, 6);
             this._lblTax.Margin = new System.Windows.Forms.Padding(6);
             this._lblTax.Name = "_lblTax";
-            this._lblTax.Size = new System.Drawing.Size(234, 78);
+            this._lblTax.Size = new System.Drawing.Size(245, 78);
             this._lblTax.TabIndex = 2;
             this._lblTax.Text = "Tax\r\n$0.00";
             this._lblTax.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -134,13 +134,14 @@ namespace InventoryManagementSystem
             this._lblRevenue.Dock = System.Windows.Forms.DockStyle.Fill;
             this._lblRevenue.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this._lblRevenue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this._lblRevenue.Location = new System.Drawing.Point(744, 6);
+            this._lblRevenue.Location = new System.Drawing.Point(775, 6);
             this._lblRevenue.Margin = new System.Windows.Forms.Padding(6);
             this._lblRevenue.Name = "_lblRevenue";
-            this._lblRevenue.Size = new System.Drawing.Size(236, 78);
+            this._lblRevenue.Size = new System.Drawing.Size(247, 78);
             this._lblRevenue.TabIndex = 3;
             this._lblRevenue.Text = "Revenue\r\n$0.00";
             this._lblRevenue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this._lblRevenue.Click += new System.EventHandler(this._lblRevenue_Click);
             // 
             // _splitContainer
             // 
@@ -156,8 +157,8 @@ namespace InventoryManagementSystem
             // _splitContainer.Panel2
             // 
             this._splitContainer.Panel2.Controls.Add(this._topProductsPanel);
-            this._splitContainer.Size = new System.Drawing.Size(986, 572);
-            this._splitContainer.SplitterDistance = 285;
+            this._splitContainer.Size = new System.Drawing.Size(1028, 597);
+            this._splitContainer.SplitterDistance = 297;
             this._splitContainer.TabIndex = 1;
             // 
             // _ordersPanel
@@ -169,7 +170,7 @@ namespace InventoryManagementSystem
             this._ordersPanel.Location = new System.Drawing.Point(0, 0);
             this._ordersPanel.Name = "_ordersPanel";
             this._ordersPanel.Padding = new System.Windows.Forms.Padding(12);
-            this._ordersPanel.Size = new System.Drawing.Size(986, 285);
+            this._ordersPanel.Size = new System.Drawing.Size(1028, 297);
             this._ordersPanel.TabIndex = 0;
             // 
             // _gridOrders
@@ -178,13 +179,13 @@ namespace InventoryManagementSystem
             this._gridOrders.AllowUserToDeleteRows = false;
             this._gridOrders.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this._gridOrders.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._gridOrders.Location = new System.Drawing.Point(12, 46);
+            this._gridOrders.Location = new System.Drawing.Point(12, 59);
             this._gridOrders.Name = "_gridOrders";
             this._gridOrders.ReadOnly = true;
             this._gridOrders.RowHeadersVisible = false;
             this._gridOrders.RowHeadersWidth = 51;
             this._gridOrders.RowTemplate.Height = 24;
-            this._gridOrders.Size = new System.Drawing.Size(962, 227);
+            this._gridOrders.Size = new System.Drawing.Size(1004, 226);
             this._gridOrders.TabIndex = 1;
             // 
             // _lblOrdersTitle
@@ -194,7 +195,7 @@ namespace InventoryManagementSystem
             this._lblOrdersTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this._lblOrdersTitle.Location = new System.Drawing.Point(12, 12);
             this._lblOrdersTitle.Name = "_lblOrdersTitle";
-            this._lblOrdersTitle.Size = new System.Drawing.Size(962, 34);
+            this._lblOrdersTitle.Size = new System.Drawing.Size(1004, 47);
             this._lblOrdersTitle.TabIndex = 0;
             this._lblOrdersTitle.Text = "Today\'s Orders";
             // 
@@ -207,7 +208,7 @@ namespace InventoryManagementSystem
             this._topProductsPanel.Location = new System.Drawing.Point(0, 0);
             this._topProductsPanel.Name = "_topProductsPanel";
             this._topProductsPanel.Padding = new System.Windows.Forms.Padding(12);
-            this._topProductsPanel.Size = new System.Drawing.Size(986, 283);
+            this._topProductsPanel.Size = new System.Drawing.Size(1028, 296);
             this._topProductsPanel.TabIndex = 0;
             // 
             // _gridTopProducts
@@ -222,7 +223,7 @@ namespace InventoryManagementSystem
             this._gridTopProducts.RowHeadersVisible = false;
             this._gridTopProducts.RowHeadersWidth = 51;
             this._gridTopProducts.RowTemplate.Height = 24;
-            this._gridTopProducts.Size = new System.Drawing.Size(962, 225);
+            this._gridTopProducts.Size = new System.Drawing.Size(1004, 238);
             this._gridTopProducts.TabIndex = 1;
             // 
             // _lblTopProductsTitle
@@ -232,7 +233,7 @@ namespace InventoryManagementSystem
             this._lblTopProductsTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this._lblTopProductsTitle.Location = new System.Drawing.Point(12, 12);
             this._lblTopProductsTitle.Name = "_lblTopProductsTitle";
-            this._lblTopProductsTitle.Size = new System.Drawing.Size(962, 34);
+            this._lblTopProductsTitle.Size = new System.Drawing.Size(1004, 34);
             this._lblTopProductsTitle.TabIndex = 0;
             this._lblTopProductsTitle.Text = "Top-Selling Products";
             // 
@@ -243,14 +244,14 @@ namespace InventoryManagementSystem
             this._buttonsPanel.Controls.Add(this._btnRefresh);
             this._buttonsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._buttonsPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this._buttonsPanel.Location = new System.Drawing.Point(3, 677);
+            this._buttonsPanel.Location = new System.Drawing.Point(3, 702);
             this._buttonsPanel.Name = "_buttonsPanel";
-            this._buttonsPanel.Size = new System.Drawing.Size(986, 46);
+            this._buttonsPanel.Size = new System.Drawing.Size(1028, 46);
             this._buttonsPanel.TabIndex = 2;
             // 
             // _btnClose
             // 
-            this._btnClose.Location = new System.Drawing.Point(883, 3);
+            this._btnClose.Location = new System.Drawing.Point(925, 3);
             this._btnClose.Name = "_btnClose";
             this._btnClose.Size = new System.Drawing.Size(100, 34);
             this._btnClose.TabIndex = 0;
@@ -260,7 +261,7 @@ namespace InventoryManagementSystem
             // 
             // _btnExportCsv
             // 
-            this._btnExportCsv.Location = new System.Drawing.Point(761, 3);
+            this._btnExportCsv.Location = new System.Drawing.Point(803, 3);
             this._btnExportCsv.Name = "_btnExportCsv";
             this._btnExportCsv.Size = new System.Drawing.Size(116, 34);
             this._btnExportCsv.TabIndex = 1;
@@ -270,7 +271,7 @@ namespace InventoryManagementSystem
             // 
             // _btnRefresh
             // 
-            this._btnRefresh.Location = new System.Drawing.Point(655, 3);
+            this._btnRefresh.Location = new System.Drawing.Point(697, 3);
             this._btnRefresh.Name = "_btnRefresh";
             this._btnRefresh.Size = new System.Drawing.Size(100, 34);
             this._btnRefresh.TabIndex = 2;
@@ -282,7 +283,7 @@ namespace InventoryManagementSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1024, 758);
+            this.ClientSize = new System.Drawing.Size(1066, 783);
             this.Controls.Add(this._rootLayout);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.MinimumSize = new System.Drawing.Size(900, 600);

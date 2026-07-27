@@ -51,6 +51,7 @@ namespace InventoryManagementSystem
             this._lblTotal = new System.Windows.Forms.Label();
             this._btnRemoveItem = new System.Windows.Forms.Button();
             this._btnCompleteOrder = new System.Windows.Forms.Button();
+            this._btnPrintReceipt = new System.Windows.Forms.Button();
             this._lblReceiptTitle = new System.Windows.Forms.Label();
             this._rootLayout.SuspendLayout();
             this._topPanel.SuspendLayout();
@@ -177,6 +178,8 @@ namespace InventoryManagementSystem
             // 
             // _txtCustomerPhone
             // 
+            this._txtCustomerPhone.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this._txtCustomerPhone.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this._txtCustomerPhone.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this._txtCustomerPhone.Location = new System.Drawing.Point(100, 12);
             this._txtCustomerPhone.Name = "_txtCustomerPhone";
@@ -397,6 +400,7 @@ namespace InventoryManagementSystem
             this._totalsPanel.Controls.Add(this._lblTotal);
             this._totalsPanel.Controls.Add(this._btnRemoveItem);
             this._totalsPanel.Controls.Add(this._btnCompleteOrder);
+            this._totalsPanel.Controls.Add(this._btnPrintReceipt);
             this._totalsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this._totalsPanel.Location = new System.Drawing.Point(14, 411);
             this._totalsPanel.Name = "_totalsPanel";
@@ -465,6 +469,17 @@ namespace InventoryManagementSystem
             this._btnCompleteOrder.UseVisualStyleBackColor = true;
             this._btnCompleteOrder.Click += new System.EventHandler(this.btnCompleteOrder_Click);
             // 
+            // _btnPrintReceipt
+            // 
+            this._btnPrintReceipt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnPrintReceipt.Location = new System.Drawing.Point(270, 164);
+            this._btnPrintReceipt.Name = "_btnPrintReceipt";
+            this._btnPrintReceipt.Size = new System.Drawing.Size(160, 38);
+            this._btnPrintReceipt.TabIndex = 5;
+            this._btnPrintReceipt.Text = "Print Receipt";
+            this._btnPrintReceipt.UseVisualStyleBackColor = true;
+            this._btnPrintReceipt.Click += new System.EventHandler(this.btnPrintReceipt_Click);
+            // 
             // _lblReceiptTitle
             // 
             this._lblReceiptTitle.Dock = System.Windows.Forms.DockStyle.Top;
@@ -527,6 +542,7 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Label _lblTotal;
         private System.Windows.Forms.Button _btnRemoveItem;
         private System.Windows.Forms.Button _btnCompleteOrder;
+        private System.Windows.Forms.Button _btnPrintReceipt;
         private System.Windows.Forms.Label _lblReceiptTitle;
         private System.Windows.Forms.Panel _customerPanel;
         private System.Windows.Forms.Label _lblCustomerPhone;

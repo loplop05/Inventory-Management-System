@@ -17,6 +17,7 @@ namespace InventoryManagementSystem
         private DataTable _productsTable = new DataTable();
         private int? _selectedCustomerID = null;
         private string _selectedCustomerName = "";
+        private int _lastCompletedOrderID = -1;
 
         // ── Icon+label button rendering ─────────────────────────────────────
         private class IconButtonInfo
@@ -103,6 +104,10 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplySuccessButtonStyle(_btnCompleteOrder);
             SetIconButtonText(_btnCompleteOrder, clsFormTheme.Icons.Money, "Complete Order", 16F, 12F, FontStyle.Bold);
 
+            clsFormTheme.ApplySecondaryButtonStyle(_btnPrintReceipt);
+            SetIconButtonText(_btnPrintReceipt, clsFormTheme.Icons.Print, "Print Receipt", 14F, 10F, FontStyle.Regular);
+            _btnPrintReceipt.Enabled = false;
+
             clsFormTheme.ApplySecondaryButtonStyle(_btnClose);
             SetIconButtonText(_btnClose, clsFormTheme.Icons.Exit, "Close", 14F, 10F, FontStyle.Regular);
 
@@ -128,6 +133,24 @@ namespace InventoryManagementSystem
             LoadProducts();
             RefreshReceiptTotals();
             ClearCustomerInfo();
+            LoadCustomerPhoneAutoComplete();
+        }
+
+        private void LoadCustomerPhoneAutoComplete()
+        {
+            DataTable customers = clsCustomer.GetAllCustomers();
+            AutoCompleteStringCollection phoneNumbers = new AutoCompleteStringCollection();
+
+            foreach (DataRow row in customers.Rows)
+            {
+                string phone = row["PhoneNumber"].ToString();
+                if (!string.IsNullOrEmpty(phone))
+                {
+                    phoneNumbers.Add(phone);
+                }
+            }
+
+            _txtCustomerPhone.AutoCompleteCustomSource = phoneNumbers;
         }
 
         private void LoadProducts()
@@ -424,6 +447,8 @@ namespace InventoryManagementSystem
             RefreshReceiptTotals();
             LoadProducts();
             ClearCustomerInfo();
+            _lastCompletedOrderID = orderID;
+            _btnPrintReceipt.Enabled = true;
             MessageBox.Show("Order #" + orderID + " completed successfully.", "POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -547,6 +572,22 @@ namespace InventoryManagementSystem
         private void btnCompleteOrder_Click(object sender, EventArgs e)
         {
             CompleteOrder();
+        }
+
+        private void btnPrintReceipt_Click(object sender, EventArgs e)
+        {
+            if (_lastCompletedOrderID == -1)
+            {
+                MessageBox.Show("Please complete an order first to print the receipt.", "Print", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            using (frmPrintReceipt printForm = new frmPrintReceipt())
+            {
+                printForm.OrderIDTextBox.Text = _lastCompletedOrderID.ToString();
+                printForm.SearchOrder();
+                printForm.ShowDialog(this);
+            }
         }
 
         private void gridReceipt_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)

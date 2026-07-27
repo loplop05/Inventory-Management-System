@@ -52,10 +52,42 @@ namespace InventoryManagementSystem
             if (_summaryTable.Rows.Count > 0)
             {
                 DataRow row = _summaryTable.Rows[0];
-                _lblOrders.Text = "Orders" + Environment.NewLine + Convert.ToInt32(row["OrderCount"]);
-                _lblSubtotal.Text = "Subtotal" + Environment.NewLine + Convert.ToDecimal(row["Subtotal"]).ToString("C2");
-                _lblTax.Text = "Tax" + Environment.NewLine + Convert.ToDecimal(row["TaxAmount"]).ToString("C2");
-                _lblRevenue.Text = "Revenue" + Environment.NewLine + Convert.ToDecimal(row["TotalRevenue"]).ToString("C2");
+                int orderCount = Convert.ToInt32(row["OrderCount"]);
+                decimal dailySubtotal = Convert.ToDecimal(row["Subtotal"]);
+                decimal taxAmount = Convert.ToDecimal(row["TaxAmount"]);
+                decimal totalRevenue = Convert.ToDecimal(row["TotalRevenue"]);
+
+                _lblOrders.Text = "Orders" + Environment.NewLine + orderCount.ToString();
+                _lblSubtotal.Text = "Subtotal" + Environment.NewLine + dailySubtotal.ToString("C2");
+                _lblTax.Text = "Tax" + Environment.NewLine + taxAmount.ToString("C2");
+                _lblRevenue.Text = "Revenue" + Environment.NewLine + totalRevenue.ToString("C2");
+
+                // Apply colors to KPI cards
+                _lblOrders.BackColor = Color.FromArgb(59, 130, 246); // Blue
+                _lblOrders.ForeColor = Color.White;
+                _lblSubtotal.BackColor = Color.FromArgb(16, 185, 129); // Green
+                _lblSubtotal.ForeColor = Color.White;
+                _lblTax.BackColor = Color.FromArgb(245, 158, 11); // Orange
+                _lblTax.ForeColor = Color.White;
+                _lblRevenue.BackColor = Color.FromArgb(139, 92, 246); // Purple
+                _lblRevenue.ForeColor = Color.White;
+            }
+            else
+            {
+                _lblOrders.Text = "Orders" + Environment.NewLine + "0";
+                _lblSubtotal.Text = "Subtotal" + Environment.NewLine + "$0.00";
+                _lblTax.Text = "Tax" + Environment.NewLine + "$0.00";
+                _lblRevenue.Text = "Revenue" + Environment.NewLine + "$0.00";
+
+                // Default gray color when no data
+                _lblOrders.BackColor = Color.FromArgb(148, 163, 184);
+                _lblOrders.ForeColor = Color.White;
+                _lblSubtotal.BackColor = Color.FromArgb(148, 163, 184);
+                _lblSubtotal.ForeColor = Color.White;
+                _lblTax.BackColor = Color.FromArgb(148, 163, 184);
+                _lblTax.ForeColor = Color.White;
+                _lblRevenue.BackColor = Color.FromArgb(148, 163, 184);
+                _lblRevenue.ForeColor = Color.White;
             }
 
             _ordersTable = clsPOS.GetTodayOrders();
@@ -210,5 +242,9 @@ namespace InventoryManagementSystem
             }
         }
 
+        private void _lblRevenue_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

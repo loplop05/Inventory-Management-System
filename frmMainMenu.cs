@@ -58,6 +58,16 @@ namespace InventoryManagementSystem
             btnReceiptSearch.TextAlign = ContentAlignment.MiddleCenter;
             _toolTip.SetToolTip(btnReceiptSearch, "Search receipts and manage exchanges");
 
+            // ── Print Receipt button ─────────────────────────────────────────────
+            btnPrintReceipt.Text = "Print Receipt";
+            btnPrintReceipt.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            btnPrintReceipt.BackColor = Color.FromArgb(236, 72, 153); // Pink
+            btnPrintReceipt.ForeColor = Color.White;
+            btnPrintReceipt.FlatStyle = FlatStyle.Flat;
+            btnPrintReceipt.FlatAppearance.BorderSize = 0;
+            btnPrintReceipt.TextAlign = ContentAlignment.MiddleCenter;
+            _toolTip.SetToolTip(btnPrintReceipt, "Print order receipts");
+
             // ── Exit button ────────────────────────────────────────────────────
             button4.Text = clsFormTheme.Icons.Exit + "  Exit";
             button4.Font = new Font(clsFormTheme.IconFontName, 12F);
@@ -78,7 +88,10 @@ namespace InventoryManagementSystem
             clsFormTheme.DrawCard(e.Graphics, new Rectangle(140, 140, 220, 140)); // Categories
             clsFormTheme.DrawCard(e.Graphics, new Rectangle(390, 140, 220, 140)); // Suppliers
             clsFormTheme.DrawCard(e.Graphics, new Rectangle(640, 140, 220, 140)); // Products
-            clsFormTheme.DrawCard(e.Graphics, new Rectangle(890, 140, 220, 140)); // Receipt Search
+            clsFormTheme.DrawCard(e.Graphics, new Rectangle(140, 290, 220, 140)); // Receipt Search
+            clsFormTheme.DrawCard(e.Graphics, new Rectangle(390, 290, 220, 140)); // Print Receipt
+            clsFormTheme.DrawCard(e.Graphics, new Rectangle(640, 290, 220, 140)); // POS
+            clsFormTheme.DrawCard(e.Graphics, new Rectangle(890, 290, 220, 140)); // Daily Report
         }
 
         private void AddPOSMenuButtons()
@@ -89,8 +102,8 @@ namespace InventoryManagementSystem
                 Name     = "btnPOS",
                 Text     = clsFormTheme.Icons.POS + "\nPoint of Sale",
                 Font     = new Font(clsFormTheme.IconFontName, 20F),
-                Location = new Point(256, 349),
-                Size     = new Size(232, 109)
+                Location = new Point(650, 290),
+                Size     = new Size(200, 120)
             };
             btnPOS.Click += btnPOS_Click;
             clsFormTheme.ApplySuccessButtonStyle(btnPOS);
@@ -102,14 +115,15 @@ namespace InventoryManagementSystem
                 Name     = "btnDailyReport",
                 Text     = clsFormTheme.Icons.Reports + "\nDaily Report",
                 Font     = new Font(clsFormTheme.IconFontName, 20F),
-                Location = new Point(673, 349),
-                Size     = new Size(232, 109)
+                Location = new Point(900, 290),
+                Size     = new Size(200, 120)
             };
             btnDailyReport.Click += btnDailyReport_Click;
             clsFormTheme.ApplySecondaryButtonStyle(btnDailyReport);
             _toolTip.SetToolTip(btnDailyReport, "View today's sales report");
 
-            btnProducts.Location = new Point(474, 255);
+            // Adjust form size to accommodate all buttons
+            this.ClientSize = new Size(1200, 500);
 
             Controls.Add(btnPOS);
             Controls.Add(btnDailyReport);
@@ -152,6 +166,12 @@ namespace InventoryManagementSystem
         private void btnReceiptSearch_Click(object sender, EventArgs e)
         {
             frmReceiptSearch frm = new frmReceiptSearch();
+            frm.ShowDialog();
+        }
+
+        private void btnPrintReceipt_Click(object sender, EventArgs e)
+        {
+            frmPrintReceipt frm = new frmPrintReceipt();
             frm.ShowDialog();
         }
 

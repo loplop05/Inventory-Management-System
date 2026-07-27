@@ -69,7 +69,7 @@ namespace InventoryManagementSystem
             // 
             // btnReceiptSearch
             // 
-            this.btnReceiptSearch.Location = new System.Drawing.Point(900, 150);
+            this.btnReceiptSearch.Location = new System.Drawing.Point(150, 300);
             this.btnReceiptSearch.Name = "btnReceiptSearch";
             this.btnReceiptSearch.Size = new System.Drawing.Size(200, 120);
             this.btnReceiptSearch.TabIndex = 3;
@@ -77,12 +77,22 @@ namespace InventoryManagementSystem
             this.btnReceiptSearch.UseVisualStyleBackColor = true;
             this.btnReceiptSearch.Click += new System.EventHandler(this.btnReceiptSearch_Click);
             // 
+            // btnPrintReceipt
+            // 
+            this.btnPrintReceipt.Location = new System.Drawing.Point(400, 300);
+            this.btnPrintReceipt.Name = "btnPrintReceipt";
+            this.btnPrintReceipt.Size = new System.Drawing.Size(200, 120);
+            this.btnPrintReceipt.TabIndex = 4;
+            this.btnPrintReceipt.Text = "Print Receipt";
+            this.btnPrintReceipt.UseVisualStyleBackColor = true;
+            this.btnPrintReceipt.Click += new System.EventHandler(this.btnPrintReceipt_Click);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(167, 63);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(883, 69);
+            this.label1.Size = new System.Drawing.Size(191, 16);
             this.label1.TabIndex = 3;
             this.label1.Text = "Inventory Management System";
             this.label1.Click += new System.EventHandler(this.label1_Click);
@@ -102,13 +112,14 @@ namespace InventoryManagementSystem
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1216, 592);
-            this.MinimumSize = new System.Drawing.Size(900, 500);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.btnPrintReceipt);
             this.Controls.Add(this.btnReceiptSearch);
             this.Controls.Add(this.btnProducts);
             this.Controls.Add(this.btnSuppliers);
             this.Controls.Add(this.btnCategories);
+            this.MinimumSize = new System.Drawing.Size(900, 500);
             this.Name = "frmMainMenu";
             this.Text = "Inventory Management System";
             this.Load += new System.EventHandler(this.frmMainMenu_Load);
@@ -123,6 +134,7 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button btnSuppliers;
         private System.Windows.Forms.Button btnProducts;
         private System.Windows.Forms.Button btnReceiptSearch;
+        private System.Windows.Forms.Button btnPrintReceipt;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button4;
     }
