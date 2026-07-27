@@ -54,7 +54,7 @@ namespace InventoryManagementSystem
             this._rootLayout.Controls.Add(this._splitContainer, 0, 1);
             this._rootLayout.Controls.Add(this._buttonsPanel, 0, 2);
             this._rootLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._rootLayout.Location = new System.Drawing.Point(16, 80);
+            this._rootLayout.Location = new System.Drawing.Point(16, 16);
             this._rootLayout.Name = "_rootLayout";
             this._rootLayout.RowCount = 3;
             this._rootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 96F));

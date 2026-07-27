@@ -22,15 +22,12 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Update Supplier", clsFormTheme.Icons.Update);
             btnSearch.Text = clsFormTheme.Icons.Search + "  Find Supplier";
-            btnSearch.Font = new Font(clsFormTheme.IconFontName, 11F, FontStyle.Bold);
+            btnSearch.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnSearch);
-            btnSearch.Height = 36;
             clsFormTheme.ApplyTextBoxStyle(txtUpdateSupplierID);
-            txtUpdateSupplierID.Font = new Font(clsFormTheme.MainFontName, 10F);
 
             btnSearch.Enabled = false;
             AcceptButton = btnSearch;
-            CancelButton = null;
             txtUpdateSupplierID.TextChanged += txtUpdateSupplierID_TextChanged;
             KeyDown += frmUpdateSupplier_KeyDown;
         }

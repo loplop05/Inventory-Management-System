@@ -27,17 +27,12 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Edit Product", clsFormTheme.Icons.Update);
             btnUpdate.Text = clsFormTheme.Icons.Save + "  Save Changes";
-            btnUpdate.Font = new Font(clsFormTheme.IconFontName, 11F, FontStyle.Bold);
+            btnUpdate.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnUpdate);
-            btnUpdate.Height = 36;
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewProductName);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewPrice);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewQuantity);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewBarcode);
-            txtBoxNewProductName.Font = new Font(clsFormTheme.MainFontName, 10F);
-            txtBoxNewPrice.Font = new Font(clsFormTheme.MainFontName, 10F);
-            txtBoxNewQuantity.Font = new Font(clsFormTheme.MainFontName, 10F);
-            txtBoxNewBarcode.Font = new Font(clsFormTheme.MainFontName, 10F);
 
             lblProductName.BackColor = Color.Transparent;
             lblProductName.ForeColor = clsFormTheme.HeaderColor;
@@ -46,7 +41,6 @@ namespace InventoryManagementSystem
 
             btnUpdate.Enabled = false;
             AcceptButton = btnUpdate;
-            CancelButton = null;
             txtBoxNewProductName.TextChanged += txtBoxNewProductName_TextChanged;
             txtBoxNewPrice.TextChanged += txtBoxNewPrice_TextChanged;
             txtBoxNewQuantity.TextChanged += txtBoxNewQuantity_TextChanged;
@@ -62,7 +56,7 @@ namespace InventoryManagementSystem
             KeyDown += frmShowProductToUpdate_KeyDown;
         }
 
-        private async void frmShowProductToUpdate_Load(object sender, EventArgs e)
+        private void frmShowProductToUpdate_Load(object sender, EventArgs e)
         {
             lblProductID.Text = _Product.ProductID.ToString();
             lblProductName.Text = _Product.ProductName;
@@ -71,8 +65,8 @@ namespace InventoryManagementSystem
             txtBoxNewQuantity.Text = _Product.Quantity.ToString();
             txtBoxNewBarcode.Text = _Product.Barcode;
 
-            await LoadCategoriesAsync();
-            await LoadSuppliersAsync();
+            LoadCategories();
+            LoadSuppliers();
 
             cmbNewCategory.SelectedValue = _Product.CategoryID;
             cmbNewSupplier.SelectedValue = _Product.SupplierID;
@@ -81,7 +75,7 @@ namespace InventoryManagementSystem
             txtBoxNewProductName.Focus();
         }
 
-        private async Task LoadCategoriesAsync()
+        private async void LoadCategories()
         {
             try
             {
@@ -96,7 +90,7 @@ namespace InventoryManagementSystem
             }
         }
 
-        private async Task LoadSuppliersAsync()
+        private async void LoadSuppliers()
         {
             try
             {

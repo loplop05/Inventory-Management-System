@@ -26,15 +26,11 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Edit Supplier", clsFormTheme.Icons.Update);
             btnUpdate.Text = clsFormTheme.Icons.Save + "  Save Changes";
-            btnUpdate.Font = new Font(clsFormTheme.IconFontName, 11F, FontStyle.Bold);
+            btnUpdate.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnUpdate);
-            btnUpdate.Height = 36;
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewSupplierName);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewPhone);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewEmail);
-            txtBoxNewSupplierName.Font = new Font(clsFormTheme.MainFontName, 10F);
-            txtBoxNewPhone.Font = new Font(clsFormTheme.MainFontName, 10F);
-            txtBoxNewEmail.Font = new Font(clsFormTheme.MainFontName, 10F);
 
             lblSupplierName.BackColor = Color.Transparent;
             lblSupplierName.ForeColor = clsFormTheme.HeaderColor;
@@ -43,7 +39,6 @@ namespace InventoryManagementSystem
 
             btnUpdate.Enabled = false;
             AcceptButton = btnUpdate;
-            CancelButton = null;
             txtBoxNewSupplierName.TextChanged += txtBoxNewSupplierName_TextChanged;
             txtBoxNewPhone.TextChanged += txtBoxNewPhone_TextChanged;
             txtBoxNewEmail.TextChanged += txtBoxNewEmail_TextChanged;

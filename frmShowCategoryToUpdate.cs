@@ -29,11 +29,9 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Edit Category", clsFormTheme.Icons.Update);
             btnUpdate.Text = clsFormTheme.Icons.Save + "  Save Changes";
-            btnUpdate.Font = new Font(clsFormTheme.IconFontName, 11F, FontStyle.Bold);
+            btnUpdate.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnUpdate);
-            btnUpdate.Height = 36;
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewCategory);
-            txtBoxNewCategory.Font = new Font(clsFormTheme.MainFontName, 10F);
 
             lblCategory.BackColor = Color.Transparent;
             lblCategory.ForeColor = clsFormTheme.HeaderColor;
@@ -42,7 +40,6 @@ namespace InventoryManagementSystem
 
             btnUpdate.Enabled = false;
             AcceptButton = btnUpdate;
-            CancelButton = null;
             txtBoxNewCategory.TextChanged += txtBoxNewCategory_TextChanged;
             txtBoxNewCategory.KeyDown += txtBoxNewCategory_KeyDown;
             KeyDown += frmShowCategoryToUpdate_KeyDown;

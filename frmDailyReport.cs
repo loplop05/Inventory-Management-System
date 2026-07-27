@@ -25,17 +25,14 @@ namespace InventoryManagementSystem
 
             _btnRefresh.Text = clsFormTheme.Icons.Refresh + "  Refresh";
             _btnRefresh.Font = new Font(clsFormTheme.IconFontName, 11F);
-            _btnRefresh.Height = 36;
             clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh);
 
             _btnExportCsv.Text = clsFormTheme.Icons.Export + "  Export CSV";
             _btnExportCsv.Font = new Font(clsFormTheme.IconFontName, 11F);
-            _btnExportCsv.Height = 36;
             clsFormTheme.ApplySuccessButtonStyle(_btnExportCsv);
 
             _btnClose.Text = clsFormTheme.Icons.Exit + "  Close";
             _btnClose.Font = new Font(clsFormTheme.IconFontName, 11F);
-            _btnClose.Height = 36;
             clsFormTheme.ApplySecondaryButtonStyle(_btnClose);
 
             KeyDown += frmDailyReport_KeyDown;

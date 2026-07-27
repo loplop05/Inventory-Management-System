@@ -8,105 +8,87 @@ namespace InventoryManagementSystem
     {
         private ToolTip _toolTip = new ToolTip();
 
-        // ── Grid layout constants ───────────────────────────────────────────
-        private const int CardWidth = 264;
-        private const int CardHeight = 150;
-        private const int ColGap = 133;   // horizontal gap between cards
-        private const int RowGap = 38;    // vertical gap between rows
-        private const int GridLeft = 240;   // left margin of the grid
-        private const int GridTop = 140;   // top margin of the grid
-
-        private int Col(int index) => GridLeft + index * (CardWidth + ColGap);
-        private int Row(int index) => GridTop + index * (CardHeight + RowGap);
-
         public frmMainMenu()
         {
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
-            label1.Visible = false;
+            label1.Visible = false; // Hide the old label
 
+            // Header with a stock/inventory icon
             clsFormTheme.CreateHeaderPanel(this, "Inventory Management System", clsFormTheme.Icons.Stock);
 
-            // ── Row 0: Categories | Suppliers ──────────────────────────────
+            // ── Categories button ──────────────────────────────────────────────
             btnCategories.Text = clsFormTheme.Icons.Categories + "\nCategories";
             btnCategories.Font = new Font(clsFormTheme.IconFontName, 20F);
-            btnCategories.Location = new Point(Col(0), Row(0));
-            btnCategories.Size = new Size(CardWidth, CardHeight);
             clsFormTheme.ApplyPrimaryButtonStyle(btnCategories);
             _toolTip.SetToolTip(btnCategories, "Manage product categories");
 
+            // ── Suppliers button ───────────────────────────────────────────────
             btnSuppliers.Text = clsFormTheme.Icons.Suppliers + "\nSuppliers";
             btnSuppliers.Font = new Font(clsFormTheme.IconFontName, 20F);
-            btnSuppliers.Location = new Point(Col(2), Row(0));
-            btnSuppliers.Size = new Size(CardWidth, CardHeight);
             clsFormTheme.ApplyPrimaryButtonStyle(btnSuppliers);
             _toolTip.SetToolTip(btnSuppliers, "Manage suppliers");
 
-            // ── Row 1: POS | Products | Daily Report ───────────────────────
+            // ── Products button ────────────────────────────────────────────────
             btnProducts.Text = clsFormTheme.Icons.Products + "\nProducts";
             btnProducts.Font = new Font(clsFormTheme.IconFontName, 20F);
-            btnProducts.Location = new Point(Col(1), Row(1));   // ← center column
-            btnProducts.Size = new Size(CardWidth, CardHeight);
             clsFormTheme.ApplyPrimaryButtonStyle(btnProducts);
             _toolTip.SetToolTip(btnProducts, "Manage products and inventory");
 
-            // ── Exit button ─────────────────────────────────────────────────
+            // ── Exit button ────────────────────────────────────────────────────
             button4.Text = clsFormTheme.Icons.Exit + "  Exit";
             button4.Font = new Font(clsFormTheme.IconFontName, 12F);
-            button4.Height = 36;
             clsFormTheme.ApplyDangerButtonStyle(button4);
             _toolTip.SetToolTip(button4, "Exit application (Esc)");
 
             btnSuppliers.Enabled = true;
-            btnProducts.Enabled = true;
+            btnProducts.Enabled  = true;
             AddPOSMenuButtons();
 
             KeyDown += frmMainMenu_KeyDown;
-            Paint += FrmMainMenu_Paint;
+            Paint   += FrmMainMenu_Paint;
         }
-         
-        
 
         private void FrmMainMenu_Paint(object sender, PaintEventArgs e)
         {
-            // Draw a card behind every top-level nav button, using its REAL bounds
-            foreach (Control c in Controls)
-            {
-                if (c is Button b && (b == btnCategories || b == btnSuppliers ||
-                                       b == btnProducts || b.Name == "btnPOS" ||
-                                       b.Name == "btnDailyReport"))
-                {
-                    clsFormTheme.DrawCard(e.Graphics, b.Bounds);
-                }
-            }
+            // Draw styled cards behind the main navigation buttons
+            clsFormTheme.DrawCard(e.Graphics, new Rectangle(240, 140, 264, 150)); // Categories
+            clsFormTheme.DrawCard(e.Graphics, new Rectangle(657, 140, 264, 150)); // Suppliers
+            clsFormTheme.DrawCard(e.Graphics, new Rectangle(458, 328, 264, 150)); // Products
+            clsFormTheme.DrawCard(e.Graphics, new Rectangle(240, 328, 264, 150)); // POS
+            clsFormTheme.DrawCard(e.Graphics, new Rectangle(657, 328, 264, 150)); // Daily Report
         }
 
         private void AddPOSMenuButtons()
         {
+            // ── POS button ─────────────────────────────────────────────────────
             Button btnPOS = new Button
             {
-                Name = "btnPOS",
-                Text = clsFormTheme.Icons.POS + "\nPoint of Sale",
-                Font = new Font(clsFormTheme.IconFontName, 20F),
-                Location = new Point(Col(0), Row(1)),
-                Size = new Size(CardWidth, CardHeight)
+                Name     = "btnPOS",
+                Text     = clsFormTheme.Icons.POS + "\nPoint of Sale",
+                Font     = new Font(clsFormTheme.IconFontName, 20F),
+                Location = new Point(256, 349),
+                Size     = new Size(232, 109)
             };
             btnPOS.Click += btnPOS_Click;
             clsFormTheme.ApplySuccessButtonStyle(btnPOS);
             _toolTip.SetToolTip(btnPOS, "Open Point of Sale (POS)");
 
+            // ── Daily Report button ────────────────────────────────────────────
             Button btnDailyReport = new Button
             {
-                Name = "btnDailyReport",
-                Text = clsFormTheme.Icons.Reports + "\nDaily Report",
-                Font = new Font(clsFormTheme.IconFontName, 20F),
-                Location = new Point(Col(2), Row(1)),
-                Size = new Size(CardWidth, CardHeight)
+                Name     = "btnDailyReport",
+                Text     = clsFormTheme.Icons.Reports + "\nDaily Report",
+                Font     = new Font(clsFormTheme.IconFontName, 20F),
+                Location = new Point(673, 349),
+                Size     = new Size(232, 109)
             };
             btnDailyReport.Click += btnDailyReport_Click;
             clsFormTheme.ApplySecondaryButtonStyle(btnDailyReport);
             _toolTip.SetToolTip(btnDailyReport, "View today's sales report");
+
+            btnProducts.Location = new Point(474, 255);
 
             Controls.Add(btnPOS);
             Controls.Add(btnDailyReport);
