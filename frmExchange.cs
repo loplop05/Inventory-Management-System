@@ -43,20 +43,20 @@ namespace InventoryManagementSystem
             clsFormTheme.CreateHeaderPanel(this, "Product Exchange", clsFormTheme.Icons.Exchange);
             clsFormTheme.ApplyTextBoxStyle(txtExchangeQuantity);
             clsFormTheme.ApplyTextBoxStyle(txtExchangeReason);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnProcessExchange);
-            clsFormTheme.ApplyDangerButtonStyle(btnRemoveExchange);
-            clsFormTheme.ApplySecondaryButtonStyle(btnClose);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnProcessExchange, clsFormTheme.Icons.Exchange);
+            clsFormTheme.ApplyDangerButtonStyle(btnRemoveExchange, clsFormTheme.Icons.Delete);
+            clsFormTheme.ApplySecondaryButtonStyle(btnClose, clsFormTheme.Icons.Exit);
             clsFormTheme.ApplyGridStyle(gridOriginalItems);
             clsFormTheme.ApplyGridStyle(gridNewItems);
 
-            btnProcessExchange.Text = clsFormTheme.Icons.Plus + "  Add";
-            btnProcessExchange.Font = new Font(clsFormTheme.IconFontName, 10F);
+            btnProcessExchange.Text = "Add";
+            btnProcessExchange.Font = new Font(clsFormTheme.MainFontName, 10F);
 
-            btnRemoveExchange.Text = clsFormTheme.Icons.Delete + "  Remove";
-            btnRemoveExchange.Font = new Font(clsFormTheme.IconFontName, 10F);
+            btnRemoveExchange.Text = "Remove";
+            btnRemoveExchange.Font = new Font(clsFormTheme.MainFontName, 10F);
 
-            btnClose.Text = clsFormTheme.Icons.Exit + "  Close";
-            btnClose.Font = new Font(clsFormTheme.IconFontName, 10F);
+            btnClose.Text = "Close";
+            btnClose.Font = new Font(clsFormTheme.MainFontName, 10F);
 
             KeyDown += frmExchange_KeyDown;
         }

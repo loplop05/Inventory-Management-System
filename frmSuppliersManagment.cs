@@ -23,6 +23,15 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Suppliers", clsFormTheme.Icons.Suppliers);
 
+            // Setup keyboard shortcuts
+            clsKeyboardShortcuts.SetupCommonShortcuts(
+                this,
+                onEscape: () => Close(),
+                onRefresh: () => LoadSuppliers(),
+                onSearch: () => _txtSearch.Focus(),
+                onAdd: () => btnAddSupplier_Click(null, null)
+            );
+
             btnAddSupplier.Text = "Add";
             btnAddSupplier.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnAddSupplier, clsFormTheme.Icons.Add);

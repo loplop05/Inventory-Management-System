@@ -23,68 +23,6 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Timer _searchDebounceTimer;
         private const int SearchDebounceMs = 300;
 
-        // ── Icon+label button rendering ─────────────────────────────────────
-        private class IconButtonInfo
-        {
-            public string Icon;
-            public string Label;
-            public float IconFontSize;
-            public float TextFontSize;
-            public FontStyle TextStyle;
-        }
-
-        private readonly Dictionary<Button, IconButtonInfo> _iconButtons =
-            new Dictionary<Button, IconButtonInfo>();
-
-        private void SetIconButtonText(Button btn, string icon, string label,
-            float iconFontSize = 12F, float textFontSize = 10F, FontStyle textStyle = FontStyle.Bold)
-        {
-            btn.Text = "";
-            _iconButtons[btn] = new IconButtonInfo
-            {
-                Icon = icon,
-                Label = label,
-                IconFontSize = iconFontSize,
-                TextFontSize = textFontSize,
-                TextStyle = textStyle
-            };
-            btn.Paint -= IconButton_Paint; // avoid double subscribe if reused
-            btn.Paint += IconButton_Paint;
-        }
-
-        private void IconButton_Paint(object sender, PaintEventArgs e)
-        {
-            Button btn = sender as Button;
-            IconButtonInfo info;
-            if (btn == null || !_iconButtons.TryGetValue(btn, out info))
-                return;
-
-            using (Font iconFont = new Font(clsFormTheme.IconFontName, info.IconFontSize))
-            using (Font textFont = new Font(clsFormTheme.MainFontName, info.TextFontSize, info.TextStyle))
-            using (SolidBrush brush = new SolidBrush(btn.Enabled ? btn.ForeColor : clsFormTheme.TextMuted))
-            {
-                SizeF iconSize = e.Graphics.MeasureString(info.Icon, iconFont);
-                SizeF textSize = e.Graphics.MeasureString(info.Label, textFont);
-
-                const float gap = 6f;
-                float totalWidth = iconSize.Width + gap + textSize.Width;
-                float startX = (btn.ClientSize.Width - totalWidth) / 2f;
-                float centerY = btn.ClientSize.Height / 2f;
-
-                var iconRect = new RectangleF(startX, centerY - iconSize.Height / 2f, iconSize.Width, iconSize.Height);
-                var textRect = new RectangleF(startX + iconSize.Width + gap, centerY - textSize.Height / 2f, textSize.Width, textSize.Height);
-
-                e.Graphics.DrawString(info.Icon, iconFont, brush, iconRect);
-                e.Graphics.DrawString(info.Label, textFont, brush, textRect);
-            }
-        }
-
-        private void PurgeDisposedIconButtons()
-        {
-            foreach (Button key in _iconButtons.Keys.Where(b => b.IsDisposed).ToList())
-                _iconButtons.Remove(key);
-        }
-
         public frmPOS()
         {
             InitializeComponent();
@@ -163,7 +101,6 @@ namespace InventoryManagementSystem
 
         private void BuildProductTabs()
         {
-            PurgeDisposedIconButtons();
             _tabsProducts.TabPages.Clear();
 
             DataRow[] filteredRows = GetFilteredRows();

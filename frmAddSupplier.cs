@@ -21,9 +21,9 @@ namespace InventoryManagementSystem
 
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Add New Supplier", clsFormTheme.Icons.Add);
-            btnAdd.Text = clsFormTheme.Icons.Save + "  Save Supplier";
-            btnAdd.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnAdd);
+            btnAdd.Text = "Save Supplier";
+            btnAdd.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnAdd, clsFormTheme.Icons.Save);
             clsFormTheme.ApplyTextBoxStyle(txtBoxSupplierName);
             clsFormTheme.ApplyTextBoxStyle(txtBoxPhone);
             clsFormTheme.ApplyTextBoxStyle(txtBoxEmail);

@@ -23,17 +23,17 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyGridStyle(_gridOrders);
             clsFormTheme.ApplyGridStyle(_gridTopProducts);
 
-            _btnRefresh.Text = clsFormTheme.Icons.Refresh + "  Refresh";
-            _btnRefresh.Font = new Font(clsFormTheme.IconFontName, 11F);
-            clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh);
+            _btnRefresh.Text = "Refresh";
+            _btnRefresh.Font = new Font(clsFormTheme.MainFontName, 11F);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh, clsFormTheme.Icons.Refresh);
 
-            _btnExportCsv.Text = clsFormTheme.Icons.Export + "  Export CSV";
-            _btnExportCsv.Font = new Font(clsFormTheme.IconFontName, 11F);
-            clsFormTheme.ApplySuccessButtonStyle(_btnExportCsv);
+            _btnExportCsv.Text = "Export CSV";
+            _btnExportCsv.Font = new Font(clsFormTheme.MainFontName, 11F);
+            clsFormTheme.ApplySuccessButtonStyle(_btnExportCsv, clsFormTheme.Icons.Export);
 
-            _btnClose.Text = clsFormTheme.Icons.Exit + "  Close";
-            _btnClose.Font = new Font(clsFormTheme.IconFontName, 11F);
-            clsFormTheme.ApplySecondaryButtonStyle(_btnClose);
+            _btnClose.Text = "Close";
+            _btnClose.Font = new Font(clsFormTheme.MainFontName, 11F);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnClose, clsFormTheme.Icons.Exit);
 
             KeyDown += frmDailyReport_KeyDown;
         }

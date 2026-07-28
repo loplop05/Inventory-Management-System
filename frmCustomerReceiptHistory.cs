@@ -26,19 +26,19 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Customer Receipt History", clsFormTheme.Icons.User);
             clsFormTheme.ApplyTextBoxStyle(txtPhoneNumber);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnSearch);
-            clsFormTheme.ApplySuccessButtonStyle(btnSelect);
-            clsFormTheme.ApplySecondaryButtonStyle(btnCancel);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnSearch, clsFormTheme.Icons.Search);
+            clsFormTheme.ApplySuccessButtonStyle(btnSelect, clsFormTheme.Icons.Check);
+            clsFormTheme.ApplySecondaryButtonStyle(btnCancel, clsFormTheme.Icons.Cancel);
             clsFormTheme.ApplyGridStyle(gridOrders);
 
-            btnSearch.Text = clsFormTheme.Icons.Search + "  Search";
-            btnSearch.Font = new Font(clsFormTheme.IconFontName, 10F);
+            btnSearch.Text = "Search";
+            btnSearch.Font = new Font(clsFormTheme.MainFontName, 10F);
 
-            btnSelect.Text = clsFormTheme.Icons.Check + "  Select";
-            btnSelect.Font = new Font(clsFormTheme.IconFontName, 10F);
+            btnSelect.Text = "Select";
+            btnSelect.Font = new Font(clsFormTheme.MainFontName, 10F);
 
-            btnCancel.Text = clsFormTheme.Icons.Exit + "  Cancel";
-            btnCancel.Font = new Font(clsFormTheme.IconFontName, 10F);
+            btnCancel.Text = "Cancel";
+            btnCancel.Font = new Font(clsFormTheme.MainFontName, 10F);
 
             KeyDown += frmCustomerReceiptHistory_KeyDown;
         }

@@ -20,7 +20,7 @@ namespace InventoryManagementSystem
 
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Delete Product", clsFormTheme.Icons.Delete);
-            clsFormTheme.ApplyDangerButtonStyle(btnDelete);
+            clsFormTheme.ApplyDangerButtonStyle(btnDelete, clsFormTheme.Icons.Delete);
             clsFormTheme.ApplyTextBoxStyle(txtProductID);
             
             btnDelete.Enabled = false;

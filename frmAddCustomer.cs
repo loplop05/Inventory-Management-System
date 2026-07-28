@@ -29,14 +29,14 @@ namespace InventoryManagementSystem
             clsFormTheme.CreateHeaderPanel(this, "Add New Customer", clsFormTheme.Icons.User);
             clsFormTheme.ApplyTextBoxStyle(txtPhoneNumber);
             clsFormTheme.ApplyTextBoxStyle(txtCustomerName);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnAdd);
-            clsFormTheme.ApplySecondaryButtonStyle(btnCancel);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnAdd, clsFormTheme.Icons.Save);
+            clsFormTheme.ApplySecondaryButtonStyle(btnCancel, clsFormTheme.Icons.Cancel);
 
-            btnAdd.Text = clsFormTheme.Icons.Save + "  Add Customer";
-            btnAdd.Font = new System.Drawing.Font(clsFormTheme.IconFontName, 10F, System.Drawing.FontStyle.Bold);
+            btnAdd.Text = "Add Customer";
+            btnAdd.Font = new System.Drawing.Font(clsFormTheme.MainFontName, 10F, System.Drawing.FontStyle.Bold);
 
-            btnCancel.Text = clsFormTheme.Icons.Exit + "  Cancel";
-            btnCancel.Font = new System.Drawing.Font(clsFormTheme.IconFontName, 10F);
+            btnCancel.Text = "Cancel";
+            btnCancel.Font = new System.Drawing.Font(clsFormTheme.MainFontName, 10F);
 
             KeyDown += frmAddCustomer_KeyDown;
         }
