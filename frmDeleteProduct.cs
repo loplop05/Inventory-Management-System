@@ -19,6 +19,7 @@ namespace InventoryManagementSystem
             _errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
             clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.CreateHeaderPanel(this, "Delete Product", clsFormTheme.Icons.Delete);
             clsFormTheme.ApplyDangerButtonStyle(btnDelete);
             clsFormTheme.ApplyTextBoxStyle(txtProductID);
             

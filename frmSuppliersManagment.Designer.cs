@@ -29,9 +29,6 @@ namespace InventoryManagementSystem
         private void InitializeComponent()
         {
             this._mainLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this._headerPanel = new System.Windows.Forms.Panel();
-            this._lblTitle = new System.Windows.Forms.Label();
-            this._btnBack = new System.Windows.Forms.Button();
             this._searchPanel = new System.Windows.Forms.Panel();
             this._lblSearch = new System.Windows.Forms.Label();
             this._txtSearch = new System.Windows.Forms.TextBox();
@@ -48,7 +45,6 @@ namespace InventoryManagementSystem
             this._lblPageInfo = new System.Windows.Forms.Label();
             this._btnNextPage = new System.Windows.Forms.Button();
             this._mainLayoutPanel.SuspendLayout();
-            this._headerPanel.SuspendLayout();
             this._searchPanel.SuspendLayout();
             this._gridPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataGVSuppliers)).BeginInit();
@@ -60,56 +56,21 @@ namespace InventoryManagementSystem
             // 
             this._mainLayoutPanel.ColumnCount = 1;
             this._mainLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._mainLayoutPanel.Controls.Add(this._headerPanel, 0, 0);
-            this._mainLayoutPanel.Controls.Add(this._searchPanel, 0, 1);
-            this._mainLayoutPanel.Controls.Add(this._gridPanel, 0, 2);
-            this._mainLayoutPanel.Controls.Add(this._actionsPanel, 0, 3);
-            this._mainLayoutPanel.Controls.Add(this._paginationPanel, 0, 4);
+            this._mainLayoutPanel.Controls.Add(this._searchPanel, 0, 0);
+            this._mainLayoutPanel.Controls.Add(this._gridPanel, 0, 1);
+            this._mainLayoutPanel.Controls.Add(this._actionsPanel, 0, 2);
+            this._mainLayoutPanel.Controls.Add(this._paginationPanel, 0, 3);
             this._mainLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._mainLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this._mainLayoutPanel.Name = "_mainLayoutPanel";
             this._mainLayoutPanel.Padding = new System.Windows.Forms.Padding(20);
-            this._mainLayoutPanel.RowCount = 5;
-            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this._mainLayoutPanel.RowCount = 4;
             this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this._mainLayoutPanel.Size = new System.Drawing.Size(950, 600);
             this._mainLayoutPanel.TabIndex = 0;
-            // 
-            // _headerPanel
-            // 
-            this._headerPanel.Controls.Add(this._lblTitle);
-            this._headerPanel.Controls.Add(this._btnBack);
-            this._headerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._headerPanel.Location = new System.Drawing.Point(23, 23);
-            this._headerPanel.Name = "_headerPanel";
-            this._headerPanel.Size = new System.Drawing.Size(904, 54);
-            this._headerPanel.TabIndex = 0;
-            // 
-            // _lblTitle
-            // 
-            this._lblTitle.AutoSize = true;
-            this._lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this._lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(58)))), ((int)(((byte)(138)))));
-            this._lblTitle.Location = new System.Drawing.Point(14, 7);
-            this._lblTitle.Name = "_lblTitle";
-            this._lblTitle.Size = new System.Drawing.Size(136, 37);
-            this._lblTitle.TabIndex = 0;
-            this._lblTitle.Text = "Suppliers";
-            // 
-            // _btnBack
-            // 
-            this._btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._btnBack.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this._btnBack.Location = new System.Drawing.Point(748, 3);
-            this._btnBack.Name = "_btnBack";
-            this._btnBack.Size = new System.Drawing.Size(115, 47);
-            this._btnBack.TabIndex = 1;
-            this._btnBack.Text = "Back";
-            this._btnBack.UseVisualStyleBackColor = true;
-            this._btnBack.Click += new System.EventHandler(this.btnBackToPrevPage_Click);
             // 
             // _searchPanel
             // 
@@ -291,8 +252,6 @@ namespace InventoryManagementSystem
             this.Text = "Suppliers Management";
             this.Load += new System.EventHandler(this.frmSuppliersManagment_Load);
             this._mainLayoutPanel.ResumeLayout(false);
-            this._headerPanel.ResumeLayout(false);
-            this._headerPanel.PerformLayout();
             this._searchPanel.ResumeLayout(false);
             this._searchPanel.PerformLayout();
             this._gridPanel.ResumeLayout(false);
@@ -308,9 +267,6 @@ namespace InventoryManagementSystem
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel _mainLayoutPanel;
-        private System.Windows.Forms.Panel _headerPanel;
-        private System.Windows.Forms.Label _lblTitle;
-        private System.Windows.Forms.Button _btnBack;
         private System.Windows.Forms.Panel _searchPanel;
         private System.Windows.Forms.Label _lblSearch;
         private System.Windows.Forms.TextBox _txtSearch;

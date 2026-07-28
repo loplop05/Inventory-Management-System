@@ -20,11 +20,9 @@ namespace InventoryManagementSystem
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this._rootLayout = new System.Windows.Forms.TableLayoutPanel();
             this._topPanel = new System.Windows.Forms.Panel();
-            this._lblTitle = new System.Windows.Forms.Label();
             this._txtSearch = new System.Windows.Forms.TextBox();
             this._btnRefresh = new System.Windows.Forms.Button();
             this._btnReport = new System.Windows.Forms.Button();
-            this._btnClose = new System.Windows.Forms.Button();
             this._customerPanel = new System.Windows.Forms.Panel();
             this._lblCustomerPhone = new System.Windows.Forms.Label();
             this._txtCustomerPhone = new System.Windows.Forms.TextBox();
@@ -84,11 +82,9 @@ namespace InventoryManagementSystem
             // _topPanel
             // 
             this._topPanel.BackColor = System.Drawing.Color.White;
-            this._topPanel.Controls.Add(this._lblTitle);
             this._topPanel.Controls.Add(this._txtSearch);
             this._topPanel.Controls.Add(this._btnRefresh);
             this._topPanel.Controls.Add(this._btnReport);
-            this._topPanel.Controls.Add(this._btnClose);
             this._topPanel.Controls.Add(this._customerPanel);
             this._topPanel.Controls.Add(this._paymentPanel);
             this._topPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -99,17 +95,6 @@ namespace InventoryManagementSystem
             this._topPanel.TabIndex = 0;
             this._topPanel.Paint += new System.Windows.Forms.PaintEventHandler(this._topPanel_Paint);
             this._topPanel.Resize += new System.EventHandler(this.topPanel_Resize);
-            // 
-            // _lblTitle
-            // 
-            this._lblTitle.AutoSize = true;
-            this._lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this._lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this._lblTitle.Location = new System.Drawing.Point(16, 17);
-            this._lblTitle.Name = "_lblTitle";
-            this._lblTitle.Size = new System.Drawing.Size(196, 41);
-            this._lblTitle.TabIndex = 0;
-            this._lblTitle.Text = "Point of Sale";
             // 
             // _txtSearch
             // 
@@ -141,17 +126,6 @@ namespace InventoryManagementSystem
             this._btnReport.Text = "Daily Report";
             this._btnReport.UseVisualStyleBackColor = true;
             this._btnReport.Click += new System.EventHandler(this.btnReport_Click);
-            // 
-            // _btnClose
-            // 
-            this._btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._btnClose.Location = new System.Drawing.Point(1423, 19);
-            this._btnClose.Name = "_btnClose";
-            this._btnClose.Size = new System.Drawing.Size(76, 34);
-            this._btnClose.TabIndex = 4;
-            this._btnClose.Text = "Close";
-            this._btnClose.UseVisualStyleBackColor = true;
-            this._btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // _customerPanel
             // 
@@ -522,11 +496,9 @@ namespace InventoryManagementSystem
 
         private System.Windows.Forms.TableLayoutPanel _rootLayout;
         private System.Windows.Forms.Panel _topPanel;
-        private System.Windows.Forms.Label _lblTitle;
         private System.Windows.Forms.TextBox _txtSearch;
         private System.Windows.Forms.Button _btnRefresh;
         private System.Windows.Forms.Button _btnReport;
-        private System.Windows.Forms.Button _btnClose;
         private System.Windows.Forms.SplitContainer _splitContainer;
         private System.Windows.Forms.TabControl _tabsProducts;
         private System.Windows.Forms.Panel _receiptPanel;

@@ -293,6 +293,49 @@ namespace InventoryManagementSystem
             button.UseVisualStyleBackColor             = false;
             button.Padding                             = new Padding(10, 0, 10, 0);
             button.TextImageRelation                   = TextImageRelation.ImageBeforeText;
+
+            // Store icon for custom rendering
+            if (!string.IsNullOrEmpty(icon))
+            {
+                button.Tag = icon;
+                button.Paint -= ButtonIcon_Paint; // avoid double subscribe
+                button.Paint += ButtonIcon_Paint;
+            }
+        }
+
+        private static void ButtonIcon_Paint(object sender, PaintEventArgs e)
+        {
+            Button btn = sender as Button;
+            if (btn == null || btn.Tag == null || string.IsNullOrEmpty(btn.Tag.ToString()))
+                return;
+
+            string icon = btn.Tag.ToString();
+            string text = btn.Text;
+
+            using (Font iconFont = new Font(IconFontName, 12F))
+            using (Font textFont = new Font(MainFontName, 10F, FontStyle.Bold))
+            using (SolidBrush brush = new SolidBrush(btn.Enabled ? btn.ForeColor : TextMuted))
+            {
+                SizeF iconSize = e.Graphics.MeasureString(icon, iconFont);
+                SizeF textSize = e.Graphics.MeasureString(text, textFont);
+
+                const float gap = 6f;
+                float totalWidth = iconSize.Width + gap + textSize.Width;
+                float startX = (btn.ClientSize.Width - totalWidth) / 2f;
+                float centerY = btn.ClientSize.Height / 2f;
+
+                var iconRect = new RectangleF(startX, centerY - iconSize.Height / 2f, iconSize.Width, iconSize.Height);
+                var textRect = new RectangleF(startX + iconSize.Width + gap, centerY - textSize.Height / 2f, textSize.Width, textSize.Height);
+
+                // Clear the default text rendering
+                e.Graphics.Clear(btn.BackColor);
+
+                // Draw icon
+                e.Graphics.DrawString(icon, iconFont, brush, iconRect);
+
+                // Draw text
+                e.Graphics.DrawString(text, textFont, brush, textRect);
+            }
         }
 
         /// <summary>

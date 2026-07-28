@@ -26,24 +26,21 @@ namespace InventoryManagementSystem
         private void ApplyTheme()
         {
             clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.CreateHeaderPanel(this, "Receipt Search", clsFormTheme.Icons.Search);
             clsFormTheme.ApplyTextBoxStyle(_txtOrderID);
-            clsFormTheme.ApplyPrimaryButtonStyle(_btnSearch);
-            clsFormTheme.ApplySecondaryButtonStyle(_btnViewByPhone);
-            clsFormTheme.ApplySecondaryButtonStyle(_btnClose);
-            clsFormTheme.ApplySuccessButtonStyle(_btnExchange);
+            clsFormTheme.ApplyPrimaryButtonStyle(_btnSearch, clsFormTheme.Icons.Search);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnViewByPhone, clsFormTheme.Icons.User);
+            clsFormTheme.ApplySuccessButtonStyle(_btnExchange, clsFormTheme.Icons.Exchange);
             clsFormTheme.ApplyGridStyle(_gridOrderItems);
 
-            _btnSearch.Text = clsFormTheme.Icons.Search + "  Search";
-            _btnSearch.Font = new Font(clsFormTheme.IconFontName, 10F);
+            _btnSearch.Text = "Search";
+            _btnSearch.Font = new Font(clsFormTheme.MainFontName, 10F);
 
-            _btnViewByPhone.Text = clsFormTheme.Icons.User + "  By Phone";
-            _btnViewByPhone.Font = new Font(clsFormTheme.IconFontName, 10F);
+            _btnViewByPhone.Text = "By Phone";
+            _btnViewByPhone.Font = new Font(clsFormTheme.MainFontName, 10F);
 
-            _btnExchange.Text = clsFormTheme.Icons.Exchange + "  Exchange";
-            _btnExchange.Font = new Font(clsFormTheme.IconFontName, 10F);
-
-            _btnClose.Text = clsFormTheme.Icons.Exit + "  Close";
-            _btnClose.Font = new Font(clsFormTheme.IconFontName, 10F);
+            _btnExchange.Text = "Exchange";
+            _btnExchange.Font = new Font(clsFormTheme.MainFontName, 10F);
 
             KeyDown += frmReceiptSearch_KeyDown;
         }
@@ -55,7 +52,6 @@ namespace InventoryManagementSystem
             _currentOrderItems = null;
 
             _txtOrderID.Text = "";
-            _lblTitle.Text = "";
             _lblOrderInfo.Text = "";
             _lblCustomerName.Text = "";
             _lblCustomerPhone.Text = "";
@@ -123,8 +119,7 @@ namespace InventoryManagementSystem
             decimal taxAmount = Convert.ToDecimal(order["TaxAmount"]);
             decimal totalAmount = Convert.ToDecimal(order["TotalAmount"]);
 
-            _lblTitle.Text = "Order #" + _currentOrderID;
-            _lblOrderInfo.Text = $"Date: {orderDate:yyyy-MM-dd HH:mm} | Subtotal: {subtotal:C2} | Tax: {taxAmount:C2} | Total: {totalAmount:C2}";
+            _lblOrderInfo.Text = $"Order #{_currentOrderID} | Date: {orderDate:yyyy-MM-dd HH:mm} | Subtotal: {subtotal:C2} | Tax: {taxAmount:C2} | Total: {totalAmount:C2}";
 
             // Display customer info
             if (order["CustomerID"] != DBNull.Value && order["CustomerID"] != null)

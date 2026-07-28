@@ -26,9 +26,9 @@ namespace InventoryManagementSystem
 
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Edit Product", clsFormTheme.Icons.Update);
-            btnUpdate.Text = clsFormTheme.Icons.Save + "  Save Changes";
-            btnUpdate.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnUpdate);
+            btnUpdate.Text = "Save Changes";
+            btnUpdate.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnUpdate, clsFormTheme.Icons.Save);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewProductName);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewPrice);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewQuantity);

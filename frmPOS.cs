@@ -95,30 +95,23 @@ namespace InventoryManagementSystem
             _searchDebounceTimer.Tick += SearchDebounceTimer_Tick;
 
             clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.CreateHeaderPanel(this, "Point of Sale", clsFormTheme.Icons.POS);
             clsFormTheme.ApplyTextBoxStyle(_txtSearch);
             clsFormTheme.ApplyTextBoxStyle(_txtCustomerPhone);
             clsFormTheme.ApplyTextBoxStyle(_txtPaymentDetails);
-            clsFormTheme.ApplyPrimaryButtonStyle(_btnAddCustomer);
+            clsFormTheme.ApplyPrimaryButtonStyle(_btnAddCustomer, clsFormTheme.Icons.User);
 
             // ── Toolbar buttons ────────────────────────────────────────────────
-            clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh);
-            SetIconButtonText(_btnRefresh, clsFormTheme.Icons.Refresh, "Refresh", 14F, 10F, FontStyle.Regular);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh, clsFormTheme.Icons.Refresh);
 
-            clsFormTheme.ApplySecondaryButtonStyle(_btnReport);
-            SetIconButtonText(_btnReport, clsFormTheme.Icons.Reports, "Report", 14F, 10F, FontStyle.Regular);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnReport, clsFormTheme.Icons.Reports);
 
-            clsFormTheme.ApplyDangerButtonStyle(_btnRemoveItem);
-            SetIconButtonText(_btnRemoveItem, clsFormTheme.Icons.Delete, "Remove", 14F, 10F, FontStyle.Regular);
+            clsFormTheme.ApplyDangerButtonStyle(_btnRemoveItem, clsFormTheme.Icons.Delete);
 
-            clsFormTheme.ApplySuccessButtonStyle(_btnCompleteOrder);
-            SetIconButtonText(_btnCompleteOrder, clsFormTheme.Icons.Money, "Complete Order", 16F, 12F, FontStyle.Bold);
+            clsFormTheme.ApplySuccessButtonStyle(_btnCompleteOrder, clsFormTheme.Icons.Money);
 
-            clsFormTheme.ApplySecondaryButtonStyle(_btnPrintReceipt);
-            SetIconButtonText(_btnPrintReceipt, clsFormTheme.Icons.Print, "Print Receipt", 14F, 10F, FontStyle.Regular);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnPrintReceipt, clsFormTheme.Icons.Print);
             _btnPrintReceipt.Enabled = false;
-
-            clsFormTheme.ApplySecondaryButtonStyle(_btnClose);
-            SetIconButtonText(_btnClose, clsFormTheme.Icons.Exit, "Close", 14F, 10F, FontStyle.Regular);
 
             // ── Receipt grid ───────────────────────────────────────────────────
             clsFormTheme.ApplyGridStyle(_gridReceipt);
@@ -335,8 +328,7 @@ namespace InventoryManagementSystem
 
             if (inStock)
             {
-                clsFormTheme.ApplyPrimaryButtonStyle(addButton);
-                SetIconButtonText(addButton, clsFormTheme.Icons.Add, "Add", 13F, 10F, FontStyle.Bold);
+                clsFormTheme.ApplyPrimaryButtonStyle(addButton, clsFormTheme.Icons.Add);
             }
             else
             {
@@ -344,7 +336,7 @@ namespace InventoryManagementSystem
                 addButton.ForeColor = clsFormTheme.TextMuted;
                 addButton.FlatStyle = FlatStyle.Flat;
                 addButton.FlatAppearance.BorderSize = 0;
-                SetIconButtonText(addButton, clsFormTheme.Icons.Warning, "No Stock", 13F, 10F, FontStyle.Bold);
+                clsFormTheme.ApplyPrimaryButtonStyle(addButton, clsFormTheme.Icons.Warning);
             }
 
             addButton.Click += delegate
@@ -424,7 +416,7 @@ namespace InventoryManagementSystem
         {
             if (_receiptItems.Count == 0)
             {
-                MessageBox.Show("Receipt is empty.", "POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Receipt is empty.", "POS", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -609,7 +601,7 @@ namespace InventoryManagementSystem
         {
             if (_lastCompletedOrderID == -1)
             {
-                MessageBox.Show("Please complete an order first to print the receipt.", "Print", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Please complete an order first to print the receipt.", "Print", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -673,8 +665,7 @@ namespace InventoryManagementSystem
         private void topPanel_Resize(object sender, EventArgs e)
         {
             int right = _topPanel.ClientSize.Width - 16;
-            _btnClose.Left = right - _btnClose.Width;
-            _btnReport.Left = _btnClose.Left - _btnReport.Width - 10;
+            _btnReport.Left = right - _btnReport.Width;
             _btnRefresh.Left = _btnReport.Left - _btnRefresh.Width - 10;
             _txtSearch.Left = _btnRefresh.Left - _txtSearch.Width - 12;
         }

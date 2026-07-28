@@ -27,26 +27,23 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.CreateHeaderPanel(this, "Categories", clsFormTheme.Icons.Categories);
 
-            btnAddCategory.Text = clsFormTheme.Icons.Add + "  Add";
-            btnAddCategory.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnAddCategory);
+            btnAddCategory.Text = "Add";
+            btnAddCategory.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnAddCategory, clsFormTheme.Icons.Add);
 
-            btnDeleteCategory.Text = clsFormTheme.Icons.Delete + "  Delete";
-            btnDeleteCategory.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
-            clsFormTheme.ApplyDangerButtonStyle(btnDeleteCategory);
+            btnDeleteCategory.Text = "Delete";
+            btnDeleteCategory.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
+            clsFormTheme.ApplyDangerButtonStyle(btnDeleteCategory, clsFormTheme.Icons.Delete);
 
-            btnUpdateCategory.Text = clsFormTheme.Icons.Update + "  Update";
-            btnUpdateCategory.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnUpdateCategory);
+            btnUpdateCategory.Text = "Update";
+            btnUpdateCategory.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnUpdateCategory, clsFormTheme.Icons.Update);
 
-            _btnRefresh.Text = clsFormTheme.Icons.Refresh + "  Refresh";
-            _btnRefresh.Font = new Font(clsFormTheme.IconFontName, 11F);
-            clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh);
-
-            _btnBack.Text = clsFormTheme.Icons.Back + "  Back";
-            _btnBack.Font = new Font(clsFormTheme.IconFontName, 11F);
-            clsFormTheme.ApplySecondaryButtonStyle(_btnBack);
+            _btnRefresh.Text = "Refresh";
+            _btnRefresh.Font = new Font(clsFormTheme.MainFontName, 11F);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh, clsFormTheme.Icons.Refresh);
 
             _btnPreviousPage.Text = "\u2039  Prev";
             clsFormTheme.ApplySecondaryButtonStyle(_btnPreviousPage);

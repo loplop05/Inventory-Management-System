@@ -27,10 +27,10 @@ namespace InventoryManagementSystem
         private void ApplyTheme()
         {
             clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.CreateHeaderPanel(this, "Print Receipt", clsFormTheme.Icons.Print);
             clsFormTheme.ApplyTextBoxStyle(_txtOrderID);
-            clsFormTheme.ApplyPrimaryButtonStyle(_btnSearch);
-            clsFormTheme.ApplySuccessButtonStyle(_btnPrint);
-            clsFormTheme.ApplySecondaryButtonStyle(_btnClose);
+            clsFormTheme.ApplyPrimaryButtonStyle(_btnSearch, clsFormTheme.Icons.Search);
+            clsFormTheme.ApplySuccessButtonStyle(_btnPrint, clsFormTheme.Icons.Print);
 
             KeyDown += frmPrintReceipt_KeyDown;
         }

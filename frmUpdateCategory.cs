@@ -26,9 +26,9 @@ namespace InventoryManagementSystem
 
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Update Category", clsFormTheme.Icons.Update);
-            btnSearch.Text = clsFormTheme.Icons.Search + "  Find Category";
-            btnSearch.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnSearch);
+            btnSearch.Text = "Find Category";
+            btnSearch.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnSearch, clsFormTheme.Icons.Search);
             clsFormTheme.ApplyTextBoxStyle(txtUpdateCategoryid);
 
             btnSearch.Enabled = false;

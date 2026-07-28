@@ -22,17 +22,17 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Stock Valuation Report", clsFormTheme.Icons.Chart);
 
-            btnExportCsv.Text = clsFormTheme.Icons.Export + "  Export CSV";
-            btnExportCsv.Font = new Font(clsFormTheme.IconFontName, 11F);
-            clsFormTheme.ApplySuccessButtonStyle(btnExportCsv);
+            btnExportCsv.Text = "Export CSV";
+            btnExportCsv.Font = new Font(clsFormTheme.MainFontName, 11F);
+            clsFormTheme.ApplySuccessButtonStyle(btnExportCsv, clsFormTheme.Icons.Export);
 
-            btnRefresh.Text = clsFormTheme.Icons.Refresh + "  Refresh";
-            btnRefresh.Font = new Font(clsFormTheme.IconFontName, 11F);
-            clsFormTheme.ApplySecondaryButtonStyle(btnRefresh);
+            btnRefresh.Text = "Refresh";
+            btnRefresh.Font = new Font(clsFormTheme.MainFontName, 11F);
+            clsFormTheme.ApplySecondaryButtonStyle(btnRefresh, clsFormTheme.Icons.Refresh);
 
-            btnClose.Text = clsFormTheme.Icons.Exit + "  Close";
-            btnClose.Font = new Font(clsFormTheme.IconFontName, 11F);
-            clsFormTheme.ApplySecondaryButtonStyle(btnClose);
+            btnClose.Text = "Close";
+            btnClose.Font = new Font(clsFormTheme.MainFontName, 11F);
+            clsFormTheme.ApplySecondaryButtonStyle(btnClose, clsFormTheme.Icons.Exit);
 
             clsFormTheme.ApplyGridStyle(DataGVStockValuation);
 

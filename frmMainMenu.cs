@@ -13,16 +13,7 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
-
-            // Style the header title
-            _lblTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            _lblTitle.ForeColor = Color.FromArgb(30, 58, 138);
-
-            // Style the exit button
-            _btnExit.Text = clsFormTheme.Icons.Exit + "  Exit";
-            _btnExit.Font = new Font(clsFormTheme.IconFontName, 11F);
-            clsFormTheme.ApplyDangerButtonStyle(_btnExit);
-            _toolTip.SetToolTip(_btnExit, "Exit application (Esc)");
+            clsFormTheme.CreateHeaderPanel(this, "Inventory Management System", clsFormTheme.Icons.Home);
 
             // ── Categories button ──────────────────────────────────────────────
             btnCategories.Text = "Categories";
@@ -168,5 +159,10 @@ namespace InventoryManagementSystem
         }
 
         private void frmMainMenu_Load(object sender, EventArgs e) { }
+
+        private void _buttonsPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

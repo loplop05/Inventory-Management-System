@@ -21,30 +21,27 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
+            clsFormTheme.CreateHeaderPanel(this, "Products", clsFormTheme.Icons.Products);
 
-            btnAddProduct.Text = clsFormTheme.Icons.Add + "  Add";
-            btnAddProduct.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnAddProduct);
+            btnAddProduct.Text = "Add";
+            btnAddProduct.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnAddProduct, clsFormTheme.Icons.Add);
 
-            btnDeleteProduct.Text = clsFormTheme.Icons.Delete + "  Delete";
-            btnDeleteProduct.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
-            clsFormTheme.ApplyDangerButtonStyle(btnDeleteProduct);
+            btnDeleteProduct.Text = "Delete";
+            btnDeleteProduct.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
+            clsFormTheme.ApplyDangerButtonStyle(btnDeleteProduct, clsFormTheme.Icons.Delete);
 
-            btnUpdateProduct.Text = clsFormTheme.Icons.Update + "  Update";
-            btnUpdateProduct.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnUpdateProduct);
+            btnUpdateProduct.Text = "Update";
+            btnUpdateProduct.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnUpdateProduct, clsFormTheme.Icons.Update);
 
-            btnStockValuationReport.Text = clsFormTheme.Icons.Chart + "  Stock Report";
-            btnStockValuationReport.Font = new Font(clsFormTheme.IconFontName, 10F, FontStyle.Bold);
-            clsFormTheme.ApplySecondaryButtonStyle(btnStockValuationReport);
+            btnStockValuationReport.Text = "Stock Report";
+            btnStockValuationReport.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
+            clsFormTheme.ApplySecondaryButtonStyle(btnStockValuationReport, clsFormTheme.Icons.Chart);
 
-            _btnRefresh.Text = clsFormTheme.Icons.Refresh + "  Refresh";
-            _btnRefresh.Font = new Font(clsFormTheme.IconFontName, 11F);
-            clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh);
-
-            _btnBack.Text = clsFormTheme.Icons.Back + "  Back";
-            _btnBack.Font = new Font(clsFormTheme.IconFontName, 11F);
-            clsFormTheme.ApplySecondaryButtonStyle(_btnBack);
+            _btnRefresh.Text = "Refresh";
+            _btnRefresh.Font = new Font(clsFormTheme.MainFontName, 11F);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh, clsFormTheme.Icons.Refresh);
 
             _btnPreviousPage.Text = "\u2039  Prev";
             clsFormTheme.ApplySecondaryButtonStyle(_btnPreviousPage);
@@ -78,11 +75,7 @@ namespace InventoryManagementSystem
                 _productsTable = new DataTable();
                 DisplayCurrentPage();
 
-                MessageBox.Show(
-                    ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
             {

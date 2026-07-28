@@ -18,9 +18,6 @@ namespace InventoryManagementSystem
         private void InitializeComponent()
         {
             this._mainLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this._headerPanel = new System.Windows.Forms.Panel();
-            this._lblTitle = new System.Windows.Forms.Label();
-            this._btnClose = new System.Windows.Forms.Button();
             this._searchPanel = new System.Windows.Forms.Panel();
             this._lblOrderID = new System.Windows.Forms.Label();
             this._txtOrderID = new System.Windows.Forms.TextBox();
@@ -40,7 +37,6 @@ namespace InventoryManagementSystem
             this._actionsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this._btnExchange = new System.Windows.Forms.Button();
             this._mainLayoutPanel.SuspendLayout();
-            this._headerPanel.SuspendLayout();
             this._searchPanel.SuspendLayout();
             this._panelOrderDetails.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._gridOrderItems)).BeginInit();
@@ -52,54 +48,19 @@ namespace InventoryManagementSystem
             // 
             this._mainLayoutPanel.ColumnCount = 1;
             this._mainLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._mainLayoutPanel.Controls.Add(this._headerPanel, 0, 0);
-            this._mainLayoutPanel.Controls.Add(this._searchPanel, 0, 1);
-            this._mainLayoutPanel.Controls.Add(this._panelOrderDetails, 0, 2);
-            this._mainLayoutPanel.Controls.Add(this._actionsPanel, 0, 3);
+            this._mainLayoutPanel.Controls.Add(this._searchPanel, 0, 0);
+            this._mainLayoutPanel.Controls.Add(this._panelOrderDetails, 0, 1);
+            this._mainLayoutPanel.Controls.Add(this._actionsPanel, 0, 2);
             this._mainLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._mainLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this._mainLayoutPanel.Name = "_mainLayoutPanel";
             this._mainLayoutPanel.Padding = new System.Windows.Forms.Padding(20);
-            this._mainLayoutPanel.RowCount = 4;
-            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this._mainLayoutPanel.RowCount = 3;
             this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this._mainLayoutPanel.Size = new System.Drawing.Size(800, 600);
             this._mainLayoutPanel.TabIndex = 0;
-            // 
-            // _headerPanel
-            // 
-            this._headerPanel.Controls.Add(this._lblTitle);
-            this._headerPanel.Controls.Add(this._btnClose);
-            this._headerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._headerPanel.Location = new System.Drawing.Point(23, 23);
-            this._headerPanel.Name = "_headerPanel";
-            this._headerPanel.Size = new System.Drawing.Size(754, 54);
-            this._headerPanel.TabIndex = 0;
-            // 
-            // _lblTitle
-            // 
-            this._lblTitle.AutoSize = true;
-            this._lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this._lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(58)))), ((int)(((byte)(138)))));
-            this._lblTitle.Location = new System.Drawing.Point(13, 10);
-            this._lblTitle.Name = "_lblTitle";
-            this._lblTitle.Size = new System.Drawing.Size(205, 37);
-            this._lblTitle.TabIndex = 0;
-            this._lblTitle.Text = "Receipt Search";
-            // 
-            // _btnClose
-            // 
-            this._btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._btnClose.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this._btnClose.Location = new System.Drawing.Point(620, 0);
-            this._btnClose.Name = "_btnClose";
-            this._btnClose.Size = new System.Drawing.Size(134, 47);
-            this._btnClose.TabIndex = 1;
-            this._btnClose.Text = "Close";
-            this._btnClose.UseVisualStyleBackColor = true;
-            this._btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // _searchPanel
             // 
@@ -306,8 +267,6 @@ namespace InventoryManagementSystem
             this.Text = "Search Receipt";
             this.Load += new System.EventHandler(this.frmReceiptSearch_Load);
             this._mainLayoutPanel.ResumeLayout(false);
-            this._headerPanel.ResumeLayout(false);
-            this._headerPanel.PerformLayout();
             this._searchPanel.ResumeLayout(false);
             this._searchPanel.PerformLayout();
             this._panelOrderDetails.ResumeLayout(false);
@@ -323,9 +282,6 @@ namespace InventoryManagementSystem
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel _mainLayoutPanel;
-        private System.Windows.Forms.Panel _headerPanel;
-        private System.Windows.Forms.Label _lblTitle;
-        private System.Windows.Forms.Button _btnClose;
         private System.Windows.Forms.Panel _searchPanel;
         private System.Windows.Forms.Label _lblOrderID;
         private System.Windows.Forms.TextBox _txtOrderID;

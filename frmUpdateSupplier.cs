@@ -21,9 +21,9 @@ namespace InventoryManagementSystem
 
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Update Supplier", clsFormTheme.Icons.Update);
-            btnSearch.Text = clsFormTheme.Icons.Search + "  Find Supplier";
+            btnSearch.Text = "Find Supplier";
             btnSearch.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnSearch);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnSearch, clsFormTheme.Icons.Search);
             clsFormTheme.ApplyTextBoxStyle(txtUpdateSupplierID);
 
             btnSearch.Enabled = false;

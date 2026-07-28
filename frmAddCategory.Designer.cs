@@ -28,27 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.txtBoxCategoryName = new System.Windows.Forms.TextBox();
             this.btnAdd = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(106, 101);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(210, 36);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Add Category";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(83, 217);
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(107, 172);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(233, 36);
+            this.label2.Size = new System.Drawing.Size(194, 29);
             this.label2.TabIndex = 1;
             this.label2.Text = "Category Name";
             // 
@@ -57,18 +48,19 @@
             this.txtBoxCategoryName.AcceptsReturn = true;
             this.txtBoxCategoryName.AllowDrop = true;
             this.txtBoxCategoryName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtBoxCategoryName.Location = new System.Drawing.Point(74, 285);
+            this.txtBoxCategoryName.Font = new System.Drawing.Font("Microsoft Sans Serif", 24F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBoxCategoryName.Location = new System.Drawing.Point(49, 271);
             this.txtBoxCategoryName.Name = "txtBoxCategoryName";
-            this.txtBoxCategoryName.Size = new System.Drawing.Size(254, 45);
+            this.txtBoxCategoryName.Size = new System.Drawing.Size(323, 53);
             this.txtBoxCategoryName.TabIndex = 0;
             this.txtBoxCategoryName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtBoxCategoryName.UseWaitCursor = false;
             this.txtBoxCategoryName.TextChanged += new System.EventHandler(this.txtBoxCategoryName_TextChanged);
             this.txtBoxCategoryName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBoxCategoryName_KeyDown);
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(112, 365);
+            this.btnAdd.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAdd.Location = new System.Drawing.Point(139, 358);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(162, 54);
             this.btnAdd.TabIndex = 1;
@@ -84,7 +76,6 @@
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.txtBoxCategoryName);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
             this.Name = "frmAddCategory";
             this.Text = "Add Category";
             this.ResumeLayout(false);
@@ -93,8 +84,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtBoxCategoryName;
         private System.Windows.Forms.Button btnAdd;
