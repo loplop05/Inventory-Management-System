@@ -23,6 +23,15 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyGridStyle(_gridOrders);
             clsFormTheme.ApplyGridStyle(_gridTopProducts);
 
+            // Setup keyboard shortcuts
+            clsKeyboardShortcuts.SetupCommonShortcuts(
+                this,
+                onEscape: () => Close(),
+                onRefresh: () => LoadReport(),
+                onSearch: null,
+                onAdd: null
+            );
+
             _btnRefresh.Text = "Refresh";
             _btnRefresh.Font = new Font(clsFormTheme.MainFontName, 11F);
             clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh, clsFormTheme.Icons.Refresh);

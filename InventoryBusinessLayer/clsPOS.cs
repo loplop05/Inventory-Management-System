@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using InventoryDataAccessLayer;
 
@@ -38,6 +39,16 @@ namespace InventoryBusinessLayer
         public static DataTable GetTodayTopSellingProducts()
         {
             return clsPOSData.GetTodayTopSellingProducts();
+        }
+
+        public static DataTable GetLowStockProducts(int threshold)
+        {
+            return clsProduct.GetAllProducts(); // TODO: Implement proper low stock query in data layer
+        }
+
+        public static DataTable GetRecentOrders(int count)
+        {
+            return clsPOSData.GetTodayOrders(); // TODO: Implement proper recent orders query in data layer
         }
     }
 }

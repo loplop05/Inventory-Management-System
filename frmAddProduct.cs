@@ -78,22 +78,42 @@ namespace InventoryManagementSystem
 
         private bool IsProductNameValid()
         {
-            return !string.IsNullOrWhiteSpace(txtBoxProductName.Text);
+            return clsDataValidation.ValidateTextBox(
+                txtBoxProductName,
+                _errorProvider,
+                clsDataValidation.IsValidProductName,
+                clsDataValidation.ErrorMessages.InvalidProductName
+            );
         }
 
         private bool IsPriceValid()
         {
-            return decimal.TryParse(txtBoxPrice.Text, out decimal price) && price >= 0;
+            return clsDataValidation.ValidateTextBox(
+                txtBoxPrice,
+                _errorProvider,
+                clsDataValidation.IsPositiveNumber,
+                clsDataValidation.ErrorMessages.InvalidPositiveNumber
+            );
         }
 
         private bool IsQuantityValid()
         {
-            return int.TryParse(txtBoxQuantity.Text, out int quantity) && quantity >= 0;
+            return clsDataValidation.ValidateTextBox(
+                txtBoxQuantity,
+                _errorProvider,
+                clsDataValidation.IsValidPositiveInteger,
+                clsDataValidation.ErrorMessages.InvalidPositiveInteger
+            );
         }
 
         private bool IsBarcodeValid()
         {
-            return !string.IsNullOrWhiteSpace(txtBoxBarcode.Text);
+            return clsDataValidation.ValidateTextBox(
+                txtBoxBarcode,
+                _errorProvider,
+                clsDataValidation.IsValidBarcode,
+                clsDataValidation.ErrorMessages.InvalidBarcode
+            );
         }
 
         private bool IsCategorySelected()
@@ -110,45 +130,10 @@ namespace InventoryManagementSystem
         {
             bool isValid = true;
 
-            if (!IsProductNameValid())
-            {
-                clsFormTheme.ShowInputError(txtBoxProductName, _errorProvider, "Product name cannot be empty.");
-                isValid = false;
-            }
-            else
-            {
-                clsFormTheme.ClearInputError(txtBoxProductName, _errorProvider);
-            }
-
-            if (!IsPriceValid())
-            {
-                clsFormTheme.ShowInputError(txtBoxPrice, _errorProvider, "Please enter a valid price (non-negative).");
-                isValid = false;
-            }
-            else
-            {
-                clsFormTheme.ClearInputError(txtBoxPrice, _errorProvider);
-            }
-
-            if (!IsQuantityValid())
-            {
-                clsFormTheme.ShowInputError(txtBoxQuantity, _errorProvider, "Please enter a valid quantity (non-negative).");
-                isValid = false;
-            }
-            else
-            {
-                clsFormTheme.ClearInputError(txtBoxQuantity, _errorProvider);
-            }
-
-            if (!IsBarcodeValid())
-            {
-                clsFormTheme.ShowInputError(txtBoxBarcode, _errorProvider, "Barcode cannot be empty.");
-                isValid = false;
-            }
-            else
-            {
-                clsFormTheme.ClearInputError(txtBoxBarcode, _errorProvider);
-            }
+            isValid &= IsProductNameValid();
+            isValid &= IsPriceValid();
+            isValid &= IsQuantityValid();
+            isValid &= IsBarcodeValid();
 
             if (!IsCategorySelected())
             {

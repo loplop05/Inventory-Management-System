@@ -27,7 +27,7 @@ namespace InventoryManagementSystem
             clsKeyboardShortcuts.SetupCommonShortcuts(
                 this,
                 onEscape: () => Close(),
-                onRefresh: () => LoadProducts(),
+                onRefresh: async () => await RefreshGridDataAsync(),
                 onSearch: () => _txtSearch.Focus(),
                 onAdd: () => btnAddProduct_Click(null, null)
             );

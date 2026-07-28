@@ -22,6 +22,15 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Stock Valuation Report", clsFormTheme.Icons.Chart);
 
+            // Setup keyboard shortcuts
+            clsKeyboardShortcuts.SetupCommonShortcuts(
+                this,
+                onEscape: () => Close(),
+                onRefresh: async () => await LoadReportDataAsync(),
+                onSearch: null,
+                onAdd: null
+            );
+
             btnExportCsv.Text = "Export CSV";
             btnExportCsv.Font = new Font(clsFormTheme.MainFontName, 11F);
             clsFormTheme.ApplySuccessButtonStyle(btnExportCsv, clsFormTheme.Icons.Export);

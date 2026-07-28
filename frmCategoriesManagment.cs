@@ -33,7 +33,7 @@ namespace InventoryManagementSystem
             clsKeyboardShortcuts.SetupCommonShortcuts(
                 this,
                 onEscape: () => Close(),
-                onRefresh: () => LoadCategories(),
+                onRefresh: async () => await RefreshGridDataAsync(),
                 onSearch: () => _txtSearch.Focus(),
                 onAdd: () => btnAddCategory_Click(null, null)
             );

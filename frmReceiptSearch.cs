@@ -33,6 +33,15 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplySuccessButtonStyle(_btnExchange, clsFormTheme.Icons.Exchange);
             clsFormTheme.ApplyGridStyle(_gridOrderItems);
 
+            // Setup keyboard shortcuts
+            clsKeyboardShortcuts.SetupCommonShortcuts(
+                this,
+                onEscape: () => Close(),
+                onRefresh: null,
+                onSearch: () => _txtOrderID.Focus(),
+                onAdd: null
+            );
+
             _btnSearch.Text = "Search";
             _btnSearch.Font = new Font(clsFormTheme.MainFontName, 10F);
 

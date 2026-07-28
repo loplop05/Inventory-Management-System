@@ -220,6 +220,20 @@
       <DependentUpon>frmPrintReceipt.cs</DependentUpon>
     </Compile>
     <Compile Include="clsFormTheme.cs" />
+    <Compile Include="clsKeyboardShortcuts.cs" />
+    <Compile Include="clsDataValidation.cs" />
+    <Compile Include="clsSearchHelper.cs" />
+    <Compile Include="clsPrintHelper.cs" />
+    <Compile Include="clsHelpSystem.cs" />
+    <Compile Include="clsLowStockAlerts.cs" />
+    <Compile Include="clsAdvancedReports.cs" />
+    <Compile Include="clsDiscountSystem.cs" />
+    <Compile Include="frmDashboard.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDashboard.Designer.cs">
+      <DependentUpon>frmDashboard.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmAddCategory.resx">
