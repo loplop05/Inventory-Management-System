@@ -193,10 +193,6 @@ namespace InventoryManagementSystem
             Close();
         }
 
-        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-        }
-
         private async void frmCategoriesManagment_Load(object sender, EventArgs e)
         {
             await RefreshGridDataAsync();

@@ -105,20 +105,20 @@ namespace InventoryManagementSystem
 
         private void txtBoxSupplierName_TextChanged(object sender, EventArgs e)
         {
-            ValidateAllInputs();
-            btnAdd.Enabled = ValidateAllInputs() && !_isSaving;
+            bool isValid = ValidateAllInputs();
+            btnAdd.Enabled = isValid && !_isSaving;
         }
 
         private void txtBoxPhone_TextChanged(object sender, EventArgs e)
         {
-            ValidateAllInputs();
-            btnAdd.Enabled = ValidateAllInputs() && !_isSaving;
+            bool isValid = ValidateAllInputs();
+            btnAdd.Enabled = isValid && !_isSaving;
         }
 
         private void txtBoxEmail_TextChanged(object sender, EventArgs e)
         {
-            ValidateAllInputs();
-            btnAdd.Enabled = ValidateAllInputs() && !_isSaving;
+            bool isValid = ValidateAllInputs();
+            btnAdd.Enabled = isValid && !_isSaving;
         }
 
         private async void btnAdd_Click(object sender, EventArgs e)

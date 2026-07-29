@@ -256,10 +256,5 @@ namespace InventoryManagementSystem
                 Close();
             }
         }
-
-        private void _lblRevenue_Click(object sender, EventArgs e)
-        {
-            // Empty event handler - can be removed if not needed
-        }
     }
 }
