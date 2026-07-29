@@ -65,42 +65,77 @@ namespace InventoryManagementSystem
             btnPrintReceipt.TextAlign = ContentAlignment.MiddleCenter;
             _toolTip.SetToolTip(btnPrintReceipt, "Print order receipts");
 
-            btnSuppliers.Enabled = true;
-            btnProducts.Enabled  = true;
-            AddPOSMenuButtons();
+            // ── Dashboard button ───────────────────────────────────────────────
+            btnDashboard.Text = "Dashboard";
+            btnDashboard.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            btnDashboard.BackColor = Color.FromArgb(99, 102, 241); // Indigo
+            btnDashboard.ForeColor = Color.White;
+            btnDashboard.FlatStyle = FlatStyle.Flat;
+            btnDashboard.FlatAppearance.BorderSize = 0;
+            btnDashboard.TextAlign = ContentAlignment.MiddleCenter;
+            _toolTip.SetToolTip(btnDashboard, "View dashboard with key metrics");
 
-            KeyDown += frmMainMenu_KeyDown;
-        }
+            // ── Advanced Reports button ─────────────────────────────────────────
+            btnAdvancedReports.Text = "Advanced Reports";
+            btnAdvancedReports.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            btnAdvancedReports.BackColor = Color.FromArgb(14, 165, 233); // Sky Blue
+            btnAdvancedReports.ForeColor = Color.White;
+            btnAdvancedReports.FlatStyle = FlatStyle.Flat;
+            btnAdvancedReports.FlatAppearance.BorderSize = 0;
+            btnAdvancedReports.TextAlign = ContentAlignment.MiddleCenter;
+            _toolTip.SetToolTip(btnAdvancedReports, "Generate advanced reports");
 
-        private void AddPOSMenuButtons()
-        {
+            // ── Low Stock Alerts button ─────────────────────────────────────────
+            btnLowStockAlerts.Text = "Low Stock Alerts";
+            btnLowStockAlerts.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            btnLowStockAlerts.BackColor = Color.FromArgb(239, 68, 68); // Red
+            btnLowStockAlerts.ForeColor = Color.White;
+            btnLowStockAlerts.FlatStyle = FlatStyle.Flat;
+            btnLowStockAlerts.FlatAppearance.BorderSize = 0;
+            btnLowStockAlerts.TextAlign = ContentAlignment.MiddleCenter;
+            _toolTip.SetToolTip(btnLowStockAlerts, "View low stock alerts");
+
+            // ── Coupon Manager button ───────────────────────────────────────────
+            btnCouponManager.Text = "Coupon Manager";
+            btnCouponManager.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            btnCouponManager.BackColor = Color.FromArgb(168, 85, 247); // Purple
+            btnCouponManager.ForeColor = Color.White;
+            btnCouponManager.FlatStyle = FlatStyle.Flat;
+            btnCouponManager.FlatAppearance.BorderSize = 0;
+            btnCouponManager.TextAlign = ContentAlignment.MiddleCenter;
+            _toolTip.SetToolTip(btnCouponManager, "Manage coupons and discounts");
+
             // ── POS button ─────────────────────────────────────────────────────
-            Button btnPOS = new Button
-            {
-                Name     = "btnPOS",
-                Text     = clsFormTheme.Icons.POS + "\nPoint of Sale",
-                Font     = new Font(clsFormTheme.IconFontName, 20F),
-                Dock     = DockStyle.Fill
-            };
-            btnPOS.Click += btnPOS_Click;
-            clsFormTheme.ApplySuccessButtonStyle(btnPOS);
+            btnPOS.Text = "Point of Sale";
+            btnPOS.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            btnPOS.BackColor = Color.FromArgb(34, 197, 94); // Green
+            btnPOS.ForeColor = Color.White;
+            btnPOS.FlatStyle = FlatStyle.Flat;
+            btnPOS.FlatAppearance.BorderSize = 0;
+            btnPOS.TextAlign = ContentAlignment.MiddleCenter;
             _toolTip.SetToolTip(btnPOS, "Open Point of Sale (POS)");
 
             // ── Daily Report button ────────────────────────────────────────────
-            Button btnDailyReport = new Button
-            {
-                Name     = "btnDailyReport",
-                Text     = clsFormTheme.Icons.Reports + "\nDaily Report",
-                Font     = new Font(clsFormTheme.IconFontName, 20F),
-                Dock     = DockStyle.Fill
-            };
-            btnDailyReport.Click += btnDailyReport_Click;
-            clsFormTheme.ApplySecondaryButtonStyle(btnDailyReport);
+            btnDailyReport.Text = "Daily Report";
+            btnDailyReport.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            btnDailyReport.BackColor = Color.FromArgb(249, 115, 22); // Orange
+            btnDailyReport.ForeColor = Color.White;
+            btnDailyReport.FlatStyle = FlatStyle.Flat;
+            btnDailyReport.FlatAppearance.BorderSize = 0;
+            btnDailyReport.TextAlign = ContentAlignment.MiddleCenter;
             _toolTip.SetToolTip(btnDailyReport, "View today's sales report");
 
-            // Add to buttons panel (3rd column, rows 0 and 1)
-            _buttonsPanel.Controls.Add(btnPOS, 2, 0);
-            _buttonsPanel.Controls.Add(btnDailyReport, 2, 1);
+            // ── Help button ────────────────────────────────────────────────────
+            btnHelp.Text = "Help";
+            btnHelp.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            btnHelp.BackColor = Color.FromArgb(107, 114, 128); // Gray
+            btnHelp.ForeColor = Color.White;
+            btnHelp.FlatStyle = FlatStyle.Flat;
+            btnHelp.FlatAppearance.BorderSize = 0;
+            btnHelp.TextAlign = ContentAlignment.MiddleCenter;
+            _toolTip.SetToolTip(btnHelp, "View help and keyboard shortcuts (F1)");
+
+            KeyDown += frmMainMenu_KeyDown;
         }
 
         // ── Event handlers ─────────────────────────────────────────────────────
@@ -147,9 +182,30 @@ namespace InventoryManagementSystem
             frm.ShowDialog();
         }
 
-        private void btnExit_Click(object sender, EventArgs e)
+        private void btnDashboard_Click(object sender, EventArgs e)
         {
-            Close();
+            frmDashboard frm = new frmDashboard();
+            frm.Show();
+        }
+
+        private void btnAdvancedReports_Click(object sender, EventArgs e)
+        {
+            clsAdvancedReports.ShowReportLauncher();
+        }
+
+        private void btnLowStockAlerts_Click(object sender, EventArgs e)
+        {
+            clsLowStockAlerts.ShowAlertForm();
+        }
+
+        private void btnCouponManager_Click(object sender, EventArgs e)
+        {
+            clsDiscountSystem.ShowCouponManager();
+        }
+
+        private void btnHelp_Click(object sender, EventArgs e)
+        {
+            clsHelpSystem.ShowHelpForm(clsHelpSystem.Topics.KeyboardShortcuts);
         }
 
         private void frmMainMenu_KeyDown(object sender, KeyEventArgs e)

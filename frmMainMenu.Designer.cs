@@ -35,6 +35,13 @@ namespace InventoryManagementSystem
             this.btnProducts = new System.Windows.Forms.Button();
             this.btnReceiptSearch = new System.Windows.Forms.Button();
             this.btnPrintReceipt = new System.Windows.Forms.Button();
+            this.btnDashboard = new System.Windows.Forms.Button();
+            this.btnAdvancedReports = new System.Windows.Forms.Button();
+            this.btnLowStockAlerts = new System.Windows.Forms.Button();
+            this.btnCouponManager = new System.Windows.Forms.Button();
+            this.btnPOS = new System.Windows.Forms.Button();
+            this.btnDailyReport = new System.Windows.Forms.Button();
+            this.btnHelp = new System.Windows.Forms.Button();
             this._mainLayoutPanel.SuspendLayout();
             this._buttonsPanel.SuspendLayout();
             this.SuspendLayout();
@@ -63,13 +70,22 @@ namespace InventoryManagementSystem
             this._buttonsPanel.Controls.Add(this.btnProducts, 2, 0);
             this._buttonsPanel.Controls.Add(this.btnReceiptSearch, 0, 1);
             this._buttonsPanel.Controls.Add(this.btnPrintReceipt, 1, 1);
+            this._buttonsPanel.Controls.Add(this.btnDashboard, 2, 1);
+            this._buttonsPanel.Controls.Add(this.btnAdvancedReports, 0, 2);
+            this._buttonsPanel.Controls.Add(this.btnLowStockAlerts, 1, 2);
+            this._buttonsPanel.Controls.Add(this.btnCouponManager, 2, 2);
+            this._buttonsPanel.Controls.Add(this.btnPOS, 0, 3);
+            this._buttonsPanel.Controls.Add(this.btnDailyReport, 1, 3);
+            this._buttonsPanel.Controls.Add(this.btnHelp, 2, 3);
             this._buttonsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._buttonsPanel.Location = new System.Drawing.Point(3, 3);
             this._buttonsPanel.Name = "_buttonsPanel";
             this._buttonsPanel.Padding = new System.Windows.Forms.Padding(40);
-            this._buttonsPanel.RowCount = 2;
-            this._buttonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this._buttonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this._buttonsPanel.RowCount = 4;
+            this._buttonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this._buttonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this._buttonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this._buttonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this._buttonsPanel.Size = new System.Drawing.Size(1254, 714);
             this._buttonsPanel.TabIndex = 1;
             this._buttonsPanel.Paint += new System.Windows.Forms.PaintEventHandler(this._buttonsPanel_Paint);
@@ -134,6 +150,90 @@ namespace InventoryManagementSystem
             this.btnPrintReceipt.UseVisualStyleBackColor = true;
             this.btnPrintReceipt.Click += new System.EventHandler(this.btnPrintReceipt_Click);
             // 
+            // btnDashboard
+            // 
+            this.btnDashboard.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnDashboard.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnDashboard.Location = new System.Drawing.Point(825, 320);
+            this.btnDashboard.Name = "btnDashboard";
+            this.btnDashboard.Size = new System.Drawing.Size(386, 271);
+            this.btnDashboard.TabIndex = 5;
+            this.btnDashboard.Text = "Dashboard";
+            this.btnDashboard.UseVisualStyleBackColor = true;
+            this.btnDashboard.Click += new System.EventHandler(this.btnDashboard_Click);
+            // 
+            // btnAdvancedReports
+            // 
+            this.btnAdvancedReports.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAdvancedReports.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnAdvancedReports.Location = new System.Drawing.Point(43, 597);
+            this.btnAdvancedReports.Name = "btnAdvancedReports";
+            this.btnAdvancedReports.Size = new System.Drawing.Size(385, 271);
+            this.btnAdvancedReports.TabIndex = 6;
+            this.btnAdvancedReports.Text = "Advanced Reports";
+            this.btnAdvancedReports.UseVisualStyleBackColor = true;
+            this.btnAdvancedReports.Click += new System.EventHandler(this.btnAdvancedReports_Click);
+            // 
+            // btnLowStockAlerts
+            // 
+            this.btnLowStockAlerts.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnLowStockAlerts.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnLowStockAlerts.Location = new System.Drawing.Point(434, 597);
+            this.btnLowStockAlerts.Name = "btnLowStockAlerts";
+            this.btnLowStockAlerts.Size = new System.Drawing.Size(385, 271);
+            this.btnLowStockAlerts.TabIndex = 7;
+            this.btnLowStockAlerts.Text = "Low Stock Alerts";
+            this.btnLowStockAlerts.UseVisualStyleBackColor = true;
+            this.btnLowStockAlerts.Click += new System.EventHandler(this.btnLowStockAlerts_Click);
+            // 
+            // btnCouponManager
+            // 
+            this.btnCouponManager.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnCouponManager.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnCouponManager.Location = new System.Drawing.Point(825, 597);
+            this.btnCouponManager.Name = "btnCouponManager";
+            this.btnCouponManager.Size = new System.Drawing.Size(386, 271);
+            this.btnCouponManager.TabIndex = 8;
+            this.btnCouponManager.Text = "Coupon Manager";
+            this.btnCouponManager.UseVisualStyleBackColor = true;
+            this.btnCouponManager.Click += new System.EventHandler(this.btnCouponManager_Click);
+            // 
+            // btnPOS
+            // 
+            this.btnPOS.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnPOS.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnPOS.Location = new System.Drawing.Point(43, 597);
+            this.btnPOS.Name = "btnPOS";
+            this.btnPOS.Size = new System.Drawing.Size(385, 271);
+            this.btnPOS.TabIndex = 9;
+            this.btnPOS.Text = "Point of Sale";
+            this.btnPOS.UseVisualStyleBackColor = true;
+            this.btnPOS.Click += new System.EventHandler(this.btnPOS_Click);
+            // 
+            // btnDailyReport
+            // 
+            this.btnDailyReport.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnDailyReport.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnDailyReport.Location = new System.Drawing.Point(434, 597);
+            this.btnDailyReport.Name = "btnDailyReport";
+            this.btnDailyReport.Size = new System.Drawing.Size(385, 271);
+            this.btnDailyReport.TabIndex = 10;
+            this.btnDailyReport.Text = "Daily Report";
+            this.btnDailyReport.UseVisualStyleBackColor = true;
+            this.btnDailyReport.Click += new System.EventHandler(this.btnDailyReport_Click);
+            // 
+            // btnHelp
+            // 
+            this.btnHelp.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnHelp.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnHelp.Location = new System.Drawing.Point(825, 597);
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.Size = new System.Drawing.Size(386, 271);
+            this.btnHelp.TabIndex = 11;
+            this.btnHelp.Text = "Help";
+            this.btnHelp.UseVisualStyleBackColor = true;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            // 
             // frmMainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -159,5 +259,12 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button btnProducts;
         private System.Windows.Forms.Button btnReceiptSearch;
         private System.Windows.Forms.Button btnPrintReceipt;
+        private System.Windows.Forms.Button btnDashboard;
+        private System.Windows.Forms.Button btnAdvancedReports;
+        private System.Windows.Forms.Button btnLowStockAlerts;
+        private System.Windows.Forms.Button btnCouponManager;
+        private System.Windows.Forms.Button btnPOS;
+        private System.Windows.Forms.Button btnDailyReport;
+        private System.Windows.Forms.Button btnHelp;
     }
 }
