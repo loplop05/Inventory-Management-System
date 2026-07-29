@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace InventoryDataAccessLayer
 {
@@ -12,7 +13,9 @@ namespace InventoryDataAccessLayer
     {
 
 
-        public static string connectionString = "Server = .;Database = InventoryDB;User ID = sa ; Password = 123456;";
+        // Connection string is now read from App.config to avoid hardcoding credentials in source code
+        // TODO: For production, consider using encrypted configuration sections or environment variables
+        public static string connectionString = ConfigurationManager.ConnectionStrings["InventoryDB"].ConnectionString;
 
 
 

@@ -261,6 +261,13 @@ namespace InventoryManagementSystem
             _Product.Price = decimal.Parse(txtBoxNewPrice.Text);
             _Product.Quantity = int.Parse(txtBoxNewQuantity.Text);
             _Product.Barcode = txtBoxNewBarcode.Text.Trim();
+
+            // Add null checks before casting SelectedValue
+            if (cmbNewCategory.SelectedValue == null || cmbNewSupplier.SelectedValue == null)
+            {
+                clsFormTheme.ShowInputError(cmbNewCategory, _errorProvider, "Please select both category and supplier.");
+                return;
+            }
             _Product.CategoryID = (int)cmbNewCategory.SelectedValue;
             _Product.SupplierID = (int)cmbNewSupplier.SelectedValue;
 

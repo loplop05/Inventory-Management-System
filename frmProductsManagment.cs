@@ -308,10 +308,5 @@ namespace InventoryManagementSystem
             }
         }
 
-        private void DataGVProducts_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-
     }
 }
