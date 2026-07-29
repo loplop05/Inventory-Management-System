@@ -372,7 +372,9 @@ namespace InventoryManagementSystem
             this._totalsPanel.Controls.Add(this._lblSubtotal);
             this._totalsPanel.Controls.Add(this._lblTax);
             this._totalsPanel.Controls.Add(this._lblTotal);
+            this._totalsPanel.Controls.Add(this._lblDiscount);
             this._totalsPanel.Controls.Add(this._btnRemoveItem);
+            this._totalsPanel.Controls.Add(this._btnApplyCoupon);
             this._totalsPanel.Controls.Add(this._btnCompleteOrder);
             this._totalsPanel.Controls.Add(this._btnPrintReceipt);
             this._totalsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -422,23 +424,47 @@ namespace InventoryManagementSystem
             this._lblTotal.Text = "Total: $0.00";
             this._lblTotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // _lblDiscount
+            // 
+            this._lblDiscount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._lblDiscount.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this._lblDiscount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(167)))), ((int)(((byte)(69)))));
+            this._lblDiscount.Location = new System.Drawing.Point(0, 108);
+            this._lblDiscount.Name = "_lblDiscount";
+            this._lblDiscount.Size = new System.Drawing.Size(505, 32);
+            this._lblDiscount.TabIndex = 3;
+            this._lblDiscount.Text = "Discount: $0.00";
+            this._lblDiscount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // _btnRemoveItem
             // 
             this._btnRemoveItem.Location = new System.Drawing.Point(0, 120);
             this._btnRemoveItem.Name = "_btnRemoveItem";
             this._btnRemoveItem.Size = new System.Drawing.Size(130, 38);
-            this._btnRemoveItem.TabIndex = 3;
+            this._btnRemoveItem.TabIndex = 4;
             this._btnRemoveItem.Text = "Remove Item";
             this._btnRemoveItem.UseVisualStyleBackColor = true;
             this._btnRemoveItem.Click += new System.EventHandler(this.btnRemoveItem_Click);
             // 
+            // _btnApplyCoupon
+            // 
+            this._btnApplyCoupon.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnApplyCoupon.Location = new System.Drawing.Point(140, 120);
+            this._btnApplyCoupon.Name = "_btnApplyCoupon";
+            this._btnApplyCoupon.Size = new System.Drawing.Size(130, 38);
+            this._btnApplyCoupon.TabIndex = 5;
+            this._btnApplyCoupon.Text = "Apply Coupon";
+            this._btnApplyCoupon.UseVisualStyleBackColor = true;
+            this._btnApplyCoupon.Click += new System.EventHandler(this.btnApplyCoupon_Click);
+            // 
             // _btnCompleteOrder
             // 
             this._btnCompleteOrder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._btnCompleteOrder.Location = new System.Drawing.Point(140, 120);
+            this._btnCompleteOrder.Location = new System.Drawing.Point(280, 120);
             this._btnCompleteOrder.Name = "_btnCompleteOrder";
             this._btnCompleteOrder.Size = new System.Drawing.Size(160, 38);
-            this._btnCompleteOrder.TabIndex = 4;
+            this._btnCompleteOrder.TabIndex = 6;
             this._btnCompleteOrder.Text = "Complete Order";
             this._btnCompleteOrder.UseVisualStyleBackColor = true;
             this._btnCompleteOrder.Click += new System.EventHandler(this.btnCompleteOrder_Click);
@@ -512,7 +538,9 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Label _lblSubtotal;
         private System.Windows.Forms.Label _lblTax;
         private System.Windows.Forms.Label _lblTotal;
+        private System.Windows.Forms.Label _lblDiscount;
         private System.Windows.Forms.Button _btnRemoveItem;
+        private System.Windows.Forms.Button _btnApplyCoupon;
         private System.Windows.Forms.Button _btnCompleteOrder;
         private System.Windows.Forms.Button _btnPrintReceipt;
         private System.Windows.Forms.Label _lblReceiptTitle;

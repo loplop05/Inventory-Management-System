@@ -70,6 +70,9 @@ namespace InventoryManagementSystem
                 return;
             }
 
+            // Initialize sample coupons for the discount system
+            clsDiscountSystem.InitializeSampleCoupons();
+
             LoadProducts();
             RefreshReceiptTotals();
             ClearCustomerInfo();
