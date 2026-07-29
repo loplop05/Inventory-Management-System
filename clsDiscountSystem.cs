@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Windows.Forms;
 using System.Drawing;
@@ -40,6 +41,33 @@ namespace InventoryManagementSystem
             public string[] ApplicableCategories { get; set; } // Empty = all categories
             public string[] ApplicableProducts { get; set; } // Empty = all products
 
+            /// <summary>Value formatted for display, based on the discount type.</summary>
+            public string ValueText
+            {
+                get
+                {
+                    switch (Type)
+                    {
+                        case DiscountType.Percentage: return Value.ToString("0.##") + "%";
+                        case DiscountType.FixedAmount: return Value.ToString("C2");
+                        case DiscountType.LoyaltyPoints: return Value.ToString("0") + " pts";
+                        default: return "—";
+                    }
+                }
+            }
+
+            /// <summary>Usage formatted as "used / limit".</summary>
+            public string UsageText
+            {
+                get { return TimesUsed + " / " + (MaxUses > 0 ? MaxUses.ToString() : "∞"); }
+            }
+
+            /// <summary>Expiry date formatted for display.</summary>
+            public string ExpiryText
+            {
+                get { return ValidUntil.HasValue ? ValidUntil.Value.ToShortDateString() : "Never"; }
+            }
+
             public bool IsValid()
             {
                 if (!IsActive) return false;
@@ -69,7 +97,13 @@ namespace InventoryManagementSystem
 
         // ─── Coupon Management ────────────────────────────────────────────────
 
-        private static readonly Dictionary<string, Coupon> _coupons = new Dictionary<string, Coupon>();
+        private static readonly Dictionary<string, Coupon> _coupons =
+            new Dictionary<string, Coupon>(StringComparer.OrdinalIgnoreCase);
+
+        static clsDiscountSystem()
+        {
+            InitializeSampleCoupons();
+        }
 
         /// <summary>
         /// Adds a new coupon to the system.
@@ -77,9 +111,12 @@ namespace InventoryManagementSystem
         public static bool AddCoupon(Coupon coupon)
         {
             if (coupon == null || string.IsNullOrWhiteSpace(coupon.Code)) return false;
-            if (_coupons.ContainsKey(coupon.Code.ToUpper())) return false;
 
-            _coupons[coupon.Code.ToUpper()] = coupon;
+            string code = NormalizeCode(coupon.Code);
+            if (_coupons.ContainsKey(code)) return false;
+
+            coupon.Code = code;
+            _coupons[code] = coupon;
             return true;
         }
 
@@ -89,7 +126,9 @@ namespace InventoryManagementSystem
         public static Coupon GetCoupon(string code)
         {
             if (string.IsNullOrWhiteSpace(code)) return null;
-            return _coupons.ContainsKey(code.ToUpper()) ? _coupons[code.ToUpper()] : null;
+
+            Coupon coupon;
+            return _coupons.TryGetValue(NormalizeCode(code), out coupon) ? coupon : null;
         }
 
         /// <summary>
@@ -97,11 +136,66 @@ namespace InventoryManagementSystem
         /// </summary>
         public static Coupon ValidateCoupon(string code, decimal purchaseAmount)
         {
-            var coupon = GetCoupon(code);
-            if (coupon == null || !coupon.IsValid()) return null;
-            if (purchaseAmount < coupon.MinimumPurchase) return null;
+            string reason;
+            return ValidateCoupon(code, purchaseAmount, out reason);
+        }
+
+        /// <summary>
+        /// Validates a coupon and explains why it was rejected when it is not usable.
+        /// </summary>
+        public static Coupon ValidateCoupon(string code, decimal purchaseAmount, out string reason)
+        {
+            reason = string.Empty;
+
+            if (string.IsNullOrWhiteSpace(code))
+            {
+                reason = "Enter a coupon code.";
+                return null;
+            }
+
+            Coupon coupon = GetCoupon(code);
+            if (coupon == null)
+            {
+                reason = "Coupon '" + NormalizeCode(code) + "' does not exist.";
+                return null;
+            }
+
+            if (!coupon.IsActive)
+            {
+                reason = "Coupon '" + coupon.Code + "' is inactive.";
+                return null;
+            }
+
+            if (coupon.MaxUses > 0 && coupon.TimesUsed >= coupon.MaxUses)
+            {
+                reason = "Coupon '" + coupon.Code + "' has reached its usage limit.";
+                return null;
+            }
+
+            if (coupon.ValidFrom.HasValue && DateTime.Now < coupon.ValidFrom.Value)
+            {
+                reason = "Coupon '" + coupon.Code + "' is not valid until " + coupon.ValidFrom.Value.ToShortDateString() + ".";
+                return null;
+            }
+
+            if (coupon.ValidUntil.HasValue && DateTime.Now > coupon.ValidUntil.Value)
+            {
+                reason = "Coupon '" + coupon.Code + "' expired on " + coupon.ValidUntil.Value.ToShortDateString() + ".";
+                return null;
+            }
+
+            if (purchaseAmount < coupon.MinimumPurchase)
+            {
+                reason = "Coupon '" + coupon.Code + "' requires a minimum purchase of " + coupon.MinimumPurchase.ToString("C2") + ".";
+                return null;
+            }
 
             return coupon;
+        }
+
+        private static string NormalizeCode(string code)
+        {
+            return code == null ? string.Empty : code.Trim().ToUpperInvariant();
         }
 
         /// <summary>
@@ -168,7 +262,8 @@ namespace InventoryManagementSystem
         /// </summary>
         public static bool RemoveCoupon(string code)
         {
-            return _coupons.Remove(code.ToUpper());
+            if (string.IsNullOrWhiteSpace(code)) return false;
+            return _coupons.Remove(NormalizeCode(code));
         }
 
         // ─── Customer Loyalty Management ───────────────────────────────────────
@@ -225,7 +320,7 @@ namespace InventoryManagementSystem
             if (customer == null || customer.Points < pointsToRedeem) return 0;
 
             customer.Points -= pointsToRedeem;
-            return pointsToRedeem / CustomerLoyalty.PointsForDiscount;
+            return (decimal)pointsToRedeem / CustomerLoyalty.PointsForDiscount;
         }
 
         /// <summary>
@@ -250,24 +345,22 @@ namespace InventoryManagementSystem
         public static decimal CalculateFinalPrice(decimal originalPrice, List<Coupon> coupons, CustomerLoyalty customer = null)
         {
             decimal price = originalPrice;
-            decimal totalDiscount = 0;
 
             // Apply tier discount first
             if (customer != null)
             {
-                decimal tierDiscount = price * GetTierDiscount(customer.Tier);
-                totalDiscount += tierDiscount;
-                price -= tierDiscount;
+                price -= price * GetTierDiscount(customer.Tier);
             }
 
             // Apply coupons
-            foreach (var coupon in coupons)
+            if (coupons != null)
             {
-                if (coupon != null && coupon.IsValid())
+                foreach (var coupon in coupons)
                 {
-                    decimal couponDiscount = ApplyCoupon(coupon, price);
-                    totalDiscount += couponDiscount;
-                    price -= couponDiscount;
+                    if (coupon != null && coupon.IsValid())
+                    {
+                        price -= ApplyCoupon(coupon, price);
+                    }
                 }
             }
 
@@ -345,277 +438,502 @@ namespace InventoryManagementSystem
         // ─── UI Helpers ────────────────────────────────────────────────────────
 
         /// <summary>
-        /// Shows a coupon application dialog.
-        /// </summary>
-        public static Coupon ShowCouponDialog(decimal currentTotal)
-        {
-            var dialog = new Form
-            {
-                Text = "Apply Coupon",
-                Size = new Size(400, 250),
-                StartPosition = FormStartPosition.CenterParent,
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                MinimizeBox = false,
-                MaximizeBox = false
-            };
-
-            clsFormTheme.ApplyFormStyle(dialog);
-            clsFormTheme.CreateHeaderPanel(dialog, "Apply Coupon", clsFormTheme.Icons.Chart);
-
-            var mainPanel = new TableLayoutPanel
-            {
-                Dock = DockStyle.Fill,
-                ColumnCount = 2,
-                RowCount = 4,
-                Padding = new Padding(20)
-            };
-
-            mainPanel.Controls.Add(new Label { Text = "Current Total:", Anchor = AnchorStyles.Left }, 0, 0);
-            mainPanel.Controls.Add(new Label { Text = currentTotal.ToString("C"), Anchor = AnchorStyles.Left, ForeColor = clsFormTheme.PrimaryColor, Font = new Font("Segoe UI", 10F, FontStyle.Bold) }, 1, 0);
-
-            mainPanel.Controls.Add(new Label { Text = "Coupon Code:", Anchor = AnchorStyles.Left }, 0, 1);
-            var txtCode = new TextBox { Dock = DockStyle.Fill };
-            mainPanel.Controls.Add(txtCode, 1, 1);
-
-            mainPanel.Controls.Add(new Label { Text = string.Empty }, 0, 2);
-            var lblResult = new Label { Dock = DockStyle.Fill, ForeColor = clsFormTheme.SuccessColor, Font = new Font("Segoe UI", 9F) };
-            mainPanel.Controls.Add(lblResult, 1, 2);
-
-            var btnApply = new Button { Text = "Apply", Height = 35, Margin = new Padding(0, 10, 0, 0) };
-            clsFormTheme.ApplyPrimaryButtonStyle(btnApply, clsFormTheme.Icons.Check);
-            btnApply.Click += (s, e) =>
-            {
-                var coupon = ValidateCoupon(txtCode.Text, currentTotal);
-                if (coupon != null)
-                {
-                    decimal discount = ApplyCoupon(coupon, currentTotal);
-                    lblResult.Text = $"Valid! Discount: {discount:C}";
-                    dialog.Tag = coupon;
-                    dialog.DialogResult = DialogResult.OK;
-                    dialog.Close();
-                }
-                else
-                {
-                    lblResult.Text = "Invalid or expired coupon";
-                    lblResult.ForeColor = clsFormTheme.DangerColor;
-                }
-            };
-
-            var btnCancel = new Button { Text = "Cancel", Height = 35, Margin = new Padding(0, 10, 0, 0) };
-            clsFormTheme.ApplySecondaryButtonStyle(btnCancel, clsFormTheme.Icons.Cancel);
-            btnCancel.Click += (s, e) => dialog.Close();
-
-            mainPanel.Controls.Add(btnApply, 0, 3);
-            mainPanel.Controls.Add(btnCancel, 1, 3);
-
-            dialog.Controls.Add(mainPanel);
-            dialog.AcceptButton = btnApply;
-            dialog.CancelButton = btnCancel;
-
-            return dialog.ShowDialog() == DialogResult.OK ? dialog.Tag as Coupon : null;
-        }
-
-        /// <summary>
-        /// Shows a coupon management dialog.
+        /// Shows the coupon management dialog (browse, add, edit and delete coupons).
         /// </summary>
         public static void ShowCouponManager()
         {
-            var managerForm = new Form
+            using (Form managerForm = new Form
             {
                 Text = "Coupon Manager",
-                Size = new Size(700, 500),
-                StartPosition = FormStartPosition.CenterParent
-            };
-
-            clsFormTheme.ApplyFormStyle(managerForm);
-            clsFormTheme.CreateHeaderPanel(managerForm, "Coupon Manager", clsFormTheme.Icons.Chart);
-
-            var mainPanel = new TableLayoutPanel
+                Size = new Size(940, 600),
+                MinimumSize = new Size(780, 500),
+                StartPosition = FormStartPosition.CenterScreen
+            })
             {
-                Dock = DockStyle.Fill,
-                ColumnCount = 1,
-                RowCount = 2
-            };
-            mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-            mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 50));
+                clsFormTheme.ApplyFormStyle(managerForm);
+                clsFormTheme.CreateHeaderPanel(managerForm, "Coupon Manager", clsFormTheme.Icons.Money);
 
-            // Coupon grid
-            var grid = new DataGridView
+                TableLayoutPanel mainPanel = new TableLayoutPanel
+                {
+                    Dock = DockStyle.Fill,
+                    ColumnCount = 1,
+                    RowCount = 3,
+                    BackColor = Color.Transparent,
+                    Padding = new Padding(16, 12, 16, 16)
+                };
+                mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 28));
+                mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+                mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 56));
+
+                Label lblSummary = new Label
+                {
+                    Dock = DockStyle.Fill,
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    Margin = new Padding(2, 0, 2, 6)
+                };
+                clsFormTheme.ApplyLabelStyle(lblSummary);
+                lblSummary.ForeColor = clsFormTheme.TextSecondary;
+
+                DataGridView grid = BuildCouponGrid();
+
+                Panel buttonPanel = new Panel
+                {
+                    Dock = DockStyle.Fill,
+                    BackColor = Color.Transparent,
+                    Margin = new Padding(0, 10, 0, 0)
+                };
+
+                Button btnAdd = CreateDialogButton("Add Coupon");
+                clsFormTheme.ApplyPrimaryButtonStyle(btnAdd, clsFormTheme.Icons.Add);
+
+                Button btnEdit = CreateDialogButton("Edit Coupon");
+                clsFormTheme.ApplySecondaryButtonStyle(btnEdit, clsFormTheme.Icons.Update);
+
+                Button btnDelete = CreateDialogButton("Delete Coupon");
+                clsFormTheme.ApplyDangerButtonStyle(btnDelete, clsFormTheme.Icons.Delete);
+
+                Button btnClose = CreateDialogButton("Close");
+                clsFormTheme.ApplySecondaryButtonStyle(btnClose, clsFormTheme.Icons.Exit);
+
+                FlowLayoutPanel leftButtons = new FlowLayoutPanel
+                {
+                    Dock = DockStyle.Left,
+                    AutoSize = true,
+                    WrapContents = false,
+                    BackColor = Color.Transparent
+                };
+                leftButtons.Controls.Add(btnAdd);
+                leftButtons.Controls.Add(btnEdit);
+                leftButtons.Controls.Add(btnDelete);
+
+                FlowLayoutPanel rightButtons = new FlowLayoutPanel
+                {
+                    Dock = DockStyle.Right,
+                    AutoSize = true,
+                    FlowDirection = FlowDirection.RightToLeft,
+                    WrapContents = false,
+                    BackColor = Color.Transparent
+                };
+                rightButtons.Controls.Add(btnClose);
+
+                buttonPanel.Controls.Add(leftButtons);
+                buttonPanel.Controls.Add(rightButtons);
+
+                mainPanel.Controls.Add(lblSummary, 0, 0);
+                mainPanel.Controls.Add(grid, 0, 1);
+                mainPanel.Controls.Add(buttonPanel, 0, 2);
+
+                EventHandler refresh = delegate
+                {
+                    List<Coupon> coupons = GetAllCoupons();
+                    grid.DataSource = new BindingList<Coupon>(coupons);
+                    lblSummary.Text = coupons.Count == 0
+                        ? "No coupons defined yet — click \"Add Coupon\" to create one."
+                        : coupons.Count + " coupon(s) — usable from the Point of Sale screen.";
+                };
+
+                EventHandler selectionChanged = delegate
+                {
+                    bool hasSelection = GetSelectedCoupon(grid) != null;
+                    btnEdit.Enabled = hasSelection;
+                    btnDelete.Enabled = hasSelection;
+                };
+
+                grid.SelectionChanged += selectionChanged;
+
+                btnAdd.Click += delegate
+                {
+                    if (ShowCouponEditor(null))
+                        refresh(null, EventArgs.Empty);
+                };
+
+                btnEdit.Click += delegate
+                {
+                    Coupon selected = GetSelectedCoupon(grid);
+                    if (selected != null && ShowCouponEditor(selected))
+                        refresh(null, EventArgs.Empty);
+                };
+
+                grid.CellDoubleClick += delegate(object s, DataGridViewCellEventArgs e)
+                {
+                    if (e.RowIndex < 0) return;
+
+                    Coupon selected = GetSelectedCoupon(grid);
+                    if (selected != null && ShowCouponEditor(selected))
+                        refresh(null, EventArgs.Empty);
+                };
+
+                btnDelete.Click += delegate
+                {
+                    Coupon selected = GetSelectedCoupon(grid);
+                    if (selected == null) return;
+
+                    if (MessageBox.Show("Delete coupon '" + selected.Code + "'?", "Confirm",
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        RemoveCoupon(selected.Code);
+                        refresh(null, EventArgs.Empty);
+                    }
+                };
+
+                btnClose.Click += delegate { managerForm.Close(); };
+
+                managerForm.Controls.Add(mainPanel);
+                managerForm.CancelButton = btnClose;
+
+                refresh(null, EventArgs.Empty);
+                selectionChanged(null, EventArgs.Empty);
+
+                managerForm.ShowDialog();
+            }
+        }
+
+        private static DataGridView BuildCouponGrid()
+        {
+            DataGridView grid = new DataGridView
             {
                 Dock = DockStyle.Fill,
                 AutoGenerateColumns = false,
                 ReadOnly = true,
                 AllowUserToAddRows = false,
                 AllowUserToDeleteRows = false,
-                RowHeadersVisible = false,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                DataSource = GetAllCoupons()
+                AllowUserToResizeColumns = false,
+                Margin = new Padding(0)
             };
-
-            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Code", HeaderText = "Code" });
-            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Description", HeaderText = "Description" });
-            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Type", HeaderText = "Type" });
-            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Value", HeaderText = "Value" });
-            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "TimesUsed", HeaderText = "Used" });
-            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "MaxUses", HeaderText = "Max Uses" });
-            grid.Columns.Add(new DataGridViewCheckBoxColumn { DataPropertyName = "IsActive", HeaderText = "Active" });
 
             clsFormTheme.ApplyGridStyle(grid);
+            grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-            // Button panel
-            var buttonPanel = new Panel { Dock = DockStyle.Fill };
+            DataGridViewCellStyle rightAligned = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleRight };
+            DataGridViewCellStyle centered = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleCenter };
 
-            var btnAdd = new Button { Text = "Add Coupon", Size = new Size(120, 30), Location = new Point(10, 10) };
-            clsFormTheme.ApplyPrimaryButtonStyle(btnAdd, clsFormTheme.Icons.Add);
-            btnAdd.Click += (s, e) => ShowCouponEditor(null, grid);
+            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Code", HeaderText = "Code", FillWeight = 85 });
+            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Description", HeaderText = "Description", FillWeight = 200 });
+            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Type", HeaderText = "Type", FillWeight = 95 });
+            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "ValueText", HeaderText = "Value", FillWeight = 65, DefaultCellStyle = rightAligned });
+            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "MinimumPurchase", HeaderText = "Min. Purchase", FillWeight = 95, DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleRight, Format = "C2" } });
+            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "UsageText", HeaderText = "Used", FillWeight = 70, DefaultCellStyle = centered });
+            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "ExpiryText", HeaderText = "Expires", FillWeight = 85, DefaultCellStyle = centered });
+            grid.Columns.Add(new DataGridViewCheckBoxColumn { DataPropertyName = "IsActive", HeaderText = "Active", FillWeight = 55 });
 
-            var btnEdit = new Button { Text = "Edit Coupon", Size = new Size(120, 30), Location = new Point(140, 10) };
-            clsFormTheme.ApplySecondaryButtonStyle(btnEdit, clsFormTheme.Icons.Update);
-            btnEdit.Click += (s, e) =>
-            {
-                if (grid.SelectedRows.Count > 0)
-                {
-                    var coupon = grid.SelectedRows[0].DataBoundItem as Coupon;
-                    ShowCouponEditor(coupon, grid);
-                }
-            };
-
-            var btnDelete = new Button { Text = "Delete Coupon", Size = new Size(120, 30), Location = new Point(270, 10) };
-            clsFormTheme.ApplyDangerButtonStyle(btnDelete, clsFormTheme.Icons.Delete);
-            btnDelete.Click += (s, e) =>
-            {
-                if (grid.SelectedRows.Count > 0)
-                {
-                    var coupon = grid.SelectedRows[0].DataBoundItem as Coupon;
-                    if (MessageBox.Show($"Delete coupon '{coupon.Code}'?", "Confirm", 
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-                    {
-                        RemoveCoupon(coupon.Code);
-                        grid.DataSource = GetAllCoupons();
-                    }
-                }
-            };
-
-            var btnClose = new Button { Text = "Close", Size = new Size(100, 30), Location = new Point(590, 10) };
-            clsFormTheme.ApplySecondaryButtonStyle(btnClose, clsFormTheme.Icons.Exit);
-            btnClose.Click += (s, e) => managerForm.Close();
-
-            buttonPanel.Controls.Add(btnAdd);
-            buttonPanel.Controls.Add(btnEdit);
-            buttonPanel.Controls.Add(btnDelete);
-            buttonPanel.Controls.Add(btnClose);
-
-            mainPanel.Controls.Add(grid, 0, 0);
-            mainPanel.Controls.Add(buttonPanel, 0, 1);
-
-            managerForm.Controls.Add(mainPanel);
-            managerForm.ShowDialog();
+            return grid;
         }
 
-        private static void ShowCouponEditor(Coupon coupon, DataGridView grid)
+        private static Coupon GetSelectedCoupon(DataGridView grid)
         {
-            var editor = new Form
+            return grid.CurrentRow == null ? null : grid.CurrentRow.DataBoundItem as Coupon;
+        }
+
+        private static Button CreateDialogButton(string text)
+        {
+            return new Button
             {
-                Text = coupon == null ? "Add Coupon" : "Edit Coupon",
-                Size = new Size(400, 350),
+                Text = text,
+                Size = new Size(150, 36),
+                Margin = new Padding(0, 0, 10, 0)
+            };
+        }
+
+        /// <summary>
+        /// Shows the add/edit coupon editor. Returns true when the coupon was saved.
+        /// </summary>
+        private static bool ShowCouponEditor(Coupon coupon)
+        {
+            bool isNew = coupon == null;
+
+            using (Form editor = new Form
+            {
+                Text = isNew ? "Add Coupon" : "Edit Coupon",
+                Size = new Size(480, 560),
                 StartPosition = FormStartPosition.CenterParent,
                 FormBorderStyle = FormBorderStyle.FixedDialog,
                 MinimizeBox = false,
                 MaximizeBox = false
-            };
-
-            clsFormTheme.ApplyFormStyle(editor);
-
-            var mainPanel = new TableLayoutPanel
+            })
             {
-                Dock = DockStyle.Fill,
-                ColumnCount = 2,
-                RowCount = 8,
-                Padding = new Padding(20)
-            };
+                clsFormTheme.ApplyFormStyle(editor);
+                clsFormTheme.CreateHeaderPanel(editor, isNew ? "Add Coupon" : "Edit Coupon", clsFormTheme.Icons.Money);
 
-            var txtCode = new TextBox { Dock = DockStyle.Fill };
-            var txtDescription = new TextBox { Dock = DockStyle.Fill };
-            var cboType = new ComboBox { Dock = DockStyle.Fill, DropDownStyle = ComboBoxStyle.DropDownList };
-            cboType.Items.AddRange(Enum.GetNames(typeof(DiscountType)));
-            var txtValue = new TextBox { Dock = DockStyle.Fill };
-            var txtMinPurchase = new TextBox { Dock = DockStyle.Fill };
-            var txtMaxUses = new TextBox { Dock = DockStyle.Fill };
-            var chkActive = new CheckBox { Checked = true };
-
-            if (coupon != null)
-            {
-                txtCode.Text = coupon.Code;
-                txtCode.Enabled = false;
-                txtDescription.Text = coupon.Description;
-                cboType.SelectedItem = coupon.Type.ToString();
-                txtValue.Text = coupon.Value.ToString();
-                txtMinPurchase.Text = coupon.MinimumPurchase.ToString();
-                txtMaxUses.Text = coupon.MaxUses.ToString();
-                chkActive.Checked = coupon.IsActive;
-            }
-
-            mainPanel.Controls.Add(new Label { Text = "Code:" }, 0, 0);
-            mainPanel.Controls.Add(txtCode, 1, 0);
-            mainPanel.Controls.Add(new Label { Text = "Description:" }, 0, 1);
-            mainPanel.Controls.Add(txtDescription, 1, 1);
-            mainPanel.Controls.Add(new Label { Text = "Type:" }, 0, 2);
-            mainPanel.Controls.Add(cboType, 1, 2);
-            mainPanel.Controls.Add(new Label { Text = "Value:" }, 0, 3);
-            mainPanel.Controls.Add(txtValue, 1, 3);
-            mainPanel.Controls.Add(new Label { Text = "Min Purchase:" }, 0, 4);
-            mainPanel.Controls.Add(txtMinPurchase, 1, 4);
-            mainPanel.Controls.Add(new Label { Text = "Max Uses:" }, 0, 5);
-            mainPanel.Controls.Add(txtMaxUses, 1, 5);
-            mainPanel.Controls.Add(new Label { Text = "Active:" }, 0, 6);
-            mainPanel.Controls.Add(chkActive, 1, 6);
-
-            var btnSave = new Button { Text = "Save", Height = 35, Margin = new Padding(0, 10, 0, 0) };
-            clsFormTheme.ApplyPrimaryButtonStyle(btnSave, clsFormTheme.Icons.Save);
-            btnSave.Click += (s, e) =>
-            {
-                try
+                TableLayoutPanel mainPanel = new TableLayoutPanel
                 {
-                    var newCoupon = new Coupon
-                    {
-                        Code = txtCode.Text.ToUpper(),
-                        Description = txtDescription.Text,
-                        Type = (DiscountType)Enum.Parse(typeof(DiscountType), cboType.SelectedItem.ToString()),
-                        Value = decimal.Parse(txtValue.Text),
-                        MinimumPurchase = decimal.Parse(txtMinPurchase.Text),
-                        MaxUses = int.Parse(txtMaxUses.Text),
-                        IsActive = chkActive.Checked
-                    };
+                    Dock = DockStyle.Fill,
+                    ColumnCount = 2,
+                    RowCount = 9,
+                    BackColor = Color.Transparent,
+                    Padding = new Padding(20, 16, 20, 16)
+                };
+                mainPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 130));
+                mainPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 100));
+                for (int row = 0; row < 8; row++)
+                    mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 44));
+                mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
 
-                    if (coupon == null)
-                    {
-                        AddCoupon(newCoupon);
-                    }
-                    else
-                    {
-                        _coupons[coupon.Code.ToUpper()] = newCoupon;
-                    }
+                TextBox txtCode = CreateEditorTextBox();
+                TextBox txtDescription = CreateEditorTextBox();
+                TextBox txtValue = CreateEditorTextBox();
+                TextBox txtMinPurchase = CreateEditorTextBox();
+                TextBox txtMaxUses = CreateEditorTextBox();
 
-                    grid.DataSource = GetAllCoupons();
+                ComboBox cboType = new ComboBox
+                {
+                    Dock = DockStyle.Fill,
+                    DropDownStyle = ComboBoxStyle.DropDownList,
+                    Margin = new Padding(0, 6, 0, 6)
+                };
+                clsFormTheme.ApplyComboBoxStyle(cboType);
+                cboType.Items.AddRange(Enum.GetNames(typeof(DiscountType)));
+
+                CheckBox chkExpires = new CheckBox
+                {
+                    Text = "Expires on",
+                    AutoSize = true,
+                    Anchor = AnchorStyles.Left,
+                    BackColor = Color.Transparent
+                };
+
+                DateTimePicker dtpExpiry = new DateTimePicker
+                {
+                    Format = DateTimePickerFormat.Short,
+                    Dock = DockStyle.Fill,
+                    Margin = new Padding(0, 8, 0, 8),
+                    Enabled = false,
+                    Value = DateTime.Today.AddMonths(1)
+                };
+                chkExpires.CheckedChanged += delegate { dtpExpiry.Enabled = chkExpires.Checked; };
+
+                CheckBox chkActive = new CheckBox
+                {
+                    Text = "Coupon can be used at the POS",
+                    Checked = true,
+                    AutoSize = true,
+                    Anchor = AnchorStyles.Left,
+                    BackColor = Color.Transparent
+                };
+
+                if (!isNew)
+                {
+                    txtCode.Text = coupon.Code;
+                    txtCode.Enabled = false;
+                    txtDescription.Text = coupon.Description;
+                    cboType.SelectedItem = coupon.Type.ToString();
+                    txtValue.Text = coupon.Value.ToString("0.##");
+                    txtMinPurchase.Text = coupon.MinimumPurchase.ToString("0.##");
+                    txtMaxUses.Text = coupon.MaxUses.ToString();
+                    chkActive.Checked = coupon.IsActive;
+                    chkExpires.Checked = coupon.ValidUntil.HasValue;
+                    dtpExpiry.Enabled = coupon.ValidUntil.HasValue;
+
+                    if (coupon.ValidUntil.HasValue)
+                        dtpExpiry.Value = coupon.ValidUntil.Value;
+                }
+                else
+                {
+                    cboType.SelectedIndex = 0;
+                    txtValue.Text = "0";
+                    txtMinPurchase.Text = "0";
+                    txtMaxUses.Text = "-1";
+                }
+
+                mainPanel.Controls.Add(CreateEditorLabel("Code:"), 0, 0);
+                mainPanel.Controls.Add(txtCode, 1, 0);
+                mainPanel.Controls.Add(CreateEditorLabel("Description:"), 0, 1);
+                mainPanel.Controls.Add(txtDescription, 1, 1);
+                mainPanel.Controls.Add(CreateEditorLabel("Type:"), 0, 2);
+                mainPanel.Controls.Add(cboType, 1, 2);
+                mainPanel.Controls.Add(CreateEditorLabel("Value:"), 0, 3);
+                mainPanel.Controls.Add(txtValue, 1, 3);
+                mainPanel.Controls.Add(CreateEditorLabel("Min. Purchase:"), 0, 4);
+                mainPanel.Controls.Add(txtMinPurchase, 1, 4);
+                mainPanel.Controls.Add(CreateEditorLabel("Max Uses:"), 0, 5);
+                mainPanel.Controls.Add(txtMaxUses, 1, 5);
+                mainPanel.Controls.Add(chkExpires, 0, 6);
+                mainPanel.Controls.Add(dtpExpiry, 1, 6);
+                mainPanel.Controls.Add(CreateEditorLabel("Active:"), 0, 7);
+                mainPanel.Controls.Add(chkActive, 1, 7);
+
+                Label lblHint = new Label
+                {
+                    Dock = DockStyle.Fill,
+                    Margin = new Padding(0, 6, 0, 6)
+                };
+                clsFormTheme.ApplyLabelStyle(lblHint);
+                lblHint.Font = clsFormTheme.SmallFont;
+                lblHint.ForeColor = clsFormTheme.TextSecondary;
+
+                EventHandler updateHint = delegate
+                {
+                    lblHint.Text = DescribeValueInput(SelectedType(cboType))
+                        + Environment.NewLine
+                        + "Max Uses: -1 for unlimited.";
+                };
+                cboType.SelectedIndexChanged += updateHint;
+                updateHint(null, EventArgs.Empty);
+
+                Button btnSave = CreateDialogButton("Save");
+                clsFormTheme.ApplyPrimaryButtonStyle(btnSave, clsFormTheme.Icons.Save);
+
+                Button btnCancel = CreateDialogButton("Cancel");
+                clsFormTheme.ApplySecondaryButtonStyle(btnCancel, clsFormTheme.Icons.Cancel);
+
+                FlowLayoutPanel footer = new FlowLayoutPanel
+                {
+                    Dock = DockStyle.Bottom,
+                    FlowDirection = FlowDirection.RightToLeft,
+                    Height = 52,
+                    Padding = new Padding(20, 8, 20, 8),
+                    BackColor = Color.Transparent
+                };
+                footer.Controls.Add(btnSave);
+                footer.Controls.Add(btnCancel);
+
+                Panel hintPanel = new Panel { Dock = DockStyle.Bottom, Height = 44, Padding = new Padding(20, 0, 20, 0), BackColor = Color.Transparent };
+                hintPanel.Controls.Add(lblHint);
+
+                btnSave.Click += delegate
+                {
+                    Coupon saved = BuildCouponFromEditor(coupon, txtCode, txtDescription, cboType, txtValue,
+                        txtMinPurchase, txtMaxUses, chkExpires, dtpExpiry, chkActive);
+
+                    if (saved == null) return;
+
                     editor.DialogResult = DialogResult.OK;
                     editor.Close();
-                }
-                catch (Exception ex)
+                };
+
+                btnCancel.Click += delegate
                 {
-                    MessageBox.Show("Invalid input: " + ex.Message, "Error", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                    editor.DialogResult = DialogResult.Cancel;
+                    editor.Close();
+                };
+
+                editor.Controls.Add(mainPanel);
+                editor.Controls.Add(hintPanel);
+                editor.Controls.Add(footer);
+                editor.AcceptButton = btnSave;
+                editor.CancelButton = btnCancel;
+
+                return editor.ShowDialog() == DialogResult.OK;
+            }
+        }
+
+        /// <summary>
+        /// Validates the editor inputs and saves the coupon. Returns null when the input is invalid.
+        /// </summary>
+        private static Coupon BuildCouponFromEditor(Coupon original, TextBox txtCode, TextBox txtDescription,
+            ComboBox cboType, TextBox txtValue, TextBox txtMinPurchase, TextBox txtMaxUses,
+            CheckBox chkExpires, DateTimePicker dtpExpiry, CheckBox chkActive)
+        {
+            string code = NormalizeCode(txtCode.Text);
+
+            if (string.IsNullOrEmpty(code))
+            {
+                ShowValidationError("Enter a coupon code.", txtCode);
+                return null;
+            }
+
+            if (code.Contains(" "))
+            {
+                ShowValidationError("Coupon codes cannot contain spaces.", txtCode);
+                return null;
+            }
+
+            if (original == null && GetCoupon(code) != null)
+            {
+                ShowValidationError("A coupon with the code '" + code + "' already exists.", txtCode);
+                return null;
+            }
+
+            DiscountType type = SelectedType(cboType);
+
+            decimal value;
+            if (!decimal.TryParse(txtValue.Text, out value) || value < 0)
+            {
+                ShowValidationError("Value must be a number greater than or equal to zero.", txtValue);
+                return null;
+            }
+
+            if (type == DiscountType.Percentage && value > 100)
+            {
+                ShowValidationError("A percentage discount cannot exceed 100.", txtValue);
+                return null;
+            }
+
+            decimal minimumPurchase;
+            if (!decimal.TryParse(txtMinPurchase.Text, out minimumPurchase) || minimumPurchase < 0)
+            {
+                ShowValidationError("Minimum purchase must be a number greater than or equal to zero.", txtMinPurchase);
+                return null;
+            }
+
+            int maxUses;
+            if (!int.TryParse(txtMaxUses.Text, out maxUses) || maxUses < -1)
+            {
+                ShowValidationError("Max uses must be a whole number (-1 for unlimited).", txtMaxUses);
+                return null;
+            }
+
+            Coupon coupon = original ?? new Coupon { Code = code };
+            coupon.Description = txtDescription.Text.Trim();
+            coupon.Type = type;
+            coupon.Value = value;
+            coupon.MinimumPurchase = minimumPurchase;
+            coupon.MaxUses = maxUses;
+            coupon.IsActive = chkActive.Checked;
+            coupon.ValidUntil = chkExpires.Checked ? dtpExpiry.Value.Date.AddDays(1).AddSeconds(-1) : (DateTime?)null;
+
+            if (original == null)
+                AddCoupon(coupon);
+
+            return coupon;
+        }
+
+        private static DiscountType SelectedType(ComboBox cboType)
+        {
+            if (cboType.SelectedItem == null)
+                return DiscountType.Percentage;
+
+            return (DiscountType)Enum.Parse(typeof(DiscountType), cboType.SelectedItem.ToString());
+        }
+
+        private static string DescribeValueInput(DiscountType type)
+        {
+            switch (type)
+            {
+                case DiscountType.Percentage: return "Value: percentage taken off the cart (e.g. 10 = 10% off).";
+                case DiscountType.FixedAmount: return "Value: fixed amount taken off the cart (e.g. 5 = $5 off).";
+                case DiscountType.BuyOneGetOne: return "Value: not used — a flat 50% is taken off the cart.";
+                case DiscountType.LoyaltyPoints: return "Value: loyalty points redeemed (" + CustomerLoyalty.PointsForDiscount + " points = $1 off).";
+                default: return "Value: not used — the discount is based on the cart total.";
+            }
+        }
+
+        private static void ShowValidationError(string message, Control controlToFocus)
+        {
+            MessageBox.Show(message, "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            controlToFocus.Focus();
+        }
+
+        private static Label CreateEditorLabel(string text)
+        {
+            Label label = new Label
+            {
+                Text = text,
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft
             };
+            clsFormTheme.ApplyLabelStyle(label);
+            return label;
+        }
 
-            var btnCancel = new Button { Text = "Cancel", Height = 35, Margin = new Padding(0, 10, 0, 0) };
-            clsFormTheme.ApplySecondaryButtonStyle(btnCancel, clsFormTheme.Icons.Cancel);
-            btnCancel.Click += (s, e) => editor.Close();
-
-            mainPanel.Controls.Add(btnSave, 0, 7);
-            mainPanel.Controls.Add(btnCancel, 1, 7);
-
-            editor.Controls.Add(mainPanel);
-            editor.ShowDialog();
+        private static TextBox CreateEditorTextBox()
+        {
+            TextBox textBox = new TextBox
+            {
+                Dock = DockStyle.Fill,
+                Margin = new Padding(0, 8, 0, 8)
+            };
+            clsFormTheme.ApplyTextBoxStyle(textBox);
+            return textBox;
         }
     }
 }
