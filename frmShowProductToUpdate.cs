@@ -265,7 +265,8 @@ namespace InventoryManagementSystem
             // Add null checks before casting SelectedValue
             if (cmbNewCategory.SelectedValue == null || cmbNewSupplier.SelectedValue == null)
             {
-                clsFormTheme.ShowInputError(cmbNewCategory, _errorProvider, "Please select both category and supplier.");
+                _errorProvider.SetError(cmbNewCategory, "Please select both category and supplier.");
+                _errorProvider.SetError(cmbNewSupplier, "Please select both category and supplier.");
                 return;
             }
             _Product.CategoryID = (int)cmbNewCategory.SelectedValue;
