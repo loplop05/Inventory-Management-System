@@ -44,7 +44,12 @@ namespace InventoryManagementSystem
             this._colSubtotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._lblStatus = new System.Windows.Forms.Label();
             this._totalsPanel = new System.Windows.Forms.Panel();
+            this._lblCouponCaption = new System.Windows.Forms.Label();
+            this._txtCoupon = new System.Windows.Forms.TextBox();
+            this._btnApplyCoupon = new System.Windows.Forms.Button();
+            this._btnRemoveCoupon = new System.Windows.Forms.Button();
             this._lblSubtotal = new System.Windows.Forms.Label();
+            this._lblDiscount = new System.Windows.Forms.Label();
             this._lblTax = new System.Windows.Forms.Label();
             this._lblTotal = new System.Windows.Forms.Label();
             this._btnRemoveItem = new System.Windows.Forms.Button();
@@ -369,19 +374,64 @@ namespace InventoryManagementSystem
             // 
             // _totalsPanel
             // 
+            this._totalsPanel.Controls.Add(this._lblCouponCaption);
+            this._totalsPanel.Controls.Add(this._txtCoupon);
+            this._totalsPanel.Controls.Add(this._btnApplyCoupon);
+            this._totalsPanel.Controls.Add(this._btnRemoveCoupon);
             this._totalsPanel.Controls.Add(this._lblSubtotal);
+            this._totalsPanel.Controls.Add(this._lblDiscount);
             this._totalsPanel.Controls.Add(this._lblTax);
             this._totalsPanel.Controls.Add(this._lblTotal);
             this._totalsPanel.Controls.Add(this._btnRemoveItem);
             this._totalsPanel.Controls.Add(this._btnCompleteOrder);
             this._totalsPanel.Controls.Add(this._btnPrintReceipt);
             this._totalsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._totalsPanel.Location = new System.Drawing.Point(14, 361);
+            this._totalsPanel.Location = new System.Drawing.Point(14, 313);
             this._totalsPanel.Name = "_totalsPanel";
             this._totalsPanel.Padding = new System.Windows.Forms.Padding(0, 12, 0, 0);
-            this._totalsPanel.Size = new System.Drawing.Size(505, 220);
+            this._totalsPanel.Size = new System.Drawing.Size(505, 268);
             this._totalsPanel.TabIndex = 3;
             this._totalsPanel.Resize += new System.EventHandler(this.totalsPanel_Resize);
+            // 
+            // _lblCouponCaption
+            // 
+            this._lblCouponCaption.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this._lblCouponCaption.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this._lblCouponCaption.Location = new System.Drawing.Point(0, 8);
+            this._lblCouponCaption.Name = "_lblCouponCaption";
+            this._lblCouponCaption.Size = new System.Drawing.Size(70, 28);
+            this._lblCouponCaption.TabIndex = 0;
+            this._lblCouponCaption.Text = "Coupon:";
+            this._lblCouponCaption.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // _txtCoupon
+            // 
+            this._txtCoupon.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this._txtCoupon.Location = new System.Drawing.Point(74, 10);
+            this._txtCoupon.MaxLength = 30;
+            this._txtCoupon.Name = "_txtCoupon";
+            this._txtCoupon.Size = new System.Drawing.Size(140, 27);
+            this._txtCoupon.TabIndex = 1;
+            // 
+            // _btnApplyCoupon
+            // 
+            this._btnApplyCoupon.Location = new System.Drawing.Point(222, 8);
+            this._btnApplyCoupon.Name = "_btnApplyCoupon";
+            this._btnApplyCoupon.Size = new System.Drawing.Size(120, 32);
+            this._btnApplyCoupon.TabIndex = 2;
+            this._btnApplyCoupon.Text = "Apply";
+            this._btnApplyCoupon.UseVisualStyleBackColor = true;
+            this._btnApplyCoupon.Click += new System.EventHandler(this.btnApplyCoupon_Click);
+            // 
+            // _btnRemoveCoupon
+            // 
+            this._btnRemoveCoupon.Location = new System.Drawing.Point(350, 8);
+            this._btnRemoveCoupon.Name = "_btnRemoveCoupon";
+            this._btnRemoveCoupon.Size = new System.Drawing.Size(120, 32);
+            this._btnRemoveCoupon.TabIndex = 3;
+            this._btnRemoveCoupon.Text = "Remove";
+            this._btnRemoveCoupon.UseVisualStyleBackColor = true;
+            this._btnRemoveCoupon.Click += new System.EventHandler(this.btnRemoveCoupon_Click);
             // 
             // _lblSubtotal
             // 
@@ -389,12 +439,25 @@ namespace InventoryManagementSystem
             | System.Windows.Forms.AnchorStyles.Right)));
             this._lblSubtotal.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this._lblSubtotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this._lblSubtotal.Location = new System.Drawing.Point(0, 0);
+            this._lblSubtotal.Location = new System.Drawing.Point(0, 48);
             this._lblSubtotal.Name = "_lblSubtotal";
-            this._lblSubtotal.Size = new System.Drawing.Size(505, 32);
-            this._lblSubtotal.TabIndex = 0;
+            this._lblSubtotal.Size = new System.Drawing.Size(505, 30);
+            this._lblSubtotal.TabIndex = 4;
             this._lblSubtotal.Text = "Subtotal: $0.00";
             this._lblSubtotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // _lblDiscount
+            // 
+            this._lblDiscount.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._lblDiscount.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this._lblDiscount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(5)))), ((int)(((byte)(150)))), ((int)(((byte)(105)))));
+            this._lblDiscount.Location = new System.Drawing.Point(0, 80);
+            this._lblDiscount.Name = "_lblDiscount";
+            this._lblDiscount.Size = new System.Drawing.Size(505, 28);
+            this._lblDiscount.TabIndex = 5;
+            this._lblDiscount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this._lblDiscount.Visible = false;
             // 
             // _lblTax
             // 
@@ -402,10 +465,10 @@ namespace InventoryManagementSystem
             | System.Windows.Forms.AnchorStyles.Right)));
             this._lblTax.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this._lblTax.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this._lblTax.Location = new System.Drawing.Point(0, 34);
+            this._lblTax.Location = new System.Drawing.Point(0, 110);
             this._lblTax.Name = "_lblTax";
-            this._lblTax.Size = new System.Drawing.Size(505, 32);
-            this._lblTax.TabIndex = 1;
+            this._lblTax.Size = new System.Drawing.Size(505, 30);
+            this._lblTax.TabIndex = 6;
             this._lblTax.Text = "Tax: $0.00";
             this._lblTax.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -415,19 +478,19 @@ namespace InventoryManagementSystem
             | System.Windows.Forms.AnchorStyles.Right)));
             this._lblTotal.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
             this._lblTotal.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this._lblTotal.Location = new System.Drawing.Point(0, 68);
+            this._lblTotal.Location = new System.Drawing.Point(0, 142);
             this._lblTotal.Name = "_lblTotal";
             this._lblTotal.Size = new System.Drawing.Size(505, 40);
-            this._lblTotal.TabIndex = 2;
+            this._lblTotal.TabIndex = 7;
             this._lblTotal.Text = "Total: $0.00";
             this._lblTotal.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // _btnRemoveItem
             // 
-            this._btnRemoveItem.Location = new System.Drawing.Point(0, 120);
+            this._btnRemoveItem.Location = new System.Drawing.Point(0, 188);
             this._btnRemoveItem.Name = "_btnRemoveItem";
             this._btnRemoveItem.Size = new System.Drawing.Size(130, 38);
-            this._btnRemoveItem.TabIndex = 3;
+            this._btnRemoveItem.TabIndex = 8;
             this._btnRemoveItem.Text = "Remove Item";
             this._btnRemoveItem.UseVisualStyleBackColor = true;
             this._btnRemoveItem.Click += new System.EventHandler(this.btnRemoveItem_Click);
@@ -435,10 +498,10 @@ namespace InventoryManagementSystem
             // _btnCompleteOrder
             // 
             this._btnCompleteOrder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._btnCompleteOrder.Location = new System.Drawing.Point(140, 120);
+            this._btnCompleteOrder.Location = new System.Drawing.Point(140, 188);
             this._btnCompleteOrder.Name = "_btnCompleteOrder";
             this._btnCompleteOrder.Size = new System.Drawing.Size(160, 38);
-            this._btnCompleteOrder.TabIndex = 4;
+            this._btnCompleteOrder.TabIndex = 9;
             this._btnCompleteOrder.Text = "Complete Order";
             this._btnCompleteOrder.UseVisualStyleBackColor = true;
             this._btnCompleteOrder.Click += new System.EventHandler(this.btnCompleteOrder_Click);
@@ -446,10 +509,10 @@ namespace InventoryManagementSystem
             // _btnPrintReceipt
             // 
             this._btnPrintReceipt.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._btnPrintReceipt.Location = new System.Drawing.Point(140, 164);
+            this._btnPrintReceipt.Location = new System.Drawing.Point(140, 230);
             this._btnPrintReceipt.Name = "_btnPrintReceipt";
             this._btnPrintReceipt.Size = new System.Drawing.Size(160, 38);
-            this._btnPrintReceipt.TabIndex = 5;
+            this._btnPrintReceipt.TabIndex = 10;
             this._btnPrintReceipt.Text = "Print Receipt";
             this._btnPrintReceipt.UseVisualStyleBackColor = true;
             this._btnPrintReceipt.Click += new System.EventHandler(this.btnPrintReceipt_Click);
@@ -490,6 +553,7 @@ namespace InventoryManagementSystem
             this._receiptPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._gridReceipt)).EndInit();
             this._totalsPanel.ResumeLayout(false);
+            this._totalsPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -509,7 +573,12 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.DataGridViewTextBoxColumn _colSubtotal;
         private System.Windows.Forms.Label _lblStatus;
         private System.Windows.Forms.Panel _totalsPanel;
+        private System.Windows.Forms.Label _lblCouponCaption;
+        private System.Windows.Forms.TextBox _txtCoupon;
+        private System.Windows.Forms.Button _btnApplyCoupon;
+        private System.Windows.Forms.Button _btnRemoveCoupon;
         private System.Windows.Forms.Label _lblSubtotal;
+        private System.Windows.Forms.Label _lblDiscount;
         private System.Windows.Forms.Label _lblTax;
         private System.Windows.Forms.Label _lblTotal;
         private System.Windows.Forms.Button _btnRemoveItem;

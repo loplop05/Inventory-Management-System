@@ -18,6 +18,7 @@ namespace InventoryManagementSystem
         private int? _selectedCustomerID = null;
         private string _selectedCustomerName = "";
         private int _lastCompletedOrderID = -1;
+        private clsDiscountSystem.Coupon _appliedCoupon;
 
         // Debounce timer for search
         private System.Windows.Forms.Timer _searchDebounceTimer;
@@ -37,7 +38,13 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyTextBoxStyle(_txtSearch);
             clsFormTheme.ApplyTextBoxStyle(_txtCustomerPhone);
             clsFormTheme.ApplyTextBoxStyle(_txtPaymentDetails);
+            clsFormTheme.ApplyTextBoxStyle(_txtCoupon);
             clsFormTheme.ApplyPrimaryButtonStyle(_btnAddCustomer, clsFormTheme.Icons.User);
+
+            // ── Coupon ─────────────────────────────────────────────────────────
+            clsFormTheme.ApplySuccessButtonStyle(_btnApplyCoupon, clsFormTheme.Icons.Check);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnRemoveCoupon, clsFormTheme.Icons.Cancel);
+            _btnRemoveCoupon.Enabled = false;
 
             // ── Toolbar buttons ────────────────────────────────────────────────
             clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh, clsFormTheme.Icons.Refresh);
@@ -323,16 +330,53 @@ namespace InventoryManagementSystem
         private void RefreshReceiptTotals()
         {
             decimal subtotal = _receiptItems.Sum(item => item.Subtotal);
-            decimal tax = Math.Round(subtotal * TaxRate, 2);
-            decimal total = subtotal + tax;
+            decimal discount = GetCouponDiscount(subtotal);
+            decimal taxableAmount = subtotal - discount;
+            decimal tax = Math.Round(taxableAmount * TaxRate, 2);
+            decimal total = taxableAmount + tax;
 
             _lblSubtotal.Text = "Subtotal: " + subtotal.ToString("C2");
+            _lblDiscount.Visible = _appliedCoupon != null;
+            _lblDiscount.Text = _appliedCoupon == null
+                ? string.Empty
+                : "Discount (" + _appliedCoupon.Code + "): -" + discount.ToString("C2");
             _lblTax.Text = "Tax (7%): " + tax.ToString("C2");
             _lblTotal.Text = "Total: " + total.ToString("C2");
 
             _btnCompleteOrder.Enabled = _receiptItems.Count > 0;
             _btnRemoveItem.Enabled = _receiptItems.Count > 0;
             _gridReceipt.Refresh();
+        }
+
+        /// <summary>
+        /// Returns the discount for the applied coupon, dropping the coupon when the
+        /// receipt no longer satisfies its conditions (e.g. items were removed).
+        /// </summary>
+        private decimal GetCouponDiscount(decimal subtotal)
+        {
+            if (_appliedCoupon == null)
+                return 0;
+
+            string reason;
+            if (clsDiscountSystem.ValidateCoupon(_appliedCoupon.Code, subtotal, out reason) == null)
+            {
+                ClearCoupon();
+                _lblStatus.Text = reason;
+                return 0;
+            }
+
+            return Math.Round(clsDiscountSystem.ApplyCoupon(_appliedCoupon, subtotal), 2);
+        }
+
+        private void ClearCoupon()
+        {
+            _appliedCoupon = null;
+            _txtCoupon.Text = "";
+            _txtCoupon.Enabled = true;
+            _btnApplyCoupon.Enabled = true;
+            _btnRemoveCoupon.Enabled = false;
+            _lblDiscount.Visible = false;
+            _lblDiscount.Text = string.Empty;
         }
 
         private DataTable BuildOrderItemsTable()
@@ -384,9 +428,12 @@ namespace InventoryManagementSystem
             string paymentMethod = _rbCash.Checked ? "Cash" : "Visa";
             string paymentDetails = _rbCash.Checked ? null : "****" + _txtPaymentDetails.Text;
 
+            decimal discount = GetCouponDiscount(_receiptItems.Sum(item => item.Subtotal));
+            string couponCode = _appliedCoupon == null ? null : _appliedCoupon.Code;
+
             int orderID;
             string errorMessage;
-            bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, _selectedCustomerID, paymentMethod, paymentDetails, out orderID, out errorMessage);
+            bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, _selectedCustomerID, paymentMethod, paymentDetails, discount, couponCode, out orderID, out errorMessage);
 
             if (!saved)
             {
@@ -395,7 +442,11 @@ namespace InventoryManagementSystem
                 return;
             }
 
+            if (couponCode != null)
+                clsDiscountSystem.UseCoupon(couponCode);
+
             _receiptItems.Clear();
+            ClearCoupon();
             RefreshReceiptTotals();
             LoadProducts();
             ClearCustomerInfo();
@@ -516,6 +567,42 @@ namespace InventoryManagementSystem
             Close();
         }
 
+        private void btnApplyCoupon_Click(object sender, EventArgs e)
+        {
+            if (_receiptItems.Count == 0)
+            {
+                MessageBox.Show("Add items to the receipt before applying a coupon.", "Coupon", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            decimal subtotal = _receiptItems.Sum(item => item.Subtotal);
+
+            string reason;
+            clsDiscountSystem.Coupon coupon = clsDiscountSystem.ValidateCoupon(_txtCoupon.Text, subtotal, out reason);
+
+            if (coupon == null)
+            {
+                MessageBox.Show(reason, "Coupon", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                _txtCoupon.Focus();
+                return;
+            }
+
+            _appliedCoupon = coupon;
+            _txtCoupon.Text = coupon.Code;
+            _txtCoupon.Enabled = false;
+            _btnApplyCoupon.Enabled = false;
+            _btnRemoveCoupon.Enabled = true;
+            _lblStatus.Text = "Coupon " + coupon.Code + " applied.";
+
+            RefreshReceiptTotals();
+        }
+
+        private void btnRemoveCoupon_Click(object sender, EventArgs e)
+        {
+            ClearCoupon();
+            RefreshReceiptTotals();
+        }
+
         private void btnRemoveItem_Click(object sender, EventArgs e)
         {
             if (_gridReceipt.CurrentRow == null)
@@ -594,6 +681,7 @@ namespace InventoryManagementSystem
                 return;
 
             _lblSubtotal.Width = panel.ClientSize.Width;
+            _lblDiscount.Width = panel.ClientSize.Width;
             _lblTax.Width = panel.ClientSize.Width;
             _lblTotal.Width = panel.ClientSize.Width;
             _btnCompleteOrder.Left = panel.ClientSize.Width - _btnCompleteOrder.Width;

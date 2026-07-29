@@ -76,10 +76,15 @@ namespace InventoryDataAccessLayer
 
         public static bool CompleteOrder(DataTable orderItems, decimal taxRate, out int orderID, out string errorMessage)
         {
-            return CompleteOrder(orderItems, taxRate, null, null, null, out orderID, out errorMessage);
+            return CompleteOrder(orderItems, taxRate, null, null, null, 0, null, out orderID, out errorMessage);
         }
 
         public static bool CompleteOrder(DataTable orderItems, decimal taxRate, int? customerID, string paymentMethod, string paymentDetails, out int orderID, out string errorMessage)
+        {
+            return CompleteOrder(orderItems, taxRate, customerID, paymentMethod, paymentDetails, 0, null, out orderID, out errorMessage);
+        }
+
+        public static bool CompleteOrder(DataTable orderItems, decimal taxRate, int? customerID, string paymentMethod, string paymentDetails, decimal discountAmount, string couponCode, out int orderID, out string errorMessage)
         {
             orderID = -1;
             errorMessage = "";
@@ -124,17 +129,20 @@ namespace InventoryDataAccessLayer
                             subtotal += quantity * unitPrice;
                         }
 
-                        decimal taxAmount = Math.Round(subtotal * taxRate, 2);
-                        decimal totalAmount = subtotal + taxAmount;
+                        decimal discount = Math.Min(Math.Max(discountAmount, 0), subtotal);
+                        decimal taxAmount = Math.Round((subtotal - discount) * taxRate, 2);
+                        decimal totalAmount = subtotal - discount + taxAmount;
 
                         string orderQuery = @"
-                            INSERT INTO Orders (OrderDate, Subtotal, TaxAmount, TotalAmount, CustomerID, PaymentMethod, PaymentDetails)
-                            VALUES (GETDATE(), @Subtotal, @TaxAmount, @TotalAmount, @CustomerID, @PaymentMethod, @PaymentDetails);
+                            INSERT INTO Orders (OrderDate, Subtotal, DiscountAmount, CouponCode, TaxAmount, TotalAmount, CustomerID, PaymentMethod, PaymentDetails)
+                            VALUES (GETDATE(), @Subtotal, @DiscountAmount, @CouponCode, @TaxAmount, @TotalAmount, @CustomerID, @PaymentMethod, @PaymentDetails);
                             SELECT SCOPE_IDENTITY();";
 
                         using (SqlCommand orderCommand = new SqlCommand(orderQuery, connection, transaction))
                         {
                             orderCommand.Parameters.AddWithValue("@Subtotal", subtotal);
+                            orderCommand.Parameters.AddWithValue("@DiscountAmount", discount);
+                            orderCommand.Parameters.AddWithValue("@CouponCode", string.IsNullOrWhiteSpace(couponCode) ? (object)DBNull.Value : couponCode);
                             orderCommand.Parameters.AddWithValue("@TaxAmount", taxAmount);
                             orderCommand.Parameters.AddWithValue("@TotalAmount", totalAmount);
                             orderCommand.Parameters.AddWithValue("@CustomerID", customerID.HasValue ? (object)customerID.Value : DBNull.Value);
@@ -326,9 +334,21 @@ namespace InventoryDataAccessLayer
                         OrderID INT IDENTITY(1,1) PRIMARY KEY,
                         OrderDate DATETIME NOT NULL DEFAULT GETDATE(),
                         Subtotal DECIMAL(10,2) NOT NULL,
+                        DiscountAmount DECIMAL(10,2) NOT NULL DEFAULT 0,
+                        CouponCode NVARCHAR(50) NULL,
                         TaxAmount DECIMAL(10,2) NOT NULL,
                         TotalAmount DECIMAL(10,2) NOT NULL
                     );
+                END;
+
+                IF COL_LENGTH('Orders', 'DiscountAmount') IS NULL
+                BEGIN
+                    ALTER TABLE Orders ADD DiscountAmount DECIMAL(10,2) NOT NULL DEFAULT 0;
+                END;
+
+                IF COL_LENGTH('Orders', 'CouponCode') IS NULL
+                BEGIN
+                    ALTER TABLE Orders ADD CouponCode NVARCHAR(50) NULL;
                 END;
 
                 IF OBJECT_ID('OrderItems', 'U') IS NULL

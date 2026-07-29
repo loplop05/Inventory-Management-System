@@ -184,13 +184,17 @@ namespace InventoryManagementSystem
         /// </summary>
         public static void CreateHeaderPanel(Form form, string title, string iconGlyph = null)
         {
-            // Adjust form padding to accommodate header instead of using Dock
+            // Reserve room for the header so docked content starts below it. The header
+            // itself is anchored (not docked) so it always sits flush with the top of the
+            // form, no matter when it is created relative to the form content.
             form.Padding = new Padding(form.Padding.Left, 64, form.Padding.Right, form.Padding.Bottom);
 
             Panel header = new Panel
             {
-                Dock      = DockStyle.Top,
+                Location  = new Point(0, 0),
+                Width     = form.ClientSize.Width,
                 Height    = 64,
+                Anchor    = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
                 BackColor = HeaderColor   // fallback; gradient is painted below
             };
 
@@ -239,6 +243,7 @@ namespace InventoryManagementSystem
 
             header.Controls.Add(lblTitle);
             form.Controls.Add(header);
+            header.BringToFront();
         }
 
         // ════════════════════════════════════════════════════════════════════════
@@ -384,6 +389,16 @@ namespace InventoryManagementSystem
             textBox.BackColor = Color.FromArgb(254, 226, 226);  // Red 100
             textBox.ForeColor = DangerColor;
             errorProvider.SetError(textBox, message);
+        }
+
+        /// <summary>
+        /// Highlights any input control in red and sets an error provider message.
+        /// </summary>
+        public static void ShowInputError(Control control, ErrorProvider errorProvider, string message)
+        {
+            control.BackColor = Color.FromArgb(254, 226, 226);  // Red 100
+            control.ForeColor = DangerColor;
+            errorProvider.SetError(control, message);
         }
 
         /// <summary>
