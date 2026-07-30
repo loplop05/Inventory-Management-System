@@ -63,7 +63,7 @@ namespace InventoryManagementSystem
         public static ReportData GenerateReport(ReportType type, DateRange range, DateTime? customStart = null, DateTime? customEnd = null)
         {
             var (startDate, endDate) = GetDateRange(range, customStart, customEnd);
-            var report =new ReportData
+            var report = new ReportData
             {
                 Type = type,
                 Range = range,
@@ -80,7 +80,7 @@ namespace InventoryManagementSystem
                     case ReportType.WeeklySales:
                     case ReportType.MonthlySales:
                     case ReportType.YearlySales:
-                        report.Data = GenerateSalesReport(startDate, endDate, type);
+                        report.Data = GenerateSalesReport(startDate, endDate);
                         break;
 
                     case ReportType.CategoryPerformance:
@@ -158,12 +158,12 @@ namespace InventoryManagementSystem
 
                 case DateRange.ThisYear:
                     start = new DateTime(now.Year, 1, 1);
-                    end = new DateTime(now.Year, 12, 31);
+                    end = new DateTime(now.Year, 12, 31, 23, 59, 59);
                     break;
 
                 case DateRange.LastYear:
                     start = new DateTime(now.Year - 1, 1, 1);
-                    end = new DateTime(now.Year - 1, 12, 31);
+                    end = new DateTime(now.Year - 1, 12, 31, 23, 59, 59);
                     break;
 
                 case DateRange.Custom:
@@ -187,129 +187,39 @@ namespace InventoryManagementSystem
             return $"{rangeText} {typeText}";
         }
 
-        private static DataTable GenerateSalesReport(DateTime start, DateTime end, ReportType type)
+        private static DataTable GenerateSalesReport(DateTime start, DateTime end)
         {
-            // This would call the business layer to get sales data
-            // For now, return a sample structure
-            DataTable table = new DataTable();
-            table.Columns.Add("Date", typeof(DateTime));
-            table.Columns.Add("OrderCount", typeof(int));
-            table.Columns.Add("TotalSales", typeof(decimal));
-            table.Columns.Add("AverageOrderValue", typeof(decimal));
-
-            // Sample data - replace with actual business layer call
-            var data = clsReport.GetDailySales(start);
-            if (data != null && data.Rows.Count > 0)
-            {
-                var row = data.Rows[0];
-                table.Rows.Add(start, Convert.ToInt32(row["OrderCount"]), 
-                    Convert.ToDecimal(row["TotalSales"]), 
-                    Convert.ToDecimal(row["TotalSales"]) / Math.Max(1, Convert.ToInt32(row["OrderCount"])));
-            }
-
-            return table;
+            return clsReport.GetSalesByDateRange(start, end);
         }
 
         private static DataTable GenerateCategoryReport(DateTime start, DateTime end)
         {
-            DataTable table = new DataTable();
-            table.Columns.Add("Category", typeof(string));
-            table.Columns.Add("OrderCount", typeof(int));
-            table.Columns.Add("TotalSales", typeof(decimal));
-            table.Columns.Add("Percentage", typeof(decimal));
-
-            // Sample data
-            table.Rows.Add("Electronics", 45, 4500.00m, 35.0m);
-            table.Rows.Add("Clothing", 30, 3000.00m, 23.0m);
-            table.Rows.Add("Food", 25, 2500.00m, 19.0m);
-            table.Rows.Add("Other", 30, 3000.00m, 23.0m);
-
-            return table;
+            return clsReport.GetCategoryPerformance(start, end);
         }
 
         private static DataTable GenerateSupplierReport(DateTime start, DateTime end)
         {
-            DataTable table = new DataTable();
-            table.Columns.Add("Supplier", typeof(string));
-            table.Columns.Add("OrderCount", typeof(int));
-            table.Columns.Add("TotalSales", typeof(decimal));
-            table.Columns.Add("ProductCount", typeof(int));
-            table.Columns.Add("Rating", typeof(decimal));
-
-            // Sample data
-            table.Rows.Add("ABC Supplies", 50, 5000.00m, 15, 4.5m);
-            table.Rows.Add("XYZ Distributors", 40, 4000.00m, 12, 4.2m);
-            table.Rows.Add("Global Traders", 30, 3000.00m, 10, 4.0m);
-
-            return table;
+            return clsReport.GetSupplierPerformance(start, end);
         }
 
         private static DataTable GenerateProductReport(DateTime start, DateTime end)
         {
-            DataTable table = new DataTable();
-            table.Columns.Add("Product", typeof(string));
-            table.Columns.Add("Category", typeof(string));
-            table.Columns.Add("QuantitySold", typeof(int));
-            table.Columns.Add("Revenue", typeof(decimal));
-            table.Columns.Add("Profit", typeof(decimal));
-
-            // Sample data
-            table.Rows.Add("Laptop", "Electronics", 20, 20000.00m, 5000.00m);
-            table.Rows.Add("T-Shirt", "Clothing", 50, 2500.00m, 1000.00m);
-            table.Rows.Add("Coffee", "Food", 100, 1000.00m, 400.00m);
-
-            return table;
+            return clsReport.GetProductPerformance(start, end);
         }
 
         private static DataTable GenerateProfitMarginReport(DateTime start, DateTime end)
         {
-            DataTable table = new DataTable();
-            table.Columns.Add("Category", typeof(string));
-            table.Columns.Add("Revenue", typeof(decimal));
-            table.Columns.Add("Cost", typeof(decimal));
-            table.Columns.Add("Profit", typeof(decimal));
-            table.Columns.Add("Margin", typeof(decimal));
-
-            // Sample data
-            table.Rows.Add("Electronics", 4500.00m, 3000.00m, 1500.00m, 33.3m);
-            table.Rows.Add("Clothing", 3000.00m, 2000.00m, 1000.00m, 33.3m);
-            table.Rows.Add("Food", 2500.00m, 2000.00m, 500.00m, 20.0m);
-
-            return table;
+            return clsReport.GetProfitMargin(start, end);
         }
 
         private static DataTable GenerateCustomerReport(DateTime start, DateTime end)
         {
-            DataTable table = new DataTable();
-            table.Columns.Add("Customer", typeof(string));
-            table.Columns.Add("Phone", typeof(string));
-            table.Columns.Add("OrderCount", typeof(int));
-            table.Columns.Add("TotalSpent", typeof(decimal));
-            table.Columns.Add("LastOrderDate", typeof(DateTime));
-
-            // Sample data
-            table.Rows.Add("John Doe", "555-1234", 10, 1000.00m, DateTime.Now.AddDays(-5));
-            table.Rows.Add("Jane Smith", "555-5678", 8, 800.00m, DateTime.Now.AddDays(-10));
-            table.Rows.Add("Bob Johnson", "555-9012", 5, 500.00m, DateTime.Now.AddDays(-15));
-
-            return table;
+            return clsReport.GetCustomerAnalysis(start, end);
         }
 
         private static DataTable GenerateStockMovementReport(DateTime start, DateTime end)
         {
-            DataTable table = new DataTable();
-            table.Columns.Add("Product", typeof(string));
-            table.Columns.Add("OpeningStock", typeof(int));
-            table.Columns.Add("StockIn", typeof(int));
-            table.Columns.Add("StockOut", typeof(int));
-            table.Columns.Add("ClosingStock", typeof(int));
-
-            // Sample data
-            table.Rows.Add("Laptop", 50, 20, 30, 40);
-            table.Rows.Add("T-Shirt", 100, 50, 60, 90);
-            table.Rows.Add("Coffee", 200, 100, 150, 150);
-
-            return table;
+            return clsReport.GetStockMovement(start, end);
         }
 
         private static void CalculateSummary(ReportData report)
@@ -326,8 +236,10 @@ namespace InventoryManagementSystem
                     int totalOrders = 0;
                     foreach (DataRow row in report.Data.Rows)
                     {
-                        totalSales += Convert.ToDecimal(row["TotalSales"]);
-                        totalOrders += Convert.ToInt32(row["OrderCount"]);
+                        if (row.Table.Columns.Contains("TotalSales") && row["TotalSales"] != DBNull.Value)
+                            totalSales += Convert.ToDecimal(row["TotalSales"]);
+                        if (row.Table.Columns.Contains("OrderCount") && row["OrderCount"] != DBNull.Value)
+                            totalOrders += Convert.ToInt32(row["OrderCount"]);
                     }
                     report.Summary["TotalSales"] = totalSales;
                     report.Summary["TotalOrders"] = totalOrders;
@@ -338,10 +250,12 @@ namespace InventoryManagementSystem
                     decimal catTotal = 0;
                     foreach (DataRow row in report.Data.Rows)
                     {
-                        catTotal += Convert.ToDecimal(row["TotalSales"]);
+                        if (row.Table.Columns.Contains("TotalSales") && row["TotalSales"] != DBNull.Value)
+                            catTotal += Convert.ToDecimal(row["TotalSales"]);
                     }
                     report.Summary["TotalSales"] = catTotal;
-                    report.Summary["TopCategory"] = report.Data.Rows[0]["Category"];
+                    if (report.Data.Rows.Count > 0 && report.Data.Columns.Contains("Category"))
+                        report.Summary["TopCategory"] = report.Data.Rows[0]["Category"];
                     break;
 
                 case ReportType.ProfitMargin:
@@ -349,12 +263,50 @@ namespace InventoryManagementSystem
                     decimal totalProfit = 0;
                     foreach (DataRow row in report.Data.Rows)
                     {
-                        totalRevenue += Convert.ToDecimal(row["Revenue"]);
-                        totalProfit += Convert.ToDecimal(row["Profit"]);
+                        if (row.Table.Columns.Contains("Revenue") && row["Revenue"] != DBNull.Value)
+                            totalRevenue += Convert.ToDecimal(row["Revenue"]);
+                        if (row.Table.Columns.Contains("Profit") && row["Profit"] != DBNull.Value)
+                            totalProfit += Convert.ToDecimal(row["Profit"]);
                     }
                     report.Summary["TotalRevenue"] = totalRevenue;
                     report.Summary["TotalProfit"] = totalProfit;
                     report.Summary["AverageMargin"] = totalRevenue > 0 ? (totalProfit / totalRevenue) * 100 : 0;
+                    break;
+
+                case ReportType.ProductPerformance:
+                    decimal prodRevenue = 0;
+                    int prodQty = 0;
+                    foreach (DataRow row in report.Data.Rows)
+                    {
+                        if (row.Table.Columns.Contains("Revenue") && row["Revenue"] != DBNull.Value)
+                            prodRevenue += Convert.ToDecimal(row["Revenue"]);
+                        if (row.Table.Columns.Contains("QuantitySold") && row["QuantitySold"] != DBNull.Value)
+                            prodQty += Convert.ToInt32(row["QuantitySold"]);
+                    }
+                    report.Summary["TotalRevenue"] = prodRevenue;
+                    report.Summary["TotalQuantitySold"] = prodQty;
+                    break;
+
+                case ReportType.CustomerAnalysis:
+                    int totalCustomers = report.Data.Rows.Count;
+                    decimal customerSpent = 0;
+                    foreach (DataRow row in report.Data.Rows)
+                    {
+                        if (row.Table.Columns.Contains("TotalSpent") && row["TotalSpent"] != DBNull.Value)
+                            customerSpent += Convert.ToDecimal(row["TotalSpent"]);
+                    }
+                    report.Summary["TotalCustomers"] = totalCustomers;
+                    report.Summary["TotalRevenue"] = customerSpent;
+                    break;
+
+                case ReportType.StockMovement:
+                    int totalStockOut = 0;
+                    foreach (DataRow row in report.Data.Rows)
+                    {
+                        if (row.Table.Columns.Contains("StockOut") && row["StockOut"] != DBNull.Value)
+                            totalStockOut += Convert.ToInt32(row["StockOut"]);
+                    }
+                    report.Summary["TotalUnitsSold"] = totalStockOut;
                     break;
             }
         }

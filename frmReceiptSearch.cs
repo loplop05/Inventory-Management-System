@@ -51,6 +51,8 @@ namespace InventoryManagementSystem
             _btnExchange.Text = "Exchange";
             _btnExchange.Font = new Font(clsFormTheme.MainFontName, 10F);
 
+            clsSearchHelper.SetupAutoComplete(_txtOrderID, "ReceiptSearch");
+
             KeyDown += frmReceiptSearch_KeyDown;
         }
 
@@ -81,22 +83,42 @@ namespace InventoryManagementSystem
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(_txtOrderID.Text))
+            string input = _txtOrderID.Text.Trim();
+            if (string.IsNullOrWhiteSpace(input))
             {
-                MessageBox.Show("Please enter an Order ID.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Please enter an Order ID or Customer Phone Number.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 _txtOrderID.Focus();
                 return;
             }
 
-            int orderID;
-            if (!int.TryParse(_txtOrderID.Text.Trim(), out orderID))
+            clsSearchHelper.UpdateAutoComplete(_txtOrderID, "ReceiptSearch", input);
+
+            if (int.TryParse(input, out int orderID))
             {
-                MessageBox.Show("Invalid Order ID format.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                _txtOrderID.Focus();
-                return;
+                DataTable dt = clsCustomer.GetOrderDetails(orderID);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    LoadOrderDetails(orderID);
+                    return;
+                }
             }
 
-            LoadOrderDetails(orderID);
+            // Search by Phone
+            DataTable customerDt = clsCustomer.GetCustomerByPhone(input);
+            if (customerDt != null && customerDt.Rows.Count > 0)
+            {
+                int custID = Convert.ToInt32(customerDt.Rows[0]["CustomerID"]);
+                DataTable orders = clsCustomer.GetCustomerOrders(custID);
+                if (orders != null && orders.Rows.Count > 0)
+                {
+                    int latestOrderID = Convert.ToInt32(orders.Rows[0]["OrderID"]);
+                    LoadOrderDetails(latestOrderID);
+                    return;
+                }
+            }
+
+            MessageBox.Show("No matching order or customer found.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ClearDisplay();
         }
 
         private void LoadOrderDetails(int orderID)

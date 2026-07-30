@@ -40,6 +40,7 @@ namespace InventoryManagementSystem
             this.colNewUnitPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.lblPriceDifference = new System.Windows.Forms.Label();
             this.btnRemoveExchange = new System.Windows.Forms.Button();
+            this.btnConfirmExchange = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.panelOriginalOrder.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridOriginalItems)).BeginInit();
@@ -110,6 +111,7 @@ namespace InventoryManagementSystem
             // 
             // panelExchange
             // 
+            this.panelExchange.Controls.Add(this.btnConfirmExchange);
             this.panelExchange.Controls.Add(this.btnRemoveExchange);
             this.panelExchange.Controls.Add(this.label2);
             this.panelExchange.Controls.Add(this.cmbExchangeItem);
@@ -207,6 +209,16 @@ namespace InventoryManagementSystem
             this.btnRemoveExchange.Text = "Remove";
             this.btnRemoveExchange.UseVisualStyleBackColor = true;
             this.btnRemoveExchange.Click += new System.EventHandler(this.btnRemoveExchange_Click);
+            // 
+            // btnConfirmExchange
+            // 
+            this.btnConfirmExchange.Location = new System.Drawing.Point(680, 47);
+            this.btnConfirmExchange.Name = "btnConfirmExchange";
+            this.btnConfirmExchange.Size = new System.Drawing.Size(180, 34);
+            this.btnConfirmExchange.TabIndex = 9;
+            this.btnConfirmExchange.Text = "Confirm Exchange";
+            this.btnConfirmExchange.UseVisualStyleBackColor = true;
+            this.btnConfirmExchange.Click += new System.EventHandler(this.btnConfirmExchange_Click);
             // 
             // panelNewOrder
             // 
@@ -340,6 +352,7 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.DataGridViewTextBoxColumn colNewUnitPrice;
         private System.Windows.Forms.Label lblPriceDifference;
         private System.Windows.Forms.Button btnRemoveExchange;
+        private System.Windows.Forms.Button btnConfirmExchange;
         private System.Windows.Forms.Button btnClose;
     }
 }

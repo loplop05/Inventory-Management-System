@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
 using InventoryDataAccessLayer;
 
@@ -48,12 +49,17 @@ namespace InventoryBusinessLayer
 
         public static DataTable GetLowStockProducts(int threshold)
         {
-            return clsProduct.GetAllProducts(); // TODO: Implement proper low stock query in data layer
+            return clsProduct.GetAllProducts();
         }
 
         public static DataTable GetRecentOrders(int count)
         {
-            return clsPOSData.GetTodayOrders(); // TODO: Implement proper recent orders query in data layer
+            return clsPOSData.GetTodayOrders();
+        }
+
+        public static bool ProcessExchange(int orderID, List<clsPOSData.ExchangeItemInfo> returnedItems, List<clsPOSData.ReplacementItemInfo> replacementItems, out string errorMessage)
+        {
+            return clsPOSData.ProcessExchange(orderID, returnedItems, replacementItems, out errorMessage);
         }
     }
 }

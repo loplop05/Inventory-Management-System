@@ -45,6 +45,7 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyTextBoxStyle(txtExchangeReason);
             clsFormTheme.ApplyPrimaryButtonStyle(btnProcessExchange, clsFormTheme.Icons.Exchange);
             clsFormTheme.ApplyDangerButtonStyle(btnRemoveExchange, clsFormTheme.Icons.Delete);
+            clsFormTheme.ApplySuccessButtonStyle(btnConfirmExchange, clsFormTheme.Icons.Check);
             clsFormTheme.ApplySecondaryButtonStyle(btnClose, clsFormTheme.Icons.Exit);
             clsFormTheme.ApplyGridStyle(gridOriginalItems);
             clsFormTheme.ApplyGridStyle(gridNewItems);
@@ -54,6 +55,9 @@ namespace InventoryManagementSystem
 
             btnRemoveExchange.Text = "Remove";
             btnRemoveExchange.Font = new Font(clsFormTheme.MainFontName, 10F);
+
+            btnConfirmExchange.Text = "Confirm Exchange";
+            btnConfirmExchange.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
 
             btnClose.Text = "Close";
             btnClose.Font = new Font(clsFormTheme.MainFontName, 10F);
@@ -83,6 +87,7 @@ namespace InventoryManagementSystem
                     MessageBoxIcon.Warning
                 );
                 btnProcessExchange.Enabled = false;
+                btnConfirmExchange.Enabled = false;
             }
 
             lblOriginalOrderInfo.Text = $"Original Order #{_originalOrderID} - {orderDate:yyyy-MM-dd} - Total: {totalAmount:C2}";
@@ -201,22 +206,9 @@ namespace InventoryManagementSystem
             lblNewOrderInfo.Text = "Exchange Items";
 
             // Calculate price difference
-            decimal difference = _newTotal - _originalTotal;
-            if (difference > 0)
-            {
-                lblPriceDifference.Text = $"Additional payment required: {difference:C2}";
-                lblPriceDifference.ForeColor = Color.FromArgb(220, 53, 69);
-            }
-            else if (difference < 0)
-            {
-                lblPriceDifference.Text = $"Refund amount: {Math.Abs(difference):C2}";
-                lblPriceDifference.ForeColor = Color.FromArgb(40, 167, 69);
-            }
-            else
-            {
-                lblPriceDifference.Text = "No price difference";
-                lblPriceDifference.ForeColor = Color.FromArgb(44, 62, 80);
-            }
+            decimal refundAmount = _newTotal;
+            lblPriceDifference.Text = $"Refund / Credit amount: {refundAmount:C2}";
+            lblPriceDifference.ForeColor = Color.FromArgb(40, 167, 69);
         }
 
         private void btnRemoveExchange_Click(object sender, EventArgs e)
@@ -229,6 +221,39 @@ namespace InventoryManagementSystem
             {
                 _exchangeItems.RemoveAt(index);
                 UpdateExchangeDisplay();
+            }
+        }
+
+        private void btnConfirmExchange_Click(object sender, EventArgs e)
+        {
+            if (_exchangeItems.Count == 0)
+            {
+                MessageBox.Show("Please add at least one item to exchange before confirming.", "Exchange", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var returnedItems = _exchangeItems.Select(item => new InventoryDataAccessLayer.clsPOSData.ExchangeItemInfo
+            {
+                ProductID = item.ProductID,
+                ProductName = item.ProductName,
+                ReturnedQuantity = item.ExchangeQuantity,
+                UnitPrice = item.UnitPrice,
+                Reason = item.Reason
+            }).ToList();
+
+            string errorMessage;
+            bool success = clsPOS.ProcessExchange(_originalOrderID, returnedItems, null, out errorMessage);
+
+            if (success)
+            {
+                decimal refundAmount = _exchangeItems.Sum(i => i.ExchangeQuantity * i.UnitPrice);
+                MessageBox.Show($"Exchange processed successfully!\n\nTotal credit/refund: {refundAmount:C2}\nInventory stock has been restocked.", "Exchange Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Failed to process exchange: " + errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

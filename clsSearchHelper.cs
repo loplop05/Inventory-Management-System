@@ -2,16 +2,38 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace InventoryManagementSystem
 {
     /// <summary>
     /// Centralized search helper for advanced search functionality.
-    /// Provides filtering, saved searches, and search history.
+    /// Provides filtering, saved searches, and search history with proper RowFilter string escaping.
     /// </summary>
     public static class clsSearchHelper
     {
+        // ─── String Escaping for DataView.RowFilter ──────────────────────────────
+
+        /// <summary>
+        /// Escapes special characters for use inside DataView RowFilter LIKE clauses.
+        /// </summary>
+        public static string EscapeLikeValue(string input)
+        {
+            if (string.IsNullOrEmpty(input)) return "";
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in input)
+            {
+                if (c == '\'')
+                    sb.Append("''");
+                else if (c == '[' || c == ']' || c == '*' || c == '%')
+                    sb.Append("[").Append(c).Append("]");
+                else
+                    sb.Append(c);
+            }
+            return sb.ToString();
+        }
+
         // ─── Search Filter Types ────────────────────────────────────────────────
 
         public enum FilterType
@@ -81,15 +103,15 @@ namespace InventoryManagementSystem
         // ─── Advanced Filtering ────────────────────────────────────────────────
 
         /// <summary>
-        /// Applies multiple filters to a DataTable.
+        /// Applies multiple filters to a DataTable safely.
         /// Returns a filtered DataView.
         /// </summary>
         public static DataView ApplyFilters(DataTable table, List<SearchFilter> filters)
         {
             if (table == null || filters == null || filters.Count == 0)
-                return table.DefaultView;
+                return table != null ? table.DefaultView : new DataView();
 
-            var filterBuilder = new System.Text.StringBuilder();
+            var filterBuilder = new StringBuilder();
             var activeFilters = filters.Where(f => f.Enabled && !string.IsNullOrWhiteSpace(f.Value)).ToList();
 
             for (int i = 0; i < activeFilters.Count; i++)
@@ -107,7 +129,15 @@ namespace InventoryManagementSystem
             }
 
             var view = table.DefaultView;
-            view.RowFilter = filterBuilder.ToString();
+            try
+            {
+                view.RowFilter = filterBuilder.ToString();
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"RowFilter error: {ex.Message}");
+                view.RowFilter = "";
+            }
             return view;
         }
 
@@ -115,19 +145,20 @@ namespace InventoryManagementSystem
         {
             try
             {
+                string escapedVal = EscapeLikeValue(filter.Value);
                 switch (filter.Type)
                 {
                     case FilterType.Contains:
-                        return $"[{filter.ColumnName}] LIKE '%{filter.Value}%'";
+                        return $"[{filter.ColumnName}] LIKE '%{escapedVal}%'";
 
                     case FilterType.StartsWith:
-                        return $"[{filter.ColumnName}] LIKE '{filter.Value}%'";
+                        return $"[{filter.ColumnName}] LIKE '{escapedVal}%'";
 
                     case FilterType.EndsWith:
-                        return $"[{filter.ColumnName}] LIKE '%{filter.Value}'";
+                        return $"[{filter.ColumnName}] LIKE '%{escapedVal}'";
 
                     case FilterType.ExactMatch:
-                        return $"[{filter.ColumnName}] = '{filter.Value}'";
+                        return $"[{filter.ColumnName}] = '{escapedVal}'";
 
                     case FilterType.GreaterThan:
                         if (decimal.TryParse(filter.Value, out decimal gtValue))
@@ -160,23 +191,47 @@ namespace InventoryManagementSystem
 
         // ─── Quick Search ───────────────────────────────────────────────────────
 
-        
+        /// <summary>
+        /// Filters a DataTable across multiple string columns safely.
+        /// </summary>
         public static DataView QuickSearch(DataTable table, string searchTerm, params string[] columns)
         {
-            if (table == null || string.IsNullOrWhiteSpace(searchTerm) || columns == null || columns.Length == 0)
+            if (table == null)
+                return new DataView();
+
+            if (string.IsNullOrWhiteSpace(searchTerm) || columns == null || columns.Length == 0)
                 return table.DefaultView;
 
+            string escapedTerm = EscapeLikeValue(searchTerm.Trim());
             var conditions = new List<string>();
+
             foreach (var column in columns)
             {
                 if (table.Columns.Contains(column))
                 {
-                    conditions.Add($"[{column}] LIKE '%{searchTerm}%'");
+                    // If column is integer/numeric, cast or use Convert if possible, otherwise string LIKE
+                    Type colType = table.Columns[column].DataType;
+                    if (colType == typeof(int) || colType == typeof(long) || colType == typeof(decimal) || colType == typeof(double))
+                    {
+                        conditions.Add($"Convert([{column}], 'System.String') LIKE '%{escapedTerm}%'");
+                    }
+                    else
+                    {
+                        conditions.Add($"[{column}] LIKE '%{escapedTerm}%'");
+                    }
                 }
             }
 
             var view = table.DefaultView;
-            view.RowFilter = string.Join(" OR ", conditions);
+            try
+            {
+                view.RowFilter = conditions.Count > 0 ? string.Join(" OR ", conditions) : "";
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"QuickSearch RowFilter error: {ex.Message}");
+                view.RowFilter = "";
+            }
             return view;
         }
 
@@ -203,12 +258,7 @@ namespace InventoryManagementSystem
         /// <summary>Gets all saved search names.</summary>
         public static List<string> GetSavedSearchNames()
         {
-            var names = new List<string>();
-            foreach (var key in _savedSearches.Keys)
-            {
-                names.Add(key);
-            }
-            return names;
+            return new List<string>(_savedSearches.Keys);
         }
 
         /// <summary>Deletes a saved search.</summary>
@@ -241,7 +291,7 @@ namespace InventoryManagementSystem
         /// </summary>
         public static void UpdateAutoComplete(TextBox textBox, string context, string searchTerm)
         {
-            if (textBox == null) return;
+            if (textBox == null || string.IsNullOrWhiteSpace(searchTerm)) return;
 
             AddToHistory(context, searchTerm);
             SetupAutoComplete(textBox, context);

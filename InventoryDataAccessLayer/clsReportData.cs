@@ -34,7 +34,10 @@ namespace InventoryDataAccessLayer
                             if (reader.HasRows) dt.Load(reader);
                         }
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in GetStockValuationReport: {ex.Message}");
+                    }
                 }
             }
 
@@ -48,7 +51,7 @@ namespace InventoryDataAccessLayer
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
                 string query = @"SELECT COUNT(DISTINCT O.OrderID) AS OrderCount,
-                                        SUM(O.Subtotal) AS TotalSales
+                                        ISNULL(SUM(O.TotalAmount), 0) AS TotalSales
                                  FROM Orders O
                                  WHERE CAST(O.OrderDate AS DATE) = CAST(@Date AS DATE)";
 
@@ -63,7 +66,47 @@ namespace InventoryDataAccessLayer
                             if (reader.HasRows) dt.Load(reader);
                         }
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in GetDailySales: {ex.Message}");
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetSalesByDateRange(DateTime start, DateTime end)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT CAST(O.OrderDate AS DATE) AS Date,
+                                        COUNT(DISTINCT O.OrderID) AS OrderCount,
+                                        ISNULL(SUM(O.TotalAmount), 0) AS TotalSales,
+                                        ISNULL(AVG(O.TotalAmount), 0) AS AverageOrderValue
+                                 FROM Orders O
+                                 WHERE O.OrderDate >= @Start AND O.OrderDate <= @End
+                                 GROUP BY CAST(O.OrderDate AS DATE)
+                                 ORDER BY Date ASC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Start", start);
+                    command.Parameters.AddWithValue("@End", end);
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows) dt.Load(reader);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in GetSalesByDateRange: {ex.Message}");
+                    }
                 }
             }
 
@@ -98,7 +141,245 @@ namespace InventoryDataAccessLayer
                             if (reader.HasRows) dt.Load(reader);
                         }
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in GetTopProducts: {ex.Message}");
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetCategoryPerformance(DateTime start, DateTime end)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT C.CategoryName AS Category,
+                                        COUNT(DISTINCT OI.OrderID) AS OrderCount,
+                                        ISNULL(SUM(OI.Subtotal), 0) AS TotalSales
+                                 FROM OrderItems OI
+                                 INNER JOIN Products P ON OI.ProductID = P.ProductID
+                                 INNER JOIN Categories C ON P.CategoryID = C.CategoryID
+                                 INNER JOIN Orders O ON OI.OrderID = O.OrderID
+                                 WHERE O.OrderDate >= @Start AND O.OrderDate <= @End
+                                 GROUP BY C.CategoryName
+                                 ORDER BY TotalSales DESC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Start", start);
+                    command.Parameters.AddWithValue("@End", end);
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows) dt.Load(reader);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in GetCategoryPerformance: {ex.Message}");
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetSupplierPerformance(DateTime start, DateTime end)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT S.SupplierName AS Supplier,
+                                        COUNT(DISTINCT OI.OrderID) AS OrderCount,
+                                        ISNULL(SUM(OI.Subtotal), 0) AS TotalSales,
+                                        COUNT(DISTINCT P.ProductID) AS ProductCount
+                                 FROM OrderItems OI
+                                 INNER JOIN Products P ON OI.ProductID = P.ProductID
+                                 INNER JOIN Suppliers S ON P.SupplierID = S.SupplierID
+                                 INNER JOIN Orders O ON OI.OrderID = O.OrderID
+                                 WHERE O.OrderDate >= @Start AND O.OrderDate <= @End
+                                 GROUP BY S.SupplierName
+                                 ORDER BY TotalSales DESC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Start", start);
+                    command.Parameters.AddWithValue("@End", end);
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows) dt.Load(reader);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in GetSupplierPerformance: {ex.Message}");
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetProductPerformance(DateTime start, DateTime end)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT P.ProductName AS Product,
+                                        C.CategoryName AS Category,
+                                        ISNULL(SUM(OI.Quantity), 0) AS QuantitySold,
+                                        ISNULL(SUM(OI.Subtotal), 0) AS Revenue
+                                 FROM OrderItems OI
+                                 INNER JOIN Products P ON OI.ProductID = P.ProductID
+                                 INNER JOIN Categories C ON P.CategoryID = C.CategoryID
+                                 INNER JOIN Orders O ON OI.OrderID = O.OrderID
+                                 WHERE O.OrderDate >= @Start AND O.OrderDate <= @End
+                                 GROUP BY P.ProductName, C.CategoryName
+                                 ORDER BY Revenue DESC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Start", start);
+                    command.Parameters.AddWithValue("@End", end);
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows) dt.Load(reader);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in GetProductPerformance: {ex.Message}");
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetProfitMargin(DateTime start, DateTime end)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT C.CategoryName AS Category,
+                                        ISNULL(SUM(OI.Subtotal), 0) AS Revenue,
+                                        ISNULL(SUM(OI.Quantity * (P.Price * 0.7)), 0) AS Cost,
+                                        ISNULL(SUM(OI.Subtotal - (OI.Quantity * (P.Price * 0.7))), 0) AS Profit
+                                 FROM OrderItems OI
+                                 INNER JOIN Products P ON OI.ProductID = P.ProductID
+                                 INNER JOIN Categories C ON P.CategoryID = C.CategoryID
+                                 INNER JOIN Orders O ON OI.OrderID = O.OrderID
+                                 WHERE O.OrderDate >= @Start AND O.OrderDate <= @End
+                                 GROUP BY C.CategoryName
+                                 ORDER BY Revenue DESC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Start", start);
+                    command.Parameters.AddWithValue("@End", end);
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows) dt.Load(reader);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in GetProfitMargin: {ex.Message}");
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetCustomerAnalysis(DateTime start, DateTime end)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT ISNULL(C.CustomerName, 'Walk-in Customer') AS Customer,
+                                        ISNULL(C.PhoneNumber, 'N/A') AS Phone,
+                                        COUNT(DISTINCT O.OrderID) AS OrderCount,
+                                        ISNULL(SUM(O.TotalAmount), 0) AS TotalSpent,
+                                        MAX(O.OrderDate) AS LastOrderDate
+                                 FROM Orders O
+                                 LEFT JOIN Customers C ON O.CustomerID = C.CustomerID
+                                 WHERE O.OrderDate >= @Start AND O.OrderDate <= @End
+                                 GROUP BY ISNULL(C.CustomerName, 'Walk-in Customer'), ISNULL(C.PhoneNumber, 'N/A')
+                                 ORDER BY TotalSpent DESC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Start", start);
+                    command.Parameters.AddWithValue("@End", end);
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows) dt.Load(reader);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in GetCustomerAnalysis: {ex.Message}");
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetStockMovement(DateTime start, DateTime end)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT P.ProductName AS Product,
+                                        P.Quantity AS CurrentStock,
+                                        ISNULL(SUM(OI.Quantity), 0) AS StockOut
+                                 FROM Products P
+                                 LEFT JOIN OrderItems OI ON P.ProductID = OI.ProductID
+                                 LEFT JOIN Orders O ON OI.OrderID = O.OrderID AND O.OrderDate >= @Start AND O.OrderDate <= @End
+                                 GROUP BY P.ProductName, P.Quantity
+                                 ORDER BY StockOut DESC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Start", start);
+                    command.Parameters.AddWithValue("@End", end);
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows) dt.Load(reader);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in GetStockMovement: {ex.Message}");
+                    }
                 }
             }
 

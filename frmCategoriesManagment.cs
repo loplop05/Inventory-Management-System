@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -66,6 +66,8 @@ namespace InventoryManagementSystem
             _toolTip.SetToolTip(_txtSearch, "Search by category ID or name.");
             _toolTip.SetToolTip(_btnRefresh, "Refresh the category list (F5).");
 
+            clsSearchHelper.SetupAutoComplete(_txtSearch, "CategoriesSearch");
+
             _lblEmptyState.Visible = false;
             KeyDown += frmCategoriesManagment_KeyDown;
         }
@@ -123,23 +125,12 @@ namespace InventoryManagementSystem
 
         private DataTable GetFilteredCategories()
         {
-            DataTable filteredTable = _categoriesTable.Clone();
             string searchText = _txtSearch.Text.Trim();
+            if (string.IsNullOrWhiteSpace(searchText))
+                return _categoriesTable;
 
-            foreach (DataRow row in _categoriesTable.Rows)
-            {
-                string categoryID = row["CategoryID"].ToString();
-                string categoryName = row["CategoryName"].ToString();
-
-                if (string.IsNullOrWhiteSpace(searchText) ||
-                    categoryID.Contains(searchText) ||
-                    categoryName.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    filteredTable.ImportRow(row);
-                }
-            }
-
-            return filteredTable;
+            DataView view = clsSearchHelper.QuickSearch(_categoriesTable, searchText, "CategoryID", "CategoryName");
+            return view.ToTable();
         }
 
         private void DisplayCurrentPage()

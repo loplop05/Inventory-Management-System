@@ -60,6 +60,8 @@ namespace InventoryManagementSystem
             _toolTip.SetToolTip(_txtSearch, "Search by supplier ID, name, phone, or email.");
             _toolTip.SetToolTip(_btnRefresh, "Refresh the supplier list (F5).");
 
+            clsSearchHelper.SetupAutoComplete(_txtSearch, "SuppliersSearch");
+
             _lblEmptyState.Visible = false;
             KeyDown += frmSuppliersManagment_KeyDown;
         }
@@ -117,27 +119,12 @@ namespace InventoryManagementSystem
 
         private DataTable GetFilteredSuppliers()
         {
-            DataTable filteredTable = _suppliersTable.Clone();
             string searchText = _txtSearch.Text.Trim();
+            if (string.IsNullOrWhiteSpace(searchText))
+                return _suppliersTable;
 
-            foreach (DataRow row in _suppliersTable.Rows)
-            {
-                string supplierID = row["SupplierID"].ToString();
-                string supplierName = row["SupplierName"].ToString();
-                string phone = row["Phone"].ToString();
-                string email = row["Email"].ToString();
-
-                if (string.IsNullOrWhiteSpace(searchText) ||
-                    supplierID.Contains(searchText) ||
-                    supplierName.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    phone.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    email.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    filteredTable.ImportRow(row);
-                }
-            }
-
-            return filteredTable;
+            DataView view = clsSearchHelper.QuickSearch(_suppliersTable, searchText, "SupplierID", "SupplierName", "Phone", "Email");
+            return view.ToTable();
         }
 
         private void DisplayCurrentPage()

@@ -65,6 +65,8 @@ namespace InventoryManagementSystem
             _toolTip.SetToolTip(_btnRefresh, "Refresh the product list (F5).");
             _toolTip.SetToolTip(btnStockValuationReport, "Open the stock valuation report (Ctrl+R).");
 
+            clsSearchHelper.SetupAutoComplete(_txtSearch, "ProductsSearch");
+
             _lblEmptyState.Visible = false;
             KeyDown += frmProductsManagment_KeyDown;
         }
@@ -119,29 +121,12 @@ namespace InventoryManagementSystem
 
         private DataTable GetFilteredProducts()
         {
-            DataTable filteredTable = _productsTable.Clone();
             string searchText = _txtSearch.Text.Trim();
+            if (string.IsNullOrWhiteSpace(searchText))
+                return _productsTable;
 
-            foreach (DataRow row in _productsTable.Rows)
-            {
-                string productID = row["ProductID"].ToString();
-                string productName = row["ProductName"].ToString();
-                string barcode = row["Barcode"].ToString();
-                string categoryName = row["CategoryName"].ToString();
-                string supplierName = row["SupplierName"].ToString();
-
-                if (string.IsNullOrWhiteSpace(searchText) ||
-                    productID.Contains(searchText) ||
-                    productName.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    barcode.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    categoryName.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
-                    supplierName.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
-                {
-                    filteredTable.ImportRow(row);
-                }
-            }
-
-            return filteredTable;
+            DataView view = clsSearchHelper.QuickSearch(_productsTable, searchText, "ProductID", "ProductName", "Barcode", "CategoryName", "SupplierName");
+            return view.ToTable();
         }
 
         private void DisplayCurrentPage()

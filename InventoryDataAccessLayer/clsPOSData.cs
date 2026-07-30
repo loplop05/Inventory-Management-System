@@ -631,5 +631,99 @@ namespace InventoryDataAccessLayer
                 return result == null ? 0 : Convert.ToInt32(result);
             }
         }
+
+        public class ExchangeItemInfo
+        {
+            public int ProductID { get; set; }
+            public string ProductName { get; set; }
+            public int ReturnedQuantity { get; set; }
+            public decimal UnitPrice { get; set; }
+            public string Reason { get; set; }
+        }
+
+        public class ReplacementItemInfo
+        {
+            public int ProductID { get; set; }
+            public string ProductName { get; set; }
+            public int Quantity { get; set; }
+            public decimal UnitPrice { get; set; }
+        }
+
+        public static bool ProcessExchange(int orderID, System.Collections.Generic.List<ExchangeItemInfo> returnedItems, System.Collections.Generic.List<ReplacementItemInfo> replacementItems, out string errorMessage)
+        {
+            errorMessage = "";
+
+            if ((returnedItems == null || returnedItems.Count == 0) && (replacementItems == null || replacementItems.Count == 0))
+            {
+                errorMessage = "No items selected for exchange.";
+                return false;
+            }
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    using (SqlTransaction transaction = connection.BeginTransaction())
+                    {
+                        // 1. Restock returned items
+                        if (returnedItems != null)
+                        {
+                            foreach (var item in returnedItems)
+                            {
+                                string queryRestock = @"UPDATE Products SET Quantity = Quantity + @Qty WHERE ProductID = @ProductID;";
+                                using (SqlCommand cmd = new SqlCommand(queryRestock, connection, transaction))
+                                {
+                                    cmd.Parameters.AddWithValue("@Qty", item.ReturnedQuantity);
+                                    cmd.Parameters.AddWithValue("@ProductID", item.ProductID);
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                        }
+
+                        // 2. Deduct replacement items stock
+                        if (replacementItems != null)
+                        {
+                            foreach (var rep in replacementItems)
+                            {
+                                int stock = GetCurrentStock(connection, transaction, rep.ProductID);
+                                if (stock < rep.Quantity)
+                                {
+                                    errorMessage = $"Insufficient stock for replacement product {rep.ProductName}. Available: {stock}";
+                                    transaction.Rollback();
+                                    return false;
+                                }
+
+                                string queryDeduct = @"UPDATE Products SET Quantity = Quantity - @Qty WHERE ProductID = @ProductID;";
+                                using (SqlCommand cmd = new SqlCommand(queryDeduct, connection, transaction))
+                                {
+                                    cmd.Parameters.AddWithValue("@Qty", rep.Quantity);
+                                    cmd.Parameters.AddWithValue("@ProductID", rep.ProductID);
+                                    cmd.ExecuteNonQuery();
+                                }
+                            }
+                        }
+
+                        // 3. Log exchange note on Order
+                        string exchangeNote = $"[Exchanged on {DateTime.Now:yyyy-MM-dd HH:mm}]";
+                        string queryUpdateOrder = @"UPDATE Orders SET PaymentDetails = ISNULL(PaymentDetails + '; ', '') + @Note WHERE OrderID = @OrderID;";
+                        using (SqlCommand cmdOrder = new SqlCommand(queryUpdateOrder, connection, transaction))
+                        {
+                            cmdOrder.Parameters.AddWithValue("@Note", exchangeNote);
+                            cmdOrder.Parameters.AddWithValue("@OrderID", orderID);
+                            cmdOrder.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = "Database error during exchange: " + ex.Message;
+                    return false;
+                }
+            }
+        }
     }
 }
