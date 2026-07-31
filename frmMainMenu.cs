@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -125,6 +125,16 @@ namespace InventoryManagementSystem
             btnDailyReport.TextAlign = ContentAlignment.MiddleCenter;
             _toolTip.SetToolTip(btnDailyReport, "View today's sales report");
 
+            // ── Audit Logs button ──────────────────────────────────────────────
+            btnAuditLogs.Text = "Audit Logs";
+            btnAuditLogs.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            btnAuditLogs.BackColor = Color.FromArgb(79, 70, 229); // Indigo 600
+            btnAuditLogs.ForeColor = Color.White;
+            btnAuditLogs.FlatStyle = FlatStyle.Flat;
+            btnAuditLogs.FlatAppearance.BorderSize = 0;
+            btnAuditLogs.TextAlign = ContentAlignment.MiddleCenter;
+            _toolTip.SetToolTip(btnAuditLogs, "View system audit logs and activity trail");
+
             // ── Help button ────────────────────────────────────────────────────
             btnHelp.Text = "Help";
             btnHelp.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
@@ -136,6 +146,27 @@ namespace InventoryManagementSystem
             _toolTip.SetToolTip(btnHelp, "View help and keyboard shortcuts (F1)");
 
             KeyDown += frmMainMenu_KeyDown;
+            clsLanguageManager.LanguageChanged += (s, e) => ApplyLocalization();
+
+            clsAuditLog.LogAction("Application Started", "Inventory System main menu loaded", "System");
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            btnCategories.Text = clsLanguageManager.GetString("Categories");
+            btnSuppliers.Text = clsLanguageManager.GetString("Suppliers");
+            btnProducts.Text = clsLanguageManager.GetString("Products");
+            btnReceiptSearch.Text = clsLanguageManager.GetString("Receipt Search");
+            btnPrintReceipt.Text = clsLanguageManager.GetString("Print Receipt");
+            btnDashboard.Text = clsLanguageManager.GetString("Dashboard");
+            btnAdvancedReports.Text = clsLanguageManager.GetString("Advanced Reports");
+            btnLowStockAlerts.Text = clsLanguageManager.GetString("Low Stock Alerts");
+            btnCouponManager.Text = clsLanguageManager.GetString("Coupon Manager");
+            btnPOS.Text = clsLanguageManager.GetString("Point of Sale");
+            btnDailyReport.Text = clsLanguageManager.GetString("Daily Report");
+            btnAuditLogs.Text = clsLanguageManager.GetString("Audit Logs");
+            btnHelp.Text = clsLanguageManager.GetString("Help");
         }
 
         // ── Event handlers ─────────────────────────────────────────────────────
@@ -203,6 +234,12 @@ namespace InventoryManagementSystem
             clsDiscountSystem.ShowCouponManager();
         }
 
+        private void btnAuditLogs_Click(object sender, EventArgs e)
+        {
+            frmAuditLog frm = new frmAuditLog();
+            frm.ShowDialog();
+        }
+
         private void btnHelp_Click(object sender, EventArgs e)
         {
             clsHelpSystem.ShowHelpForm(clsHelpSystem.Topics.KeyboardShortcuts);
@@ -214,7 +251,10 @@ namespace InventoryManagementSystem
                 Close();
         }
 
-        private void frmMainMenu_Load(object sender, EventArgs e) { }
+        private void frmMainMenu_Load(object sender, EventArgs e)
+        {
+            ApplyLocalization();
+        }
 
         private void _buttonsPanel_Paint(object sender, PaintEventArgs e)
         {

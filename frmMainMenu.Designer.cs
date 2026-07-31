@@ -42,6 +42,7 @@ namespace InventoryManagementSystem
             this.btnPOS = new System.Windows.Forms.Button();
             this.btnDailyReport = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
+            this.btnAuditLogs = new System.Windows.Forms.Button();
             this._mainLayoutPanel.SuspendLayout();
             this._buttonsPanel.SuspendLayout();
             this.SuspendLayout();
@@ -76,7 +77,7 @@ namespace InventoryManagementSystem
             this._buttonsPanel.Controls.Add(this.btnCouponManager, 2, 2);
             this._buttonsPanel.Controls.Add(this.btnPOS, 0, 3);
             this._buttonsPanel.Controls.Add(this.btnDailyReport, 1, 3);
-            this._buttonsPanel.Controls.Add(this.btnHelp, 2, 3);
+            this._buttonsPanel.Controls.Add(this.btnAuditLogs, 2, 3);
             this._buttonsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._buttonsPanel.Location = new System.Drawing.Point(3, 3);
             this._buttonsPanel.Name = "_buttonsPanel";
@@ -222,17 +223,17 @@ namespace InventoryManagementSystem
             this.btnDailyReport.UseVisualStyleBackColor = true;
             this.btnDailyReport.Click += new System.EventHandler(this.btnDailyReport_Click);
             // 
-            // btnHelp
+            // btnAuditLogs
             // 
-            this.btnHelp.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnHelp.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.btnHelp.Location = new System.Drawing.Point(825, 597);
-            this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Size = new System.Drawing.Size(386, 271);
-            this.btnHelp.TabIndex = 11;
-            this.btnHelp.Text = "Help";
-            this.btnHelp.UseVisualStyleBackColor = true;
-            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            this.btnAuditLogs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnAuditLogs.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnAuditLogs.Location = new System.Drawing.Point(825, 597);
+            this.btnAuditLogs.Name = "btnAuditLogs";
+            this.btnAuditLogs.Size = new System.Drawing.Size(386, 271);
+            this.btnAuditLogs.TabIndex = 11;
+            this.btnAuditLogs.Text = "Audit Logs";
+            this.btnAuditLogs.UseVisualStyleBackColor = true;
+            this.btnAuditLogs.Click += new System.EventHandler(this.btnAuditLogs_Click);
             // 
             // frmMainMenu
             // 
@@ -266,5 +267,6 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button btnPOS;
         private System.Windows.Forms.Button btnDailyReport;
         private System.Windows.Forms.Button btnHelp;
+        private System.Windows.Forms.Button btnAuditLogs;
     }
 }

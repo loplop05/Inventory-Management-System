@@ -234,14 +234,46 @@ namespace InventoryManagementSystem
 
             Label lblTitle = new Label
             {
-                Text      = title,
+                Text      = clsLanguageManager.GetString(title),
                 ForeColor = Color.White,
                 Font      = new Font(MainFontName, 16F, FontStyle.Bold),
                 Location  = new Point(textLeft, 18),
                 AutoSize  = true
             };
 
+            // Language Toggle Switcher Button
+            Button btnLangToggle = new Button
+            {
+                Text = (clsLanguageManager.CurrentLanguage == AppLanguage.Arabic) ? "🌐 العربية (AR)" : "🌐 English (EN)",
+                Font = new Font(MainFontName, 9F, FontStyle.Bold),
+                ForeColor = Color.White,
+                BackColor = Color.FromArgb(59, 130, 246),
+                FlatStyle = FlatStyle.Flat,
+                Size = new Size(130, 32),
+                Location = new Point(form.ClientSize.Width - 146, 16),
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                Cursor = Cursors.Hand
+            };
+            btnLangToggle.FlatAppearance.BorderSize = 0;
+            btnLangToggle.Click += (s, e) =>
+            {
+                AppLanguage lang = clsLanguageManager.ToggleLanguage();
+                btnLangToggle.Text = (lang == AppLanguage.Arabic) ? "🌐 العربية (AR)" : "🌐 English (EN)";
+                lblTitle.Text = clsLanguageManager.GetString(title);
+                clsLanguageManager.ApplyLanguage(form);
+            };
+
+            clsLanguageManager.LanguageChanged += (s, e) =>
+            {
+                if (!form.IsDisposed)
+                {
+                    btnLangToggle.Text = (clsLanguageManager.CurrentLanguage == AppLanguage.Arabic) ? "🌐 العربية (AR)" : "🌐 English (EN)";
+                    lblTitle.Text = clsLanguageManager.GetString(title);
+                }
+            };
+
             header.Controls.Add(lblTitle);
+            header.Controls.Add(btnLangToggle);
             form.Controls.Add(header);
             header.BringToFront();
         }

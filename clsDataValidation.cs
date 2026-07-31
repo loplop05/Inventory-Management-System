@@ -36,18 +36,18 @@ namespace InventoryManagementSystem
             return value != null && value.Length >= minLength && value.Length <= maxLength;
         }
 
-        /// <summary>Validates that a string contains only letters and spaces.</summary>
+        /// <summary>Validates that a string contains only letters and spaces (supports English & Arabic).</summary>
         public static bool IsAlphaOnly(string value)
         {
             if (string.IsNullOrWhiteSpace(value)) return false;
-            return Regex.IsMatch(value, @"^[a-zA-Z\s]+$");
+            return Regex.IsMatch(value, @"^[\p{L}\s]+$");
         }
 
-        /// <summary>Validates that a string contains only alphanumeric characters.</summary>
+        /// <summary>Validates that a string contains only alphanumeric characters (supports English & Arabic).</summary>
         public static bool IsAlphanumeric(string value)
         {
             if (string.IsNullOrWhiteSpace(value)) return false;
-            return Regex.IsMatch(value, @"^[a-zA-Z0-9\s]+$");
+            return Regex.IsMatch(value, @"^[\p{L}\p{Nd}\s]+$");
         }
 
         /// <summary>Validates that a string is a valid email address.</summary>
@@ -69,7 +69,7 @@ namespace InventoryManagementSystem
         public static bool IsValidPhoneNumber(string value)
         {
             if (string.IsNullOrWhiteSpace(value)) return false;
-            return Regex.IsMatch(value, @"^[\d\s\-\(\)\+]+$");
+            return Regex.IsMatch(value, @"^[\d\s\-\(\)\+\p{Nd}]+$");
         }
 
         /// <summary>Validates that a string represents a positive number.</summary>
@@ -106,7 +106,7 @@ namespace InventoryManagementSystem
         public static bool IsDigitsOnly(string value)
         {
             if (string.IsNullOrWhiteSpace(value)) return false;
-            return Regex.IsMatch(value, @"^\d+$");
+            return Regex.IsMatch(value, @"^[\d\p{Nd}]+$");
         }
 
         /// <summary>Validates that a value is not greater than a maximum.</summary>
@@ -121,13 +121,20 @@ namespace InventoryManagementSystem
             return value >= min;
         }
 
+        /// <summary>Checks if string contains Arabic characters.</summary>
+        public static bool ContainsArabic(string value)
+        {
+            if (string.IsNullOrEmpty(value)) return false;
+            return Regex.IsMatch(value, @"[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]");
+        }
+
         // ─── Business-Specific Validation ───────────────────────────────────────
 
-        /// <summary>Validates product name (letters, numbers, spaces, common symbols).</summary>
+        /// <summary>Validates product name (letters, numbers, spaces, common symbols - Arabic & English supported).</summary>
         public static bool IsValidProductName(string value)
         {
             if (string.IsNullOrWhiteSpace(value)) return false;
-            return Regex.IsMatch(value, @"^[a-zA-Z0-9\s\-\.\,\(\)]+$");
+            return Regex.IsMatch(value, @"^[\p{L}\p{Nd}\s\-\.\,\(\)\/\\_]+$");
         }
 
         /// <summary>Validates barcode (alphanumeric, typically 8-13 digits).</summary>
@@ -137,18 +144,18 @@ namespace InventoryManagementSystem
             return Regex.IsMatch(value, @"^[a-zA-Z0-9]+$") && value.Length >= 8 && value.Length <= 13;
         }
 
-        /// <summary>Validates category name (letters, numbers, spaces).</summary>
+        /// <summary>Validates category name (letters, numbers, spaces - Arabic & English supported).</summary>
         public static bool IsValidCategoryName(string value)
         {
             if (string.IsNullOrWhiteSpace(value)) return false;
-            return Regex.IsMatch(value, @"^[a-zA-Z0-9\s]+$");
+            return Regex.IsMatch(value, @"^[\p{L}\p{Nd}\s\-\.]+$");
         }
 
-        /// <summary>Validates supplier name (letters, numbers, spaces, common symbols).</summary>
+        /// <summary>Validates supplier name (letters, numbers, spaces, common symbols - Arabic & English supported).</summary>
         public static bool IsValidSupplierName(string value)
         {
             if (string.IsNullOrWhiteSpace(value)) return false;
-            return Regex.IsMatch(value, @"^[a-zA-Z0-9\s\-\.\,\(\)]+$");
+            return Regex.IsMatch(value, @"^[\p{L}\p{Nd}\s\-\.\,\(\)\/\\_]+$");
         }
 
         // ─── UI Integration Helpers ─────────────────────────────────────────────

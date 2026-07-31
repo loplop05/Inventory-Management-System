@@ -72,6 +72,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -220,8 +221,18 @@
       <DependentUpon>frmPrintReceipt.cs</DependentUpon>
     </Compile>
     <Compile Include="clsFormTheme.cs" />
+    <Compile Include="clsNotify.cs" />
     <Compile Include="clsKeyboardShortcuts.cs" />
     <Compile Include="clsDataValidation.cs" />
+    <Compile Include="clsLanguageManager.cs" />
+    <Compile Include="clsAuditLog.cs" />
+    <Compile Include="clsSystemTests.cs" />
+    <Compile Include="frmAuditLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAuditLog.Designer.cs">
+      <DependentUpon>frmAuditLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="clsSearchHelper.cs" />
     <Compile Include="clsPrintHelper.cs" />
     <Compile Include="clsHelpSystem.cs" />
