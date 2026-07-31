@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Forms;
 using InventoryBusinessLayer;
+using InventoryManagementSystem;
 
 namespace InventoryManagementSystem
 {

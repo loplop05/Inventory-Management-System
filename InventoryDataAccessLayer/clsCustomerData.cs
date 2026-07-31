@@ -60,7 +60,7 @@ namespace InventoryDataAccessLayer
         {
             try
             {
-                using (SqlCommand command = new SqlCommand(@"
+                string sql = @"
                     IF COL_LENGTH('Customers', 'LoyaltyPoints') IS NULL
                         ALTER TABLE Customers ADD LoyaltyPoints INT DEFAULT 0;
                     
@@ -68,7 +68,9 @@ namespace InventoryDataAccessLayer
                         ALTER TABLE Customers ADD TotalSpent DECIMAL(10,2) DEFAULT 0;
                     
                     IF COL_LENGTH('Customers', 'Tier') IS NULL
-                        ALTER TABLE Customers ADD Tier NVARCHAR(20) DEFAULT 'Bronze';", connection)
+                        ALTER TABLE Customers ADD Tier NVARCHAR(20) DEFAULT 'Bronze';";
+                
+                using (SqlCommand command = new SqlCommand(sql, connection))
                 {
                     command.ExecuteNonQuery();
                 }
