@@ -90,6 +90,27 @@ namespace InventoryBusinessLayer
             return clsCustomerData.UpdateLastPurchaseDate(customerID, out errorMessage);
         }
 
+        public static bool UpdateCustomerLoyalty(int customerID, decimal purchaseAmount, out string errorMessage)
+        {
+            return clsCustomerData.UpdateCustomerLoyalty(customerID, purchaseAmount, out errorMessage);
+        }
+
+        public static bool RedeemLoyaltyPoints(int customerID, int pointsToRedeem, out string errorMessage)
+        {
+            return clsCustomerData.RedeemLoyaltyPoints(customerID, pointsToRedeem, out errorMessage);
+        }
+
+        public static decimal GetTierDiscount(string tier)
+        {
+            switch (tier)
+            {
+                case "Platinum": return 0.05m; // 5%
+                case "Gold": return 0.03m; // 3%
+                case "Silver": return 0.02m; // 2%
+                default: return 0m;
+            }
+        }
+
         public static DataTable GetCustomerOrders(int customerID)
         {
             return clsCustomerData.GetCustomerOrders(customerID);

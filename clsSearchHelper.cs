@@ -21,8 +21,10 @@ namespace InventoryManagementSystem
         public static string EscapeLikeValue(string input)
         {
             if (string.IsNullOrEmpty(input)) return "";
+            // Normalize Arabic characters for better search matching
+            string normalized = NormalizeArabic(input);
             StringBuilder sb = new StringBuilder();
-            foreach (char c in input)
+            foreach (char c in normalized)
             {
                 if (c == '\'')
                     sb.Append("''");
@@ -32,6 +34,23 @@ namespace InventoryManagementSystem
                     sb.Append(c);
             }
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Normalizes Arabic characters for consistent search (Alef forms, Ta Marbuta).
+        /// </summary>
+        private static string NormalizeArabic(string input)
+        {
+            if (string.IsNullOrEmpty(input)) return input;
+            // Normalize to form C for canonical composition
+            string normalized = input.Normalize(System.Text.NormalizationForm.FormC);
+            // Replace Alef variants with standard Alef
+            normalized = normalized.Replace('\u0623', '\u0627'); // Alef with Hamza above → Alef
+            normalized = normalized.Replace('\u0625', '\u0627'); // Alef with Hamza below → Alef
+            normalized = normalized.Replace('\u0622', '\u0627'); // Alef with Madda → Alef
+            // Replace Ta Marbuta with Ha
+            normalized = normalized.Replace('\u0629', '\u0647'); // Ta Marbuta → Ha
+            return normalized;
         }
 
         // ─── Search Filter Types ────────────────────────────────────────────────

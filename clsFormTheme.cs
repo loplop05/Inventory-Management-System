@@ -7,10 +7,59 @@ namespace InventoryManagementSystem
 {
     public static class clsFormTheme
     {
-        // ─── Modern Professional Palette ────────────────────────────────────────
+        // ─── Theme Mode ─────────────────────────────────────────────────────────
+        public static bool IsDarkMode { get; private set; } = false;
+
+        /// <summary>
+        /// Toggles between light and dark mode.
+        /// </summary>
+        public static void ToggleTheme()
+        {
+            IsDarkMode = !IsDarkMode;
+            SaveThemePreference();
+            ThemeChanged?.Invoke(null, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Sets the theme mode explicitly.
+        /// </summary>
+        public static void SetTheme(bool darkMode)
+        {
+            IsDarkMode = darkMode;
+            SaveThemePreference();
+            ThemeChanged?.Invoke(null, EventArgs.Empty);
+        }
+
+        public static event EventHandler ThemeChanged;
+
+        private static void SaveThemePreference()
+        {
+            // Save to user settings (simplified - use Properties.Settings in production)
+            Properties.Settings.Default.DarkMode = IsDarkMode;
+            Properties.Settings.Default.Save();
+        }
+
+        private static void LoadThemePreference()
+        {
+            try
+            {
+                IsDarkMode = Properties.Settings.Default.DarkMode;
+            }
+            catch
+            {
+                IsDarkMode = false;
+            }
+        }
+
+        static clsFormTheme()
+        {
+            LoadThemePreference();
+        }
+
+        // ─── Light Mode Palette ───────────────────────────────────────────────────
         // Background tones
-        public static readonly Color FormBackColor        = Color.FromArgb(245, 247, 250);  // Cool off-white
-        public static readonly Color FormBackColorAlt     = Color.FromArgb(235, 239, 245);  // Slightly deeper
+        public static readonly Color LightFormBackColor        = Color.FromArgb(245, 247, 250);  // Cool off-white
+        public static readonly Color LightFormBackColorAlt     = Color.FromArgb(235, 239, 245);  // Slightly deeper
 
         // Brand / accent
         public static readonly Color PrimaryColor         = Color.FromArgb(37,  99,  235);  // Vivid Royal Blue
@@ -30,18 +79,78 @@ namespace InventoryManagementSystem
         public static readonly Color InfoColor            = Color.FromArgb(6,   182, 212);  // Cyan 500
 
         // Surface / structural
-        public static readonly Color HeaderColor          = Color.FromArgb(15,  23,  42);   // Slate 900 (near-black)
-        public static readonly Color HeaderGradientEnd    = Color.FromArgb(30,  58,  138);  // Blue 900
-        public static readonly Color CardColor            = Color.White;
-        public static readonly Color CardBorderColor      = Color.FromArgb(226, 232, 240);  // Slate 200
-        public static readonly Color RowAltColor          = Color.FromArgb(248, 250, 252);  // Slate 50
-        public static readonly Color SelectionBackColor   = Color.FromArgb(219, 234, 254);  // Blue 100
-        public static readonly Color SelectionForeColor   = Color.FromArgb(30,  58,  138);  // Blue 900
+        public static readonly Color LightHeaderColor          = Color.FromArgb(15,  23,  42);   // Slate 900 (near-black)
+        public static readonly Color LightHeaderGradientEnd    = Color.FromArgb(30,  58,  138);  // Blue 900
+        public static readonly Color LightCardColor            = Color.White;
+        public static readonly Color LightCardBorderColor      = Color.FromArgb(226, 232, 240);  // Slate 200
+        public static readonly Color LightRowAltColor          = Color.FromArgb(248, 250, 252);  // Slate 50
+        public static readonly Color LightSelectionBackColor   = Color.FromArgb(219, 234, 254);  // Blue 100
+        public static readonly Color LightSelectionForeColor   = Color.FromArgb(30,  58,  138);  // Blue 900
 
         // Text
-        public static readonly Color TextPrimary          = Color.FromArgb(15,  23,  42);   // Slate 900
-        public static readonly Color TextSecondary        = Color.FromArgb(100, 116, 139);  // Slate 500
-        public static readonly Color TextMuted            = Color.FromArgb(148, 163, 184);  // Slate 400
+        public static readonly Color LightTextPrimary          = Color.FromArgb(15,  23,  42);   // Slate 900
+        public static readonly Color LightTextSecondary        = Color.FromArgb(100, 116, 139);  // Slate 500
+        public static readonly Color LightTextMuted            = Color.FromArgb(148, 163, 184);  // Slate 400
+
+        // ─── Dark Mode Palette ────────────────────────────────────────────────────
+        // Background tones
+        public static readonly Color DarkFormBackColor        = Color.FromArgb(30,  41,  59);   // Slate 900
+        public static readonly Color DarkFormBackColorAlt     = Color.FromArgb(51,  65,  85);   // Slate 700
+
+        // Brand / accent (same as light mode for consistency)
+        public static readonly Color DarkPrimaryColor         = Color.FromArgb(96,  165, 250);  // Lighter blue for dark mode
+        public static readonly Color DarkPrimaryHoverColor    = Color.FromArgb(59,  130,  246);  // Blue 500
+        public static readonly Color DarkPrimaryLightColor    = Color.FromArgb(37,  99,  235);  // Blue 600
+
+        // Secondary / neutral
+        public static readonly Color DarkSecondaryColor       = Color.FromArgb(148, 163, 184);  // Slate 400
+        public static readonly Color DarkSecondaryHoverColor  = Color.FromArgb(203, 213, 225);  // Slate 300
+
+        // Semantic (adjusted for dark mode)
+        public static readonly Color DarkSuccessColor         = Color.FromArgb(74,  222, 128);  // Emerald 400
+        public static readonly Color DarkSuccessHoverColor    = Color.FromArgb(52,  211, 153);  // Emerald 500
+        public static readonly Color DarkDangerColor          = Color.FromArgb(248, 113, 113);  // Red 400
+        public static readonly Color DarkDangerHoverColor     = Color.FromArgb(239, 68,  68);   // Red 500
+        public static readonly Color DarkWarningColor         = Color.FromArgb(251, 191, 36);  // Amber 400
+        public static readonly Color DarkInfoColor            = Color.FromArgb(34,  211, 238);  // Cyan 400
+
+        // Surface / structural
+        public static readonly Color DarkHeaderColor          = Color.FromArgb(15,  23,  42);   // Slate 950
+        public static readonly Color DarkHeaderGradientEnd    = Color.FromArgb(30,  58,  138);  // Blue 900
+        public static readonly Color DarkCardColor            = Color.FromArgb(51,  65,  85);   // Slate 700
+        public static readonly Color DarkCardBorderColor      = Color.FromArgb(71,  85,  105);  // Slate 600
+        public static readonly Color DarkRowAltColor          = Color.FromArgb(71,  85,  105);  // Slate 600
+        public static readonly Color DarkSelectionBackColor   = Color.FromArgb(37,  99,  235);  // Blue 600
+        public static readonly Color DarkSelectionForeColor   = Color.FromArgb(255, 255, 255);  // White
+
+        // Text
+        public static readonly Color DarkTextPrimary          = Color.FromArgb(248, 250, 252);  // Slate 50
+        public static readonly Color DarkTextSecondary        = Color.FromArgb(203, 213, 225);  // Slate 300
+        public static readonly Color DarkTextMuted            = Color.FromArgb(148, 163, 184);  // Slate 400
+
+        // ─── Current Theme Colors (computed based on mode) ─────────────────────────
+        public static Color FormBackColor => IsDarkMode ? DarkFormBackColor : LightFormBackColor;
+        public static Color FormBackColorAlt => IsDarkMode ? DarkFormBackColorAlt : LightFormBackColorAlt;
+        public static Color HeaderColor => IsDarkMode ? DarkHeaderColor : LightHeaderColor;
+        public static Color HeaderGradientEnd => IsDarkMode ? DarkHeaderGradientEnd : LightHeaderGradientEnd;
+        public static Color CardColor => IsDarkMode ? DarkCardColor : LightCardColor;
+        public static Color CardBorderColor => IsDarkMode ? DarkCardBorderColor : LightCardBorderColor;
+        public static Color RowAltColor => IsDarkMode ? DarkRowAltColor : LightRowAltColor;
+        public static Color SelectionBackColor => IsDarkMode ? DarkSelectionBackColor : LightSelectionBackColor;
+        public static Color SelectionForeColor => IsDarkMode ? DarkSelectionForeColor : LightSelectionForeColor;
+        public static Color TextPrimary => IsDarkMode ? DarkTextPrimary : LightTextPrimary;
+        public static Color TextSecondary => IsDarkMode ? DarkTextSecondary : LightTextSecondary;
+        public static Color TextMuted => IsDarkMode ? DarkTextMuted : LightTextMuted;
+        public static Color CurrentPrimaryColor => IsDarkMode ? DarkPrimaryColor : PrimaryColor;
+        public static Color CurrentPrimaryHoverColor => IsDarkMode ? DarkPrimaryHoverColor : PrimaryHoverColor;
+        public static Color CurrentSecondaryColor => IsDarkMode ? DarkSecondaryColor : SecondaryColor;
+        public static Color CurrentSecondaryHoverColor => IsDarkMode ? DarkSecondaryHoverColor : SecondaryHoverColor;
+        public static Color CurrentSuccessColor => IsDarkMode ? DarkSuccessColor : SuccessColor;
+        public static Color CurrentSuccessHoverColor => IsDarkMode ? DarkSuccessHoverColor : SuccessHoverColor;
+        public static Color CurrentDangerColor => IsDarkMode ? DarkDangerColor : DangerColor;
+        public static Color CurrentDangerHoverColor => IsDarkMode ? DarkDangerHoverColor : DangerHoverColor;
+        public static Color CurrentWarningColor => IsDarkMode ? DarkWarningColor : WarningColor;
+        public static Color CurrentInfoColor => IsDarkMode ? DarkInfoColor : InfoColor;
 
         // ─── Typography ─────────────────────────────────────────────────────────
         public static readonly string MainFontName  = "Segoe UI";
@@ -94,6 +203,11 @@ namespace InventoryManagementSystem
             public const string User        = "\uE77B";  // Contact
             public const string Exchange    = "\uE77C";  // Switch
             public const string Plus        = "\uE710";  // Add
+            public const string Share       = "\uE72D";  // Share
+            public const string Email       = "\uE715";  // Mail
+            public const string Copy        = "\uE8C8";  // Copy
+            public const string Moon        = "\uE708";  // Bulb (for dark mode)
+            public const string Sun         = "\uE706";  // Lightbulb (for light mode)
         }
 
         // ════════════════════════════════════════════════════════════════════════

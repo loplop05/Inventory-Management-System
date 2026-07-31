@@ -31,6 +31,9 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyTextBoxStyle(_txtOrderID);
             clsFormTheme.ApplyPrimaryButtonStyle(_btnSearch, clsFormTheme.Icons.Search);
             clsFormTheme.ApplySuccessButtonStyle(_btnPrint, clsFormTheme.Icons.Print);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnShareWhatsApp, clsFormTheme.Icons.Share);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnShareEmail, clsFormTheme.Icons.Email);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnCopy, clsFormTheme.Icons.Copy);
 
             KeyDown += frmPrintReceipt_KeyDown;
 
@@ -273,6 +276,87 @@ namespace InventoryManagementSystem
             {
                 btnClose_Click(sender, e);
             }
+        }
+
+        private void btnShareWhatsApp_Click(object sender, EventArgs e)
+        {
+            if (_currentOrderID == -1 || _currentOrderDetails == null || _currentOrderItems == null)
+            {
+                MessageBox.Show("Please load a receipt first.", "Share", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var receiptData = BuildReceiptData();
+            string customerPhone = _currentOrderDetails.Rows[0]["PhoneNumber"] != DBNull.Value 
+                ? _currentOrderDetails.Rows[0]["PhoneNumber"].ToString() 
+                : null;
+
+            clsReceiptSharing.ShareViaWhatsApp(receiptData, customerPhone);
+        }
+
+        private void btnShareEmail_Click(object sender, EventArgs e)
+        {
+            if (_currentOrderID == -1 || _currentOrderDetails == null || _currentOrderItems == null)
+            {
+                MessageBox.Show("Please load a receipt first.", "Share", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var receiptData = BuildReceiptData();
+            clsReceiptSharing.ShareViaEmail(receiptData);
+        }
+
+        private void btnCopy_Click(object sender, EventArgs e)
+        {
+            if (_currentOrderID == -1 || _currentOrderDetails == null || _currentOrderItems == null)
+            {
+                MessageBox.Show("Please load a receipt first.", "Copy", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var receiptData = BuildReceiptData();
+            if (clsReceiptSharing.CopyToClipboard(receiptData))
+            {
+                MessageBox.Show("Receipt copied to clipboard.", "Copy", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Failed to copy receipt to clipboard.", "Copy", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private clsReceiptSharing.ReceiptData BuildReceiptData()
+        {
+            var receipt = new clsReceiptSharing.ReceiptData
+            {
+                OrderID = _currentOrderID,
+                OrderDate = Convert.ToDateTime(_currentOrderDetails.Rows[0]["OrderDate"]),
+                CustomerName = _currentOrderDetails.Rows[0]["CustomerName"] != DBNull.Value 
+                    ? _currentOrderDetails.Rows[0]["CustomerName"].ToString() 
+                    : "",
+                CustomerPhone = _currentOrderDetails.Rows[0]["PhoneNumber"] != DBNull.Value 
+                    ? _currentOrderDetails.Rows[0]["PhoneNumber"].ToString() 
+                    : "",
+                Subtotal = Convert.ToDecimal(_currentOrderDetails.Rows[0]["Subtotal"]),
+                Discount = 0, // Would need to calculate from coupon if applicable
+                Tax = Convert.ToDecimal(_currentOrderDetails.Rows[0]["TaxAmount"]),
+                Total = Convert.ToDecimal(_currentOrderDetails.Rows[0]["TotalAmount"]),
+                PaymentMethod = _currentOrderDetails.Rows[0]["PaymentMethod"].ToString(),
+                Items = new System.Collections.Generic.List<clsReceiptSharing.ReceiptItem>()
+            };
+
+            foreach (DataRow row in _currentOrderItems.Rows)
+            {
+                receipt.Items.Add(new clsReceiptSharing.ReceiptItem
+                {
+                    ProductName = row["ProductName"].ToString(),
+                    Quantity = Convert.ToInt32(row["Quantity"]),
+                    UnitPrice = Convert.ToDecimal(row["UnitPrice"]),
+                    Subtotal = Convert.ToDecimal(row["Subtotal"])
+                });
+            }
+
+            return receipt;
         }
     }
 }

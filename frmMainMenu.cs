@@ -145,8 +145,19 @@ namespace InventoryManagementSystem
             btnHelp.TextAlign = ContentAlignment.MiddleCenter;
             _toolTip.SetToolTip(btnHelp, "View help and keyboard shortcuts (F1)");
 
+            // ── Theme Toggle button ────────────────────────────────────────────
+            btnThemeToggle.Text = clsFormTheme.IsDarkMode ? "Light Mode" : "Dark Mode";
+            btnThemeToggle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            btnThemeToggle.BackColor = Color.FromArgb(99, 102, 241); // Indigo
+            btnThemeToggle.ForeColor = Color.White;
+            btnThemeToggle.FlatStyle = FlatStyle.Flat;
+            btnThemeToggle.FlatAppearance.BorderSize = 0;
+            btnThemeToggle.TextAlign = ContentAlignment.MiddleCenter;
+            _toolTip.SetToolTip(btnThemeToggle, "Toggle between light and dark theme");
+
             KeyDown += frmMainMenu_KeyDown;
             clsLanguageManager.LanguageChanged += (s, e) => ApplyLocalization();
+            clsFormTheme.ThemeChanged += (s, e) => UpdateThemeButton();
 
             clsAuditLog.LogAction("Application Started", "Inventory System main menu loaded", "System");
         }
@@ -245,6 +256,16 @@ namespace InventoryManagementSystem
             clsHelpSystem.ShowHelpForm(clsHelpSystem.Topics.KeyboardShortcuts);
         }
 
+        private void btnThemeToggle_Click(object sender, EventArgs e)
+        {
+            clsFormTheme.ToggleTheme();
+        }
+
+        private void UpdateThemeButton()
+        {
+            btnThemeToggle.Text = clsFormTheme.IsDarkMode ? "Light Mode" : "Dark Mode";
+        }
+
         private void frmMainMenu_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
@@ -254,6 +275,47 @@ namespace InventoryManagementSystem
         private void frmMainMenu_Load(object sender, EventArgs e)
         {
             ApplyLocalization();
+            ApplyRoleBasedAccess();
+        }
+
+        private void ApplyRoleBasedAccess()
+        {
+            // If user is not logged in or is a cashier, hide admin-only buttons
+            if (clsUserManagement.CurrentUser == null || clsUserManagement.IsCashier)
+            {
+                btnCategories.Visible = false;
+                btnSuppliers.Visible = false;
+                btnProducts.Visible = false;
+                btnReceiptSearch.Visible = false;
+                btnPrintReceipt.Visible = false;
+                btnDashboard.Visible = false;
+                btnAdvancedReports.Visible = false;
+                btnLowStockAlerts.Visible = false;
+                btnCouponManager.Visible = false;
+                btnAuditLogs.Visible = false;
+                btnHelp.Visible = false;
+
+                // Cashiers only see POS
+                btnPOS.Visible = true;
+                btnDailyReport.Visible = false; // Cashiers shouldn't see reports
+            }
+            else if (clsUserManagement.IsAdmin)
+            {
+                // Admins see everything
+                btnCategories.Visible = true;
+                btnSuppliers.Visible = true;
+                btnProducts.Visible = true;
+                btnReceiptSearch.Visible = true;
+                btnPrintReceipt.Visible = true;
+                btnDashboard.Visible = true;
+                btnAdvancedReports.Visible = true;
+                btnLowStockAlerts.Visible = true;
+                btnCouponManager.Visible = true;
+                btnPOS.Visible = true;
+                btnDailyReport.Visible = true;
+                btnAuditLogs.Visible = true;
+                btnHelp.Visible = true;
+            }
         }
 
         private void _buttonsPanel_Paint(object sender, PaintEventArgs e)

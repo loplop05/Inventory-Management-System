@@ -65,6 +65,7 @@ namespace InventoryManagementSystem
             _receiptItems.ListChanged += ReceiptItems_ListChanged;
 
             KeyDown += frmPOS_KeyDown;
+            KeyPress += frmPOS_KeyPress;
 
             clsLanguageManager.ApplyLanguage(this);
             EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
@@ -87,6 +88,9 @@ namespace InventoryManagementSystem
             ClearCustomerInfo();
             LoadCustomerPhoneAutoComplete();
             ApplyLocalization();
+
+            // Subscribe to barcode scanner events
+            clsBarcodeScanner.BarcodeScanned += BarcodeScanned;
         }
 
         private void LoadCustomerPhoneAutoComplete()
@@ -451,6 +455,13 @@ namespace InventoryManagementSystem
             if (couponCode != null)
                 clsDiscountSystem.UseCoupon(couponCode);
 
+            // Update customer loyalty
+            if (_selectedCustomerID.HasValue)
+            {
+                decimal subtotal = _receiptItems.Sum(item => item.Subtotal);
+                clsDiscountSystem.UpdateCustomerLoyalty(_selectedCustomerID.Value, _selectedCustomerName, _txtCustomerPhone.Text, subtotal);
+            }
+
             _receiptItems.Clear();
             ClearCoupon();
             RefreshReceiptTotals();
@@ -508,11 +519,21 @@ namespace InventoryManagementSystem
             DataTable customer = clsCustomer.GetCustomerByPhone(phoneNumber);
             if (customer != null && customer.Rows.Count > 0)
             {
-                _selectedCustomerID = Convert.ToInt32(customer.Rows[0]["CustomerID"]);
-                _selectedCustomerName = customer.Rows[0]["CustomerName"].ToString();
+                DataRow row = customer.Rows[0];
+                _selectedCustomerID = Convert.ToInt32(row["CustomerID"]);
+                _selectedCustomerName = row["CustomerName"].ToString();
                 _lblCustomerName.Text = _selectedCustomerName;
                 _lblCustomerName.ForeColor = Color.FromArgb(44, 62, 80);
                 _btnAddCustomer.Text = clsLanguageManager.GetString("Change");
+
+                // Display loyalty info
+                int points = row["LoyaltyPoints"] != DBNull.Value ? Convert.ToInt32(row["LoyaltyPoints"]) : 0;
+                string tier = row["Tier"] != DBNull.Value ? row["Tier"].ToString() : "Bronze";
+                decimal totalSpent = row["TotalSpent"] != DBNull.Value ? Convert.ToDecimal(row["TotalSpent"]) : 0;
+                
+                // Show loyalty info in a tooltip or additional label if available
+                // For now, append to customer name display
+                _lblCustomerName.Text += $" ({tier} - {points} pts)";
             }
             else
             {
@@ -624,7 +645,15 @@ namespace InventoryManagementSystem
 
         private void btnCompleteOrder_Click(object sender, EventArgs e)
         {
-            CompleteOrder();
+            _btnCompleteOrder.Enabled = false;
+            try
+            {
+                CompleteOrder();
+            }
+            finally
+            {
+                _btnCompleteOrder.Enabled = true;
+            }
         }
 
         private void btnPrintReceipt_Click(object sender, EventArgs e)
@@ -698,20 +727,25 @@ namespace InventoryManagementSystem
             int right = _topPanel.ClientSize.Width - 16;
             _btnReport.Left = right - _btnReport.Width;
             _btnRefresh.Left = _btnReport.Left - _btnRefresh.Width - 10;
-            _txtSearch.Left = _btnRefresh.Left - _txtSearch.Width - 12;
         }
 
         private void frmPOS_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F5)
-            {
-                LoadProducts();
-                e.SuppressKeyPress = true;
-            }
-            else if (e.KeyCode == Keys.Escape)
+            // Escape to close
+            if (e.KeyCode == Keys.Escape)
             {
                 Close();
+                e.Handled = true;
+                e.SuppressKeyPress = true;
             }
+            // F5 to refresh
+            else if (e.KeyCode == Keys.F5)
+            {
+                LoadProducts();
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+            // Ctrl+Enter to complete order
             else if (e.Control && e.KeyCode == Keys.Enter)
             {
                 CompleteOrder();
@@ -719,15 +753,32 @@ namespace InventoryManagementSystem
             }
         }
 
-        private class ReceiptItem
+        private void frmPOS_KeyPress(object sender, KeyPressEventArgs e)
         {
-            public int ProductID { get; set; }
-            public string ProductName { get; set; }
-            public int Quantity { get; set; }
-            public decimal UnitPrice { get; set; }
-            public int AvailableStock { get; set; }
+            // Process barcode scanner input
+            clsBarcodeScanner.ProcessKeyPress(e);
+        }
 
-            public decimal Subtotal => Quantity * UnitPrice;
+        private void BarcodeScanned(string barcode)
+        {
+            // Search for product by barcode and add to receipt
+            DataRow[] matches = _productsTable.AsEnumerable()
+                .Where(row => row["Barcode"].ToString().Trim() == barcode)
+                .ToArray();
+
+            if (matches.Length > 0)
+            {
+                DataRow row = matches[0];
+                int productID = Convert.ToInt32(row["ProductID"]);
+                string productName = row["ProductName"].ToString();
+                decimal price = Convert.ToDecimal(row["Price"]);
+                int availableStock = Convert.ToInt32(row["Quantity"]);
+                AddToReceipt(productID, productName, price, availableStock);
+            }
+            else
+            {
+                MessageBox.Show("Product not found for barcode: " + barcode, "Barcode Scanner", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private void ApplyLocalization()
@@ -740,5 +791,16 @@ namespace InventoryManagementSystem
         {
 
         }
+    }
+
+    public class ReceiptItem
+    {
+        public int ProductID { get; set; }
+        public string ProductName { get; set; }
+        public decimal UnitPrice { get; set; }
+        public int Quantity { get; set; }
+        public int AvailableStock { get; set; }
+
+        public decimal Subtotal => Quantity * UnitPrice;
     }
 }

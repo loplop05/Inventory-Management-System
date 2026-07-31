@@ -79,9 +79,9 @@ namespace InventoryManagementSystem
                 if (!string.IsNullOrWhiteSpace(searchKeyword))
                 {
                     string k = searchKeyword.Trim().ToLower();
-                    query = query.Where(l => (l.Action != null && l.Action.ToLower().Contains(k)) ||
-                                             (l.Details != null && l.Details.ToLower().Contains(k)) ||
-                                             (l.User != null && l.User.ToLower().Contains(k)));
+                    query = query.Where(l => (l.Action != null && l.Action.IndexOf(k, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                                             (l.Details != null && l.Details.IndexOf(k, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                                             (l.User != null && l.User.IndexOf(k, StringComparison.OrdinalIgnoreCase) >= 0));
                 }
 
                 return query.ToList();
@@ -115,7 +115,8 @@ namespace InventoryManagementSystem
                 sb.AppendLine($"{log.Id},{log.Timestamp:yyyy-MM-dd HH:mm:ss},{log.Module},{safeAction},{log.User},{safeDetails}");
             }
 
-            File.WriteAllText(filePath, sb.ToString(), Encoding.UTF8);
+            var utf8WithBom = new UTF8Encoding(true);
+            File.WriteAllText(filePath, sb.ToString(), utf8WithBom);
             return filePath;
         }
 

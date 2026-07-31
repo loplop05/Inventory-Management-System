@@ -193,7 +193,30 @@ namespace InventoryManagementSystem
                 { "Product deleted successfully.", ("Product deleted successfully.", "تم حذف المنتج بنجاح.") },
                 { "Invalid input data.", ("Invalid input data.", "البيانات المدخلة غير صالحة.") },
                 { "This field is required.", ("This field is required.", "هذا الحقل مطلوب.") },
-                { "Please select a valid option.", ("Please select a valid option.", "يرجى تحديد خيار صحيح.") }
+                { "Please select a valid option.", ("Please select a valid option.", "يرجى تحديد خيار صحيح.") },
+
+                // Additional keys for localized forms
+                { "products available", ("products available", "منتج متاح") },
+                { "No Products", ("No Products", "لا توجد منتجات") },
+                { "No products match your search.", ("No products match your search.", "لا توجد منتجات تطابق بحثك.") },
+                { "Stock:", ("Stock:", "المخزون:") },
+                { "Out of stock", ("Out of stock", "نفد المخزون") },
+                { "Tax (7%):", ("Tax (7%):", "الضريبة (7%):") },
+                { "+ New", ("+ New", "+ جديد") },
+                { "Change", ("Change", "تغيير") },
+                { "New customer", ("New customer", "عميل جديد") },
+                { "Stock Report", ("Stock Report", "تقرير المخزون") },
+                { "Save Product", ("Save Product", "حفظ المنتج") },
+                { "Find Product", ("Find Product", "البحث عن منتج") },
+                { "Save Changes", ("Save Changes", "حفظ التغييرات") },
+                { "Save Category", ("Save Category", "حفظ القسم") },
+                { "Find Category", ("Find Category", "البحث عن قسم") },
+                { "Save Supplier", ("Save Supplier", "حفظ المورد") },
+                { "Find Supplier", ("Find Supplier", "البحث عن مورد") },
+                { "Add Customer", ("Add Customer", "إضافة عميل") },
+                { "Select", ("Select", "اختيار") },
+                { "Confirm Exchange", ("Confirm Exchange", "تأكيد الاستبدال") },
+                { "By Phone", ("By Phone", "حسب الهاتف") }
             };
 
         /// <summary>

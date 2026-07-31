@@ -17,9 +17,12 @@ namespace InventoryDataAccessLayer
                 {
                     connection.Open();
 
+                    // Ensure loyalty columns exist
+                    EnsureLoyaltyColumns(connection);
+
                     string query = @"
-                        INSERT INTO Customers (PhoneNumber, CustomerName, CreatedDate)
-                        VALUES (@PhoneNumber, @CustomerName, GETDATE());
+                        INSERT INTO Customers (PhoneNumber, CustomerName, CreatedDate, LoyaltyPoints, TotalSpent, Tier)
+                        VALUES (@PhoneNumber, @CustomerName, GETDATE(), 0, 0, 'Bronze');
                         SELECT SCOPE_IDENTITY();";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
@@ -50,6 +53,29 @@ namespace InventoryDataAccessLayer
                     errorMessage = ex.Message;
                     return false;
                 }
+            }
+        }
+
+        private static void EnsureLoyaltyColumns(SqlConnection connection)
+        {
+            try
+            {
+                using (SqlCommand command = new SqlCommand(@"
+                    IF COL_LENGTH('Customers', 'LoyaltyPoints') IS NULL
+                        ALTER TABLE Customers ADD LoyaltyPoints INT DEFAULT 0;
+                    
+                    IF COL_LENGTH('Customers', 'TotalSpent') IS NULL
+                        ALTER TABLE Customers ADD TotalSpent DECIMAL(10,2) DEFAULT 0;
+                    
+                    IF COL_LENGTH('Customers', 'Tier') IS NULL
+                        ALTER TABLE Customers ADD Tier NVARCHAR(20) DEFAULT 'Bronze';", connection)
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+                // Ignore errors if columns already exist
             }
         }
 
@@ -86,7 +112,7 @@ namespace InventoryDataAccessLayer
                 try
                 {
                     string query = @"
-                        SELECT CustomerID, PhoneNumber, CustomerName, CreatedDate, LastPurchaseDate
+                        SELECT CustomerID, PhoneNumber, CustomerName, CreatedDate, LastPurchaseDate, LoyaltyPoints, TotalSpent, Tier
                         FROM Customers
                         WHERE PhoneNumber = @PhoneNumber";
 
@@ -118,7 +144,7 @@ namespace InventoryDataAccessLayer
                 try
                 {
                     string query = @"
-                        SELECT CustomerID, PhoneNumber, CustomerName, CreatedDate, LastPurchaseDate
+                        SELECT CustomerID, PhoneNumber, CustomerName, CreatedDate, LastPurchaseDate, LoyaltyPoints, TotalSpent, Tier
                         FROM Customers
                         WHERE CustomerID = @CustomerID";
 
@@ -150,7 +176,7 @@ namespace InventoryDataAccessLayer
                 try
                 {
                     string query = @"
-                        SELECT CustomerID, PhoneNumber, CustomerName, CreatedDate, LastPurchaseDate
+                        SELECT CustomerID, PhoneNumber, CustomerName, CreatedDate, LastPurchaseDate, LoyaltyPoints, TotalSpent, Tier
                         FROM Customers
                         ORDER BY CustomerName";
 
@@ -270,6 +296,94 @@ namespace InventoryDataAccessLayer
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@CustomerID", customerID);
+
+                        command.ExecuteNonQuery();
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = ex.Message;
+                    return false;
+                }
+            }
+        }
+
+        public static bool UpdateCustomerLoyalty(int customerID, decimal purchaseAmount, out string errorMessage)
+        {
+            errorMessage = "";
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    // Ensure loyalty columns exist
+                    EnsureLoyaltyColumns(connection);
+
+                    string query = @"
+                        UPDATE Customers
+                        SET LoyaltyPoints = LoyaltyPoints + @PointsEarned,
+                            TotalSpent = TotalSpent + @PurchaseAmount,
+                            Tier = CASE 
+                                WHEN TotalSpent + @PurchaseAmount >= 5000 THEN 'Platinum'
+                                WHEN TotalSpent + @PurchaseAmount >= 2000 THEN 'Gold'
+                                WHEN TotalSpent + @PurchaseAmount >= 500 THEN 'Silver'
+                                ELSE 'Bronze'
+                            END
+                        WHERE CustomerID = @CustomerID";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@CustomerID", customerID);
+                        command.Parameters.AddWithValue("@PointsEarned", (int)Math.Floor(purchaseAmount));
+                        command.Parameters.AddWithValue("@PurchaseAmount", purchaseAmount);
+
+                        command.ExecuteNonQuery();
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = ex.Message;
+                    return false;
+                }
+            }
+        }
+
+        public static bool RedeemLoyaltyPoints(int customerID, int pointsToRedeem, out string errorMessage)
+        {
+            errorMessage = "";
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    // Check if customer has enough points
+                    string checkQuery = "SELECT LoyaltyPoints FROM Customers WHERE CustomerID = @CustomerID";
+                    using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
+                    {
+                        checkCommand.Parameters.AddWithValue("@CustomerID", customerID);
+                        object result = checkCommand.ExecuteScalar();
+                        if (result == null || result == DBNull.Value || Convert.ToInt32(result) < pointsToRedeem)
+                        {
+                            errorMessage = "Insufficient loyalty points.";
+                            return false;
+                        }
+                    }
+
+                    string query = @"
+                        UPDATE Customers
+                        SET LoyaltyPoints = LoyaltyPoints - @PointsToRedeem
+                        WHERE CustomerID = @CustomerID";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@CustomerID", customerID);
+                        command.Parameters.AddWithValue("@PointsToRedeem", pointsToRedeem);
 
                         command.ExecuteNonQuery();
                         return true;

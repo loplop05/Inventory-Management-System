@@ -268,28 +268,13 @@ namespace InventoryManagementSystem
 
         // ─── Customer Loyalty Management ───────────────────────────────────────
 
-        private static readonly Dictionary<int, CustomerLoyalty> _customers = new Dictionary<int, CustomerLoyalty>();
-
         /// <summary>
-        /// Adds or updates a customer's loyalty information.
+        /// Adds or updates a customer's loyalty information (now persisted to database).
         /// </summary>
         public static void UpdateCustomerLoyalty(int customerId, string name, string phone, decimal purchaseAmount)
         {
-            if (!_customers.ContainsKey(customerId))
-            {
-                _customers[customerId] = new CustomerLoyalty
-                {
-                    CustomerID = customerId,
-                    CustomerName = name,
-                    Phone = phone
-                };
-            }
-
-            var customer = _customers[customerId];
-            customer.TotalSpent += purchaseAmount;
-            customer.Points += (int)(purchaseAmount * CustomerLoyalty.PointsPerDollar);
-            customer.LastPurchase = DateTime.Now;
-            customer.Tier = CalculateTier(customer.TotalSpent);
+            string errorMessage;
+            InventoryBusinessLayer.clsCustomer.UpdateCustomerLoyalty(customerId, purchaseAmount, out errorMessage);
         }
 
         /// <summary>
@@ -304,23 +289,37 @@ namespace InventoryManagementSystem
         }
 
         /// <summary>
-        /// Gets customer loyalty information.
+        /// Gets customer loyalty information from database.
         /// </summary>
         public static CustomerLoyalty GetCustomerLoyalty(int customerId)
         {
-            return _customers.ContainsKey(customerId) ? _customers[customerId] : null;
+            var dt = InventoryBusinessLayer.clsCustomer.GetCustomerByID(customerId);
+            if (dt == null || dt.Rows.Count == 0) return null;
+
+            DataRow row = dt.Rows[0];
+            return new CustomerLoyalty
+            {
+                CustomerID = customerId,
+                CustomerName = row["CustomerName"].ToString(),
+                Phone = row["PhoneNumber"].ToString(),
+                Points = row["LoyaltyPoints"] != DBNull.Value ? Convert.ToInt32(row["LoyaltyPoints"]) : 0,
+                TotalSpent = row["TotalSpent"] != DBNull.Value ? Convert.ToDecimal(row["TotalSpent"]) : 0,
+                Tier = row["Tier"] != DBNull.Value ? row["Tier"].ToString() : "Bronze",
+                LastPurchase = row["LastPurchaseDate"] != DBNull.Value ? Convert.ToDateTime(row["LastPurchaseDate"]) : DateTime.MinValue
+            };
         }
 
         /// <summary>
-        /// Redeems loyalty points for a discount.
+        /// Redeems loyalty points for a discount (now persisted to database).
         /// </summary>
         public static decimal RedeemLoyaltyPoints(int customerId, int pointsToRedeem)
         {
-            var customer = GetCustomerLoyalty(customerId);
-            if (customer == null || customer.Points < pointsToRedeem) return 0;
-
-            customer.Points -= pointsToRedeem;
-            return (decimal)pointsToRedeem / CustomerLoyalty.PointsForDiscount;
+            string errorMessage;
+            if (InventoryBusinessLayer.clsCustomer.RedeemLoyaltyPoints(customerId, pointsToRedeem, out errorMessage))
+            {
+                return (decimal)pointsToRedeem / CustomerLoyalty.PointsForDiscount;
+            }
+            return 0;
         }
 
         /// <summary>
@@ -328,13 +327,7 @@ namespace InventoryManagementSystem
         /// </summary>
         public static decimal GetTierDiscount(string tier)
         {
-            switch (tier)
-            {
-                case "Platinum": return 0.05m; // 5%
-                case "Gold": return 0.03m; // 3%
-                case "Silver": return 0.02m; // 2%
-                default: return 0m;
-            }
+            return InventoryBusinessLayer.clsCustomer.GetTierDiscount(tier);
         }
 
         // ─── Discount Calculation Helpers ─────────────────────────────────────
