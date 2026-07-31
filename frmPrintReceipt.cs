@@ -31,6 +31,7 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyTextBoxStyle(_txtOrderID);
             clsFormTheme.ApplyPrimaryButtonStyle(_btnSearch, clsFormTheme.Icons.Search);
             clsFormTheme.ApplySuccessButtonStyle(_btnPrint, clsFormTheme.Icons.Print);
+            clsFormTheme.ApplyDangerButtonStyle(_btnVoid, clsFormTheme.Icons.Delete);
 
             // Share buttons - uncomment after adding controls to Designer
             // clsFormTheme.ApplySecondaryButtonStyle(_btnShareWhatsApp, clsFormTheme.Icons.Share);
@@ -59,6 +60,7 @@ namespace InventoryManagementSystem
             _txtOrderID.Text = "";
             _lblReceiptPreview.Text = "Enter an Order ID to view and print the receipt.";
             _btnPrint.Enabled = false;
+            _btnVoid.Enabled = false;
         }
 
         public TextBox OrderIDTextBox
@@ -115,6 +117,10 @@ namespace InventoryManagementSystem
 
             _currentOrderID = orderID;
             DisplayReceipt();
+
+            // Enable Void button if order is not already voided
+            bool isVoided = _currentOrderDetails.Rows[0]["IsVoided"] != DBNull.Value && Convert.ToBoolean(_currentOrderDetails.Rows[0]["IsVoided"]);
+            _btnVoid.Enabled = !isVoided;
         }
 
         private void DisplayReceipt()
@@ -268,8 +274,109 @@ namespace InventoryManagementSystem
 
         private void btnClose_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            Close();
+        }
+
+        private void btnVoid_Click(object sender, EventArgs e)
+        {
+            if (_currentOrderID == -1)
+            {
+                MessageBox.Show("Please load a receipt first.", "Void", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DialogResult result = MessageBox.Show(
+                $"Are you sure you want to void Order {_currentOrderID}?\n\nThis will:\n" +
+                "- Reverse all stock changes\n" +
+                "- Deduct any loyalty points awarded\n" +
+                "- Mark the order as voided\n\n" +
+                "This action cannot be undone.",
+                "Confirm Void",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (result != DialogResult.Yes)
+                return;
+
+            // Simple reason input using a form
+            using (Form reasonForm = new Form
+            {
+                Text = "Void Reason",
+                Size = new Size(400, 200),
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                StartPosition = FormStartPosition.CenterParent,
+                MinimizeBox = false,
+                MaximizeBox = false
+            })
+            {
+                clsFormTheme.ApplyFormStyle(reasonForm);
+                
+                Label lbl = new Label
+                {
+                    Text = "Please enter a reason for voiding this order:",
+                    Location = new Point(20, 20),
+                    Width = 340
+                };
+                clsFormTheme.ApplyLabelStyle(lbl);
+                
+                TextBox txtReason = new TextBox
+                {
+                    Location = new Point(20, 50),
+                    Width = 340,
+                    Multiline = true,
+                    Height = 60
+                };
+                clsFormTheme.ApplyTextBoxStyle(txtReason);
+                
+                Button btnOK = new Button
+                {
+                    Text = "Void",
+                    DialogResult = DialogResult.OK,
+                    Location = new Point(200, 120),
+                    Width = 80
+                };
+                clsFormTheme.ApplyDangerButtonStyle(btnOK, clsFormTheme.Icons.Delete);
+                
+                Button btnCancel = new Button
+                {
+                    Text = "Cancel",
+                    DialogResult = DialogResult.Cancel,
+                    Location = new Point(290, 120),
+                    Width = 80
+                };
+                clsFormTheme.ApplySecondaryButtonStyle(btnCancel, clsFormTheme.Icons.Cancel);
+                
+                reasonForm.Controls.Add(lbl);
+                reasonForm.Controls.Add(txtReason);
+                reasonForm.Controls.Add(btnOK);
+                reasonForm.Controls.Add(btnCancel);
+                reasonForm.AcceptButton = btnOK;
+                reasonForm.CancelButton = btnCancel;
+                
+                if (reasonForm.ShowDialog() == DialogResult.OK && string.IsNullOrWhiteSpace(txtReason.Text))
+                {
+                    MessageBox.Show("A reason is required to void an order.", "Void", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                
+                string reason = txtReason.Text;
+                if (string.IsNullOrWhiteSpace(reason))
+                    return;
+
+                string errorMessage;
+                if (clsPOS.VoidOrder(_currentOrderID, reason, Environment.UserName, out errorMessage))
+                {
+                    // Log the void action
+                    clsAuditLog.LogAction("Order Voided", $"Order {_currentOrderID} voided. Reason: {reason}", "POS");
+                    
+                    MessageBox.Show($"Order {_currentOrderID} has been voided successfully.", "Void", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ClearDisplay();
+                }
+                else
+                {
+                    MessageBox.Show("Failed to void order: " + errorMessage, "Void", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void frmPrintReceipt_KeyDown(object sender, KeyEventArgs e)

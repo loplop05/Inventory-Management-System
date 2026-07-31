@@ -266,8 +266,32 @@ namespace InventoryManagementSystem
                 productsForm.Show();
             };
 
+            var btnReorder = new Button
+            {
+                Text = "Reorder Selected",
+                Size = new System.Drawing.Size(140, 30),
+                Location = new System.Drawing.Point(300, 10)
+            };
+            clsFormTheme.ApplySuccessButtonStyle(btnReorder, clsFormTheme.Icons.Add);
+            btnReorder.Click += (s, e) =>
+            {
+                if (grid.SelectedRows.Count == 0)
+                {
+                    MessageBox.Show("Please select a product to reorder.", "Reorder", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+                
+                var selectedItem = grid.SelectedRows[0].DataBoundItem as LowStockItem;
+                if (selectedItem != null)
+                {
+                    _alertForm.Close();
+                    ShowReorderDialog(selectedItem);
+                }
+            };
+
             buttonPanel.Controls.Add(btnClose);
             buttonPanel.Controls.Add(btnViewProducts);
+            buttonPanel.Controls.Add(btnReorder);
 
             mainPanel.Controls.Add(headerPanel, 0, 0);
             mainPanel.Controls.Add(grid, 0, 1);
@@ -352,6 +376,115 @@ Out of Stock: {outOfStock.Count}
 Critical (below 50% threshold): {critical.Count}
 Default Threshold: {_defaultThreshold}
 Alerts Enabled: {_alertsEnabled}";
+        }
+
+        // ─── Reorder Dialog ─────────────────────────────────────────────────────
+
+        /// <summary>
+        /// Shows a reorder dialog for a specific low stock item.
+        /// </summary>
+        private static void ShowReorderDialog(LowStockItem item)
+        {
+            using (Form reorderForm = new Form
+            {
+                Text = "Reorder Product",
+                Size = new System.Drawing.Size(450, 350),
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MinimizeBox = false,
+                MaximizeBox = false
+            })
+            {
+                clsFormTheme.ApplyFormStyle(reorderForm);
+                clsFormTheme.CreateHeaderPanel(reorderForm, "Reorder Product", clsFormTheme.Icons.Add);
+
+                var mainPanel = new System.Windows.Forms.TableLayoutPanel
+                {
+                    Dock = DockStyle.Fill,
+                    ColumnCount = 2,
+                    RowCount = 6,
+                    Padding = new System.Windows.Forms.Padding(20)
+                };
+                mainPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120));
+                mainPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100));
+
+                // Product info
+                var lblProduct = new Label { Text = "Product:", Anchor = AnchorStyles.Left };
+                var txtProduct = new TextBox { Text = item.ProductName, ReadOnly = true, Dock = DockStyle.Fill };
+                var lblSupplier = new Label { Text = "Supplier:", Anchor = AnchorStyles.Left };
+                var txtSupplier = new TextBox { Text = item.Supplier, ReadOnly = true, Dock = DockStyle.Fill };
+                var lblCurrentStock = new Label { Text = "Current Stock:", Anchor = AnchorStyles.Left };
+                var txtCurrentStock = new TextBox { Text = item.CurrentStock.ToString(), ReadOnly = true, Dock = DockStyle.Fill };
+                var lblReorderQty = new Label { Text = "Reorder Qty:", Anchor = AnchorStyles.Left };
+                var txtReorderQty = new TextBox { Text = item.StockNeeded.ToString(), Dock = DockStyle.Fill };
+                var lblNotes = new Label { Text = "Notes:", Anchor = AnchorStyles.Left };
+                var txtNotes = new TextBox { Multiline = true, Height = 60, Dock = DockStyle.Fill };
+
+                clsFormTheme.ApplyLabelStyle(lblProduct);
+                clsFormTheme.ApplyLabelStyle(lblSupplier);
+                clsFormTheme.ApplyLabelStyle(lblCurrentStock);
+                clsFormTheme.ApplyLabelStyle(lblReorderQty);
+                clsFormTheme.ApplyLabelStyle(lblNotes);
+                clsFormTheme.ApplyTextBoxStyle(txtProduct);
+                clsFormTheme.ApplyTextBoxStyle(txtSupplier);
+                clsFormTheme.ApplyTextBoxStyle(txtCurrentStock);
+                clsFormTheme.ApplyTextBoxStyle(txtReorderQty);
+                clsFormTheme.ApplyTextBoxStyle(txtNotes);
+
+                mainPanel.Controls.Add(lblProduct, 0, 0);
+                mainPanel.Controls.Add(txtProduct, 1, 0);
+                mainPanel.Controls.Add(lblSupplier, 0, 1);
+                mainPanel.Controls.Add(txtSupplier, 1, 1);
+                mainPanel.Controls.Add(lblCurrentStock, 0, 2);
+                mainPanel.Controls.Add(txtCurrentStock, 1, 2);
+                mainPanel.Controls.Add(lblReorderQty, 0, 3);
+                mainPanel.Controls.Add(txtReorderQty, 1, 3);
+                mainPanel.Controls.Add(lblNotes, 0, 4);
+                mainPanel.Controls.Add(txtNotes, 1, 4);
+
+                // Buttons
+                var btnPanel = new Panel { Dock = DockStyle.Fill, Height = 50 };
+                var btnCreate = new Button { Text = "Create Reorder", Width = 120, Height = 35 };
+                var btnCancel = new Button { Text = "Cancel", Width = 100, Height = 35 };
+
+                clsFormTheme.ApplyPrimaryButtonStyle(btnCreate, clsFormTheme.Icons.Add);
+                clsFormTheme.ApplySecondaryButtonStyle(btnCancel, clsFormTheme.Icons.Cancel);
+
+                btnCreate.Click += (s, e) =>
+                {
+                    int reorderQty;
+                    if (!int.TryParse(txtReorderQty.Text, out reorderQty) || reorderQty <= 0)
+                    {
+                        MessageBox.Show("Please enter a valid reorder quantity.", "Reorder", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    // Create reorder record (simplified - just log it for now)
+                    clsAuditLog.LogAction("Reorder Created", 
+                        $"Product: {item.ProductName}, Qty: {reorderQty}, Supplier: {item.Supplier}, Notes: {txtNotes.Text}", 
+                        "Inventory");
+
+                    MessageBox.Show($"Reorder request created for {reorderQty} units of {item.ProductName}.\n\n" +
+                        $"Supplier: {item.Supplier}\n" +
+                        $"Notes: {txtNotes.Text}", 
+                        "Reorder Created", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    
+                    reorderForm.DialogResult = DialogResult.OK;
+                };
+
+                btnCancel.Click += (s, e) => reorderForm.DialogResult = DialogResult.Cancel;
+
+                btnPanel.Controls.Add(btnCreate);
+                btnPanel.Controls.Add(btnCancel);
+                btnCreate.Location = new System.Drawing.Point(180, 10);
+                btnCancel.Location = new System.Drawing.Point(310, 10);
+
+                mainPanel.Controls.Add(btnPanel, 0, 5);
+                mainPanel.SetColumnSpan(btnPanel, 2);
+
+                reorderForm.Controls.Add(mainPanel);
+                reorderForm.ShowDialog();
+            }
         }
     }
 }

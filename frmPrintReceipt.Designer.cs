@@ -26,6 +26,7 @@ namespace InventoryManagementSystem
             this._lblReceiptPreview = new System.Windows.Forms.Label();
             this._actionsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this._btnPrint = new System.Windows.Forms.Button();
+            this._btnVoid = new System.Windows.Forms.Button();
             this._mainLayoutPanel.SuspendLayout();
             this._searchPanel.SuspendLayout();
             this._panelReceipt.SuspendLayout();
@@ -118,6 +119,7 @@ namespace InventoryManagementSystem
             // 
             // _actionsPanel
             // 
+            this._actionsPanel.Controls.Add(this._btnVoid);
             this._actionsPanel.Controls.Add(this._btnPrint);
             this._actionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._actionsPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
@@ -128,15 +130,25 @@ namespace InventoryManagementSystem
             // 
             // _btnPrint
             // 
-            this._btnPrint.Enabled = false;
             this._btnPrint.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._btnPrint.Location = new System.Drawing.Point(331, 3);
+            this._btnPrint.Location = new System.Drawing.Point(0, 0);
             this._btnPrint.Name = "_btnPrint";
-            this._btnPrint.Size = new System.Drawing.Size(120, 34);
+            this._btnPrint.Size = new System.Drawing.Size(100, 34);
             this._btnPrint.TabIndex = 0;
-            this._btnPrint.Text = "Print Receipt";
+            this._btnPrint.Text = "Print";
             this._btnPrint.UseVisualStyleBackColor = true;
             this._btnPrint.Click += new System.EventHandler(this.btnPrint_Click);
+            // 
+            // _btnVoid
+            // 
+            this._btnVoid.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this._btnVoid.Location = new System.Drawing.Point(110, 0);
+            this._btnVoid.Name = "_btnVoid";
+            this._btnVoid.Size = new System.Drawing.Size(100, 34);
+            this._btnVoid.TabIndex = 1;
+            this._btnVoid.Text = "Void";
+            this._btnVoid.UseVisualStyleBackColor = true;
+            this._btnVoid.Click += new System.EventHandler(this.btnVoid_Click);
             // 
             // frmPrintReceipt
             // 
@@ -173,5 +185,6 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Label _lblReceiptPreview;
         private System.Windows.Forms.FlowLayoutPanel _actionsPanel;
         private System.Windows.Forms.Button _btnPrint;
+        private System.Windows.Forms.Button _btnVoid;
     }
 }

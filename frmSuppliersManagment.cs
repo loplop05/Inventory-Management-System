@@ -44,6 +44,10 @@ namespace InventoryManagementSystem
             btnUpdateSupplier.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnUpdateSupplier, clsFormTheme.Icons.Update);
 
+            btnViewPerformance.Text = "Performance";
+            btnViewPerformance.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
+            clsFormTheme.ApplySecondaryButtonStyle(btnViewPerformance, clsFormTheme.Icons.Chart);
+
             _btnRefresh.Text = "Refresh";
             _btnRefresh.Font = new Font(clsFormTheme.MainFontName, 11F);
             clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh, clsFormTheme.Icons.Refresh);
@@ -232,6 +236,121 @@ namespace InventoryManagementSystem
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 await RefreshGridDataAsync();
+            }
+        }
+
+        private void btnViewPerformance_Click(object sender, EventArgs e)
+        {
+            if (DataGVSuppliers.CurrentRow == null)
+            {
+                MessageBox.Show("Please select a supplier first.", "Supplier Performance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int supplierID = Convert.ToInt32(DataGVSuppliers.CurrentRow.Cells["SupplierID"].Value);
+            string supplierName = DataGVSuppliers.CurrentRow.Cells["SupplierName"].Value.ToString();
+
+            // Get performance data for the last 30 days
+            DateTime endDate = DateTime.Now;
+            DateTime startDate = endDate.AddDays(-30);
+
+            DataTable performanceData = clsReport.GetSupplierPerformance(startDate, endDate);
+
+            if (performanceData == null || performanceData.Rows.Count == 0)
+            {
+                MessageBox.Show($"No performance data available for {supplierName} in the last 30 days.", "Supplier Performance", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Filter for selected supplier
+            DataRow[] supplierRows = performanceData.Select($"SupplierID = {supplierID}");
+            
+            if (supplierRows.Length == 0)
+            {
+                MessageBox.Show($"No sales data found for {supplierName} in the last 30 days.", "Supplier Performance", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Show performance dialog
+            using (Form perfForm = new Form
+            {
+                Text = $"Supplier Performance - {supplierName}",
+                Size = new Size(700, 500),
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MinimizeBox = false,
+                MaximizeBox = false
+            })
+            {
+                clsFormTheme.ApplyFormStyle(perfForm);
+                clsFormTheme.CreateHeaderPanel(perfForm, "Supplier Performance", clsFormTheme.Icons.Chart);
+
+                var mainPanel = new TableLayoutPanel
+                {
+                    Dock = DockStyle.Fill,
+                    ColumnCount = 1,
+                    RowCount = 2,
+                    Padding = new Padding(20)
+                };
+                mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+                mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 50));
+
+                var grid = new DataGridView
+                {
+                    Dock = DockStyle.Fill,
+                    AutoGenerateColumns = false,
+                    ReadOnly = true,
+                    AllowUserToAddRows = false,
+                    DataSource = supplierRows.CopyToDataTable()
+                };
+
+                grid.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "ProductName",
+                    HeaderText = "Product",
+                    Width = 200
+                });
+                grid.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "QuantitySold",
+                    HeaderText = "Qty Sold",
+                    Width = 80
+                });
+                grid.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "Revenue",
+                    HeaderText = "Revenue",
+                    Width = 100,
+                    DefaultCellStyle = new DataGridViewCellStyle { Format = "0.00", Alignment = DataGridViewContentAlignment.MiddleRight }
+                });
+                grid.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "OrderCount",
+                    HeaderText = "Orders",
+                    Width = 80
+                });
+
+                clsFormTheme.ApplyGridStyle(grid);
+
+                var btnClose = new Button
+                {
+                    Text = "Close",
+                    Width = 100,
+                    Height = 35,
+                    Anchor = AnchorStyles.Bottom | AnchorStyles.Right
+                };
+                clsFormTheme.ApplySecondaryButtonStyle(btnClose, clsFormTheme.Icons.Exit);
+                btnClose.Click += (s, args) => perfForm.Close();
+
+                var btnPanel = new Panel { Dock = DockStyle.Fill };
+                btnPanel.Controls.Add(btnClose);
+                btnClose.Location = new Point(540, 5);
+
+                mainPanel.Controls.Add(grid, 0, 0);
+                mainPanel.Controls.Add(btnPanel, 0, 1);
+
+                perfForm.Controls.Add(mainPanel);
+                perfForm.ShowDialog();
             }
         }
 

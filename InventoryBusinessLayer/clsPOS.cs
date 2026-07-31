@@ -87,5 +87,10 @@ namespace InventoryBusinessLayer
         {
             return clsPOSData.ProcessExchange(orderID, returnedItems, replacementItems, out errorMessage);
         }
+
+        public static bool VoidOrder(int orderID, string reason, string voidedBy, out string errorMessage)
+        {
+            return clsPOSData.VoidOrder(orderID, reason, voidedBy, out errorMessage);
+        }
     }
 }

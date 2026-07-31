@@ -27,6 +27,7 @@ namespace InventoryManagementSystem
             this._lblCustomerPhone = new System.Windows.Forms.Label();
             this._txtCustomerPhone = new System.Windows.Forms.TextBox();
             this._btnAddCustomer = new System.Windows.Forms.Button();
+            this._btnViewHistory = new System.Windows.Forms.Button();
             this._lblCustomerName = new System.Windows.Forms.Label();
             this._paymentPanel = new System.Windows.Forms.Panel();
             this._lblPaymentMethod = new System.Windows.Forms.Label();
@@ -56,6 +57,8 @@ namespace InventoryManagementSystem
             this._btnCompleteOrder = new System.Windows.Forms.Button();
             this._btnPrintReceipt = new System.Windows.Forms.Button();
             this._lblReceiptTitle = new System.Windows.Forms.Label();
+            this._btnClearAll = new System.Windows.Forms.Button();
+            this._btnHoldOrder = new System.Windows.Forms.Button();
             this._rootLayout.SuspendLayout();
             this._topPanel.SuspendLayout();
             this._customerPanel.SuspendLayout();
@@ -79,7 +82,7 @@ namespace InventoryManagementSystem
             this._rootLayout.Location = new System.Drawing.Point(0, 0);
             this._rootLayout.Name = "_rootLayout";
             this._rootLayout.RowCount = 2;
-            this._rootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 186F));
+            this._rootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this._rootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this._rootLayout.Size = new System.Drawing.Size(1505, 773);
             this._rootLayout.TabIndex = 0;
@@ -138,6 +141,7 @@ namespace InventoryManagementSystem
             this._customerPanel.Controls.Add(this._lblCustomerPhone);
             this._customerPanel.Controls.Add(this._txtCustomerPhone);
             this._customerPanel.Controls.Add(this._btnAddCustomer);
+            this._customerPanel.Controls.Add(this._btnViewHistory);
             this._customerPanel.Controls.Add(this._lblCustomerName);
             this._customerPanel.Location = new System.Drawing.Point(16, 65);
             this._customerPanel.Name = "_customerPanel";
@@ -175,6 +179,16 @@ namespace InventoryManagementSystem
             this._btnAddCustomer.Text = "+ New";
             this._btnAddCustomer.UseVisualStyleBackColor = true;
             this._btnAddCustomer.Click += new System.EventHandler(this.btnAddCustomer_Click);
+            // 
+            // _btnViewHistory
+            // 
+            this._btnViewHistory.Location = new System.Drawing.Point(370, 10);
+            this._btnViewHistory.Name = "_btnViewHistory";
+            this._btnViewHistory.Size = new System.Drawing.Size(100, 30);
+            this._btnViewHistory.TabIndex = 3;
+            this._btnViewHistory.Text = "History";
+            this._btnViewHistory.UseVisualStyleBackColor = true;
+            this._btnViewHistory.Click += new System.EventHandler(this.btnViewHistory_Click);
             // 
             // _lblCustomerName
             // 
@@ -269,8 +283,8 @@ namespace InventoryManagementSystem
             // 
             this._splitContainer.Panel2.Controls.Add(this._receiptPanel);
             this._splitContainer.Panel2.Padding = new System.Windows.Forms.Padding(0, 14, 14, 14);
-            this._splitContainer.Size = new System.Drawing.Size(1499, 581);
-            this._splitContainer.SplitterDistance = 948;
+            this._splitContainer.Size = new System.Drawing.Size(1499, 647);
+            this._splitContainer.SplitterDistance = 850;
             this._splitContainer.TabIndex = 1;
             // 
             // _tabsProducts
@@ -385,6 +399,8 @@ namespace InventoryManagementSystem
             this._totalsPanel.Controls.Add(this._btnRemoveItem);
             this._totalsPanel.Controls.Add(this._btnCompleteOrder);
             this._totalsPanel.Controls.Add(this._btnPrintReceipt);
+            this._totalsPanel.Controls.Add(this._btnClearAll);
+            this._totalsPanel.Controls.Add(this._btnHoldOrder);
             this._totalsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this._totalsPanel.Location = new System.Drawing.Point(14, 313);
             this._totalsPanel.Name = "_totalsPanel";
@@ -411,6 +427,7 @@ namespace InventoryManagementSystem
             this._txtCoupon.Name = "_txtCoupon";
             this._txtCoupon.Size = new System.Drawing.Size(140, 27);
             this._txtCoupon.TabIndex = 1;
+            this._txtCoupon.Text = "";
             // 
             // _btnApplyCoupon
             // 
@@ -523,21 +540,42 @@ namespace InventoryManagementSystem
             this._lblReceiptTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this._lblReceiptTitle.Location = new System.Drawing.Point(14, 14);
             this._lblReceiptTitle.Name = "_lblReceiptTitle";
-            this._lblReceiptTitle.Size = new System.Drawing.Size(505, 38);
+            this._lblReceiptTitle.Size = new System.Drawing.Size(505, 40);
             this._lblReceiptTitle.TabIndex = 0;
             this._lblReceiptTitle.Text = "Receipt";
+            this._lblReceiptTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // _btnClearAll
+            // 
+            this._btnClearAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnClearAll.Location = new System.Drawing.Point(310, 230);
+            this._btnClearAll.Name = "_btnClearAll";
+            this._btnClearAll.Size = new System.Drawing.Size(130, 38);
+            this._btnClearAll.TabIndex = 11;
+            this._btnClearAll.Text = "Clear All";
+            this._btnClearAll.UseVisualStyleBackColor = true;
+            this._btnClearAll.Click += new System.EventHandler(this.btnClearAll_Click);
+            // 
+            // _btnHoldOrder
+            // 
+            this._btnHoldOrder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnHoldOrder.Location = new System.Drawing.Point(140, 230);
+            this._btnHoldOrder.Name = "_btnHoldOrder";
+            this._btnHoldOrder.Size = new System.Drawing.Size(160, 38);
+            this._btnHoldOrder.TabIndex = 12;
+            this._btnHoldOrder.Text = "Hold Order";
+            this._btnHoldOrder.UseVisualStyleBackColor = true;
+            this._btnHoldOrder.Click += new System.EventHandler(this.btnHoldOrder_Click);
             // 
             // frmPOS
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1505, 773);
             this.Controls.Add(this._rootLayout);
-            this.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.MinimumSize = new System.Drawing.Size(1100, 650);
+            this.KeyPreview = true;
             this.Name = "frmPOS";
-            this.Text = "Point of Sale";
-            this.Load += new System.EventHandler(this.frmPOS_Load);
+            this.Text = "Point of Sale (POS)";
             this._rootLayout.ResumeLayout(false);
             this._topPanel.ResumeLayout(false);
             this._topPanel.PerformLayout();
@@ -550,6 +588,7 @@ namespace InventoryManagementSystem
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).EndInit();
             this._splitContainer.ResumeLayout(false);
             this._receiptPanel.ResumeLayout(false);
+            this._receiptPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._gridReceipt)).EndInit();
             this._totalsPanel.ResumeLayout(false);
             this._totalsPanel.PerformLayout();
@@ -584,10 +623,13 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button _btnCompleteOrder;
         private System.Windows.Forms.Button _btnPrintReceipt;
         private System.Windows.Forms.Label _lblReceiptTitle;
+        private System.Windows.Forms.Button _btnClearAll;
+        private System.Windows.Forms.Button _btnHoldOrder;
         private System.Windows.Forms.Panel _customerPanel;
         private System.Windows.Forms.Label _lblCustomerPhone;
         private System.Windows.Forms.TextBox _txtCustomerPhone;
         private System.Windows.Forms.Button _btnAddCustomer;
+        private System.Windows.Forms.Button _btnViewHistory;
         private System.Windows.Forms.Label _lblCustomerName;
         private System.Windows.Forms.Panel _paymentPanel;
         private System.Windows.Forms.Label _lblPaymentMethod;

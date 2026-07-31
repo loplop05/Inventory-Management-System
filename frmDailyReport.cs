@@ -81,9 +81,9 @@ namespace InventoryManagementSystem
                 decimal totalRevenue = Convert.ToDecimal(row["TotalRevenue"]);
 
                 _lblOrders.Text = "Orders" + Environment.NewLine + orderCount.ToString();
-                _lblSubtotal.Text = "Subtotal" + Environment.NewLine + dailySubtotal.ToString("C2");
-                _lblTax.Text = "Tax" + Environment.NewLine + taxAmount.ToString("C2");
-                _lblRevenue.Text = "Revenue" + Environment.NewLine + totalRevenue.ToString("C2");
+                _lblSubtotal.Text = "Subtotal" + Environment.NewLine + clsLanguageManager.CurrencySymbol + " " + dailySubtotal.ToString("0.00");
+                _lblTax.Text = "Tax" + Environment.NewLine + clsLanguageManager.CurrencySymbol + " " + taxAmount.ToString("0.00");
+                _lblRevenue.Text = "Revenue" + Environment.NewLine + clsLanguageManager.CurrencySymbol + " " + totalRevenue.ToString("0.00");
 
                 // Apply colors to KPI cards
                 _lblOrders.BackColor = Color.FromArgb(59, 130, 246); // Blue
@@ -98,9 +98,9 @@ namespace InventoryManagementSystem
             else
             {
                 _lblOrders.Text = "Orders" + Environment.NewLine + "0";
-                _lblSubtotal.Text = "Subtotal" + Environment.NewLine + "$0.00";
-                _lblTax.Text = "Tax" + Environment.NewLine + "$0.00";
-                _lblRevenue.Text = "Revenue" + Environment.NewLine + "$0.00";
+                _lblSubtotal.Text = "Subtotal" + Environment.NewLine + clsLanguageManager.CurrencySymbol + " 0.00";
+                _lblTax.Text = "Tax" + Environment.NewLine + clsLanguageManager.CurrencySymbol + " 0.00";
+                _lblRevenue.Text = "Revenue" + Environment.NewLine + clsLanguageManager.CurrencySymbol + " 0.00";
 
                 // Default gray color when no data
                 _lblOrders.BackColor = Color.FromArgb(148, 163, 184);
@@ -135,7 +135,7 @@ namespace InventoryManagementSystem
         private void FormatCurrencyColumn(DataGridView grid, string columnName)
         {
             if (grid.Columns.Contains(columnName))
-                grid.Columns[columnName].DefaultCellStyle.Format = "C2";
+                grid.Columns[columnName].DefaultCellStyle.Format = "0.00";
         }
 
         private void ExportReportCsv()
@@ -165,8 +165,9 @@ namespace InventoryManagementSystem
         {
             StringBuilder builder = new StringBuilder();
 
-            builder.AppendLine("End-of-Day Report");
+            builder.AppendLine("End-of-Day Close-out Report");
             builder.AppendLine("Date," + EscapeCsv(DateTime.Today.ToString("yyyy-MM-dd")));
+            builder.AppendLine("Currency," + EscapeCsv(clsLanguageManager.CurrencyName + " (" + clsLanguageManager.CurrencySymbol + ")"));
             builder.AppendLine();
 
             builder.AppendLine("Summary");
@@ -174,9 +175,9 @@ namespace InventoryManagementSystem
             {
                 DataRow row = _summaryTable.Rows[0];
                 builder.AppendLine("Orders," + EscapeCsv(Convert.ToInt32(row["OrderCount"]).ToString()));
-                builder.AppendLine("Subtotal," + EscapeCsv(Convert.ToDecimal(row["Subtotal"]).ToString("0.00")));
-                builder.AppendLine("Tax," + EscapeCsv(Convert.ToDecimal(row["TaxAmount"]).ToString("0.00")));
-                builder.AppendLine("Revenue," + EscapeCsv(Convert.ToDecimal(row["TotalRevenue"]).ToString("0.00")));
+                builder.AppendLine("Subtotal," + EscapeCsv(clsLanguageManager.CurrencySymbol + " " + Convert.ToDecimal(row["Subtotal"]).ToString("0.00")));
+                builder.AppendLine("Tax," + EscapeCsv(clsLanguageManager.CurrencySymbol + " " + Convert.ToDecimal(row["TaxAmount"]).ToString("0.00")));
+                builder.AppendLine("Revenue," + EscapeCsv(clsLanguageManager.CurrencySymbol + " " + Convert.ToDecimal(row["TotalRevenue"]).ToString("0.00")));
             }
             builder.AppendLine();
 

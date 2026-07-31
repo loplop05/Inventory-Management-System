@@ -219,6 +219,128 @@ namespace InventoryDataAccessLayer
             }
         }
 
+        public static bool VoidOrder(int orderID, string reason, string voidedBy, out string errorMessage)
+        {
+            errorMessage = "";
+            
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    using (SqlTransaction transaction = connection.BeginTransaction())
+                    {
+                        // Check if order exists and is not already voided
+                        string checkQuery = @"
+                            SELECT OrderID, CustomerID, TotalAmount, CouponCode
+                            FROM Orders
+                            WHERE OrderID = @OrderID AND IsVoided = 0";
+                        
+                        int? customerID = null;
+                        decimal totalAmount = 0;
+                        string couponCode = null;
+                        
+                        using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection, transaction))
+                        {
+                            checkCommand.Parameters.AddWithValue("@OrderID", orderID);
+                            using (SqlDataReader reader = checkCommand.ExecuteReader())
+                            {
+                                if (!reader.Read())
+                                {
+                                    reader.Close();
+                                    errorMessage = "Order not found or already voided.";
+                                    transaction.Rollback();
+                                    return false;
+                                }
+                                customerID = reader["CustomerID"] != DBNull.Value ? (int?)reader["CustomerID"] : null;
+                                totalAmount = Convert.ToDecimal(reader["TotalAmount"]);
+                                couponCode = reader["CouponCode"] != DBNull.Value ? reader["CouponCode"].ToString() : null;
+                                reader.Close();
+                            }
+                        }
+
+                        // Get order items to reverse stock
+                        string itemsQuery = @"
+                            SELECT ProductID, Quantity
+                            FROM OrderItems
+                            WHERE OrderID = @OrderID";
+                        
+                        DataTable orderItems = new DataTable();
+                        using (SqlCommand itemsCommand = new SqlCommand(itemsQuery, connection, transaction))
+                        {
+                            itemsCommand.Parameters.AddWithValue("@OrderID", orderID);
+                            using (SqlDataReader reader = itemsCommand.ExecuteReader())
+                            {
+                                orderItems.Load(reader);
+                            }
+                        }
+
+                        // Reverse stock for each item
+                        foreach (DataRow row in orderItems.Rows)
+                        {
+                            int productID = Convert.ToInt32(row["ProductID"]);
+                            int quantity = Convert.ToInt32(row["Quantity"]);
+
+                            using (SqlCommand stockCommand = new SqlCommand(@"
+                                UPDATE Products
+                                SET Quantity = Quantity + @Quantity
+                                WHERE ProductID = @ProductID;", connection, transaction))
+                            {
+                                stockCommand.Parameters.AddWithValue("@ProductID", productID);
+                                stockCommand.Parameters.AddWithValue("@Quantity", quantity);
+                                stockCommand.ExecuteNonQuery();
+                            }
+                        }
+
+                        // Deduct loyalty points if they were awarded (1 point per JOD spent)
+                        if (customerID.HasValue && totalAmount > 0)
+                        {
+                            int pointsToDeduct = (int)Math.Floor(totalAmount);
+                            if (pointsToDeduct > 0)
+                            {
+                                using (SqlCommand loyaltyCommand = new SqlCommand(@"
+                                    UPDATE Customers
+                                    SET LoyaltyPoints = LoyaltyPoints - @PointsToDeduct
+                                    WHERE CustomerID = @CustomerID
+                                      AND LoyaltyPoints >= @PointsToDeduct;", connection, transaction))
+                                {
+                                    loyaltyCommand.Parameters.AddWithValue("@CustomerID", customerID.Value);
+                                    loyaltyCommand.Parameters.AddWithValue("@PointsToDeduct", pointsToDeduct);
+                                    loyaltyCommand.ExecuteNonQuery();
+                                }
+                            }
+                        }
+
+                        // Mark order as voided
+                        string voidQuery = @"
+                            UPDATE Orders
+                            SET IsVoided = 1,
+                                VoidDate = GETDATE(),
+                                VoidReason = @VoidReason,
+                                VoidedBy = @VoidedBy
+                            WHERE OrderID = @OrderID";
+
+                        using (SqlCommand voidCommand = new SqlCommand(voidQuery, connection, transaction))
+                        {
+                            voidCommand.Parameters.AddWithValue("@OrderID", orderID);
+                            voidCommand.Parameters.AddWithValue("@VoidReason", reason ?? "");
+                            voidCommand.Parameters.AddWithValue("@VoidedBy", voidedBy ?? Environment.UserName);
+                            voidCommand.ExecuteNonQuery();
+                        }
+
+                        transaction.Commit();
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = ex.Message;
+                    return false;
+                }
+            }
+        }
+
         public static DataTable GetTodayOrderSummary()
         {
             DataTable dt = new DataTable();
@@ -337,7 +459,14 @@ namespace InventoryDataAccessLayer
                         DiscountAmount DECIMAL(10,2) NOT NULL DEFAULT 0,
                         CouponCode NVARCHAR(50) NULL,
                         TaxAmount DECIMAL(10,2) NOT NULL,
-                        TotalAmount DECIMAL(10,2) NOT NULL
+                        TotalAmount DECIMAL(10,2) NOT NULL,
+                        CustomerID INT NULL,
+                        PaymentMethod NVARCHAR(50) NULL,
+                        PaymentDetails NVARCHAR(200) NULL,
+                        IsVoided BIT NOT NULL DEFAULT 0,
+                        VoidDate DATETIME NULL,
+                        VoidReason NVARCHAR(500) NULL,
+                        VoidedBy NVARCHAR(100) NULL
                     );
                 END;
 
@@ -349,6 +478,41 @@ namespace InventoryDataAccessLayer
                 IF COL_LENGTH('Orders', 'CouponCode') IS NULL
                 BEGIN
                     ALTER TABLE Orders ADD CouponCode NVARCHAR(50) NULL;
+                END;
+
+                IF COL_LENGTH('Orders', 'CustomerID') IS NULL
+                BEGIN
+                    ALTER TABLE Orders ADD CustomerID INT NULL;
+                END;
+
+                IF COL_LENGTH('Orders', 'PaymentMethod') IS NULL
+                BEGIN
+                    ALTER TABLE Orders ADD PaymentMethod NVARCHAR(50) NULL;
+                END;
+
+                IF COL_LENGTH('Orders', 'PaymentDetails') IS NULL
+                BEGIN
+                    ALTER TABLE Orders ADD PaymentDetails NVARCHAR(200) NULL;
+                END;
+
+                IF COL_LENGTH('Orders', 'IsVoided') IS NULL
+                BEGIN
+                    ALTER TABLE Orders ADD IsVoided BIT NOT NULL DEFAULT 0;
+                END;
+
+                IF COL_LENGTH('Orders', 'VoidDate') IS NULL
+                BEGIN
+                    ALTER TABLE Orders ADD VoidDate DATETIME NULL;
+                END;
+
+                IF COL_LENGTH('Orders', 'VoidReason') IS NULL
+                BEGIN
+                    ALTER TABLE Orders ADD VoidReason NVARCHAR(500) NULL;
+                END;
+
+                IF COL_LENGTH('Orders', 'VoidedBy') IS NULL
+                BEGIN
+                    ALTER TABLE Orders ADD VoidedBy NVARCHAR(100) NULL;
                 END;
 
                 IF OBJECT_ID('OrderItems', 'U') IS NULL

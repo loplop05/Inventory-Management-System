@@ -40,6 +40,7 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyTextBoxStyle(_txtPaymentDetails);
             clsFormTheme.ApplyTextBoxStyle(_txtCoupon);
             clsFormTheme.ApplyPrimaryButtonStyle(_btnAddCustomer, clsFormTheme.Icons.User);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnViewHistory, clsFormTheme.Icons.Search);
 
             // ── Coupon ─────────────────────────────────────────────────────────
             clsFormTheme.ApplySuccessButtonStyle(_btnApplyCoupon, clsFormTheme.Icons.Check);
@@ -57,6 +58,10 @@ namespace InventoryManagementSystem
 
             clsFormTheme.ApplySecondaryButtonStyle(_btnPrintReceipt, clsFormTheme.Icons.Print);
             _btnPrintReceipt.Enabled = false;
+
+            // ── New POS improvement buttons ─────────────────────────────────────
+            clsFormTheme.ApplyDangerButtonStyle(_btnClearAll, clsFormTheme.Icons.Delete);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnHoldOrder, clsFormTheme.Icons.Save);
 
             // ── Receipt grid ───────────────────────────────────────────────────
             clsFormTheme.ApplyGridStyle(_gridReceipt);
@@ -91,6 +96,7 @@ namespace InventoryManagementSystem
 
             // Subscribe to barcode scanner events
             clsBarcodeScanner.BarcodeScanned += BarcodeScanned;
+            clsBarcodeScanner.ProductFound += BarcodeProductFound;
         }
 
         private void LoadCustomerPhoneAutoComplete()
@@ -569,6 +575,106 @@ namespace InventoryManagementSystem
             }
         }
 
+        private void btnViewHistory_Click(object sender, EventArgs e)
+        {
+            if (!_selectedCustomerID.HasValue)
+            {
+                MessageBox.Show("Please select a customer first by entering their phone number.", "Customer History", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                _txtCustomerPhone.Focus();
+                return;
+            }
+
+            DataTable orderHistory = clsCustomer.GetCustomerOrders(_selectedCustomerID.Value);
+            
+            if (orderHistory == null || orderHistory.Rows.Count == 0)
+            {
+                MessageBox.Show($"No purchase history found for {_selectedCustomerName}.", "Customer History", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Show history in a dialog
+            using (Form historyForm = new Form
+            {
+                Text = $"Purchase History - {_selectedCustomerName}",
+                Size = new Size(700, 500),
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MinimizeBox = false,
+                MaximizeBox = false
+            })
+            {
+                clsFormTheme.ApplyFormStyle(historyForm);
+                clsFormTheme.CreateHeaderPanel(historyForm, "Customer Purchase History", clsFormTheme.Icons.Reports);
+
+                var mainPanel = new TableLayoutPanel
+                {
+                    Dock = DockStyle.Fill,
+                    ColumnCount = 1,
+                    RowCount = 2,
+                    Padding = new Padding(20)
+                };
+                mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+                mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 50));
+
+                var grid = new DataGridView
+                {
+                    Dock = DockStyle.Fill,
+                    AutoGenerateColumns = false,
+                    ReadOnly = true,
+                    AllowUserToAddRows = false,
+                    DataSource = orderHistory
+                };
+
+                grid.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "OrderID",
+                    HeaderText = "Order ID",
+                    Width = 70
+                });
+                grid.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "OrderDate",
+                    HeaderText = "Date",
+                    Width = 130
+                });
+                grid.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "TotalAmount",
+                    HeaderText = "Total",
+                    Width = 80,
+                    DefaultCellStyle = new DataGridViewCellStyle { Format = "0.00", Alignment = DataGridViewContentAlignment.MiddleRight }
+                });
+                grid.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "PaymentMethod",
+                    HeaderText = "Payment",
+                    Width = 80
+                });
+
+                clsFormTheme.ApplyGridStyle(grid);
+
+                var btnClose = new Button
+                {
+                    Text = "Close",
+                    Width = 100,
+                    Height = 35,
+                    Anchor = AnchorStyles.Bottom | AnchorStyles.Right
+                };
+                clsFormTheme.ApplySecondaryButtonStyle(btnClose, clsFormTheme.Icons.Exit);
+                btnClose.Click += (s, args) => historyForm.Close();
+
+                var btnPanel = new Panel { Dock = DockStyle.Fill };
+                btnPanel.Controls.Add(btnClose);
+                btnClose.Location = new Point(540, 5);
+
+                mainPanel.Controls.Add(grid, 0, 0);
+                mainPanel.Controls.Add(btnPanel, 0, 1);
+
+                historyForm.Controls.Add(mainPanel);
+                historyForm.ShowDialog();
+            }
+        }
+
         private void rbPayment_CheckedChanged(object sender, EventArgs e)
         {
             _txtPaymentDetails.Enabled = _rbVisa.Checked;
@@ -672,6 +778,39 @@ namespace InventoryManagementSystem
             }
         }
 
+        private void btnClearAll_Click(object sender, EventArgs e)
+        {
+            if (_receiptItems.Count == 0)
+            {
+                MessageBox.Show("Receipt is already empty.", "Clear All", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var result = MessageBox.Show("Are you sure you want to clear all items from the receipt?", "Clear All", 
+                MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            
+            if (result == DialogResult.Yes)
+            {
+                _receiptItems.Clear();
+                ClearCoupon();
+                RefreshReceiptTotals();
+                _lblStatus.Text = "Receipt cleared.";
+            }
+        }
+
+        private void btnHoldOrder_Click(object sender, EventArgs e)
+        {
+            if (_receiptItems.Count == 0)
+            {
+                MessageBox.Show("Add items to the receipt before holding an order.", "Hold Order", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // For now, just show a message - this could be expanded to save held orders
+            MessageBox.Show($"Order held with {_receiptItems.Count} items.\n\nThis feature can be expanded to save and retrieve held orders.", 
+                "Hold Order", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         private void gridReceipt_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             if (_gridReceipt.Columns[e.ColumnIndex].DataPropertyName != "Quantity" || e.RowIndex < 0)
@@ -773,17 +912,39 @@ namespace InventoryManagementSystem
 
             if (matches.Length > 0)
             {
-                DataRow row = matches[0];
-                int productID = Convert.ToInt32(row["ProductID"]);
-                string productName = row["ProductName"].ToString();
-                decimal price = Convert.ToDecimal(row["Price"]);
-                int availableStock = Convert.ToInt32(row["Quantity"]);
+                DataRow product = matches[0];
+                int productID = Convert.ToInt32(product["ProductID"]);
+                string productName = product["ProductName"].ToString();
+                decimal price = Convert.ToDecimal(product["Price"]);
+                int availableStock = Convert.ToInt32(product["Quantity"]);
+                string barcodeValue = product["Barcode"].ToString();
+
+                // Add to cache for fast-path next time
+                clsBarcodeScanner.AddToCache(barcodeValue, productID, productName, price);
+
                 AddToReceipt(productID, productName, price, availableStock);
             }
             else
             {
-                MessageBox.Show("Product not found for barcode: " + barcode, "Barcode Scanner", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Product not found for barcode: " + barcode, "Barcode Scan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private void BarcodeProductFound(int productID, string productName, decimal price)
+        {
+            // Fast-path: product found in cache, need to get available stock from products table
+            DataRow[] matches = _productsTable.AsEnumerable()
+                .Where(row => Convert.ToInt32(row["ProductID"]) == productID)
+                .ToArray();
+
+            int availableStock = 0;
+            if (matches.Length > 0)
+            {
+                availableStock = Convert.ToInt32(matches[0]["Quantity"]);
+            }
+
+            // Add to receipt
+            AddToReceipt(productID, productName, price, availableStock);
         }
 
         private void ApplyLocalization()

@@ -78,15 +78,17 @@ namespace InventoryManagementSystem
             this._buttonsPanel.Controls.Add(this.btnPOS, 0, 3);
             this._buttonsPanel.Controls.Add(this.btnDailyReport, 1, 3);
             this._buttonsPanel.Controls.Add(this.btnAuditLogs, 2, 3);
+            this._buttonsPanel.Controls.Add(this.btnHelp, 0, 4);
             this._buttonsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._buttonsPanel.Location = new System.Drawing.Point(3, 3);
             this._buttonsPanel.Name = "_buttonsPanel";
             this._buttonsPanel.Padding = new System.Windows.Forms.Padding(40);
-            this._buttonsPanel.RowCount = 4;
-            this._buttonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this._buttonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this._buttonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this._buttonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this._buttonsPanel.RowCount = 5;
+            this._buttonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this._buttonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this._buttonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this._buttonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
+            this._buttonsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this._buttonsPanel.Size = new System.Drawing.Size(1254, 714);
             this._buttonsPanel.TabIndex = 1;
             this._buttonsPanel.Paint += new System.Windows.Forms.PaintEventHandler(this._buttonsPanel_Paint);
@@ -234,6 +236,18 @@ namespace InventoryManagementSystem
             this.btnAuditLogs.Text = "Audit Logs";
             this.btnAuditLogs.UseVisualStyleBackColor = true;
             this.btnAuditLogs.Click += new System.EventHandler(this.btnAuditLogs_Click);
+            // 
+            // btnHelp
+            // 
+            this.btnHelp.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnHelp.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnHelp.Location = new System.Drawing.Point(43, 597);
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.Size = new System.Drawing.Size(385, 271);
+            this.btnHelp.TabIndex = 12;
+            this.btnHelp.Text = "Help";
+            this.btnHelp.UseVisualStyleBackColor = true;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
             // frmMainMenu
             // 

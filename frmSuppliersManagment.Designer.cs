@@ -40,6 +40,7 @@ namespace InventoryManagementSystem
             this.btnAddSupplier = new System.Windows.Forms.Button();
             this.btnUpdateSupplier = new System.Windows.Forms.Button();
             this.btnDeleteSupplier = new System.Windows.Forms.Button();
+            this.btnViewPerformance = new System.Windows.Forms.Button();
             this._paginationPanel = new System.Windows.Forms.Panel();
             this._btnPreviousPage = new System.Windows.Forms.Button();
             this._lblPageInfo = new System.Windows.Forms.Label();
@@ -158,6 +159,7 @@ namespace InventoryManagementSystem
             this._actionsPanel.Controls.Add(this.btnAddSupplier);
             this._actionsPanel.Controls.Add(this.btnUpdateSupplier);
             this._actionsPanel.Controls.Add(this.btnDeleteSupplier);
+            this._actionsPanel.Controls.Add(this.btnViewPerformance);
             this._actionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._actionsPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this._actionsPanel.Location = new System.Drawing.Point(23, 473);
@@ -197,6 +199,17 @@ namespace InventoryManagementSystem
             this.btnDeleteSupplier.Text = "Delete Supplier";
             this.btnDeleteSupplier.UseVisualStyleBackColor = true;
             this.btnDeleteSupplier.Click += new System.EventHandler(this.btnDeleteSupplier_Click);
+            // 
+            // btnViewPerformance
+            // 
+            this.btnViewPerformance.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.btnViewPerformance.Location = new System.Drawing.Point(280, 3);
+            this.btnViewPerformance.Name = "btnViewPerformance";
+            this.btnViewPerformance.Size = new System.Drawing.Size(150, 51);
+            this.btnViewPerformance.TabIndex = 3;
+            this.btnViewPerformance.Text = "Performance";
+            this.btnViewPerformance.UseVisualStyleBackColor = true;
+            this.btnViewPerformance.Click += new System.EventHandler(this.btnViewPerformance_Click);
             // 
             // _paginationPanel
             // 
@@ -281,6 +294,7 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button btnAddSupplier;
         private System.Windows.Forms.Button btnUpdateSupplier;
         private System.Windows.Forms.Button btnDeleteSupplier;
+        private System.Windows.Forms.Button btnViewPerformance;
         private System.Windows.Forms.DataGridView DataGVSuppliers;
     }
 }
