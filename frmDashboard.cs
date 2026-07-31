@@ -35,6 +35,17 @@ namespace InventoryManagementSystem
 
             // Setup help
             clsHelpSystem.SetupHelp(this, clsHelpSystem.Topics.MainMenu);
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Dashboard");
         }
 
         private void LoadDashboardData()

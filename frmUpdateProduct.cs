@@ -32,9 +32,16 @@ namespace InventoryManagementSystem
             KeyDown += frmUpdateProduct_KeyDown;
 
             clsLanguageManager.ApplyLanguage(this);
-            EventHandler onLanguageChanged = (s, e) => clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
             clsLanguageManager.LanguageChanged += onLanguageChanged;
             FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Update Product");
+            btnSearch.Text = clsLanguageManager.GetString("Find Product");
         }
 
         private bool IsProductLookupValid()

@@ -30,6 +30,18 @@ namespace InventoryManagementSystem
             AcceptButton = btnSearch;
             txtUpdateSupplierID.TextChanged += txtUpdateSupplierID_TextChanged;
             KeyDown += frmUpdateSupplier_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Update Supplier");
+            btnSearch.Text = clsLanguageManager.GetString("Find Supplier");
         }
 
         private bool IsSupplierIDValid()

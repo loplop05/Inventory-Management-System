@@ -35,6 +35,18 @@ namespace InventoryManagementSystem
             AcceptButton = btnSearch;
             txtUpdateCategoryid.TextChanged += txtUpdateCategoryid_TextChanged;
             KeyDown += frmUpdateCategory_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Update Category");
+            btnSearch.Text = clsLanguageManager.GetString("Find Category");
         }
 
         private bool IsCategoryIDValid()

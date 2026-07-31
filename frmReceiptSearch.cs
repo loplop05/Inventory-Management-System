@@ -54,6 +54,20 @@ namespace InventoryManagementSystem
             clsSearchHelper.SetupAutoComplete(_txtOrderID, "ReceiptSearch");
 
             KeyDown += frmReceiptSearch_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Receipt Search");
+            _btnSearch.Text = clsLanguageManager.GetString("Search");
+            _btnViewByPhone.Text = clsLanguageManager.GetString("By Phone");
+            _btnExchange.Text = clsLanguageManager.GetString("Exchange");
         }
 
         private void ClearDisplay()

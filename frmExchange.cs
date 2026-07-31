@@ -63,6 +63,21 @@ namespace InventoryManagementSystem
             btnClose.Font = new Font(clsFormTheme.MainFontName, 10F);
 
             KeyDown += frmExchange_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Product Exchange");
+            btnProcessExchange.Text = clsLanguageManager.GetString("Add");
+            btnRemoveExchange.Text = clsLanguageManager.GetString("Remove");
+            btnConfirmExchange.Text = clsLanguageManager.GetString("Confirm Exchange");
+            btnClose.Text = clsLanguageManager.GetString("Close");
         }
 
         private void LoadOriginalOrder()

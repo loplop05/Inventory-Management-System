@@ -27,6 +27,17 @@ namespace InventoryManagementSystem
             AcceptButton = btnDelete;
             txtSupplierID.TextChanged += txtSupplierID_TextChanged;
             KeyDown += frmDeleteSupplier_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Delete Supplier");
         }
 
         private bool IsSupplierIDValid()

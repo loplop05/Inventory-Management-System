@@ -46,6 +46,18 @@ namespace InventoryManagementSystem
             txtBoxNewPhone.KeyDown += txtBoxNewPhone_KeyDown;
             txtBoxNewEmail.KeyDown += txtBoxNewEmail_KeyDown;
             KeyDown += frmShowSupplierToUpdate_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Edit Supplier");
+            btnUpdate.Text = clsLanguageManager.GetString("Save Changes");
         }
 
         private void frmShowSupplierToUpdate_Load(object sender, EventArgs e)

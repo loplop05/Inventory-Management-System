@@ -39,6 +39,19 @@ namespace InventoryManagementSystem
             btnCancel.Font = new System.Drawing.Font(clsFormTheme.MainFontName, 10F);
 
             KeyDown += frmAddCustomer_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Add New Customer");
+            btnAdd.Text = clsLanguageManager.GetString("Add Customer");
+            btnCancel.Text = clsLanguageManager.GetString("Cancel");
         }
 
         private void ClearValidation()

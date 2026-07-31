@@ -41,6 +41,20 @@ namespace InventoryManagementSystem
             btnCancel.Font = new Font(clsFormTheme.MainFontName, 10F);
 
             KeyDown += frmCustomerReceiptHistory_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Customer Receipt History");
+            btnSearch.Text = clsLanguageManager.GetString("Search");
+            btnSelect.Text = clsLanguageManager.GetString("Select");
+            btnCancel.Text = clsLanguageManager.GetString("Cancel");
         }
 
         private void ClearDisplay()

@@ -36,9 +36,16 @@ namespace InventoryManagementSystem
             KeyDown += frmAddCategory_KeyDown;
 
             clsLanguageManager.ApplyLanguage(this);
-            EventHandler onLanguageChanged = (s, e) => clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
             clsLanguageManager.LanguageChanged += onLanguageChanged;
             FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Add New Category");
+            btnAdd.Text = clsLanguageManager.GetString("Save Category");
         }
 
         public static bool ContainsNumbersAndSpecial(string input)

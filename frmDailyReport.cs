@@ -45,6 +45,20 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplySecondaryButtonStyle(_btnClose, clsFormTheme.Icons.Exit);
 
             KeyDown += frmDailyReport_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Daily Sales Report");
+            _btnRefresh.Text = clsLanguageManager.GetString("Refresh");
+            _btnExportCsv.Text = clsLanguageManager.GetString("Export CSV");
+            _btnClose.Text = clsLanguageManager.GetString("Close");
         }
 
         private void LoadReport()

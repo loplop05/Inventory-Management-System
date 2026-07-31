@@ -56,9 +56,16 @@ namespace InventoryManagementSystem
             KeyDown += frmShowProductToUpdate_KeyDown;
 
             clsLanguageManager.ApplyLanguage(this);
-            EventHandler onLanguageChanged = (s, e) => clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
             clsLanguageManager.LanguageChanged += onLanguageChanged;
             FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Edit Product");
+            btnUpdate.Text = clsLanguageManager.GetString("Save Changes");
         }
 
         private void frmShowProductToUpdate_Load(object sender, EventArgs e)

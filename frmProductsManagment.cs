@@ -71,9 +71,22 @@ namespace InventoryManagementSystem
             KeyDown += frmProductsManagment_KeyDown;
 
             clsLanguageManager.ApplyLanguage(this);
-            EventHandler onLanguageChanged = (s, e) => clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
             clsLanguageManager.LanguageChanged += onLanguageChanged;
             FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Products Management");
+            btnAddProduct.Text = clsLanguageManager.GetString("Add");
+            btnDeleteProduct.Text = clsLanguageManager.GetString("Delete");
+            btnUpdateProduct.Text = clsLanguageManager.GetString("Update");
+            btnStockValuationReport.Text = clsLanguageManager.GetString("Stock Report");
+            _btnRefresh.Text = clsLanguageManager.GetString("Refresh");
+            _btnPreviousPage.Text = clsLanguageManager.GetString("Previous");
+            _btnNextPage.Text = clsLanguageManager.GetString("Next");
         }
 
         private async Task RefreshGridDataAsync()

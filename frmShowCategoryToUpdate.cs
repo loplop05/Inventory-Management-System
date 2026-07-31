@@ -43,6 +43,18 @@ namespace InventoryManagementSystem
             txtBoxNewCategory.TextChanged += txtBoxNewCategory_TextChanged;
             txtBoxNewCategory.KeyDown += txtBoxNewCategory_KeyDown;
             KeyDown += frmShowCategoryToUpdate_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Edit Category");
+            btnUpdate.Text = clsLanguageManager.GetString("Save Changes");
         }
 
         private void frmShowCategoryToUpdate_Load(object sender, EventArgs e)

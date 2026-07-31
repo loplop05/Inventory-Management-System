@@ -31,6 +31,18 @@ namespace InventoryManagementSystem
             btnAdd.Enabled = false;
             AcceptButton = btnAdd;
             KeyDown += frmAddSupplier_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Add New Supplier");
+            btnAdd.Text = clsLanguageManager.GetString("Save Supplier");
         }
 
         private bool IsSupplierNameValid()

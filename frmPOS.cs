@@ -67,7 +67,7 @@ namespace InventoryManagementSystem
             KeyDown += frmPOS_KeyDown;
 
             clsLanguageManager.ApplyLanguage(this);
-            EventHandler onLanguageChanged = (s, e) => clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
             clsLanguageManager.LanguageChanged += onLanguageChanged;
             FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
         }
@@ -86,6 +86,7 @@ namespace InventoryManagementSystem
             RefreshReceiptTotals();
             ClearCustomerInfo();
             LoadCustomerPhoneAutoComplete();
+            ApplyLocalization();
         }
 
         private void LoadCustomerPhoneAutoComplete()
@@ -142,10 +143,10 @@ namespace InventoryManagementSystem
 
             if (_tabsProducts.TabPages.Count == 0)
             {
-                TabPage emptyPage = new TabPage("No Products");
+                TabPage emptyPage = new TabPage(clsLanguageManager.GetString("No Products"));
                 Label empty = new Label
                 {
-                    Text = "No products match your search.",
+                    Text = clsLanguageManager.GetString("No products match your search."),
                     Dock = DockStyle.Fill,
                     TextAlign = ContentAlignment.MiddleCenter,
                     Font = new Font(clsFormTheme.MainFontName, 14F, FontStyle.Bold),
@@ -155,7 +156,7 @@ namespace InventoryManagementSystem
                 _tabsProducts.TabPages.Add(emptyPage);
             }
 
-            _lblStatus.Text = _productsTable.Rows.Count + " products available";
+            _lblStatus.Text = _productsTable.Rows.Count + " " + clsLanguageManager.GetString("products available");
         }
 
         private DataRow[] GetFilteredRows()
@@ -259,7 +260,7 @@ namespace InventoryManagementSystem
             // ── Stock label ────────────────────────────────────────────────────
             Label stockLabel = new Label
             {
-                Text = inStock ? "Stock: " + quantity : "Out of stock",
+                Text = inStock ? clsLanguageManager.GetString("Stock:") + " " + quantity : clsLanguageManager.GetString("Out of stock"),
                 Location = new Point(88, 186),
                 Size = new Size(86, 24),
                 TextAlign = ContentAlignment.MiddleRight,
@@ -340,13 +341,13 @@ namespace InventoryManagementSystem
             decimal tax = Math.Round(taxableAmount * TaxRate, 2);
             decimal total = taxableAmount + tax;
 
-            _lblSubtotal.Text = "Subtotal: " + subtotal.ToString("C2");
+            _lblSubtotal.Text = clsLanguageManager.GetString("Subtotal:") + " " + subtotal.ToString("C2");
             _lblDiscount.Visible = _appliedCoupon != null;
             _lblDiscount.Text = _appliedCoupon == null
                 ? string.Empty
-                : "Discount (" + _appliedCoupon.Code + "): -" + discount.ToString("C2");
-            _lblTax.Text = "Tax (7%): " + tax.ToString("C2");
-            _lblTotal.Text = "Total: " + total.ToString("C2");
+                : clsLanguageManager.GetString("Discount:") + " (" + _appliedCoupon.Code + "): -" + discount.ToString("C2");
+            _lblTax.Text = clsLanguageManager.GetString("Tax (7%):") + " " + tax.ToString("C2");
+            _lblTotal.Text = clsLanguageManager.GetString("Total:") + " " + total.ToString("C2");
 
             _btnCompleteOrder.Enabled = _receiptItems.Count > 0;
             _btnRemoveItem.Enabled = _receiptItems.Count > 0;
@@ -466,7 +467,7 @@ namespace InventoryManagementSystem
             _selectedCustomerName = "";
             _txtCustomerPhone.Text = "";
             _lblCustomerName.Text = "";
-            _btnAddCustomer.Text = "+ New";
+            _btnAddCustomer.Text = clsLanguageManager.GetString("+ New");
             _rbCash.Checked = true;
             _txtPaymentDetails.Text = "";
             _txtPaymentDetails.Enabled = false;
@@ -511,15 +512,15 @@ namespace InventoryManagementSystem
                 _selectedCustomerName = customer.Rows[0]["CustomerName"].ToString();
                 _lblCustomerName.Text = _selectedCustomerName;
                 _lblCustomerName.ForeColor = Color.FromArgb(44, 62, 80);
-                _btnAddCustomer.Text = "Change";
+                _btnAddCustomer.Text = clsLanguageManager.GetString("Change");
             }
             else
             {
                 _selectedCustomerID = null;
                 _selectedCustomerName = "";
-                _lblCustomerName.Text = "New customer";
+                _lblCustomerName.Text = clsLanguageManager.GetString("New customer");
                 _lblCustomerName.ForeColor = Color.FromArgb(96, 125, 139);
-                _btnAddCustomer.Text = "+ New";
+                _btnAddCustomer.Text = clsLanguageManager.GetString("+ New");
             }
         }
 
@@ -542,7 +543,7 @@ namespace InventoryManagementSystem
                     _txtCustomerPhone.Text = addCustomerForm.PhoneNumber;
                     _lblCustomerName.Text = _selectedCustomerName;
                     _lblCustomerName.ForeColor = Color.FromArgb(44, 62, 80);
-                    _btnAddCustomer.Text = "Change";
+                    _btnAddCustomer.Text = clsLanguageManager.GetString("Change");
                 }
             }
         }
@@ -727,6 +728,12 @@ namespace InventoryManagementSystem
             public int AvailableStock { get; set; }
 
             public decimal Subtotal => Quantity * UnitPrice;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Point of Sale (POS)");
         }
 
         private void _topPanel_Paint(object sender, PaintEventArgs e)

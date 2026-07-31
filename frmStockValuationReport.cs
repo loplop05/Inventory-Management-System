@@ -52,6 +52,20 @@ namespace InventoryManagementSystem
             lblEmptyState.Visible = false;
             KeyPreview = true;
             KeyDown += frmStockValuationReport_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+        }
+
+        private void ApplyLocalization()
+        {
+            clsLanguageManager.ApplyLanguage(this);
+            Text = clsLanguageManager.GetString("Stock Valuation Report");
+            btnExportCsv.Text = clsLanguageManager.GetString("Export CSV");
+            btnRefresh.Text = clsLanguageManager.GetString("Refresh");
+            btnClose.Text = clsLanguageManager.GetString("Close");
         }
 
         private async Task LoadReportDataAsync()
