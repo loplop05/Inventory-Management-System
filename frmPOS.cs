@@ -65,6 +65,11 @@ namespace InventoryManagementSystem
             _receiptItems.ListChanged += ReceiptItems_ListChanged;
 
             KeyDown += frmPOS_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => clsLanguageManager.ApplyLanguage(this);
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
         }
 
         private void frmPOS_Load(object sender, EventArgs e)

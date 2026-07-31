@@ -1,4 +1,4 @@
-﻿using InventoryBusinessLayer;
+using InventoryBusinessLayer;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -34,6 +34,11 @@ namespace InventoryManagementSystem
             btnAdd.Enabled = false;
             AcceptButton = btnAdd;
             KeyDown += frmAddCategory_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => clsLanguageManager.ApplyLanguage(this);
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
         }
 
         public static bool ContainsNumbersAndSpecial(string input)

@@ -30,6 +30,11 @@ namespace InventoryManagementSystem
             AcceptButton = btnSearch;
             txtUpdateProductID.TextChanged += txtUpdateProductID_TextChanged;
             KeyDown += frmUpdateProduct_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => clsLanguageManager.ApplyLanguage(this);
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
         }
 
         private bool IsProductLookupValid()

@@ -22,6 +22,7 @@ namespace InventoryManagementSystem
             this.lblSearch = new System.Windows.Forms.Label();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.btnExport = new System.Windows.Forms.Button();
+            this.btnRefresh = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.lblStatus = new System.Windows.Forms.Label();
@@ -36,6 +37,7 @@ namespace InventoryManagementSystem
             this.panelTop.Controls.Add(this.lblSearch);
             this.panelTop.Controls.Add(this.txtSearch);
             this.panelTop.Controls.Add(this.btnExport);
+            this.panelTop.Controls.Add(this.btnRefresh);
             this.panelTop.Controls.Add(this.btnClear);
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 64);
@@ -81,20 +83,30 @@ namespace InventoryManagementSystem
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(550, 15);
+            this.btnExport.Location = new System.Drawing.Point(540, 15);
             this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(120, 32);
+            this.btnExport.Size = new System.Drawing.Size(110, 32);
             this.btnExport.TabIndex = 4;
             this.btnExport.Text = "Export CSV";
             this.btnExport.UseVisualStyleBackColor = true;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
+            // btnRefresh
+            // 
+            this.btnRefresh.Location = new System.Drawing.Point(660, 15);
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(100, 32);
+            this.btnRefresh.TabIndex = 5;
+            this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.UseVisualStyleBackColor = true;
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(680, 15);
+            this.btnClear.Location = new System.Drawing.Point(770, 15);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(110, 32);
-            this.btnClear.TabIndex = 5;
+            this.btnClear.Size = new System.Drawing.Size(100, 32);
+            this.btnClear.TabIndex = 6;
             this.btnClear.Text = "Clear Logs";
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
@@ -138,6 +150,7 @@ namespace InventoryManagementSystem
             this.Name = "frmAuditLog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "System Audit Logs & Activity";
+            this.Activated += new System.EventHandler(this.frmAuditLog_Activated);
             this.Load += new System.EventHandler(this.frmAuditLog_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvAuditLogs)).EndInit();
             this.panelTop.ResumeLayout(false);
@@ -153,6 +166,7 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Label lblSearch;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Button btnExport;
+        private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Label lblStatus;

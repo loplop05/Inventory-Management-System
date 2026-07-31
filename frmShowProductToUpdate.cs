@@ -54,6 +54,11 @@ namespace InventoryManagementSystem
             cmbNewCategory.KeyDown += cmbNewCategory_KeyDown;
             cmbNewSupplier.KeyDown += cmbNewSupplier_KeyDown;
             KeyDown += frmShowProductToUpdate_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => clsLanguageManager.ApplyLanguage(this);
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
         }
 
         private void frmShowProductToUpdate_Load(object sender, EventArgs e)

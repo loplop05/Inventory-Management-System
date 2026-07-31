@@ -35,6 +35,11 @@ namespace InventoryManagementSystem
             btnAdd.Enabled = false;
             AcceptButton = btnAdd;
             KeyDown += frmAddProduct_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => clsLanguageManager.ApplyLanguage(this);
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
         }
 
         private void frmAddProduct_Load(object sender, EventArgs e)

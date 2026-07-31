@@ -16,11 +16,15 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyComboBoxStyle(cmbModule);
             clsFormTheme.ApplyTextBoxStyle(txtSearch);
             clsFormTheme.ApplyPrimaryButtonStyle(btnExport);
+            clsFormTheme.ApplySecondaryButtonStyle(btnRefresh);
             clsFormTheme.ApplyDangerButtonStyle(btnClear);
             clsFormTheme.ApplySecondaryButtonStyle(btnClose);
             clsFormTheme.ApplyGridStyle(dgvAuditLogs);
 
-            clsLanguageManager.LanguageChanged += (s, e) => ApplyLocalization();
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
         }
 
         private void frmAuditLog_Load(object sender, EventArgs e)
@@ -33,14 +37,20 @@ namespace InventoryManagementSystem
             LoadAuditLogs();
         }
 
+        private void frmAuditLog_Activated(object sender, EventArgs e)
+        {
+            LoadAuditLogs();
+        }
+
         private void ApplyLocalization()
         {
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Audit Logs");
             lblModule.Text = clsLanguageManager.GetString("Module") + ":";
             lblSearch.Text = clsLanguageManager.GetString("Search") + ":";
-            btnExport.Text = clsLanguageManager.GetString("Export");
-            btnClear.Text = clsLanguageManager.GetString("Clear");
+            btnExport.Text = clsLanguageManager.GetString("Export CSV");
+            btnRefresh.Text = clsLanguageManager.GetString("Refresh");
+            btnClear.Text = clsLanguageManager.GetString("Clear Logs");
             btnClose.Text = clsLanguageManager.GetString("Close");
         }
 
@@ -69,6 +79,11 @@ namespace InventoryManagementSystem
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
+        {
+            LoadAuditLogs();
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
         {
             LoadAuditLogs();
         }

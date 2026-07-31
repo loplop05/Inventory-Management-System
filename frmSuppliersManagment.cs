@@ -64,6 +64,11 @@ namespace InventoryManagementSystem
 
             _lblEmptyState.Visible = false;
             KeyDown += frmSuppliersManagment_KeyDown;
+
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => clsLanguageManager.ApplyLanguage(this);
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
         }
 
         private async Task RefreshGridDataAsync()
