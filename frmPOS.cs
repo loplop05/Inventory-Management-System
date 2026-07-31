@@ -751,12 +751,17 @@ namespace InventoryManagementSystem
                 CompleteOrder();
                 e.SuppressKeyPress = true;
             }
+            // Don't suppress other keys - allow normal typing in textboxes
         }
 
         private void frmPOS_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Process barcode scanner input
-            clsBarcodeScanner.ProcessKeyPress(e);
+            // Process barcode scanner input ONLY when not typing in a textbox
+            // This prevents interference with normal typing in coupon/search/payment fields
+            if (!(this.ActiveControl is TextBox))
+            {
+                clsBarcodeScanner.ProcessKeyPress(e, this.ActiveControl);
+            }
         }
 
         private void BarcodeScanned(string barcode)

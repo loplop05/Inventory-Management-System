@@ -145,19 +145,19 @@ namespace InventoryManagementSystem
             btnHelp.TextAlign = ContentAlignment.MiddleCenter;
             _toolTip.SetToolTip(btnHelp, "View help and keyboard shortcuts (F1)");
 
-            // ── Theme Toggle button ────────────────────────────────────────────
-            btnThemeToggle.Text = clsFormTheme.IsDarkMode ? "Light Mode" : "Dark Mode";
-            btnThemeToggle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            btnThemeToggle.BackColor = Color.FromArgb(99, 102, 241); // Indigo
-            btnThemeToggle.ForeColor = Color.White;
-            btnThemeToggle.FlatStyle = FlatStyle.Flat;
-            btnThemeToggle.FlatAppearance.BorderSize = 0;
-            btnThemeToggle.TextAlign = ContentAlignment.MiddleCenter;
-            _toolTip.SetToolTip(btnThemeToggle, "Toggle between light and dark theme");
+            // ── Theme Toggle button - uncomment after adding to Designer ───────────
+            // btnThemeToggle.Text = clsFormTheme.IsDarkMode ? "Light Mode" : "Dark Mode";
+            // btnThemeToggle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            // btnThemeToggle.BackColor = Color.FromArgb(99, 102, 241); // Indigo
+            // btnThemeToggle.ForeColor = Color.White;
+            // btnThemeToggle.FlatStyle = FlatStyle.Flat;
+            // btnThemeToggle.FlatAppearance.BorderSize = 0;
+            // btnThemeToggle.TextAlign = ContentAlignment.MiddleCenter;
+            // _toolTip.SetToolTip(btnThemeToggle, "Toggle between light and dark theme");
 
             KeyDown += frmMainMenu_KeyDown;
             clsLanguageManager.LanguageChanged += (s, e) => ApplyLocalization();
-            clsFormTheme.ThemeChanged += (s, e) => UpdateThemeButton();
+            // clsFormTheme.ThemeChanged += (s, e) => UpdateThemeButton();
 
             clsAuditLog.LogAction("Application Started", "Inventory System main menu loaded", "System");
         }
@@ -256,6 +256,8 @@ namespace InventoryManagementSystem
             clsHelpSystem.ShowHelpForm(clsHelpSystem.Topics.KeyboardShortcuts);
         }
 
+        // Theme toggle handler - uncomment after adding button to Designer
+        /*
         private void btnThemeToggle_Click(object sender, EventArgs e)
         {
             clsFormTheme.ToggleTheme();
@@ -265,6 +267,7 @@ namespace InventoryManagementSystem
         {
             btnThemeToggle.Text = clsFormTheme.IsDarkMode ? "Light Mode" : "Dark Mode";
         }
+        */
 
         private void frmMainMenu_KeyDown(object sender, KeyEventArgs e)
         {
@@ -275,9 +278,11 @@ namespace InventoryManagementSystem
         private void frmMainMenu_Load(object sender, EventArgs e)
         {
             ApplyLocalization();
-            ApplyRoleBasedAccess();
+            // ApplyRoleBasedAccess(); // Uncomment after adding login functionality
         }
 
+        // Role-based access control - uncomment after implementing login system
+        /*
         private void ApplyRoleBasedAccess()
         {
             // If user is not logged in or is a cashier, hide admin-only buttons
@@ -317,6 +322,7 @@ namespace InventoryManagementSystem
                 btnHelp.Visible = true;
             }
         }
+        */
 
         private void _buttonsPanel_Paint(object sender, PaintEventArgs e)
         {

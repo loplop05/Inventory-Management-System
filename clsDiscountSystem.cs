@@ -49,7 +49,7 @@ namespace InventoryManagementSystem
                     switch (Type)
                     {
                         case DiscountType.Percentage: return Value.ToString("0.##") + "%";
-                        case DiscountType.FixedAmount: return Value.ToString("C2");
+                        case DiscountType.FixedAmount: return clsLanguageManager.CurrencySymbol + " " + Value.ToString("0.00");
                         case DiscountType.LoyaltyPoints: return Value.ToString("0") + " pts";
                         default: return "—";
                     }
@@ -91,8 +91,8 @@ namespace InventoryManagementSystem
             public DateTime LastPurchase { get; set; }
 
             // Points conversion rate
-            public const int PointsPerDollar = 1;
-            public const int PointsForDiscount = 100; // 100 points = $1 discount
+            public const int PointsPerDinar = 1;
+            public const int PointsForDiscount = 100; // 100 points = 1 JOD discount
         }
 
         // ─── Coupon Management ────────────────────────────────────────────────
@@ -186,7 +186,7 @@ namespace InventoryManagementSystem
 
             if (purchaseAmount < coupon.MinimumPurchase)
             {
-                reason = "Coupon '" + coupon.Code + "' requires a minimum purchase of " + coupon.MinimumPurchase.ToString("C2") + ".";
+                reason = "Coupon '" + coupon.Code + "' requires a minimum purchase of " + clsLanguageManager.CurrencySymbol + " " + coupon.MinimumPurchase.ToString("0.00") + ".";
                 return null;
             }
 
@@ -400,7 +400,7 @@ namespace InventoryManagementSystem
             AddCoupon(new Coupon
             {
                 Code = "FLAT5",
-                Description = "$5 off your purchase",
+                Description = "5 JOD off your purchase",
                 Type = DiscountType.FixedAmount,
                 Value = 5,
                 MinimumPurchase = 25,
@@ -420,7 +420,7 @@ namespace InventoryManagementSystem
             AddCoupon(new Coupon
             {
                 Code = "LOYALTY100",
-                Description = "Redeem 100 loyalty points for $1 off",
+                Description = "Redeem 100 loyalty points for 1 JOD off",
                 Type = DiscountType.LoyaltyPoints,
                 Value = 100,
                 MinimumPurchase = 10,
@@ -604,7 +604,7 @@ namespace InventoryManagementSystem
             grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Description", HeaderText = "Description", FillWeight = 200 });
             grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Type", HeaderText = "Type", FillWeight = 95 });
             grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "ValueText", HeaderText = "Value", FillWeight = 65, DefaultCellStyle = rightAligned });
-            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "MinimumPurchase", HeaderText = "Min. Purchase", FillWeight = 95, DefaultCellStyle = new DataGridViewCellStyle { Alignment = DataGridViewContentAlignment.MiddleRight, Format = "C2" } });
+            grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "MinimumPurchase", HeaderText = "Min. Purchase", FillWeight = 95, DefaultCellStyle = rightAligned });
             grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "UsageText", HeaderText = "Used", FillWeight = 70, DefaultCellStyle = centered });
             grid.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "ExpiryText", HeaderText = "Expires", FillWeight = 85, DefaultCellStyle = centered });
             grid.Columns.Add(new DataGridViewCheckBoxColumn { DataPropertyName = "IsActive", HeaderText = "Active", FillWeight = 55 });

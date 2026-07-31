@@ -21,10 +21,17 @@ namespace InventoryManagementSystem
         /// <summary>
         /// Processes a key press to detect barcode scanner input.
         /// Call this from the form's KeyPress event.
+        /// Only processes barcode input when focus is NOT on a text input field.
         /// </summary>
-        public static bool ProcessKeyPress(KeyPressEventArgs e)
+        public static bool ProcessKeyPress(KeyPressEventArgs e, Control activeControl = null)
         {
             char keyChar = e.KeyChar;
+
+            // Don't intercept if user is typing in a textbox (e.g., coupon, search, payment)
+            if (activeControl is TextBox)
+            {
+                return false;
+            }
 
             // Barcode scanners typically send digits and end with Enter
             if (char.IsDigit(keyChar) || keyChar == '-')

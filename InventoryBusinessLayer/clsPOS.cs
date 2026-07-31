@@ -49,12 +49,38 @@ namespace InventoryBusinessLayer
 
         public static DataTable GetLowStockProducts(int threshold)
         {
-            return clsProduct.GetAllProducts();
+            DataTable allProducts = clsProduct.GetAllProducts();
+            DataTable lowStock = allProducts.Clone();
+            
+            foreach (DataRow row in allProducts.Rows)
+            {
+                int quantity = 0;
+                if (row["Quantity"] != DBNull.Value)
+                {
+                    quantity = Convert.ToInt32(row["Quantity"]);
+                }
+                
+                if (quantity < threshold)
+                {
+                    lowStock.ImportRow(row);
+                }
+            }
+            
+            return lowStock;
         }
 
         public static DataTable GetRecentOrders(int count)
         {
-            return clsPOSData.GetTodayOrders();
+            DataTable allOrders = clsPOSData.GetTodayOrders();
+            DataTable recentOrders = allOrders.Clone();
+            
+            int rowsToCopy = Math.Min(count, allOrders.Rows.Count);
+            for (int i = 0; i < rowsToCopy; i++)
+            {
+                recentOrders.ImportRow(allOrders.Rows[i]);
+            }
+            
+            return recentOrders;
         }
 
         public static bool ProcessExchange(int orderID, List<clsPOSData.ExchangeItemInfo> returnedItems, List<clsPOSData.ReplacementItemInfo> replacementItems, out string errorMessage)

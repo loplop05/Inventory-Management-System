@@ -406,7 +406,6 @@ namespace InventoryManagementSystem
             // 
             // _txtCoupon
             // 
-            this._txtCoupon.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this._txtCoupon.Location = new System.Drawing.Point(74, 10);
             this._txtCoupon.MaxLength = 30;
             this._txtCoupon.Name = "_txtCoupon";

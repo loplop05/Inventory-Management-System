@@ -34,21 +34,30 @@ namespace InventoryManagementSystem
 
         private static void SaveThemePreference()
         {
-            // Save to user settings (simplified - use Properties.Settings in production)
-            Properties.Settings.Default.DarkMode = IsDarkMode;
-            Properties.Settings.Default.Save();
+            // Save to user settings - disabled until Settings.DarkMode is configured
+            // try
+            // {
+            //     Properties.Settings.Default.DarkMode = IsDarkMode;
+            //     Properties.Settings.Default.Save();
+            // }
+            // catch
+            // {
+            //     // Settings may not be configured yet
+            // }
         }
 
         private static void LoadThemePreference()
         {
-            try
-            {
-                IsDarkMode = Properties.Settings.Default.DarkMode;
-            }
-            catch
-            {
-                IsDarkMode = false;
-            }
+            // Load from user settings - disabled until Settings.DarkMode is configured
+            // try
+            // {
+            //     IsDarkMode = Properties.Settings.Default.DarkMode;
+            // }
+            // catch
+            // {
+            //     IsDarkMode = false;
+            // }
+            IsDarkMode = false; // Default to light mode
         }
 
         static clsFormTheme()

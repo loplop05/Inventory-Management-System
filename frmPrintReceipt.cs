@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Forms;
 using InventoryBusinessLayer;
-using InventoryManagementSystem;
 
 namespace InventoryManagementSystem
 {
@@ -32,9 +31,11 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyTextBoxStyle(_txtOrderID);
             clsFormTheme.ApplyPrimaryButtonStyle(_btnSearch, clsFormTheme.Icons.Search);
             clsFormTheme.ApplySuccessButtonStyle(_btnPrint, clsFormTheme.Icons.Print);
-            clsFormTheme.ApplySecondaryButtonStyle(_btnShareWhatsApp, clsFormTheme.Icons.Share);
-            clsFormTheme.ApplySecondaryButtonStyle(_btnShareEmail, clsFormTheme.Icons.Email);
-            clsFormTheme.ApplySecondaryButtonStyle(_btnCopy, clsFormTheme.Icons.Copy);
+
+            // Share buttons - uncomment after adding controls to Designer
+            // clsFormTheme.ApplySecondaryButtonStyle(_btnShareWhatsApp, clsFormTheme.Icons.Share);
+            // clsFormTheme.ApplySecondaryButtonStyle(_btnShareEmail, clsFormTheme.Icons.Email);
+            // clsFormTheme.ApplySecondaryButtonStyle(_btnCopy, clsFormTheme.Icons.Copy);
 
             KeyDown += frmPrintReceipt_KeyDown;
 
@@ -279,6 +280,8 @@ namespace InventoryManagementSystem
             }
         }
 
+        // Share button handlers - uncomment after adding controls to Designer
+        /*
         private void btnShareWhatsApp_Click(object sender, EventArgs e)
         {
             if (_currentOrderID == -1 || _currentOrderDetails == null || _currentOrderItems == null)
@@ -359,5 +362,6 @@ namespace InventoryManagementSystem
 
             return receipt;
         }
+        */
     }
 }

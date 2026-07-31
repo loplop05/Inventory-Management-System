@@ -239,6 +239,10 @@
     <Compile Include="clsLowStockAlerts.cs" />
     <Compile Include="clsAdvancedReports.cs" />
     <Compile Include="clsDiscountSystem.cs" />
+    <Compile Include="clsBarcodeScanner.cs" />
+    <Compile Include="clsUserManagement.cs" />
+    <Compile Include="clsReceiptSharing.cs" />
+    <Compile Include="clsReorderSuggestions.cs" />
     <Compile Include="frmDashboard.cs">
       <SubType>Form</SubType>
     </Compile>

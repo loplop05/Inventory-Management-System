@@ -23,6 +23,10 @@ namespace InventoryManagementSystem
 
         public static event EventHandler LanguageChanged;
 
+        // Currency settings
+        public static string CurrencySymbol => CurrentLanguage == AppLanguage.Arabic ? "د.أ" : "JOD";
+        public static string CurrencyName => CurrentLanguage == AppLanguage.Arabic ? "دينار اردني" : "Jordanian Dinar";
+
         private static readonly Dictionary<string, (string En, string Ar)> _translations =
             new Dictionary<string, (string En, string Ar)>(StringComparer.OrdinalIgnoreCase)
             {
