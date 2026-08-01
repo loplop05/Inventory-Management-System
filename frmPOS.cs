@@ -600,12 +600,12 @@ namespace InventoryManagementSystem
 
         private void btnAddCustomer_Click(object sender, EventArgs e)
         {
-            using (frmAddCustomer addCustomerForm = new frmAddCustomer())
+            using (frmAddCustomerPOS addCustomerForm = new frmAddCustomerPOS())
             {
                 // Pre-fill phone number if entered
                 if (!string.IsNullOrWhiteSpace(_txtCustomerPhone.Text))
                 {
-                    addCustomerForm.PhoneNumber = _txtCustomerPhone.Text.Trim();
+                    addCustomerForm.txtPhone.Text = _txtCustomerPhone.Text.Trim();
                 }
 
                 DialogResult result = addCustomerForm.ShowDialog(this);
@@ -614,7 +614,7 @@ namespace InventoryManagementSystem
                 {
                     _selectedCustomerID = addCustomerForm.CustomerID;
                     _selectedCustomerName = addCustomerForm.CustomerName;
-                    _txtCustomerPhone.Text = addCustomerForm.PhoneNumber;
+                    _txtCustomerPhone.Text = addCustomerForm.txtPhone.Text;
                     _lblCustomerName.Text = _selectedCustomerName;
                     _lblCustomerName.ForeColor = Color.FromArgb(44, 62, 80);
                     _btnAddCustomer.Text = clsLanguageManager.GetString("Change");

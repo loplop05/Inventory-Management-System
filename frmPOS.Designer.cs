@@ -147,9 +147,9 @@ namespace InventoryManagementSystem
             this._customerPanel.Controls.Add(this._btnAddCustomer);
             this._customerPanel.Controls.Add(this._btnViewHistory);
             this._customerPanel.Controls.Add(this._lblCustomerName);
-            this._customerPanel.Location = new System.Drawing.Point(18, 69);
+            this._customerPanel.Location = new System.Drawing.Point(18, 50);
             this._customerPanel.Name = "_customerPanel";
-            this._customerPanel.Size = new System.Drawing.Size(1445, 53);
+            this._customerPanel.Size = new System.Drawing.Size(1445, 40);
             this._customerPanel.TabIndex = 5;
             // 
             // _lblCustomerPhone
@@ -212,9 +212,9 @@ namespace InventoryManagementSystem
             this._paymentPanel.Controls.Add(this._rbVisa);
             this._paymentPanel.Controls.Add(this._txtPaymentDetails);
             this._paymentPanel.Controls.Add(this._lblPaymentDetails);
-            this._paymentPanel.Location = new System.Drawing.Point(18, 133);
+            this._paymentPanel.Location = new System.Drawing.Point(18, 95);
             this._paymentPanel.Name = "_paymentPanel";
-            this._paymentPanel.Size = new System.Drawing.Size(1445, 48);
+            this._paymentPanel.Size = new System.Drawing.Size(1445, 35);
             this._paymentPanel.TabIndex = 6;
             // 
             // _lblPaymentMethod
@@ -275,7 +275,7 @@ namespace InventoryManagementSystem
             // _splitContainer
             // 
             this._splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._splitContainer.Location = new System.Drawing.Point(3, 131);
+            this._splitContainer.Location = new System.Drawing.Point(3, 95);
             this._splitContainer.Name = "_splitContainer";
             // 
             // _splitContainer.Panel1
@@ -287,8 +287,8 @@ namespace InventoryManagementSystem
             // 
             this._splitContainer.Panel2.Controls.Add(this._receiptPanel);
             this._splitContainer.Panel2.Padding = new System.Windows.Forms.Padding(0, 15, 16, 15);
-            this._splitContainer.Size = new System.Drawing.Size(1714, 691);
-            this._splitContainer.SplitterDistance = 965;
+            this._splitContainer.Size = new System.Drawing.Size(1714, 727);
+            this._splitContainer.SplitterDistance = 1100;
             this._splitContainer.SplitterWidth = 5;
             this._splitContainer.TabIndex = 1;
             // 
@@ -425,8 +425,8 @@ namespace InventoryManagementSystem
             this._totalsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this._totalsPanel.Location = new System.Drawing.Point(16, 360);
             this._totalsPanel.Name = "_totalsPanel";
-            this._totalsPanel.Padding = new System.Windows.Forms.Padding(0, 13, 0, 0);
-            this._totalsPanel.Size = new System.Drawing.Size(696, 286);
+            this._totalsPanel.Padding = new System.Windows.Forms.Padding(0, 10, 0, 0);
+            this._totalsPanel.Size = new System.Drawing.Size(696, 320);
             this._totalsPanel.TabIndex = 3;
             this._totalsPanel.Resize += new System.EventHandler(this.totalsPanel_Resize);
             // 

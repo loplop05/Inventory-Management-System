@@ -53,9 +53,11 @@ namespace InventoryManagementSystem
             }
 
             string errorMessage;
-            int customerID = clsCustomer.AddCustomer(name, phone, email, address, out errorMessage);
+            int customerID;
 
-            if (customerID > 0)
+            bool success = clsCustomer.AddCustomer(phone, name, out customerID, out errorMessage);
+
+            if (success && customerID > 0)
             {
                 CustomerID = customerID;
                 CustomerName = name;
