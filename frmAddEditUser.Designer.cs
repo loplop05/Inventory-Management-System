@@ -94,6 +94,7 @@ namespace InventoryManagementSystem
             this.txtUsername.Name = "txtUsername";
             this.txtUsername.Size = new System.Drawing.Size(250, 27);
             this.txtUsername.TabIndex = 5;
+            this.txtUsername.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUsername_KeyPress);
             // 
             // txtDisplayName
             // 
@@ -137,6 +138,7 @@ namespace InventoryManagementSystem
             this.btnSave.TabIndex = 10;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnCancel
             // 
@@ -147,6 +149,7 @@ namespace InventoryManagementSystem
             this.btnCancel.TabIndex = 11;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // frmAddEditUser
             // 
@@ -168,6 +171,8 @@ namespace InventoryManagementSystem
             this.KeyPreview = true;
             this.Name = "frmAddEditUser";
             this.Text = "Add/Edit User";
+            this.Load += new System.EventHandler(this.frmAddEditUser_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.txtUsername)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
         }

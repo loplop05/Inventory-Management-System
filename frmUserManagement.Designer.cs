@@ -67,6 +67,7 @@ namespace InventoryManagementSystem
             this._txtSearch.Name = "_txtSearch";
             this._txtSearch.Size = new System.Drawing.Size(300, 27);
             this._txtSearch.TabIndex = 1;
+            this._txtSearch.TextChanged += new System.EventHandler(this._txtSearch_TextChanged);
             // 
             // _btnRefresh
             // 
@@ -75,7 +76,9 @@ namespace InventoryManagementSystem
             this._btnRefresh.Name = "_btnRefresh";
             this._btnRefresh.Size = new System.Drawing.Size(96, 27);
             this._btnRefresh.TabIndex = 2;
+            this._btnRefresh.Text = "Refresh";
             this._btnRefresh.UseVisualStyleBackColor = true;
+            this._btnRefresh.Click += new System.EventHandler(this._btnRefresh_Click);
             // 
             // btnAddUser
             // 
@@ -84,7 +87,9 @@ namespace InventoryManagementSystem
             this.btnAddUser.Name = "btnAddUser";
             this.btnAddUser.Size = new System.Drawing.Size(100, 38);
             this.btnAddUser.TabIndex = 3;
+            this.btnAddUser.Text = "Add";
             this.btnAddUser.UseVisualStyleBackColor = true;
+            this.btnAddUser.Click += new System.EventHandler(this.btnAddUser_Click);
             // 
             // btnEditUser
             // 
@@ -93,7 +98,9 @@ namespace InventoryManagementSystem
             this.btnEditUser.Name = "btnEditUser";
             this.btnEditUser.Size = new System.Drawing.Size(100, 38);
             this.btnEditUser.TabIndex = 4;
+            this.btnEditUser.Text = "Edit";
             this.btnEditUser.UseVisualStyleBackColor = true;
+            this.btnEditUser.Click += new System.EventHandler(this.btnEditUser_Click);
             // 
             // btnDeactivateUser
             // 
@@ -102,7 +109,9 @@ namespace InventoryManagementSystem
             this.btnDeactivateUser.Name = "btnDeactivateUser";
             this.btnDeactivateUser.Size = new System.Drawing.Size(120, 38);
             this.btnDeactivateUser.TabIndex = 5;
+            this.btnDeactivateUser.Text = "Deactivate";
             this.btnDeactivateUser.UseVisualStyleBackColor = true;
+            this.btnDeactivateUser.Click += new System.EventHandler(this.btnDeactivateUser_Click);
             // 
             // btnChangePassword
             // 
@@ -111,7 +120,9 @@ namespace InventoryManagementSystem
             this.btnChangePassword.Name = "btnChangePassword";
             this.btnChangePassword.Size = new System.Drawing.Size(140, 38);
             this.btnChangePassword.TabIndex = 6;
+            this.btnChangePassword.Text = "Change Password";
             this.btnChangePassword.UseVisualStyleBackColor = true;
+            this.btnChangePassword.Click += new System.EventHandler(this.btnChangePassword_Click);
             // 
             // _lblPageInfo
             // 
@@ -130,7 +141,9 @@ namespace InventoryManagementSystem
             this._btnPreviousPage.Name = "_btnPreviousPage";
             this._btnPreviousPage.Size = new System.Drawing.Size(80, 30);
             this._btnPreviousPage.TabIndex = 8;
+            this._btnPreviousPage.Text = "\u2039  Prev";
             this._btnPreviousPage.UseVisualStyleBackColor = true;
+            this._btnPreviousPage.Click += new System.EventHandler(this._btnPreviousPage_Click);
             // 
             // _btnNextPage
             // 
@@ -139,7 +152,9 @@ namespace InventoryManagementSystem
             this._btnNextPage.Name = "_btnNextPage";
             this._btnNextPage.Size = new System.Drawing.Size(80, 30);
             this._btnNextPage.TabIndex = 9;
+            this._btnNextPage.Text = "Next  \u203A";
             this._btnNextPage.UseVisualStyleBackColor = true;
+            this._btnNextPage.Click += new System.EventHandler(this._btnNextPage_Click);
             // 
             // _lblEmptyState
             // 
@@ -175,6 +190,8 @@ namespace InventoryManagementSystem
             this.KeyPreview = true;
             this.Name = "frmUserManagement";
             this.Text = "User Management";
+            this.Load += new System.EventHandler(this.frmUserManagement_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmUserManagement_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.DataGVUsers)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

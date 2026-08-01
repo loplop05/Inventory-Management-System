@@ -72,6 +72,7 @@ namespace InventoryManagementSystem
             this.txtNewPassword.Name = "txtNewPassword";
             this.txtNewPassword.Size = new System.Drawing.Size(250, 27);
             this.txtNewPassword.TabIndex = 3;
+            this.txtNewPassword.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNewPassword_KeyPress);
             // 
             // txtConfirmPassword
             // 
@@ -90,6 +91,7 @@ namespace InventoryManagementSystem
             this.btnSave.TabIndex = 5;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnCancel
             // 
@@ -100,6 +102,7 @@ namespace InventoryManagementSystem
             this.btnCancel.TabIndex = 6;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // frmChangePassword
             // 
@@ -116,6 +119,7 @@ namespace InventoryManagementSystem
             this.KeyPreview = true;
             this.Name = "frmChangePassword";
             this.Text = "Change Password";
+            this.Load += new System.EventHandler(this.frmChangePassword_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
         }

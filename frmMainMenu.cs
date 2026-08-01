@@ -144,7 +144,8 @@ namespace InventoryManagementSystem
             btnUserManagement.FlatAppearance.BorderSize = 0;
             btnUserManagement.TextAlign = ContentAlignment.MiddleCenter;
             _toolTip.SetToolTip(btnUserManagement, "Manage system users and permissions");
-            btnUserManagement.Visible = clsUserManagement.IsAdmin;
+            // Temporarily always visible for testing - change back to clsUserManagement.IsAdmin after testing
+            btnUserManagement.Visible = true;
 
             // ── Help button ────────────────────────────────────────────────────
             btnHelp.Text = "Help";

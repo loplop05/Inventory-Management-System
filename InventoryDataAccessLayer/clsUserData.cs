@@ -181,6 +181,14 @@ namespace InventoryDataAccessLayer
                 {
                     connection.Open();
 
+                    // Ensure Users table exists
+                    EnsureUserTableAndSeedAdmin(out string setupError);
+                    if (!string.IsNullOrWhiteSpace(setupError))
+                    {
+                        errorMessage = "Failed to setup user table: " + setupError;
+                        return false;
+                    }
+
                     // Check if username already exists
                     string checkQuery = "SELECT COUNT(*) FROM Users WHERE Username = @Username";
                     using (SqlCommand checkCommand = new SqlCommand(checkQuery, connection))
@@ -216,7 +224,7 @@ namespace InventoryDataAccessLayer
                 }
                 catch (Exception ex)
                 {
-                    errorMessage = ex.Message;
+                    errorMessage = "Database error: " + ex.Message;
                     return false;
                 }
             }
