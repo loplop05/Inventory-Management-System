@@ -62,6 +62,8 @@ namespace InventoryManagementSystem
             // ── New POS improvement buttons ─────────────────────────────────────
             clsFormTheme.ApplyDangerButtonStyle(_btnClearAll, clsFormTheme.Icons.Delete);
             clsFormTheme.ApplySecondaryButtonStyle(_btnHoldOrder, clsFormTheme.Icons.Save);
+            clsFormTheme.ApplyPrimaryButtonStyle(_btnQuickAdd, clsFormTheme.Icons.Add);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnVoidLast, clsFormTheme.Icons.Cancel);
 
             // ── Receipt grid ───────────────────────────────────────────────────
             clsFormTheme.ApplyGridStyle(_gridReceipt);
@@ -232,7 +234,11 @@ namespace InventoryManagementSystem
             if (!string.IsNullOrWhiteSpace(imagePath))
             {
                 try { picture.LoadAsync(imagePath); }
-                catch { /* ignore load errors */ }
+                catch (Exception ex)
+                {
+                    clsAuditLog.LogError("frmPOS.CreateProductTile", ex);
+                    _lblStatus.Text = clsLanguageManager.GetString("Unable to load product image.");
+                }
             }
 
             // ── Product name ───────────────────────────────────────────────────
@@ -359,6 +365,8 @@ namespace InventoryManagementSystem
             _lblTax.Text = clsLanguageManager.GetString("Tax (7%):") + " " + tax.ToString("C2");
             _lblTotal.Text = clsLanguageManager.GetString("Total:") + " " + total.ToString("C2");
 
+            _lblItemCount.Text = _receiptItems.Count + " item" + (_receiptItems.Count != 1 ? "s" : "");
+
             _btnCompleteOrder.Enabled = _receiptItems.Count > 0;
             _btnRemoveItem.Enabled = _receiptItems.Count > 0;
             _gridReceipt.Refresh();
@@ -460,13 +468,6 @@ namespace InventoryManagementSystem
 
             if (couponCode != null)
                 clsDiscountSystem.UseCoupon(couponCode);
-
-            // Update customer loyalty
-            if (_selectedCustomerID.HasValue)
-            {
-                decimal subtotal = _receiptItems.Sum(item => item.Subtotal);
-                clsDiscountSystem.UpdateCustomerLoyalty(_selectedCustomerID.Value, _selectedCustomerName, _txtCustomerPhone.Text, subtotal);
-            }
 
             _receiptItems.Clear();
             ClearCoupon();
@@ -811,6 +812,140 @@ namespace InventoryManagementSystem
                 "Hold Order", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        private void btnQuickAdd_Click(object sender, EventArgs e)
+        {
+            // Show a dialog to quickly add a product by name or barcode
+            using (Form quickAddForm = new Form())
+            {
+                quickAddForm.Text = "Quick Add Product";
+                quickAddForm.Size = new Size(400, 200);
+                quickAddForm.StartPosition = FormStartPosition.CenterParent;
+                quickAddForm.FormBorderStyle = FormBorderStyle.FixedDialog;
+                quickAddForm.MaximizeBox = false;
+                quickAddForm.MinimizeBox = false;
+
+                clsFormTheme.ApplyFormStyle(quickAddForm);
+
+                var layout = new TableLayoutPanel
+                {
+                    Dock = DockStyle.Fill,
+                    ColumnCount = 1,
+                    RowCount = 3,
+                    Padding = new Padding(20)
+                };
+                layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
+                layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
+                layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+
+                var lblPrompt = new Label
+                {
+                    Text = "Enter product name or barcode:",
+                    Dock = DockStyle.Fill,
+                    TextAlign = ContentAlignment.MiddleLeft
+                };
+
+                var txtInput = new TextBox
+                {
+                    Dock = DockStyle.Fill
+                };
+                clsFormTheme.ApplyTextBoxStyle(txtInput);
+
+                var btnPanel = new FlowLayoutPanel
+                {
+                    Dock = DockStyle.Fill,
+                    FlowDirection = FlowDirection.RightToLeft
+                };
+
+                var btnAdd = new Button
+                {
+                    Text = "Add",
+                    Size = new Size(80, 30),
+                    Margin = new Padding(5)
+                };
+                clsFormTheme.ApplySuccessButtonStyle(btnAdd, clsFormTheme.Icons.Add);
+
+                var btnCancel = new Button
+                {
+                    Text = "Cancel",
+                    Size = new Size(80, 30),
+                    Margin = new Padding(5)
+                };
+                clsFormTheme.ApplySecondaryButtonStyle(btnCancel, clsFormTheme.Icons.Cancel);
+
+                btnPanel.Controls.Add(btnCancel);
+                btnPanel.Controls.Add(btnAdd);
+
+                layout.Controls.Add(lblPrompt, 0, 0);
+                layout.Controls.Add(txtInput, 0, 1);
+                layout.Controls.Add(btnPanel, 0, 2);
+
+                quickAddForm.Controls.Add(layout);
+                txtInput.Focus();
+
+                btnAdd.Click += (s, args) =>
+                {
+                    if (string.IsNullOrWhiteSpace(txtInput.Text))
+                    {
+                        MessageBox.Show("Please enter a product name or barcode.", "Quick Add", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    string input = txtInput.Text.Trim();
+                    DataRow[] matches = _productsTable.AsEnumerable()
+                        .Where(row => row["ProductName"].ToString().ToLower().Contains(input.ToLower()) ||
+                                     row["Barcode"].ToString().Trim() == input)
+                        .ToArray();
+
+                    if (matches.Length == 0)
+                    {
+                        MessageBox.Show("Product not found.", "Quick Add", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    if (matches.Length == 1)
+                    {
+                        DataRow product = matches[0];
+                        int productID = Convert.ToInt32(product["ProductID"]);
+                        string productName = product["ProductName"].ToString();
+                        decimal price = Convert.ToDecimal(product["Price"]);
+                        int availableStock = Convert.ToInt32(product["Quantity"]);
+
+                        AddToReceipt(productID, productName, price, availableStock);
+                        quickAddForm.DialogResult = DialogResult.OK;
+                    }
+                    else
+                    {
+                        // Multiple matches - show selection dialog
+                        MessageBox.Show($"Found {matches.Length} matches. Please use the product list to select.", "Quick Add", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                };
+
+                btnCancel.Click += (s, args) => quickAddForm.DialogResult = DialogResult.Cancel;
+                txtInput.KeyDown += (s, args) =>
+                {
+                    if (args.KeyCode == Keys.Enter)
+                        btnAdd.PerformClick();
+                };
+
+                quickAddForm.ShowDialog(this);
+            }
+        }
+
+        private void btnVoidLast_Click(object sender, EventArgs e)
+        {
+            if (_receiptItems.Count == 0)
+            {
+                MessageBox.Show("Receipt is empty.", "Void Last", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Remove the last item added
+            var lastItem = _receiptItems.Last();
+            _receiptItems.Remove(lastItem);
+            RefreshReceiptTotals();
+            _lblStatus.Text = "Last item voided.";
+        }
+
         private void gridReceipt_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
             if (_gridReceipt.Columns[e.ColumnIndex].DataPropertyName != "Quantity" || e.RowIndex < 0)
@@ -870,27 +1005,57 @@ namespace InventoryManagementSystem
 
         private void frmPOS_KeyDown(object sender, KeyEventArgs e)
         {
-            // Escape to close
-            if (e.KeyCode == Keys.Escape)
+            // F2 - Quick Add
+            if (e.KeyCode == Keys.F2)
             {
-                Close();
+                btnQuickAdd_Click(null, null);
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
-            // F5 to refresh
+            // F4 - Complete Order
+            else if (e.KeyCode == Keys.F4)
+            {
+                if (_btnCompleteOrder.Enabled)
+                    btnCompleteOrder_Click(null, null);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+            // F5 - Refresh Products
             else if (e.KeyCode == Keys.F5)
             {
-                LoadProducts();
+                btnRefresh_Click(null, null);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+            // Delete - Remove selected item
+            else if (e.KeyCode == Keys.Delete && _gridReceipt.Focused)
+            {
+                btnRemoveItem_Click(null, null);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+            // Escape - Clear all (with confirmation) if receipt has items, otherwise close form
+            else if (e.KeyCode == Keys.Escape)
+            {
+                if (_receiptItems.Count > 0)
+                {
+                    btnClearAll_Click(null, null);
+                }
+                else
+                {
+                    Close();
+                }
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
             // Ctrl+Enter to complete order
             else if (e.Control && e.KeyCode == Keys.Enter)
             {
-                CompleteOrder();
+                if (_btnCompleteOrder.Enabled)
+                    btnCompleteOrder_Click(null, null);
+                e.Handled = true;
                 e.SuppressKeyPress = true;
             }
-            // Don't suppress other keys - allow normal typing in textboxes
         }
 
         private void frmPOS_KeyPress(object sender, KeyPressEventArgs e)

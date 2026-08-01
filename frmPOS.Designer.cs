@@ -58,6 +58,9 @@ namespace InventoryManagementSystem
             this._btnPrintReceipt = new System.Windows.Forms.Button();
             this._btnClearAll = new System.Windows.Forms.Button();
             this._btnHoldOrder = new System.Windows.Forms.Button();
+            this._lblItemCount = new System.Windows.Forms.Label();
+            this._btnQuickAdd = new System.Windows.Forms.Button();
+            this._btnVoidLast = new System.Windows.Forms.Button();
             this._lblReceiptTitle = new System.Windows.Forms.Label();
             this._rootLayout.SuspendLayout();
             this._topPanel.SuspendLayout();
@@ -303,6 +306,7 @@ namespace InventoryManagementSystem
             this._receiptPanel.BackColor = System.Drawing.Color.White;
             this._receiptPanel.Controls.Add(this._gridReceipt);
             this._receiptPanel.Controls.Add(this._lblStatus);
+            this._receiptPanel.Controls.Add(this._lblItemCount);
             this._receiptPanel.Controls.Add(this._totalsPanel);
             this._receiptPanel.Controls.Add(this._lblReceiptTitle);
             this._receiptPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -402,6 +406,8 @@ namespace InventoryManagementSystem
             this._totalsPanel.Controls.Add(this._btnPrintReceipt);
             this._totalsPanel.Controls.Add(this._btnClearAll);
             this._totalsPanel.Controls.Add(this._btnHoldOrder);
+            this._totalsPanel.Controls.Add(this._btnQuickAdd);
+            this._totalsPanel.Controls.Add(this._btnVoidLast);
             this._totalsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this._totalsPanel.Location = new System.Drawing.Point(16, 360);
             this._totalsPanel.Name = "_totalsPanel";
@@ -567,6 +573,40 @@ namespace InventoryManagementSystem
             this._lblReceiptTitle.Text = "Receipt";
             this._lblReceiptTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // _lblItemCount
+            // 
+            this._lblItemCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._lblItemCount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this._lblItemCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(125)))), ((int)(((byte)(139)))));
+            this._lblItemCount.Location = new System.Drawing.Point(560, 58);
+            this._lblItemCount.Name = "_lblItemCount";
+            this._lblItemCount.Size = new System.Drawing.Size(152, 20);
+            this._lblItemCount.TabIndex = 4;
+            this._lblItemCount.Text = "0 items";
+            this._lblItemCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // _btnQuickAdd
+            // 
+            this._btnQuickAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnQuickAdd.Location = new System.Drawing.Point(0, 245);
+            this._btnQuickAdd.Name = "_btnQuickAdd";
+            this._btnQuickAdd.Size = new System.Drawing.Size(130, 41);
+            this._btnQuickAdd.TabIndex = 13;
+            this._btnQuickAdd.Text = "Quick Add";
+            this._btnQuickAdd.UseVisualStyleBackColor = true;
+            this._btnQuickAdd.Click += new System.EventHandler(this.btnQuickAdd_Click);
+            // 
+            // _btnVoidLast
+            // 
+            this._btnVoidLast.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnVoidLast.Location = new System.Drawing.Point(140, 245);
+            this._btnVoidLast.Name = "_btnVoidLast";
+            this._btnVoidLast.Size = new System.Drawing.Size(130, 41);
+            this._btnVoidLast.TabIndex = 14;
+            this._btnVoidLast.Text = "Void Last";
+            this._btnVoidLast.UseVisualStyleBackColor = true;
+            this._btnVoidLast.Click += new System.EventHandler(this.btnVoidLast_Click);
+            // 
             // frmPOS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -622,8 +662,11 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button _btnCompleteOrder;
         private System.Windows.Forms.Button _btnPrintReceipt;
         private System.Windows.Forms.Label _lblReceiptTitle;
+        private System.Windows.Forms.Label _lblItemCount;
         private System.Windows.Forms.Button _btnClearAll;
         private System.Windows.Forms.Button _btnHoldOrder;
+        private System.Windows.Forms.Button _btnQuickAdd;
+        private System.Windows.Forms.Button _btnVoidLast;
         private System.Windows.Forms.Panel _customerPanel;
         private System.Windows.Forms.Label _lblCustomerPhone;
         private System.Windows.Forms.TextBox _txtCustomerPhone;

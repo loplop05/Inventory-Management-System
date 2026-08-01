@@ -156,7 +156,10 @@ namespace InventoryManagementSystem
             // _toolTip.SetToolTip(btnThemeToggle, "Toggle between light and dark theme");
 
             KeyDown += frmMainMenu_KeyDown;
-            clsLanguageManager.LanguageChanged += (s, e) => ApplyLocalization();
+            clsLanguageManager.ApplyLanguage(this);
+            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
+            clsLanguageManager.LanguageChanged += onLanguageChanged;
+            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
             // clsFormTheme.ThemeChanged += (s, e) => UpdateThemeButton();
 
             clsAuditLog.LogAction("Application Started", "Inventory System main menu loaded", "System");

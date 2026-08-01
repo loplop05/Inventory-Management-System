@@ -311,44 +311,114 @@ namespace InventoryDataAccessLayer
             }
         }
 
-        public static bool UpdateCustomerLoyalty(int customerID, decimal purchaseAmount, out string errorMessage)
+        public static int GetLoyaltyPoints(int customerID)
+        {
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    EnsureLoyaltyColumns(connection);
+
+                    using (SqlCommand command = new SqlCommand(
+                        "SELECT LoyaltyPoints FROM Customers WHERE CustomerID = @CustomerID", connection))
+                    {
+                        command.Parameters.AddWithValue("@CustomerID", customerID);
+                        object result = command.ExecuteScalar();
+                        if (result == null || result == DBNull.Value)
+                            return 0;
+
+                        return Convert.ToInt32(result);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    clsErrorLog.LogException("clsCustomerData.GetLoyaltyPoints", ex);
+                    return 0;
+                }
+            }
+        }
+
+        public static bool AddLoyaltyPoints(int customerID, int points, out string errorMessage)
         {
             errorMessage = "";
+
+            if (points <= 0)
+                return true;
 
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
                 try
                 {
                     connection.Open();
-
-                    // Ensure loyalty columns exist
                     EnsureLoyaltyColumns(connection);
-
-                    string query = @"
-                        UPDATE Customers
-                        SET LoyaltyPoints = LoyaltyPoints + @PointsEarned,
-                            TotalSpent = TotalSpent + @PurchaseAmount,
-                            Tier = CASE 
-                                WHEN TotalSpent + @PurchaseAmount >= 5000 THEN 'Platinum'
-                                WHEN TotalSpent + @PurchaseAmount >= 2000 THEN 'Gold'
-                                WHEN TotalSpent + @PurchaseAmount >= 500 THEN 'Silver'
-                                ELSE 'Bronze'
-                            END
-                        WHERE CustomerID = @CustomerID";
-
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@CustomerID", customerID);
-                        command.Parameters.AddWithValue("@PointsEarned", (int)Math.Floor(purchaseAmount));
-                        command.Parameters.AddWithValue("@PurchaseAmount", purchaseAmount);
-
-                        command.ExecuteNonQuery();
-                        return true;
-                    }
+                    return AddLoyaltyPoints(connection, null, customerID, points, 0m, out errorMessage);
                 }
                 catch (Exception ex)
                 {
                     errorMessage = ex.Message;
+                    clsErrorLog.LogException("clsCustomerData.AddLoyaltyPoints", ex);
+                    return false;
+                }
+            }
+        }
+
+        public static bool AddLoyaltyPoints(SqlConnection connection, SqlTransaction transaction, int customerID, int points, decimal purchaseAmount, out string errorMessage)
+        {
+            errorMessage = "";
+
+            if (points <= 0 && purchaseAmount <= 0)
+                return true;
+
+            EnsureLoyaltyColumns(connection);
+
+            string query = @"
+                UPDATE Customers
+                SET LoyaltyPoints = LoyaltyPoints + @PointsEarned,
+                    TotalSpent = TotalSpent + @PurchaseAmount,
+                    Tier = CASE 
+                        WHEN TotalSpent + @PurchaseAmount >= 5000 THEN 'Platinum'
+                        WHEN TotalSpent + @PurchaseAmount >= 2000 THEN 'Gold'
+                        WHEN TotalSpent + @PurchaseAmount >= 500 THEN 'Silver'
+                        ELSE 'Bronze'
+                    END,
+                    LastPurchaseDate = GETDATE()
+                WHERE CustomerID = @CustomerID";
+
+            using (SqlCommand command = new SqlCommand(query, connection, transaction))
+            {
+                command.Parameters.AddWithValue("@CustomerID", customerID);
+                command.Parameters.AddWithValue("@PointsEarned", points);
+                command.Parameters.AddWithValue("@PurchaseAmount", purchaseAmount);
+
+                if (command.ExecuteNonQuery() != 1)
+                {
+                    errorMessage = "Unable to update loyalty points for customer #" + customerID + ".";
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool UpdateCustomerLoyalty(int customerID, decimal purchaseAmount, out string errorMessage)
+        {
+            errorMessage = "";
+
+            int pointsEarned = (int)Math.Floor(purchaseAmount);
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    EnsureLoyaltyColumns(connection);
+                    return AddLoyaltyPoints(connection, null, customerID, pointsEarned, purchaseAmount, out errorMessage);
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = ex.Message;
+                    clsErrorLog.LogException("clsCustomerData.UpdateCustomerLoyalty", ex);
                     return false;
                 }
             }
@@ -394,6 +464,7 @@ namespace InventoryDataAccessLayer
                 catch (Exception ex)
                 {
                     errorMessage = ex.Message;
+                    clsErrorLog.LogException("clsCustomerData.RedeemLoyaltyPoints", ex);
                     return false;
                 }
             }

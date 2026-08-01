@@ -63,6 +63,15 @@ namespace InventoryManagementSystem
         }
 
         /// <summary>
+        /// Logs an error to the audit trail and the on-disk log file.
+        /// </summary>
+        public static void LogError(string source, Exception ex)
+        {
+            string details = source + ": " + (ex == null ? "Unknown error" : ex.Message);
+            LogAction("Error", details, "System");
+        }
+
+        /// <summary>
         /// Retrieves filtered audit logs.
         /// </summary>
         public static List<AuditEntry> GetLogs(string moduleFilter = null, string searchKeyword = null)

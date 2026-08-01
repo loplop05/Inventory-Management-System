@@ -1,28 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
-using System.Data.SqlClient;
 using System.Configuration;
+using System.IO;
 
 namespace InventoryDataAccessLayer
 {
     public class clsDataAccessSettings
     {
+        public static string connectionString = LoadConnectionString();
 
+        private static string LoadConnectionString()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["InventoryDB"].ConnectionString;
 
-        // Connection string is now read from App.config to avoid hardcoding credentials in source code
-        // TODO: For production, consider using encrypted configuration sections or environment variables
-        public static string connectionString = ConfigurationManager.ConnectionStrings["InventoryDB"].ConnectionString;
+            string localConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "App.config.local");
+            if (!File.Exists(localConfigPath))
+                return connectionString;
 
+            try
+            {
+                ExeConfigurationFileMap configMap = new ExeConfigurationFileMap
+                {
+                    ExeConfigFilename = localConfigPath
+                };
 
+                Configuration localConfig = ConfigurationManager.OpenMappedExeConfiguration(
+                    configMap, ConfigurationUserLevel.None);
 
+                ConnectionStringSettings localSetting = localConfig.ConnectionStrings.ConnectionStrings["InventoryDB"];
+                if (localSetting != null && !string.IsNullOrWhiteSpace(localSetting.ConnectionString))
+                    return localSetting.ConnectionString;
+            }
+            catch (Exception ex)
+            {
+                clsErrorLog.LogException("clsDataAccessSettings.LoadConnectionString", ex);
+            }
 
-
-
-
-
+            return connectionString;
+        }
     }
 }

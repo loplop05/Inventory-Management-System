@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copy this file to App.config.local (same folder as InventoryManagementSystem.exe)
+  and set your local SQL Server credentials. App.config.local is gitignored.
+-->
+<configuration>
+  <connectionStrings>
+    <add name="InventoryDB"
+         connectionString="Server=.;Database=InventoryDB;User ID=sa;Password=YOUR_PASSWORD_HERE;" />
+  </connectionStrings>
+</configuration>

@@ -100,6 +100,11 @@ namespace InventoryBusinessLayer
             return clsCustomerData.RedeemLoyaltyPoints(customerID, pointsToRedeem, out errorMessage);
         }
 
+        public static int GetLoyaltyPoints(int customerID)
+        {
+            return clsCustomerData.GetLoyaltyPoints(customerID);
+        }
+
         public static decimal GetTierDiscount(string tier)
         {
             switch (tier)

@@ -302,7 +302,7 @@ namespace InventoryManagementSystem
                 CustomerID = customerId,
                 CustomerName = row["CustomerName"].ToString(),
                 Phone = row["PhoneNumber"].ToString(),
-                Points = row["LoyaltyPoints"] != DBNull.Value ? Convert.ToInt32(row["LoyaltyPoints"]) : 0,
+                Points = InventoryBusinessLayer.clsCustomer.GetLoyaltyPoints(customerId),
                 TotalSpent = row["TotalSpent"] != DBNull.Value ? Convert.ToDecimal(row["TotalSpent"]) : 0,
                 Tier = row["Tier"] != DBNull.Value ? row["Tier"].ToString() : "Bronze",
                 LastPurchase = row["LastPurchaseDate"] != DBNull.Value ? Convert.ToDateTime(row["LastPurchaseDate"]) : DateTime.MinValue
@@ -893,9 +893,9 @@ namespace InventoryManagementSystem
             switch (type)
             {
                 case DiscountType.Percentage: return "Value: percentage taken off the cart (e.g. 10 = 10% off).";
-                case DiscountType.FixedAmount: return "Value: fixed amount taken off the cart (e.g. 5 = $5 off).";
+                case DiscountType.FixedAmount: return "Value: fixed amount taken off the cart (e.g. 5 = " + clsLanguageManager.CurrencySymbol + " 5 off).";
                 case DiscountType.BuyOneGetOne: return "Value: not used — a flat 50% is taken off the cart.";
-                case DiscountType.LoyaltyPoints: return "Value: loyalty points redeemed (" + CustomerLoyalty.PointsForDiscount + " points = $1 off).";
+                case DiscountType.LoyaltyPoints: return "Value: loyalty points redeemed (" + CustomerLoyalty.PointsForDiscount + " points = " + clsLanguageManager.CurrencySymbol + " 1 off).";
                 default: return "Value: not used — the discount is based on the cart total.";
             }
         }

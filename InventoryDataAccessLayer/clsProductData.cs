@@ -120,7 +120,10 @@ namespace InventoryDataAccessLayer
                             if (reader.HasRows) dt.Load(reader);
                         }
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsProductData.GetAllProducts", ex);
+                    }
                 }
             }
             return dt;
@@ -155,7 +158,11 @@ namespace InventoryDataAccessLayer
                             }
                         }
                     }
-                    catch { isFound = false; }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsProductData.GetProductByID", ex);
+                        isFound = false;
+                    }
                 }
             }
             return isFound;
@@ -189,7 +196,11 @@ namespace InventoryDataAccessLayer
                             }
                         }
                     }
-                    catch { isFound = false; }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsProductData.GetProductByBarcode", ex);
+                        isFound = false;
+                    }
                 }
             }
             return isFound;
@@ -204,7 +215,11 @@ namespace InventoryDataAccessLayer
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@ProductID", ProductID);
-                    try { connection.Open(); isFound = (command.ExecuteScalar() != null); } catch { }
+                    try { connection.Open(); isFound = (command.ExecuteScalar() != null); }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsProductData.DoesProductExist", ex);
+                    }
                 }
             }
             return isFound;
@@ -220,7 +235,11 @@ namespace InventoryDataAccessLayer
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@ProductName", ProductName);
-                    try { connection.Open(); isFound = (command.ExecuteScalar() != null); } catch { }
+                    try { connection.Open(); isFound = (command.ExecuteScalar() != null); }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsProductData.DoesProductExist", ex);
+                    }
                 }
             }
             return isFound;
@@ -236,7 +255,11 @@ namespace InventoryDataAccessLayer
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Barcode", Barcode);
-                    try { connection.Open(); isFound = (command.ExecuteScalar() != null); } catch { }
+                    try { connection.Open(); isFound = (command.ExecuteScalar() != null); }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsProductData.DoesProductExist", ex);
+                    }
                 }
             }
             return isFound;
@@ -253,7 +276,11 @@ namespace InventoryDataAccessLayer
                 {
                     command.Parameters.AddWithValue("@ProductName", ProductName);
                     command.Parameters.AddWithValue("@ProductID", ProductID);
-                    try { connection.Open(); isFound = (command.ExecuteScalar() != null); } catch { }
+                    try { connection.Open(); isFound = (command.ExecuteScalar() != null); }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsProductData.DoesProductExist", ex);
+                    }
                 }
             }
             return isFound;
@@ -270,7 +297,11 @@ namespace InventoryDataAccessLayer
                 {
                     command.Parameters.AddWithValue("@Barcode", Barcode);
                     command.Parameters.AddWithValue("@ProductID", ProductID);
-                    try { connection.Open(); isFound = (command.ExecuteScalar() != null); } catch { }
+                    try { connection.Open(); isFound = (command.ExecuteScalar() != null); }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsProductData.DoesProductExist", ex);
+                    }
                 }
             }
             return isFound;

@@ -138,7 +138,10 @@ namespace InventoryDataAccessLayer
                             if (reader.HasRows) dt.Load(reader);
                         }
                     }
-                    catch { }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsSupplierData.GetAllSuppliers", ex);
+                    }
                 }
             }
             return dt;
@@ -153,7 +156,11 @@ namespace InventoryDataAccessLayer
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@SupplierID", SupplierID);
-                    try { connection.Open(); isFound = (command.ExecuteScalar() != null); } catch { }
+                    try { connection.Open(); isFound = (command.ExecuteScalar() != null); }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsSupplierData.DoesSupplierExist", ex);
+                    }
                 }
             }
             return isFound;
@@ -168,7 +175,11 @@ namespace InventoryDataAccessLayer
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@SupplierName", SupplierName);
-                    try { connection.Open(); isFound = (command.ExecuteScalar() != null); } catch { }
+                    try { connection.Open(); isFound = (command.ExecuteScalar() != null); }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsSupplierData.DoesSupplierExist", ex);
+                    }
                 }
             }
             return isFound;
@@ -184,7 +195,11 @@ namespace InventoryDataAccessLayer
                 {
                     command.Parameters.AddWithValue("@SupplierName", SupplierName);
                     command.Parameters.AddWithValue("@SupplierID", SupplierID);
-                    try { connection.Open(); isFound = (command.ExecuteScalar() != null); } catch { }
+                    try { connection.Open(); isFound = (command.ExecuteScalar() != null); }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsSupplierData.DoesSupplierExist", ex);
+                    }
                 }
             }
             return isFound;

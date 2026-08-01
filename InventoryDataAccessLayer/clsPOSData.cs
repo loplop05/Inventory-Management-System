@@ -193,16 +193,14 @@ namespace InventoryDataAccessLayer
                             }
                         }
 
-                        // Update customer's last purchase date if customerID is provided
+                        // Update customer's last purchase date and loyalty points if customerID is provided
                         if (customerID.HasValue)
                         {
-                            using (SqlCommand updateCustomerCommand = new SqlCommand(@"
-                                UPDATE Customers
-                                SET LastPurchaseDate = GETDATE()
-                                WHERE CustomerID = @CustomerID;", connection, transaction))
+                            int pointsEarned = (int)Math.Floor(subtotal);
+                            if (!clsCustomerData.AddLoyaltyPoints(connection, transaction, customerID.Value, pointsEarned, subtotal, out errorMessage))
                             {
-                                updateCustomerCommand.Parameters.AddWithValue("@CustomerID", customerID.Value);
-                                updateCustomerCommand.ExecuteNonQuery();
+                                transaction.Rollback();
+                                return false;
                             }
                         }
 
@@ -513,6 +511,11 @@ namespace InventoryDataAccessLayer
                 IF COL_LENGTH('Orders', 'VoidedBy') IS NULL
                 BEGIN
                     ALTER TABLE Orders ADD VoidedBy NVARCHAR(100) NULL;
+                END;
+
+                IF COL_LENGTH('Customers', 'LoyaltyPoints') IS NULL
+                BEGIN
+                    ALTER TABLE Customers ADD LoyaltyPoints INT NOT NULL DEFAULT 0;
                 END;
 
                 IF OBJECT_ID('OrderItems', 'U') IS NULL
