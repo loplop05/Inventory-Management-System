@@ -43,6 +43,7 @@ namespace InventoryManagementSystem
             this.btnDailyReport = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this.btnAuditLogs = new System.Windows.Forms.Button();
+            this.btnUserManagement = new System.Windows.Forms.Button();
             this._mainLayoutPanel.SuspendLayout();
             this._buttonsPanel.SuspendLayout();
             this.SuspendLayout();
@@ -78,6 +79,7 @@ namespace InventoryManagementSystem
             this._buttonsPanel.Controls.Add(this.btnPOS, 0, 3);
             this._buttonsPanel.Controls.Add(this.btnDailyReport, 1, 3);
             this._buttonsPanel.Controls.Add(this.btnAuditLogs, 2, 3);
+            this._buttonsPanel.Controls.Add(this.btnUserManagement, 1, 4);
             this._buttonsPanel.Controls.Add(this.btnHelp, 0, 4);
             this._buttonsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._buttonsPanel.Location = new System.Drawing.Point(3, 3);
@@ -237,6 +239,18 @@ namespace InventoryManagementSystem
             this.btnAuditLogs.UseVisualStyleBackColor = true;
             this.btnAuditLogs.Click += new System.EventHandler(this.btnAuditLogs_Click);
             // 
+            // btnUserManagement
+            // 
+            this.btnUserManagement.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnUserManagement.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.btnUserManagement.Location = new System.Drawing.Point(434, 597);
+            this.btnUserManagement.Name = "btnUserManagement";
+            this.btnUserManagement.Size = new System.Drawing.Size(385, 271);
+            this.btnUserManagement.TabIndex = 13;
+            this.btnUserManagement.Text = "User Management";
+            this.btnUserManagement.UseVisualStyleBackColor = true;
+            this.btnUserManagement.Click += new System.EventHandler(this.btnUserManagement_Click);
+            // 
             // btnHelp
             // 
             this.btnHelp.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -282,5 +296,6 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button btnDailyReport;
         private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.Button btnAuditLogs;
+        private System.Windows.Forms.Button btnUserManagement;
     }
 }

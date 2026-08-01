@@ -50,6 +50,7 @@
     <Compile Include="clsSupplierData.cs" />
     <Compile Include="clsCustomerData.cs" />
     <Compile Include="clsErrorLog.cs" />
+    <Compile Include="clsUserData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -135,6 +135,17 @@ namespace InventoryManagementSystem
             btnAuditLogs.TextAlign = ContentAlignment.MiddleCenter;
             _toolTip.SetToolTip(btnAuditLogs, "View system audit logs and activity trail");
 
+            // ── User Management button (Admin only) ───────────────────────────────
+            btnUserManagement.Text = "User Management";
+            btnUserManagement.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            btnUserManagement.BackColor = Color.FromArgb(20, 184, 166); // Teal
+            btnUserManagement.ForeColor = Color.White;
+            btnUserManagement.FlatStyle = FlatStyle.Flat;
+            btnUserManagement.FlatAppearance.BorderSize = 0;
+            btnUserManagement.TextAlign = ContentAlignment.MiddleCenter;
+            _toolTip.SetToolTip(btnUserManagement, "Manage system users and permissions");
+            btnUserManagement.Visible = clsUserManagement.IsAdmin;
+
             // ── Help button ────────────────────────────────────────────────────
             btnHelp.Text = "Help";
             btnHelp.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
@@ -180,6 +191,7 @@ namespace InventoryManagementSystem
             btnPOS.Text = clsLanguageManager.GetString("Point of Sale");
             btnDailyReport.Text = clsLanguageManager.GetString("Daily Report");
             btnAuditLogs.Text = clsLanguageManager.GetString("Audit Logs");
+            btnUserManagement.Text = clsLanguageManager.GetString("User Management");
             btnHelp.Text = clsLanguageManager.GetString("Help");
         }
 
@@ -252,6 +264,12 @@ namespace InventoryManagementSystem
         {
             frmAuditLog frm = new frmAuditLog();
             frm.ShowDialog();
+        }
+
+        private void btnUserManagement_Click(object sender, EventArgs e)
+        {
+            frmUserManagement frm = new frmUserManagement();
+            frm.Show();
         }
 
         private void btnHelp_Click(object sender, EventArgs e)

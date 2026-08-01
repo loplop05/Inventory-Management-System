@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using InventoryDataAccessLayer;
 
 namespace InventoryManagementSystem
 {
@@ -47,28 +48,29 @@ namespace InventoryManagementSystem
 
         /// <summary>
         /// Authenticates a user with username and password.
-        /// For demo purposes, uses hardcoded credentials.
+        /// Uses database authentication with salted hash.
         /// </summary>
         public static User Authenticate(string username, string password)
         {
-            // Demo credentials - in production, use database authentication
-            var users = new List<User>
+            // Ensure user table exists and has admin seeded
+            string errorMessage;
+            clsUserData.EnsureUserTableAndSeedAdmin(out errorMessage);
+
+            // Authenticate via data layer
+            var userInfo = clsUserData.AuthenticateUser(username, password);
+            
+            if (userInfo == null)
+                return null;
+
+            // Convert UserInfo to User
+            return new User
             {
-                new User { UserID = 1, Username = "admin", DisplayName = "Administrator", Role = UserRole.Admin, IsActive = true },
-                new User { UserID = 2, Username = "cashier", DisplayName = "Cashier", Role = UserRole.Cashier, IsActive = true }
+                UserID = userInfo.UserID,
+                Username = userInfo.Username,
+                DisplayName = userInfo.DisplayName,
+                Role = (UserRole)Enum.Parse(typeof(UserRole), userInfo.Role),
+                IsActive = userInfo.IsActive
             };
-
-            foreach (var user in users)
-            {
-                if (string.Equals(user.Username, username, StringComparison.OrdinalIgnoreCase) && 
-                    user.IsActive && 
-                    password == "1234") // Demo password
-                {
-                    return user;
-                }
-            }
-
-            return null;
         }
 
         /// <summary>
