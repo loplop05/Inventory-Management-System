@@ -20,6 +20,10 @@ namespace InventoryManagementSystem
         private int _lastCompletedOrderID = -1;
         private clsDiscountSystem.Coupon _appliedCoupon;
 
+        // Manual discount (mutually exclusive with coupon)
+        private frmManualDiscount.DiscountType? _manualDiscountType = null;
+        private decimal _manualDiscountValue = 0;
+
         // Debounce timer for search
         private System.Windows.Forms.Timer _searchDebounceTimer;
         private const int SearchDebounceMs = 300;
@@ -46,6 +50,7 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplySuccessButtonStyle(_btnApplyCoupon, clsFormTheme.Icons.Check);
             clsFormTheme.ApplySecondaryButtonStyle(_btnRemoveCoupon, clsFormTheme.Icons.Cancel);
             _btnRemoveCoupon.Enabled = false;
+            clsFormTheme.ApplyPrimaryButtonStyle(_btnManualDiscount, clsFormTheme.Icons.Money);
 
             // ── Toolbar buttons ────────────────────────────────────────────────
             clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh, clsFormTheme.Icons.Refresh);
@@ -352,16 +357,33 @@ namespace InventoryManagementSystem
         private void RefreshReceiptTotals()
         {
             decimal subtotal = _receiptItems.Sum(item => item.Subtotal);
-            decimal discount = GetCouponDiscount(subtotal);
-            decimal taxableAmount = subtotal - discount;
+            decimal couponDiscount = GetCouponDiscount(subtotal);
+            decimal manualDiscount = GetManualDiscount(subtotal);
+            decimal totalDiscount = couponDiscount + manualDiscount;
+            decimal taxableAmount = subtotal - totalDiscount;
             decimal tax = Math.Round(taxableAmount * TaxRate, 2);
             decimal total = taxableAmount + tax;
 
             _lblSubtotal.Text = clsLanguageManager.GetString("Subtotal:") + " " + subtotal.ToString("C2");
-            _lblDiscount.Visible = _appliedCoupon != null;
-            _lblDiscount.Text = _appliedCoupon == null
-                ? string.Empty
-                : clsLanguageManager.GetString("Discount:") + " (" + _appliedCoupon.Code + "): -" + discount.ToString("C2");
+            
+            // Show discount label if either coupon or manual discount is applied
+            _lblDiscount.Visible = _appliedCoupon != null || _manualDiscountType != null;
+            if (_appliedCoupon != null)
+            {
+                _lblDiscount.Text = clsLanguageManager.GetString("Discount:") + " (" + _appliedCoupon.Code + "): -" + couponDiscount.ToString("C2");
+            }
+            else if (_manualDiscountType != null)
+            {
+                string discountText = _manualDiscountType == frmManualDiscount.DiscountType.Percentage
+                    ? _manualDiscountValue.ToString("F0") + "%"
+                    : manualDiscount.ToString("C2");
+                _lblDiscount.Text = clsLanguageManager.GetString("Discount:") + " (Manual): -" + discountText;
+            }
+            else
+            {
+                _lblDiscount.Text = string.Empty;
+            }
+
             _lblTax.Text = clsLanguageManager.GetString("Tax (7%):") + " " + tax.ToString("C2");
             _lblTotal.Text = clsLanguageManager.GetString("Total:") + " " + total.ToString("C2");
 
@@ -392,6 +414,24 @@ namespace InventoryManagementSystem
             return Math.Round(clsDiscountSystem.ApplyCoupon(_appliedCoupon, subtotal), 2);
         }
 
+        /// <summary>
+        /// Returns the manual discount amount based on type and value.
+        /// </summary>
+        private decimal GetManualDiscount(decimal subtotal)
+        {
+            if (_manualDiscountType == null)
+                return 0;
+
+            if (_manualDiscountType == frmManualDiscount.DiscountType.Percentage)
+            {
+                return Math.Round(subtotal * (_manualDiscountValue / 100m), 2);
+            }
+            else // Fixed amount
+            {
+                return Math.Min(_manualDiscountValue, subtotal); // Can't discount more than subtotal
+            }
+        }
+
         private void ClearCoupon()
         {
             _appliedCoupon = null;
@@ -400,7 +440,13 @@ namespace InventoryManagementSystem
             _btnApplyCoupon.Enabled = true;
             _btnRemoveCoupon.Enabled = false;
             _lblDiscount.Visible = false;
-            _lblDiscount.Text = string.Empty;
+        }
+
+        private void ClearManualDiscount()
+        {
+            _manualDiscountType = null;
+            _manualDiscountValue = 0;
+            _lblDiscount.Visible = false;
         }
 
         private DataTable BuildOrderItemsTable()
@@ -709,6 +755,12 @@ namespace InventoryManagementSystem
                 return;
             }
 
+            // Clear manual discount if applied (mutually exclusive)
+            if (_manualDiscountType != null)
+            {
+                ClearManualDiscount();
+            }
+
             decimal subtotal = _receiptItems.Sum(item => item.Subtotal);
 
             string reason;
@@ -735,6 +787,40 @@ namespace InventoryManagementSystem
         {
             ClearCoupon();
             RefreshReceiptTotals();
+        }
+
+        private void btnManualDiscount_Click(object sender, EventArgs e)
+        {
+            if (_receiptItems.Count == 0)
+            {
+                MessageBox.Show("Add items to the receipt before applying a discount.", "Discount", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Clear coupon if applied (mutually exclusive)
+            if (_appliedCoupon != null)
+            {
+                ClearCoupon();
+            }
+
+            using (var form = new frmManualDiscount())
+            {
+                if (form.ShowDialog(this) == DialogResult.OK)
+                {
+                    _manualDiscountType = form.SelectedType;
+                    _manualDiscountValue = form.DiscountValue;
+
+                    // Log manual discount to audit log
+                    string currentUser = clsUserManagement.CurrentUser != null ? clsUserManagement.CurrentUser.DisplayName : Environment.UserName;
+                    string discountInfo = _manualDiscountType == frmManualDiscount.DiscountType.Percentage
+                        ? $"{_manualDiscountValue}% discount"
+                        : $"{_manualDiscountValue:C2} discount";
+                    clsAuditLog.LogAction("Manual Discount Applied", $"{discountInfo} by {currentUser}", "POS");
+
+                    _lblStatus.Text = "Manual discount applied.";
+                    RefreshReceiptTotals();
+                }
+            }
         }
 
         private void btnRemoveItem_Click(object sender, EventArgs e)

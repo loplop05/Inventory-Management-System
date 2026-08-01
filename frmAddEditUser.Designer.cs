@@ -172,7 +172,6 @@ namespace InventoryManagementSystem
             this.Name = "frmAddEditUser";
             this.Text = "Add/Edit User";
             this.Load += new System.EventHandler(this.frmAddEditUser_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.txtUsername)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
         }

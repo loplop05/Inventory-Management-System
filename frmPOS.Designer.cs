@@ -44,11 +44,13 @@ namespace InventoryManagementSystem
             this._colUnitPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._colSubtotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._lblStatus = new System.Windows.Forms.Label();
+            this._lblItemCount = new System.Windows.Forms.Label();
             this._totalsPanel = new System.Windows.Forms.Panel();
             this._lblCouponCaption = new System.Windows.Forms.Label();
             this._txtCoupon = new System.Windows.Forms.TextBox();
             this._btnApplyCoupon = new System.Windows.Forms.Button();
             this._btnRemoveCoupon = new System.Windows.Forms.Button();
+            this._btnManualDiscount = new System.Windows.Forms.Button();
             this._lblSubtotal = new System.Windows.Forms.Label();
             this._lblDiscount = new System.Windows.Forms.Label();
             this._lblTax = new System.Windows.Forms.Label();
@@ -58,7 +60,6 @@ namespace InventoryManagementSystem
             this._btnPrintReceipt = new System.Windows.Forms.Button();
             this._btnClearAll = new System.Windows.Forms.Button();
             this._btnHoldOrder = new System.Windows.Forms.Button();
-            this._lblItemCount = new System.Windows.Forms.Label();
             this._btnQuickAdd = new System.Windows.Forms.Button();
             this._btnVoidLast = new System.Windows.Forms.Button();
             this._lblReceiptTitle = new System.Windows.Forms.Label();
@@ -391,12 +392,25 @@ namespace InventoryManagementSystem
             this._lblStatus.TabIndex = 2;
             this._lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // _lblItemCount
+            // 
+            this._lblItemCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._lblItemCount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this._lblItemCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(125)))), ((int)(((byte)(139)))));
+            this._lblItemCount.Location = new System.Drawing.Point(560, 58);
+            this._lblItemCount.Name = "_lblItemCount";
+            this._lblItemCount.Size = new System.Drawing.Size(152, 20);
+            this._lblItemCount.TabIndex = 4;
+            this._lblItemCount.Text = "0 items";
+            this._lblItemCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // _totalsPanel
             // 
             this._totalsPanel.Controls.Add(this._lblCouponCaption);
             this._totalsPanel.Controls.Add(this._txtCoupon);
             this._totalsPanel.Controls.Add(this._btnApplyCoupon);
             this._totalsPanel.Controls.Add(this._btnRemoveCoupon);
+            this._totalsPanel.Controls.Add(this._btnManualDiscount);
             this._totalsPanel.Controls.Add(this._lblSubtotal);
             this._totalsPanel.Controls.Add(this._lblDiscount);
             this._totalsPanel.Controls.Add(this._lblTax);
@@ -455,6 +469,16 @@ namespace InventoryManagementSystem
             this._btnRemoveCoupon.UseVisualStyleBackColor = true;
             this._btnRemoveCoupon.Click += new System.EventHandler(this.btnRemoveCoupon_Click);
             // 
+            // _btnManualDiscount
+            // 
+            this._btnManualDiscount.Location = new System.Drawing.Point(543, 9);
+            this._btnManualDiscount.Name = "_btnManualDiscount";
+            this._btnManualDiscount.Size = new System.Drawing.Size(137, 34);
+            this._btnManualDiscount.TabIndex = 4;
+            this._btnManualDiscount.Text = "Add Discount";
+            this._btnManualDiscount.UseVisualStyleBackColor = true;
+            this._btnManualDiscount.Click += new System.EventHandler(this.btnManualDiscount_Click);
+            // 
             // _lblSubtotal
             // 
             this._lblSubtotal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -509,7 +533,7 @@ namespace InventoryManagementSystem
             // 
             // _btnRemoveItem
             // 
-            this._btnRemoveItem.Location = new System.Drawing.Point(0, 201);
+            this._btnRemoveItem.Location = new System.Drawing.Point(7, 183);
             this._btnRemoveItem.Name = "_btnRemoveItem";
             this._btnRemoveItem.Size = new System.Drawing.Size(149, 41);
             this._btnRemoveItem.TabIndex = 8;
@@ -561,30 +585,6 @@ namespace InventoryManagementSystem
             this._btnHoldOrder.UseVisualStyleBackColor = true;
             this._btnHoldOrder.Click += new System.EventHandler(this.btnHoldOrder_Click);
             // 
-            // _lblReceiptTitle
-            // 
-            this._lblReceiptTitle.Dock = System.Windows.Forms.DockStyle.Top;
-            this._lblReceiptTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this._lblReceiptTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this._lblReceiptTitle.Location = new System.Drawing.Point(16, 15);
-            this._lblReceiptTitle.Name = "_lblReceiptTitle";
-            this._lblReceiptTitle.Size = new System.Drawing.Size(696, 43);
-            this._lblReceiptTitle.TabIndex = 0;
-            this._lblReceiptTitle.Text = "Receipt";
-            this._lblReceiptTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // _lblItemCount
-            // 
-            this._lblItemCount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._lblItemCount.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this._lblItemCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(125)))), ((int)(((byte)(139)))));
-            this._lblItemCount.Location = new System.Drawing.Point(560, 58);
-            this._lblItemCount.Name = "_lblItemCount";
-            this._lblItemCount.Size = new System.Drawing.Size(152, 20);
-            this._lblItemCount.TabIndex = 4;
-            this._lblItemCount.Text = "0 items";
-            this._lblItemCount.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // _btnQuickAdd
             // 
             this._btnQuickAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -607,6 +607,18 @@ namespace InventoryManagementSystem
             this._btnVoidLast.UseVisualStyleBackColor = true;
             this._btnVoidLast.Click += new System.EventHandler(this.btnVoidLast_Click);
             // 
+            // _lblReceiptTitle
+            // 
+            this._lblReceiptTitle.Dock = System.Windows.Forms.DockStyle.Top;
+            this._lblReceiptTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this._lblReceiptTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this._lblReceiptTitle.Location = new System.Drawing.Point(16, 15);
+            this._lblReceiptTitle.Name = "_lblReceiptTitle";
+            this._lblReceiptTitle.Size = new System.Drawing.Size(696, 43);
+            this._lblReceiptTitle.TabIndex = 0;
+            this._lblReceiptTitle.Text = "Receipt";
+            this._lblReceiptTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // frmPOS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -614,8 +626,10 @@ namespace InventoryManagementSystem
             this.ClientSize = new System.Drawing.Size(1720, 825);
             this.Controls.Add(this._rootLayout);
             this.KeyPreview = true;
+            this.MinimumSize = new System.Drawing.Size(1280, 720);
             this.Name = "frmPOS";
             this.Text = "Point of Sale (POS)";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this._rootLayout.ResumeLayout(false);
             this._topPanel.ResumeLayout(false);
             this._topPanel.PerformLayout();
@@ -654,6 +668,7 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.TextBox _txtCoupon;
         private System.Windows.Forms.Button _btnApplyCoupon;
         private System.Windows.Forms.Button _btnRemoveCoupon;
+        private System.Windows.Forms.Button _btnManualDiscount;
         private System.Windows.Forms.Label _lblSubtotal;
         private System.Windows.Forms.Label _lblDiscount;
         private System.Windows.Forms.Label _lblTax;
