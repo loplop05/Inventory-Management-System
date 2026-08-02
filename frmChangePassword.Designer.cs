@@ -116,6 +116,9 @@ namespace InventoryManagementSystem
             this.Controls.Add(this.lblConfirmPassword);
             this.Controls.Add(this.lblNewPassword);
             this.Controls.Add(this.lblUserInfo);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.KeyPreview = true;
             this.Name = "frmChangePassword";
             this.Text = "Change Password";

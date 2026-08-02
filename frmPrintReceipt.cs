@@ -12,6 +12,9 @@ namespace InventoryManagementSystem
         private int _currentOrderID = -1;
         private DataTable _currentOrderDetails = null;
         private DataTable _currentOrderItems = null;
+        private int _currentPrintLine = 0;
+        private string[] _receiptLines = null;
+        private int _currentPageNumber = 0;
 
         public frmPrintReceipt()
         {
@@ -222,43 +225,13 @@ namespace InventoryManagementSystem
 
         private void PrintReceipt()
         {
+            // Initialize printing state
+            _currentPrintLine = 0;
+            _receiptLines = _lblReceiptPreview.Text.Split('\n');
+            _currentPageNumber = 0;
+
             PrintDocument printDoc = new PrintDocument();
-            printDoc.PrintPage += (sender, e) =>
-            {
-                Font font = new Font("Consolas", 10);
-                Font boldFont = new Font("Consolas", 10, FontStyle.Bold);
-                float lineHeight = font.GetHeight(e.Graphics);
-                float yPos = 20;
-                float leftMargin = 20;
-                float pageWidth = e.PageBounds.Width - 2 * leftMargin;
-
-                string receiptText = _lblReceiptPreview.Text;
-                string[] lines = receiptText.Split('\n');
-
-                foreach (string line in lines)
-                {
-                    if (yPos > e.PageBounds.Height - 50)
-                    {
-                        e.HasMorePages = true;
-                        return;
-                    }
-
-                    // Check if line contains header/footer (use bold font)
-                    if (line.Contains("=") || line.Contains("-") || 
-                        line.Contains("INVENTORY MANAGEMENT SYSTEM") ||
-                        line.Contains("Thank you") ||
-                        line.Contains("TOTAL"))
-                    {
-                        e.Graphics.DrawString(line, boldFont, Brushes.Black, leftMargin, yPos);
-                    }
-                    else
-                    {
-                        e.Graphics.DrawString(line, font, Brushes.Black, leftMargin, yPos);
-                    }
-                    yPos += lineHeight;
-                }
-                e.HasMorePages = false;
-            };
+            printDoc.PrintPage += PrintDocument_PrintPage;
 
             PrintDialog printDialog = new PrintDialog
             {
@@ -270,6 +243,59 @@ namespace InventoryManagementSystem
                 printDoc.Print();
                 MessageBox.Show("Receipt printed successfully.", "Print", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            Font font = new Font("Consolas", 10);
+            Font boldFont = new Font("Consolas", 10, FontStyle.Bold);
+            float lineHeight = font.GetHeight(e.Graphics);
+            float yPos = e.MarginBounds.Top;
+            float leftMargin = e.MarginBounds.Left;
+            float pageWidth = e.MarginBounds.Width;
+
+            // Print page header on each page (except first page which has the main header)
+            if (_currentPageNumber > 0)
+            {
+                e.Graphics.DrawString($"--- Receipt Continued (Page {_currentPageNumber + 1}) ---", boldFont, Brushes.Black, leftMargin, yPos);
+                yPos += lineHeight * 2;
+            }
+
+            // Print lines until page is full or all lines are printed
+            while (_currentPrintLine < _receiptLines.Length)
+            {
+                string line = _receiptLines[_currentPrintLine];
+
+                // Check if we need a new page
+                if (yPos > e.MarginBounds.Bottom - lineHeight * 3)
+                {
+                    _currentPageNumber++;
+                    e.HasMorePages = true;
+                    return;
+                }
+
+                // Check if line contains header/footer (use bold font)
+                if (line.Contains("=") || line.Contains("-") || 
+                    line.Contains("INVENTORY MANAGEMENT SYSTEM") ||
+                    line.Contains("Thank you") ||
+                    line.Contains("TOTAL"))
+                {
+                    e.Graphics.DrawString(line, boldFont, Brushes.Black, leftMargin, yPos);
+                }
+                else
+                {
+                    e.Graphics.DrawString(line, font, Brushes.Black, leftMargin, yPos);
+                }
+
+                yPos += lineHeight;
+                _currentPrintLine++;
+            }
+
+            // All lines printed
+            e.HasMorePages = false;
+            _currentPrintLine = 0;
+            _receiptLines = null;
+            _currentPageNumber = 0;
         }
 
         private void btnClose_Click(object sender, EventArgs e)

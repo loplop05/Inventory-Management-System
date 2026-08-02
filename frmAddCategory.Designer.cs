@@ -76,6 +76,9 @@
             this.Controls.Add(this.btnAdd);
             this.Controls.Add(this.txtBoxCategoryName);
             this.Controls.Add(this.label2);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmAddCategory";
             this.Text = "Add Category";
             this.ResumeLayout(false);

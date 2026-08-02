@@ -136,7 +136,9 @@ namespace InventoryManagementSystem
             this.Controls.Add(this.lblPhone);
             this.Controls.Add(this.txtName);
             this.Controls.Add(this.lblName);
-            this.KeyPreview = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmAddCustomerPOS";
             this.Text = "Add Customer";
             this.Load += new System.EventHandler(this.frmAddCustomerPOS_Load);

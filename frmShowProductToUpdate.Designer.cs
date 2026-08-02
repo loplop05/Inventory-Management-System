@@ -234,6 +234,9 @@ namespace InventoryManagementSystem
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lblProductName);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmShowProductToUpdate";
             this.Text = "Update Product";
             this.Load += new System.EventHandler(this.frmShowProductToUpdate_Load);

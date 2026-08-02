@@ -168,6 +168,9 @@ namespace InventoryManagementSystem
             this.Controls.Add(this.lblRole);
             this.Controls.Add(this.lblDisplayName);
             this.Controls.Add(this.lblUsername);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.KeyPreview = true;
             this.Name = "frmAddEditUser";
             this.Text = "Add/Edit User";

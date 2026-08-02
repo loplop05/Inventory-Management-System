@@ -116,6 +116,9 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.lblCategory);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmShowCategoryToUpdate";
             this.Text = "Update Category";
             this.Load += new System.EventHandler(this.frmShowCategoryToUpdate_Load);

@@ -107,6 +107,9 @@ namespace InventoryManagementSystem
             this.Controls.Add(this.rbFixedAmount);
             this.Controls.Add(this.rbPercentage);
             this.Controls.Add(this.lblDiscountType);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.KeyPreview = true;
             this.Name = "frmManualDiscount";
             this.Text = "Manual Discount";

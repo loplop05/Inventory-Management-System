@@ -93,6 +93,7 @@ namespace InventoryManagementSystem
             this._lblSearch.Size = new System.Drawing.Size(80, 28);
             this._lblSearch.TabIndex = 0;
             this._lblSearch.Text = "Search:";
+            this._lblSearch.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Top;
             // 
             // _txtSearch
             // 
@@ -100,18 +101,20 @@ namespace InventoryManagementSystem
             this._txtSearch.Font = new System.Drawing.Font("Segoe UI", 12F);
             this._txtSearch.Location = new System.Drawing.Point(127, 10);
             this._txtSearch.Name = "_txtSearch";
-            this._txtSearch.Size = new System.Drawing.Size(200, 34);
+            this._txtSearch.Size = new System.Drawing.Size(400, 34);
             this._txtSearch.TabIndex = 1;
+            this._txtSearch.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this._txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // _btnRefresh
             // 
             this._btnRefresh.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._btnRefresh.Location = new System.Drawing.Point(368, 10);
+            this._btnRefresh.Location = new System.Drawing.Point(533, 10);
             this._btnRefresh.Name = "_btnRefresh";
-            this._btnRefresh.Size = new System.Drawing.Size(107, 44);
+            this._btnRefresh.Size = new System.Drawing.Size(107, 34);
             this._btnRefresh.TabIndex = 2;
             this._btnRefresh.Text = "Refresh";
+            this._btnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Top;
             this._btnRefresh.UseVisualStyleBackColor = true;
             this._btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
@@ -131,9 +134,8 @@ namespace InventoryManagementSystem
             // 
             this.DataGVSuppliers.AllowUserToAddRows = false;
             this.DataGVSuppliers.AllowUserToDeleteRows = false;
-            this.DataGVSuppliers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.DataGVSuppliers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DataGVSuppliers.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataGVSuppliers.Location = new System.Drawing.Point(0, 0);
             this.DataGVSuppliers.Name = "DataGVSuppliers";
             this.DataGVSuppliers.ReadOnly = true;
@@ -153,6 +155,7 @@ namespace InventoryManagementSystem
             this._lblEmptyState.TabIndex = 1;
             this._lblEmptyState.Text = "No suppliers found";
             this._lblEmptyState.Visible = false;
+            this._lblEmptyState.Anchor = System.Windows.Forms.AnchorStyles.None;
             // 
             // _actionsPanel
             // 
@@ -230,6 +233,7 @@ namespace InventoryManagementSystem
             this._btnPreviousPage.Size = new System.Drawing.Size(100, 34);
             this._btnPreviousPage.TabIndex = 0;
             this._btnPreviousPage.Text = "Previous";
+            this._btnPreviousPage.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Bottom;
             this._btnPreviousPage.UseVisualStyleBackColor = true;
             this._btnPreviousPage.Click += new System.EventHandler(this.btnPreviousPage_Click);
             // 
@@ -237,11 +241,12 @@ namespace InventoryManagementSystem
             // 
             this._lblPageInfo.AutoSize = true;
             this._lblPageInfo.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this._lblPageInfo.Location = new System.Drawing.Point(782, 8);
+            this._lblPageInfo.Location = new System.Drawing.Point(106, 15);
             this._lblPageInfo.Name = "_lblPageInfo";
             this._lblPageInfo.Size = new System.Drawing.Size(95, 23);
             this._lblPageInfo.TabIndex = 1;
             this._lblPageInfo.Text = "Page 1 of 1";
+            this._lblPageInfo.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Bottom;
             // 
             // _btnNextPage
             // 
@@ -251,6 +256,7 @@ namespace InventoryManagementSystem
             this._btnNextPage.Size = new System.Drawing.Size(100, 34);
             this._btnNextPage.TabIndex = 2;
             this._btnNextPage.Text = "Next";
+            this._btnNextPage.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Bottom;
             this._btnNextPage.UseVisualStyleBackColor = true;
             this._btnNextPage.Click += new System.EventHandler(this.btnNextPage_Click);
             // 

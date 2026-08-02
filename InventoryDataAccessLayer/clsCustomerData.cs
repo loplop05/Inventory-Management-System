@@ -424,6 +424,78 @@ namespace InventoryDataAccessLayer
             }
         }
 
+        public static bool UpdateCustomerLoyalty(int customerID, int loyaltyPoints, decimal totalSpent, string tier, out string errorMessage)
+        {
+            errorMessage = "";
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    EnsureLoyaltyColumns(connection);
+
+                    string query = @"
+                        UPDATE Customers
+                        SET LoyaltyPoints = @LoyaltyPoints,
+                            TotalSpent = @TotalSpent,
+                            Tier = @Tier
+                        WHERE CustomerID = @CustomerID";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@CustomerID", customerID);
+                        command.Parameters.AddWithValue("@LoyaltyPoints", loyaltyPoints);
+                        command.Parameters.AddWithValue("@TotalSpent", totalSpent);
+                        command.Parameters.AddWithValue("@Tier", tier);
+
+                        command.ExecuteNonQuery();
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = ex.Message;
+                    clsErrorLog.LogException("clsCustomerData.UpdateCustomerLoyalty", ex);
+                    return false;
+                }
+            }
+        }
+
+        public static bool UpdateCustomerPoints(int customerID, int loyaltyPoints, out string errorMessage)
+        {
+            errorMessage = "";
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    EnsureLoyaltyColumns(connection);
+
+                    string query = @"
+                        UPDATE Customers
+                        SET LoyaltyPoints = @LoyaltyPoints
+                        WHERE CustomerID = @CustomerID";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@CustomerID", customerID);
+                        command.Parameters.AddWithValue("@LoyaltyPoints", loyaltyPoints);
+
+                        command.ExecuteNonQuery();
+                        return true;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = ex.Message;
+                    clsErrorLog.LogException("clsCustomerData.UpdateCustomerPoints", ex);
+                    return false;
+                }
+            }
+        }
+
         public static bool RedeemLoyaltyPoints(int customerID, int pointsToRedeem, out string errorMessage)
         {
             errorMessage = "";

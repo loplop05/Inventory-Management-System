@@ -32,6 +32,7 @@ namespace InventoryManagementSystem
             this._buttonsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this._btnClose = new System.Windows.Forms.Button();
             this._btnExportCsv = new System.Windows.Forms.Button();
+            this._btnExportHtml = new System.Windows.Forms.Button();
             this._btnRefresh = new System.Windows.Forms.Button();
             this._rootLayout.SuspendLayout();
             this._summaryPanel.SuspendLayout();
@@ -238,6 +239,7 @@ namespace InventoryManagementSystem
             // 
             this._buttonsPanel.Controls.Add(this._btnClose);
             this._buttonsPanel.Controls.Add(this._btnExportCsv);
+            this._buttonsPanel.Controls.Add(this._btnExportHtml);
             this._buttonsPanel.Controls.Add(this._btnRefresh);
             this._buttonsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._buttonsPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
@@ -265,6 +267,16 @@ namespace InventoryManagementSystem
             this._btnExportCsv.Text = "Export CSV";
             this._btnExportCsv.UseVisualStyleBackColor = true;
             this._btnExportCsv.Click += new System.EventHandler(this.btnExportCsv_Click);
+            // 
+            // _btnExportHtml
+            // 
+            this._btnExportHtml.Location = new System.Drawing.Point(681, 3);
+            this._btnExportHtml.Name = "_btnExportHtml";
+            this._btnExportHtml.Size = new System.Drawing.Size(116, 34);
+            this._btnExportHtml.TabIndex = 2;
+            this._btnExportHtml.Text = "Export HTML";
+            this._btnExportHtml.UseVisualStyleBackColor = true;
+            this._btnExportHtml.Click += new System.EventHandler(this.btnExportHtml_Click);
             // 
             // _btnRefresh
             // 
@@ -319,6 +331,7 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.FlowLayoutPanel _buttonsPanel;
         private System.Windows.Forms.Button _btnRefresh;
         private System.Windows.Forms.Button _btnExportCsv;
+        private System.Windows.Forms.Button _btnExportHtml;
         private System.Windows.Forms.Button _btnClose;
         
     }

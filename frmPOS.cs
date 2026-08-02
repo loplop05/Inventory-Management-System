@@ -67,6 +67,7 @@ namespace InventoryManagementSystem
             // ── New POS improvement buttons ─────────────────────────────────────
             clsFormTheme.ApplyDangerButtonStyle(_btnClearAll, clsFormTheme.Icons.Delete);
             clsFormTheme.ApplySecondaryButtonStyle(_btnHoldOrder, clsFormTheme.Icons.Save);
+            clsFormTheme.ApplyPrimaryButtonStyle(_btnRetrieveHeldOrder, clsFormTheme.Icons.Add);
             clsFormTheme.ApplyPrimaryButtonStyle(_btnQuickAdd, clsFormTheme.Icons.Add);
             clsFormTheme.ApplySecondaryButtonStyle(_btnVoidLast, clsFormTheme.Icons.Cancel);
 
@@ -893,9 +894,214 @@ namespace InventoryManagementSystem
                 return;
             }
 
-            // For now, just show a message - this could be expanded to save held orders
-            MessageBox.Show($"Order held with {_receiptItems.Count} items.\n\nThis feature can be expanded to save and retrieve held orders.", 
-                "Hold Order", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            // Ask for optional notes
+            string notes = "";
+            using (var notesForm = new Form())
+            {
+                notesForm.Text = "Hold Order Notes (Optional)";
+                notesForm.Size = new Size(400, 200);
+                notesForm.StartPosition = FormStartPosition.CenterParent;
+                notesForm.FormBorderStyle = FormBorderStyle.FixedDialog;
+                notesForm.MaximizeBox = false;
+                notesForm.MinimizeBox = false;
+
+                clsFormTheme.ApplyFormStyle(notesForm);
+                clsFormTheme.CreateHeaderPanel(notesForm, "Hold Order Notes", clsFormTheme.Icons.Save);
+
+                var txtNotes = new TextBox
+                {
+                    Multiline = true,
+                    Location = new Point(20, 60),
+                    Size = new Size(340, 60),
+                    ScrollBars = ScrollBars.Vertical
+                };
+                clsFormTheme.ApplyTextBoxStyle(txtNotes);
+
+                var btnSave = new Button
+                {
+                    Text = "Hold",
+                    Location = new Point(220, 130),
+                    Size = new Size(100, 35)
+                };
+                clsFormTheme.ApplyPrimaryButtonStyle(btnSave, clsFormTheme.Icons.Save);
+
+                var btnCancel = new Button
+                {
+                    Text = "Cancel",
+                    Location = new Point(330, 130),
+                    Size = new Size(100, 35)
+                };
+                clsFormTheme.ApplySecondaryButtonStyle(btnCancel, clsFormTheme.Icons.Cancel);
+
+                notesForm.Controls.Add(txtNotes);
+                notesForm.Controls.Add(btnSave);
+                notesForm.Controls.Add(btnCancel);
+
+                btnSave.Click += (s, args) =>
+                {
+                    notes = txtNotes.Text.Trim();
+                    notesForm.DialogResult = DialogResult.OK;
+                };
+
+                btnCancel.Click += (s, args) => notesForm.DialogResult = DialogResult.Cancel;
+
+                if (notesForm.ShowDialog(this) != DialogResult.OK)
+                {
+                    return;
+                }
+            }
+
+            // Create held order info
+            var heldOrder = new InventoryDataAccessLayer.clsHeldOrderData.HeldOrderInfo
+            {
+                UserID = clsUserManagement.CurrentUser?.UserID,
+                CustomerID = _selectedCustomerID,
+                CustomerName = _selectedCustomerName,
+                CustomerPhone = _txtCustomerPhone.Text.Trim(),
+                PaymentMethod = _rbCash.Checked ? "Cash" : "Visa",
+                PaymentDetails = _txtPaymentDetails.Text.Trim(),
+                CouponCode = _appliedCoupon?.Code,
+                ManualDiscountType = _manualDiscountType?.ToString(),
+                ManualDiscountValue = _manualDiscountValue > 0 ? _manualDiscountValue : (decimal?)null,
+                Notes = notes
+            };
+
+            // Add items
+            foreach (var item in _receiptItems)
+            {
+                heldOrder.Items.Add(new InventoryDataAccessLayer.clsHeldOrderData.HeldOrderItemInfo
+                {
+                    ProductID = item.ProductID,
+                    ProductName = item.ProductName,
+                    Quantity = item.Quantity,
+                    UnitPrice = item.UnitPrice,
+                    Subtotal = item.Subtotal
+                });
+            }
+
+            // Save held order
+            string errorMessage;
+            int heldOrderID = clsHeldOrder.SaveHeldOrder(heldOrder, out errorMessage);
+
+            if (heldOrderID > 0)
+            {
+                // Clear current receipt
+                _receiptItems.Clear();
+                ClearCoupon();
+                ClearManualDiscount();
+                ClearCustomerInfo();
+                RefreshReceiptTotals();
+
+                // Log to audit
+                clsAuditLog.LogAction("Order Held", $"Held order #{heldOrderID} with {heldOrder.Items.Count} items", "POS");
+
+                MessageBox.Show($"Order held successfully.\nHeld Order ID: {heldOrderID}\nItems: {heldOrder.Items.Count}", 
+                    "Hold Order", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Failed to hold order: " + errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnRetrieveHeldOrder_Click(object sender, EventArgs e)
+        {
+            if (_receiptItems.Count > 0)
+            {
+                var result = MessageBox.Show("Current receipt has items. Clear receipt before retrieving held order?", 
+                    "Retrieve Held Order", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
+
+            using (var heldOrdersForm = new frmHeldOrders())
+            {
+                if (heldOrdersForm.ShowDialog(this) == DialogResult.OK && heldOrdersForm.SelectedHeldOrder != null)
+                {
+                    var heldOrder = heldOrdersForm.SelectedHeldOrder;
+
+                    // Clear current receipt
+                    _receiptItems.Clear();
+                    ClearCoupon();
+                    ClearManualDiscount();
+
+                    // Restore customer info
+                    if (heldOrder.CustomerID.HasValue)
+                    {
+                        _selectedCustomerID = heldOrder.CustomerID;
+                        _selectedCustomerName = heldOrder.CustomerName;
+                        _txtCustomerPhone.Text = heldOrder.CustomerPhone;
+                        _lblCustomerName.Text = heldOrder.CustomerName;
+                        _lblCustomerName.ForeColor = Color.FromArgb(44, 62, 80);
+                        _btnAddCustomer.Text = "Change";
+                    }
+
+                    // Restore payment method
+                    if (heldOrder.PaymentMethod == "Visa")
+                    {
+                        _rbVisa.Checked = true;
+                    }
+                    else
+                    {
+                        _rbCash.Checked = true;
+                    }
+
+                    _txtPaymentDetails.Text = heldOrder.PaymentDetails;
+
+                    // Restore coupon
+                    if (!string.IsNullOrEmpty(heldOrder.CouponCode))
+                    {
+                        decimal subtotal = 0; // Will be calculated after items are added
+                        string reason;
+                        var coupon = clsDiscountSystem.ValidateCoupon(heldOrder.CouponCode, subtotal, out reason);
+                        if (coupon != null)
+                        {
+                            _appliedCoupon = coupon;
+                            _txtCoupon.Text = coupon.Code;
+                            _txtCoupon.Enabled = false;
+                            _btnApplyCoupon.Enabled = false;
+                            _btnRemoveCoupon.Enabled = true;
+                        }
+                    }
+
+                    // Restore manual discount
+                    if (!string.IsNullOrEmpty(heldOrder.ManualDiscountType) && heldOrder.ManualDiscountValue.HasValue)
+                    {
+                        if (heldOrder.ManualDiscountType == "Percentage")
+                        {
+                            _manualDiscountType = frmManualDiscount.DiscountType.Percentage;
+                        }
+                        else
+                        {
+                            _manualDiscountType = frmManualDiscount.DiscountType.FixedAmount;
+                        }
+                        _manualDiscountValue = heldOrder.ManualDiscountValue.Value;
+                    }
+
+                    // Add items to receipt
+                    foreach (var item in heldOrder.Items)
+                    {
+                        _receiptItems.Add(new ReceiptItem
+                        {
+                            ProductID = item.ProductID,
+                            ProductName = item.ProductName,
+                            Quantity = item.Quantity,
+                            UnitPrice = item.UnitPrice,
+                            AvailableStock = 0 // Will be updated when needed
+                        });
+                    }
+
+                    RefreshReceiptTotals();
+
+                    // Log to audit
+                    clsAuditLog.LogAction("Held Order Retrieved", $"Retrieved held order #{heldOrder.HeldOrderID} with {heldOrder.Items.Count} items", "POS");
+
+                    MessageBox.Show($"Held order retrieved successfully.\nItems: {heldOrder.Items.Count}", 
+                        "Retrieve", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
 
         private void btnQuickAdd_Click(object sender, EventArgs e)
@@ -1069,22 +1275,9 @@ namespace InventoryManagementSystem
             RefreshReceiptTotals();
         }
 
-        private void totalsPanel_Resize(object sender, EventArgs e)
-        {
-            Panel panel = sender as Panel;
-            if (panel == null)
-                return;
-
-            _lblSubtotal.Width = panel.ClientSize.Width;
-            _lblDiscount.Width = panel.ClientSize.Width;
-            _lblTax.Width = panel.ClientSize.Width;
-            _lblTotal.Width = panel.ClientSize.Width;
-            _btnCompleteOrder.Left = panel.ClientSize.Width - _btnCompleteOrder.Width;
-        }
-
         private void topPanel_Resize(object sender, EventArgs e)
         {
-            int right = _topPanel.ClientSize.Width - 16;
+            int right = this.ClientSize.Width - 16;
             _btnReport.Left = right - _btnReport.Width;
             _btnRefresh.Left = _btnReport.Left - _btnRefresh.Width - 10;
         }
@@ -1204,10 +1397,6 @@ namespace InventoryManagementSystem
             Text = clsLanguageManager.GetString("Point of Sale (POS)");
         }
 
-        private void _topPanel_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
     }
 
     public class ReceiptItem

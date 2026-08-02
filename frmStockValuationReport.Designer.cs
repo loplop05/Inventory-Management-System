@@ -47,9 +47,11 @@ namespace InventoryManagementSystem
             this.labelTitle.Size = new System.Drawing.Size(285, 32);
             this.labelTitle.TabIndex = 0;
             this.labelTitle.Text = "Stock Valuation Report";
+            this.labelTitle.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Top;
             // 
             // btnExportCsv
             // 
+            this.btnExportCsv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExportCsv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnExportCsv.Location = new System.Drawing.Point(536, 89);
             this.btnExportCsv.Name = "btnExportCsv";
@@ -61,6 +63,7 @@ namespace InventoryManagementSystem
             // 
             // btnRefresh
             // 
+            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRefresh.Location = new System.Drawing.Point(672, 89);
             this.btnRefresh.Name = "btnRefresh";
@@ -72,6 +75,7 @@ namespace InventoryManagementSystem
             // 
             // btnClose
             // 
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnClose.Location = new System.Drawing.Point(816, 89);
             this.btnClose.Name = "btnClose";
@@ -85,8 +89,10 @@ namespace InventoryManagementSystem
             // 
             this.DataGVStockValuation.AllowUserToAddRows = false;
             this.DataGVStockValuation.AllowUserToDeleteRows = false;
+            this.DataGVStockValuation.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.DataGVStockValuation.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGVStockValuation.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.DataGVStockValuation.Location = new System.Drawing.Point(55, 155);
             this.DataGVStockValuation.Name = "DataGVStockValuation";
             this.DataGVStockValuation.ReadOnly = true;
@@ -97,10 +103,12 @@ namespace InventoryManagementSystem
             // 
             // lblTotalStockValue
             // 
+            this.lblTotalStockValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTotalStockValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalStockValue.Location = new System.Drawing.Point(55, 569);
             this.lblTotalStockValue.Name = "lblTotalStockValue";
-            this.lblTotalStockValue.Size = new System.Drawing.Size(500, 32);
+            this.lblTotalStockValue.Size = new System.Drawing.Size(891, 32);
             this.lblTotalStockValue.TabIndex = 4;
             this.lblTotalStockValue.Text = "Total Stock Value: 0.00";
             // 
@@ -114,6 +122,7 @@ namespace InventoryManagementSystem
             this.lblEmptyState.TabIndex = 5;
             this.lblEmptyState.Text = "No products are available for stock valuation.";
             this.lblEmptyState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblEmptyState.Anchor = System.Windows.Forms.AnchorStyles.None;
             // 
             // frmStockValuationReport
             // 
@@ -127,6 +136,7 @@ namespace InventoryManagementSystem
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this.btnExportCsv);
             this.Controls.Add(this.labelTitle);
+            this.MinimumSize = new System.Drawing.Size(900, 500);
             this.Name = "frmStockValuationReport";
             this.Text = "Stock Valuation Report";
             this.AutoScroll = true;

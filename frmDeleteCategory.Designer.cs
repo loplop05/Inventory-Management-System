@@ -72,6 +72,9 @@
             this.Controls.Add(this.btnDelete);
             this.Controls.Add(this.txtCategoryID);
             this.Controls.Add(this.label2);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmDeleteCategory";
             this.Text = "Delete Category";
             this.ResumeLayout(false);

@@ -223,10 +223,12 @@
     <Compile Include="clsFormTheme.cs" />
     <Compile Include="clsNotify.cs" />
     <Compile Include="clsKeyboardShortcuts.cs" />
-    <Compile Include="clsDataValidation.cs" />
+    <Compile Include="clsReportExporter.cs" />
+    <Compile Include="clsReorderSuggestions.cs" />
     <Compile Include="clsLanguageManager.cs" />
     <Compile Include="clsAuditLog.cs" />
     <Compile Include="clsSystemTests.cs" />
+    <Compile Include="clsDataValidation.cs" />
     <Compile Include="frmAuditLog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -271,7 +273,12 @@
     <Compile Include="frmAddCustomerPOS.Designer.cs">
       <DependentUpon>frmAddCustomerPOS.cs</DependentUpon>
     </Compile>
-    <Compile Include="clsReorderSuggestions.cs" />
+    <Compile Include="frmHeldOrders.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmHeldOrders.Designer.cs">
+      <DependentUpon>frmHeldOrders.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -368,6 +375,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmAddCustomerPOS.resx">
       <DependentUpon>frmAddCustomerPOS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmHeldOrders.resx">
+      <DependentUpon>frmHeldOrders.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -42,11 +42,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="clsCategory.cs" />
-    <Compile Include="clsProduct.cs" />
+    <Compile Include="clsCustomer.cs" />
+    <Compile Include="clsBranch.cs" />
+    <Compile Include="clsRegister.cs" />
+    <Compile Include="clsHeldOrder.cs" />
+    <Compile Include="clsRefund.cs" />
+    <Compile Include="clsStockTransfer.cs" />
+    <Compile Include="clsLoyalty.cs" />
+    <Compile Include="clsAnalytics.cs" />
+    <Compile Include="clsCoupon.cs" />
     <Compile Include="clsPOS.cs" />
+    <Compile Include="clsProduct.cs" />
     <Compile Include="clsReport.cs" />
     <Compile Include="clsSupplier.cs" />
-    <Compile Include="clsCustomer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

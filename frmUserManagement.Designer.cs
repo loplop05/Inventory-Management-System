@@ -188,6 +188,7 @@ namespace InventoryManagementSystem
             this.Controls.Add(this._txtSearch);
             this.Controls.Add(this.DataGVUsers);
             this.KeyPreview = true;
+            this.MinimumSize = new System.Drawing.Size(700, 450);
             this.Name = "frmUserManagement";
             this.Text = "User Management";
             this.Load += new System.EventHandler(this.frmUserManagement_Load);

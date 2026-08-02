@@ -72,6 +72,9 @@
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtUpdateCategoryid);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmUpdateCategory";
             this.Text = "Find Category to Update";
             this.ResumeLayout(false);

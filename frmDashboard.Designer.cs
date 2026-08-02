@@ -455,6 +455,7 @@ namespace InventoryManagementSystem
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.btnRefresh);
             this.Controls.Add(this._mainPanel);
+            this.MinimumSize = new System.Drawing.Size(700, 400);
             this.Name = "frmDashboard";
             this.Text = "Dashboard";
             this.Load += new System.EventHandler(this.frmDashboard_Load);

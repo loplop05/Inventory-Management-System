@@ -51,7 +51,13 @@
     <Compile Include="clsCustomerData.cs" />
     <Compile Include="clsErrorLog.cs" />
     <Compile Include="clsUserData.cs" />
+    <Compile Include="clsBranchData.cs" />
+    <Compile Include="clsRegisterData.cs" />
     <Compile Include="clsHeldOrderData.cs" />
+    <Compile Include="clsRefundData.cs" />
+    <Compile Include="clsStockTransferData.cs" />
+    <Compile Include="clsAnalyticsData.cs" />
+    <Compile Include="clsCouponData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

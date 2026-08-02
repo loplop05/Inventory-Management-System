@@ -40,6 +40,10 @@ namespace InventoryManagementSystem
             _btnExportCsv.Font = new Font(clsFormTheme.MainFontName, 11F);
             clsFormTheme.ApplySuccessButtonStyle(_btnExportCsv, clsFormTheme.Icons.Export);
 
+            _btnExportHtml.Text = "Export HTML";
+            _btnExportHtml.Font = new Font(clsFormTheme.MainFontName, 11F);
+            clsFormTheme.ApplySuccessButtonStyle(_btnExportHtml, clsFormTheme.Icons.Export);
+
             _btnClose.Text = "Close";
             _btnClose.Font = new Font(clsFormTheme.MainFontName, 11F);
             clsFormTheme.ApplySecondaryButtonStyle(_btnClose, clsFormTheme.Icons.Exit);
@@ -161,6 +165,39 @@ namespace InventoryManagementSystem
             }
         }
 
+        private void ExportReportHtml()
+        {
+            using (SaveFileDialog dialog = new SaveFileDialog())
+            {
+                dialog.Title = "Export Daily Report to HTML";
+                dialog.Filter = "HTML files (*.html)|*.html|All files (*.*)|*.*";
+                dialog.FileName = "DailyReport-" + DateTime.Today.ToString("yyyy-MM-dd") + ".html";
+
+                if (dialog.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                try
+                {
+                    string errorMessage;
+                    DataTable[] tables = { _summaryTable, _ordersTable, _topProductsTable };
+                    string[] titles = { "Summary", "Today's Orders", "Top-Selling Products" };
+
+                    if (clsReportExporter.ExportMultipleTablesToHtml(tables, titles, "Daily Sales Report", dialog.FileName, out errorMessage))
+                    {
+                        MessageBox.Show("Daily report exported to HTML successfully.\n\nYou can open the HTML file in your browser and print to PDF from there.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Export failed: " + errorMessage, "Export", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Export failed: " + ex.Message, "Export", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
         private string BuildCsvReport()
         {
             StringBuilder builder = new StringBuilder();
@@ -252,6 +289,11 @@ namespace InventoryManagementSystem
         private void btnExportCsv_Click(object sender, EventArgs e)
         {
             ExportReportCsv();
+        }
+
+        private void btnExportHtml_Click(object sender, EventArgs e)
+        {
+            ExportReportHtml();
         }
 
         private void btnClose_Click(object sender, EventArgs e)

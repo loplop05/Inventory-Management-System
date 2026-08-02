@@ -53,6 +53,7 @@ namespace InventoryManagementSystem
             this.lblModule.Size = new System.Drawing.Size(58, 19);
             this.lblModule.TabIndex = 0;
             this.lblModule.Text = "Module:";
+            this.lblModule.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Top;
             // 
             // cmbModule
             // 
@@ -62,6 +63,7 @@ namespace InventoryManagementSystem
             this.cmbModule.Name = "cmbModule";
             this.cmbModule.Size = new System.Drawing.Size(150, 27);
             this.cmbModule.TabIndex = 1;
+            this.cmbModule.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Top;
             this.cmbModule.SelectedIndexChanged += new System.EventHandler(this.cmbModule_SelectedIndexChanged);
             // 
             // lblSearch
@@ -72,6 +74,7 @@ namespace InventoryManagementSystem
             this.lblSearch.Size = new System.Drawing.Size(52, 19);
             this.lblSearch.TabIndex = 2;
             this.lblSearch.Text = "Search:";
+            this.lblSearch.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Top;
             // 
             // txtSearch
             // 
@@ -79,6 +82,7 @@ namespace InventoryManagementSystem
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new System.Drawing.Size(220, 27);
             this.txtSearch.TabIndex = 3;
+            this.txtSearch.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right;
             this.txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // btnExport
@@ -88,6 +92,7 @@ namespace InventoryManagementSystem
             this.btnExport.Size = new System.Drawing.Size(110, 32);
             this.btnExport.TabIndex = 4;
             this.btnExport.Text = "Export CSV";
+            this.btnExport.Anchor = System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Top;
             this.btnExport.UseVisualStyleBackColor = true;
             this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
             // 
@@ -98,6 +103,7 @@ namespace InventoryManagementSystem
             this.btnRefresh.Size = new System.Drawing.Size(100, 32);
             this.btnRefresh.TabIndex = 5;
             this.btnRefresh.Text = "Refresh";
+            this.btnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Top;
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
@@ -108,6 +114,7 @@ namespace InventoryManagementSystem
             this.btnClear.Size = new System.Drawing.Size(100, 32);
             this.btnClear.TabIndex = 6;
             this.btnClear.Text = "Clear Logs";
+            this.btnClear.Anchor = System.Windows.Forms.AnchorStyles.Right | System.Windows.Forms.AnchorStyles.Top;
             this.btnClear.UseVisualStyleBackColor = true;
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
@@ -147,6 +154,7 @@ namespace InventoryManagementSystem
             this.Controls.Add(this.panelTop);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.Margin = new System.Windows.Forms.Padding(4);
+            this.MinimumSize = new System.Drawing.Size(800, 500);
             this.Name = "frmAuditLog";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "System Audit Logs & Activity";

@@ -81,6 +81,9 @@ namespace InventoryManagementSystem
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtUpdateSupplierID);
             this.Controls.Add(this.label1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "frmUpdateSupplier";
             this.Text = "Find Supplier to Update";
             this.ResumeLayout(false);
