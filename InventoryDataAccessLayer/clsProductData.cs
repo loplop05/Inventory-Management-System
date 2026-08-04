@@ -37,7 +37,11 @@ namespace InventoryDataAccessLayer
                             productID = id;
                         }
                     }
-                    catch { productID = -1; }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsProductData.AddProduct", ex);
+                        productID = -1;
+                    }
                 }
             }
             return productID;
@@ -71,7 +75,11 @@ namespace InventoryDataAccessLayer
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
                     }
-                    catch { return false; }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsProductData.UpdateProduct", ex);
+                        return false;
+                    }
                 }
             }
             return (rowsAffected > 0);
@@ -95,20 +103,25 @@ namespace InventoryDataAccessLayer
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
                     }
-                    catch { return false; }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsProductData.DeleteProduct", ex);
+                        return false;
+                    }
                 }
             }
             return (rowsAffected > 0);
         }
 
       
-        public static DataTable GetAllProducts()
+        public static bool GetAllProducts(out DataTable products, out string errorMessage)
         {
-            DataTable dt = new DataTable();
+            products = new DataTable();
+            errorMessage = "";
 
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
-                string query = "SELECT P.ProductID, P.ProductName, P.CategoryID, C.CategoryName, P.SupplierID, S.SupplierName, P.Price, P.Quantity, P.Barcode, P.ImagePath, P.CreatedDate FROM Products P INNER JOIN Categories C ON P.CategoryID = C.CategoryID INNER JOIN Suppliers S ON P.SupplierID = S.SupplierID";
+                string query = "SELECT P.ProductID, P.ProductName, P.CategoryID, ISNULL(C.CategoryName, 'Uncategorized') AS CategoryName, P.SupplierID, ISNULL(S.SupplierName, 'Unknown Supplier') AS SupplierName, P.Price, P.Quantity, P.Barcode, P.ImagePath, P.CreatedDate FROM Products P LEFT JOIN Categories C ON P.CategoryID = C.CategoryID LEFT JOIN Suppliers S ON P.SupplierID = S.SupplierID";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -117,16 +130,18 @@ namespace InventoryDataAccessLayer
                         connection.Open();
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            if (reader.HasRows) dt.Load(reader);
+                            if (reader.HasRows) products.Load(reader);
                         }
+                        return true;
                     }
                     catch (Exception ex)
                     {
+                        errorMessage = ex.Message;
                         clsErrorLog.LogException("clsProductData.GetAllProducts", ex);
+                        return false;
                     }
                 }
             }
-            return dt;
         }
 
         

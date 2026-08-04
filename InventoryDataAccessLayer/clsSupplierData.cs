@@ -59,7 +59,11 @@ namespace InventoryDataAccessLayer
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
                     }
-                    catch { return false; }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsSupplierData.UpdateSupplier", ex);
+                        return false;
+                    }
                 }
             }
             return (rowsAffected > 0);
@@ -82,7 +86,11 @@ namespace InventoryDataAccessLayer
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
                     }
-                    catch { return false; }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsSupplierData.DeleteSupplier", ex);
+                        return false;
+                    }
                 }
             }
             return (rowsAffected > 0);
@@ -114,7 +122,11 @@ namespace InventoryDataAccessLayer
                             }
                         }
                     }
-                    catch { isFound = false; }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsSupplierData.GetSupplierByID", ex);
+                        isFound = false;
+                    }
                 }
             }
             return isFound;

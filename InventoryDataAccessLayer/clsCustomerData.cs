@@ -98,8 +98,9 @@ namespace InventoryDataAccessLayer
                         return count > 0;
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    clsErrorLog.LogException("clsCustomerData.CustomerExistsByPhone", ex);
                     return false;
                 }
             }
@@ -129,8 +130,9 @@ namespace InventoryDataAccessLayer
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    clsErrorLog.LogException("clsCustomerData.GetCustomerByPhone", ex);
                 }
             }
 
@@ -161,8 +163,9 @@ namespace InventoryDataAccessLayer
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    clsErrorLog.LogException("clsCustomerData.GetCustomerByID", ex);
                 }
             }
 
@@ -192,8 +195,9 @@ namespace InventoryDataAccessLayer
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    clsErrorLog.LogException("clsCustomerData.GetAllCustomers", ex);
                 }
             }
 
@@ -568,8 +572,9 @@ namespace InventoryDataAccessLayer
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    clsErrorLog.LogException("clsCustomerData.GetCustomerOrders", ex);
                 }
             }
 
@@ -603,8 +608,9 @@ namespace InventoryDataAccessLayer
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    clsErrorLog.LogException("clsCustomerData.GetOrderDetails", ex);
                 }
             }
 
@@ -636,8 +642,9 @@ namespace InventoryDataAccessLayer
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    clsErrorLog.LogException("clsCustomerData.GetOrderItems", ex);
                 }
             }
 

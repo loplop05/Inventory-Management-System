@@ -127,11 +127,9 @@ namespace InventoryManagementSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
+                clsFormTheme.ShowError(this,
                     ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                    "Error");
             }
             finally
             {

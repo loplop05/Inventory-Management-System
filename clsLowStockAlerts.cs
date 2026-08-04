@@ -62,7 +62,12 @@ namespace InventoryManagementSystem
 
             try
             {
-                DataTable products = clsProduct.GetAllProducts();
+                string errorMessage;
+                DataTable products;
+                if (!clsProduct.GetAllProducts(out products, out errorMessage))
+                {
+                    return items;
+                }
                 if (products == null) return items;
 
                 foreach (DataRow row in products.Rows)

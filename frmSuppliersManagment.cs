@@ -102,11 +102,9 @@ namespace InventoryManagementSystem
                 _suppliersTable = new DataTable();
                 DisplayCurrentPage();
 
-                MessageBox.Show(
+                clsFormTheme.ShowError(this,
                     ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                    "Error");
             }
             finally
             {
@@ -243,7 +241,7 @@ namespace InventoryManagementSystem
         {
             if (DataGVSuppliers.CurrentRow == null)
             {
-                MessageBox.Show("Please select a supplier first.", "Supplier Performance", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please select a supplier first.", "Supplier Performance");
                 return;
             }
 
@@ -258,7 +256,7 @@ namespace InventoryManagementSystem
 
             if (performanceData == null || performanceData.Rows.Count == 0)
             {
-                MessageBox.Show($"No performance data available for {supplierName} in the last 30 days.", "Supplier Performance", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowInfo(this, $"No performance data available for {supplierName} in the last 30 days.", "Supplier Performance");
                 return;
             }
 
@@ -267,7 +265,7 @@ namespace InventoryManagementSystem
             
             if (supplierRows.Length == 0)
             {
-                MessageBox.Show($"No sales data found for {supplierName} in the last 30 days.", "Supplier Performance", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowInfo(this, $"No sales data found for {supplierName} in the last 30 days.", "Supplier Performance");
                 return;
             }
 

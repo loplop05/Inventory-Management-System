@@ -146,7 +146,7 @@ namespace InventoryManagementSystem
             // 
             // frmAuditLog
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 19F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(950, 584);
             this.Controls.Add(this.dgvAuditLogs);

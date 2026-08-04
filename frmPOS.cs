@@ -17,59 +17,94 @@ namespace InventoryManagementSystem
         private DataTable _productsTable = new DataTable();
         private int? _selectedCustomerID = null;
         private string _selectedCustomerName = "";
-        private int _lastCompletedOrderID = -1;
-        private clsDiscountSystem.Coupon _appliedCoupon;
 
-        // Manual discount (mutually exclusive with coupon)
-        private frmManualDiscount.DiscountType? _manualDiscountType = null;
-        private decimal _manualDiscountValue = 0;
+        // ── Icon+label button rendering ─────────────────────────────────────
+        private class IconButtonInfo
+        {
+            public string Icon;
+            public string Label;
+            public float IconFontSize;
+            public float TextFontSize;
+            public FontStyle TextStyle;
+        }
 
-        // Debounce timer for search
-        private System.Windows.Forms.Timer _searchDebounceTimer;
-        private const int SearchDebounceMs = 300;
+        private readonly Dictionary<Button, IconButtonInfo> _iconButtons =
+            new Dictionary<Button, IconButtonInfo>();
+
+        private void SetIconButtonText(Button btn, string icon, string label,
+            float iconFontSize = 12F, float textFontSize = 10F, FontStyle textStyle = FontStyle.Bold)
+        {
+            btn.Text = "";
+            _iconButtons[btn] = new IconButtonInfo
+            {
+                Icon = icon,
+                Label = label,
+                IconFontSize = iconFontSize,
+                TextFontSize = textFontSize,
+                TextStyle = textStyle
+            };
+            btn.Paint -= IconButton_Paint; // avoid double subscribe if reused
+            btn.Paint += IconButton_Paint;
+        }
+
+        private void IconButton_Paint(object sender, PaintEventArgs e)
+        {
+            Button btn = sender as Button;
+            IconButtonInfo info;
+            if (btn == null || !_iconButtons.TryGetValue(btn, out info))
+                return;
+
+            using (Font iconFont = new Font(clsFormTheme.IconFontName, info.IconFontSize))
+            using (Font textFont = new Font(clsFormTheme.MainFontName, info.TextFontSize, info.TextStyle))
+            using (SolidBrush brush = new SolidBrush(btn.Enabled ? btn.ForeColor : clsFormTheme.TextMuted))
+            {
+                SizeF iconSize = e.Graphics.MeasureString(info.Icon, iconFont);
+                SizeF textSize = e.Graphics.MeasureString(info.Label, textFont);
+
+                const float gap = 6f;
+                float totalWidth = iconSize.Width + gap + textSize.Width;
+                float startX = (btn.ClientSize.Width - totalWidth) / 2f;
+                float centerY = btn.ClientSize.Height / 2f;
+
+                var iconRect = new RectangleF(startX, centerY - iconSize.Height / 2f, iconSize.Width, iconSize.Height);
+                var textRect = new RectangleF(startX + iconSize.Width + gap, centerY - textSize.Height / 2f, textSize.Width, textSize.Height);
+
+                e.Graphics.DrawString(info.Icon, iconFont, brush, iconRect);
+                e.Graphics.DrawString(info.Label, textFont, brush, textRect);
+            }
+        }
+
+        private void PurgeDisposedIconButtons()
+        {
+            foreach (Button key in _iconButtons.Keys.Where(b => b.IsDisposed).ToList())
+                _iconButtons.Remove(key);
+        }
 
         public frmPOS()
         {
             InitializeComponent();
 
-            // Initialize debounce timer
-            _searchDebounceTimer = new System.Windows.Forms.Timer();
-            _searchDebounceTimer.Interval = SearchDebounceMs;
-            _searchDebounceTimer.Tick += SearchDebounceTimer_Tick;
-
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Point of Sale", clsFormTheme.Icons.POS);
             clsFormTheme.ApplyTextBoxStyle(_txtSearch);
             clsFormTheme.ApplyTextBoxStyle(_txtCustomerPhone);
             clsFormTheme.ApplyTextBoxStyle(_txtPaymentDetails);
-            clsFormTheme.ApplyTextBoxStyle(_txtCoupon);
-            clsFormTheme.ApplyPrimaryButtonStyle(_btnAddCustomer, clsFormTheme.Icons.User);
-            clsFormTheme.ApplySecondaryButtonStyle(_btnViewHistory, clsFormTheme.Icons.Search);
-
-            // ── Coupon ─────────────────────────────────────────────────────────
-            clsFormTheme.ApplySuccessButtonStyle(_btnApplyCoupon, clsFormTheme.Icons.Check);
-            clsFormTheme.ApplySecondaryButtonStyle(_btnRemoveCoupon, clsFormTheme.Icons.Cancel);
-            _btnRemoveCoupon.Enabled = false;
-            clsFormTheme.ApplyPrimaryButtonStyle(_btnManualDiscount, clsFormTheme.Icons.Money);
+            clsFormTheme.ApplyPrimaryButtonStyle(_btnAddCustomer);
 
             // ── Toolbar buttons ────────────────────────────────────────────────
-            clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh, clsFormTheme.Icons.Refresh);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh);
+            SetIconButtonText(_btnRefresh, clsFormTheme.Icons.Refresh, "Refresh", 14F, 10F, FontStyle.Regular);
 
-            clsFormTheme.ApplySecondaryButtonStyle(_btnReport, clsFormTheme.Icons.Reports);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnReport);
+            SetIconButtonText(_btnReport, clsFormTheme.Icons.Reports, "Report", 14F, 10F, FontStyle.Regular);
 
-            clsFormTheme.ApplyDangerButtonStyle(_btnRemoveItem, clsFormTheme.Icons.Delete);
+            clsFormTheme.ApplyDangerButtonStyle(_btnRemoveItem);
+            SetIconButtonText(_btnRemoveItem, clsFormTheme.Icons.Delete, "Remove", 14F, 10F, FontStyle.Regular);
 
-            clsFormTheme.ApplySuccessButtonStyle(_btnCompleteOrder, clsFormTheme.Icons.Money);
+            clsFormTheme.ApplySuccessButtonStyle(_btnCompleteOrder);
+            SetIconButtonText(_btnCompleteOrder, clsFormTheme.Icons.Money, "Complete Order", 16F, 12F, FontStyle.Bold);
 
-            clsFormTheme.ApplySecondaryButtonStyle(_btnPrintReceipt, clsFormTheme.Icons.Print);
-            _btnPrintReceipt.Enabled = false;
-
-            // ── New POS improvement buttons ─────────────────────────────────────
-            clsFormTheme.ApplyDangerButtonStyle(_btnClearAll, clsFormTheme.Icons.Delete);
-            clsFormTheme.ApplySecondaryButtonStyle(_btnHoldOrder, clsFormTheme.Icons.Save);
-            clsFormTheme.ApplyPrimaryButtonStyle(_btnRetrieveHeldOrder, clsFormTheme.Icons.Add);
-            clsFormTheme.ApplyPrimaryButtonStyle(_btnQuickAdd, clsFormTheme.Icons.Add);
-            clsFormTheme.ApplySecondaryButtonStyle(_btnVoidLast, clsFormTheme.Icons.Cancel);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnClose);
+            SetIconButtonText(_btnClose, clsFormTheme.Icons.Exit, "Close", 14F, 10F, FontStyle.Regular);
 
             // ── Receipt grid ───────────────────────────────────────────────────
             clsFormTheme.ApplyGridStyle(_gridReceipt);
@@ -78,12 +113,6 @@ namespace InventoryManagementSystem
             _receiptItems.ListChanged += ReceiptItems_ListChanged;
 
             KeyDown += frmPOS_KeyDown;
-            KeyPress += frmPOS_KeyPress;
-
-            clsLanguageManager.ApplyLanguage(this);
-            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
-            clsLanguageManager.LanguageChanged += onLanguageChanged;
-            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
         }
 
         private void frmPOS_Load(object sender, EventArgs e)
@@ -99,39 +128,22 @@ namespace InventoryManagementSystem
             LoadProducts();
             RefreshReceiptTotals();
             ClearCustomerInfo();
-            LoadCustomerPhoneAutoComplete();
-            ApplyLocalization();
-
-            // Subscribe to barcode scanner events
-            clsBarcodeScanner.BarcodeScanned += BarcodeScanned;
-            clsBarcodeScanner.ProductFound += BarcodeProductFound;
-        }
-
-        private void LoadCustomerPhoneAutoComplete()
-        {
-            DataTable customers = clsCustomer.GetAllCustomers();
-            AutoCompleteStringCollection phoneNumbers = new AutoCompleteStringCollection();
-
-            foreach (DataRow row in customers.Rows)
-            {
-                string phone = row["PhoneNumber"].ToString();
-                if (!string.IsNullOrEmpty(phone))
-                {
-                    phoneNumbers.Add(phone);
-                }
-            }
-
-            _txtCustomerPhone.AutoCompleteCustomSource = phoneNumbers;
         }
 
         private void LoadProducts()
         {
-            _productsTable = clsPOS.GetProductsForPOS();
+            string errorMessage;
+            if (!clsPOS.GetProductsForPOS(out _productsTable, out errorMessage))
+            {
+                MessageBox.Show("Failed to load products: " + errorMessage, "POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             BuildProductTabs();
         }
 
         private void BuildProductTabs()
         {
+            PurgeDisposedIconButtons();
             _tabsProducts.TabPages.Clear();
 
             DataRow[] filteredRows = GetFilteredRows();
@@ -161,10 +173,10 @@ namespace InventoryManagementSystem
 
             if (_tabsProducts.TabPages.Count == 0)
             {
-                TabPage emptyPage = new TabPage(clsLanguageManager.GetString("No Products"));
+                TabPage emptyPage = new TabPage("No Products");
                 Label empty = new Label
                 {
-                    Text = clsLanguageManager.GetString("No products match your search."),
+                    Text = "No products match your search.",
                     Dock = DockStyle.Fill,
                     TextAlign = ContentAlignment.MiddleCenter,
                     Font = new Font(clsFormTheme.MainFontName, 14F, FontStyle.Bold),
@@ -174,30 +186,16 @@ namespace InventoryManagementSystem
                 _tabsProducts.TabPages.Add(emptyPage);
             }
 
-            _lblStatus.Text = _productsTable.Rows.Count + " " + clsLanguageManager.GetString("products available");
+            _lblStatus.Text = _productsTable.Rows.Count + " products available";
         }
 
         private DataRow[] GetFilteredRows()
         {
             string search = _txtSearch.Text.Trim();
 
-            if (string.IsNullOrWhiteSpace(search))
-                return _productsTable.AsEnumerable().ToArray();
-
-            // Check if search is a numeric barcode (exact match for barcodes)
-            if (search.All(char.IsDigit))
-            {
-                var exactBarcodeMatch = _productsTable.AsEnumerable()
-                    .Where(row => row["Barcode"].ToString().Trim() == search)
-                    .ToArray();
-                
-                if (exactBarcodeMatch.Length > 0)
-                    return exactBarcodeMatch;
-            }
-
-            // Otherwise, do partial match on name, category, supplier, and barcode
             return _productsTable.AsEnumerable()
                 .Where(row =>
+                    string.IsNullOrWhiteSpace(search) ||
                     row["ProductName"].ToString().IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 ||
                     row["CategoryName"].ToString().IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 ||
                     row["SupplierName"].ToString().IndexOf(search, StringComparison.OrdinalIgnoreCase) >= 0 ||
@@ -240,11 +238,7 @@ namespace InventoryManagementSystem
             if (!string.IsNullOrWhiteSpace(imagePath))
             {
                 try { picture.LoadAsync(imagePath); }
-                catch (Exception ex)
-                {
-                    clsAuditLog.LogError("frmPOS.CreateProductTile", ex);
-                    _lblStatus.Text = clsLanguageManager.GetString("Unable to load product image.");
-                }
+                catch { /* ignore load errors */ }
             }
 
             // ── Product name ───────────────────────────────────────────────────
@@ -282,7 +276,7 @@ namespace InventoryManagementSystem
             // ── Stock label ────────────────────────────────────────────────────
             Label stockLabel = new Label
             {
-                Text = inStock ? clsLanguageManager.GetString("Stock:") + " " + quantity : clsLanguageManager.GetString("Out of stock"),
+                Text = inStock ? "Stock: " + quantity : "Out of stock",
                 Location = new Point(88, 186),
                 Size = new Size(86, 24),
                 TextAlign = ContentAlignment.MiddleRight,
@@ -300,7 +294,8 @@ namespace InventoryManagementSystem
 
             if (inStock)
             {
-                clsFormTheme.ApplyPrimaryButtonStyle(addButton, clsFormTheme.Icons.Add);
+                clsFormTheme.ApplyPrimaryButtonStyle(addButton);
+                SetIconButtonText(addButton, clsFormTheme.Icons.Add, "Add", 13F, 10F, FontStyle.Bold);
             }
             else
             {
@@ -308,7 +303,7 @@ namespace InventoryManagementSystem
                 addButton.ForeColor = clsFormTheme.TextMuted;
                 addButton.FlatStyle = FlatStyle.Flat;
                 addButton.FlatAppearance.BorderSize = 0;
-                clsFormTheme.ApplyPrimaryButtonStyle(addButton, clsFormTheme.Icons.Warning);
+                SetIconButtonText(addButton, clsFormTheme.Icons.Warning, "No Stock", 13F, 10F, FontStyle.Bold);
             }
 
             addButton.Click += delegate
@@ -358,96 +353,68 @@ namespace InventoryManagementSystem
         private void RefreshReceiptTotals()
         {
             decimal subtotal = _receiptItems.Sum(item => item.Subtotal);
-            decimal couponDiscount = GetCouponDiscount(subtotal);
-            decimal manualDiscount = GetManualDiscount(subtotal);
-            decimal totalDiscount = couponDiscount + manualDiscount;
-            decimal taxableAmount = subtotal - totalDiscount;
-            decimal tax = Math.Round(taxableAmount * TaxRate, 2);
-            decimal total = taxableAmount + tax;
 
-            _lblSubtotal.Text = clsLanguageManager.GetString("Subtotal:") + " " + subtotal.ToString("C2");
-            
-            // Show discount label if either coupon or manual discount is applied
-            _lblDiscount.Visible = _appliedCoupon != null || _manualDiscountType != null;
-            if (_appliedCoupon != null)
+            // Apply manual discount
+            decimal manualDiscount = 0;
+            if (_manualDiscountType == "percentage")
             {
-                _lblDiscount.Text = clsLanguageManager.GetString("Discount:") + " (" + _appliedCoupon.Code + "): -" + couponDiscount.ToString("C2");
+                manualDiscount = subtotal * (_manualDiscountAmount / 100m);
             }
-            else if (_manualDiscountType != null)
+            else if (_manualDiscountType == "fixed")
             {
-                string discountText = _manualDiscountType == frmManualDiscount.DiscountType.Percentage
-                    ? _manualDiscountValue.ToString("F0") + "%"
-                    : manualDiscount.ToString("C2");
-                _lblDiscount.Text = clsLanguageManager.GetString("Discount:") + " (Manual): -" + discountText;
+                manualDiscount = _manualDiscountAmount;
+            }
+
+            // Apply coupon discount (only if no manual discount, or combine as needed)
+            decimal couponDiscount = _couponDiscountAmount;
+
+            decimal totalDiscount = manualDiscount + couponDiscount;
+            decimal discountedSubtotal = Math.Max(0, subtotal - totalDiscount);
+            decimal tax = Math.Round(discountedSubtotal * TaxRate, 2);
+            decimal total = discountedSubtotal + tax;
+
+            _lblSubtotal.Text = "Subtotal: " + subtotal.ToString("C2");
+
+            // Show discount info if applicable
+            if (totalDiscount > 0)
+            {
+                string discountText = "Discount: -" + totalDiscount.ToString("C2");
+                if (!string.IsNullOrEmpty(_appliedCouponCode))
+                    discountText += " (" + _appliedCouponCode + ")";
+                _lblTax.Text = discountText + Environment.NewLine + "Tax (7%): " + tax.ToString("C2");
             }
             else
             {
-                _lblDiscount.Text = string.Empty;
+                _lblTax.Text = "Tax (7%): " + tax.ToString("C2");
             }
 
-            _lblTax.Text = clsLanguageManager.GetString("Tax (7%):") + " " + tax.ToString("C2");
-            _lblTotal.Text = clsLanguageManager.GetString("Total:") + " " + total.ToString("C2");
-
-            _lblItemCount.Text = _receiptItems.Count + " item" + (_receiptItems.Count != 1 ? "s" : "");
+            _lblTotal.Text = "Total: " + total.ToString("C2");
 
             _btnCompleteOrder.Enabled = _receiptItems.Count > 0;
             _btnRemoveItem.Enabled = _receiptItems.Count > 0;
             _gridReceipt.Refresh();
         }
 
-        /// <summary>
-        /// Returns the discount for the applied coupon, dropping the coupon when the
-        /// receipt no longer satisfies its conditions (e.g. items were removed).
-        /// </summary>
-        private decimal GetCouponDiscount(decimal subtotal)
+        public void ClearDiscounts()
         {
-            if (_appliedCoupon == null)
-                return 0;
-
-            string reason;
-            if (clsDiscountSystem.ValidateCoupon(_appliedCoupon.Code, subtotal, out reason) == null)
-            {
-                ClearCoupon();
-                _lblStatus.Text = reason;
-                return 0;
-            }
-
-            return Math.Round(clsDiscountSystem.ApplyCoupon(_appliedCoupon, subtotal), 2);
+            _manualDiscountAmount = 0;
+            _manualDiscountType = "";
+            _appliedCouponCode = "";
+            _couponDiscountAmount = 0;
         }
 
-        /// <summary>
-        /// Returns the manual discount amount based on type and value.
-        /// </summary>
-        private decimal GetManualDiscount(decimal subtotal)
+        public void ApplyManualDiscount(decimal amount, string type)
         {
-            if (_manualDiscountType == null)
-                return 0;
-
-            if (_manualDiscountType == frmManualDiscount.DiscountType.Percentage)
-            {
-                return Math.Round(subtotal * (_manualDiscountValue / 100m), 2);
-            }
-            else // Fixed amount
-            {
-                return Math.Min(_manualDiscountValue, subtotal); // Can't discount more than subtotal
-            }
+            _manualDiscountAmount = amount;
+            _manualDiscountType = type;
+            RefreshReceiptTotals();
         }
 
-        private void ClearCoupon()
+        public void ApplyCoupon(string code, decimal amount)
         {
-            _appliedCoupon = null;
-            _txtCoupon.Text = "";
-            _txtCoupon.Enabled = true;
-            _btnApplyCoupon.Enabled = true;
-            _btnRemoveCoupon.Enabled = false;
-            _lblDiscount.Visible = false;
-        }
-
-        private void ClearManualDiscount()
-        {
-            _manualDiscountType = null;
-            _manualDiscountValue = 0;
-            _lblDiscount.Visible = false;
+            _appliedCouponCode = code;
+            _couponDiscountAmount = amount;
+            RefreshReceiptTotals();
         }
 
         private DataTable BuildOrderItemsTable()
@@ -468,7 +435,7 @@ namespace InventoryManagementSystem
         {
             if (_receiptItems.Count == 0)
             {
-                MessageBox.Show("Receipt is empty.", "POS", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Receipt is empty.", "POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -499,12 +466,9 @@ namespace InventoryManagementSystem
             string paymentMethod = _rbCash.Checked ? "Cash" : "Visa";
             string paymentDetails = _rbCash.Checked ? null : "****" + _txtPaymentDetails.Text;
 
-            decimal discount = GetCouponDiscount(_receiptItems.Sum(item => item.Subtotal));
-            string couponCode = _appliedCoupon == null ? null : _appliedCoupon.Code;
-
             int orderID;
             string errorMessage;
-            bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, _selectedCustomerID, paymentMethod, paymentDetails, discount, couponCode, out orderID, out errorMessage);
+            bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, _selectedCustomerID, paymentMethod, paymentDetails, out orderID, out errorMessage);
 
             if (!saved)
             {
@@ -513,16 +477,10 @@ namespace InventoryManagementSystem
                 return;
             }
 
-            if (couponCode != null)
-                clsDiscountSystem.UseCoupon(couponCode);
-
             _receiptItems.Clear();
-            ClearCoupon();
             RefreshReceiptTotals();
             LoadProducts();
             ClearCustomerInfo();
-            _lastCompletedOrderID = orderID;
-            _btnPrintReceipt.Enabled = true;
             MessageBox.Show("Order #" + orderID + " completed successfully.", "POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -532,7 +490,7 @@ namespace InventoryManagementSystem
             _selectedCustomerName = "";
             _txtCustomerPhone.Text = "";
             _lblCustomerName.Text = "";
-            _btnAddCustomer.Text = clsLanguageManager.GetString("+ New");
+            _btnAddCustomer.Text = "+ New";
             _rbCash.Checked = true;
             _txtPaymentDetails.Text = "";
             _txtPaymentDetails.Enabled = false;
@@ -543,14 +501,6 @@ namespace InventoryManagementSystem
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            // Reset debounce timer on each keystroke
-            _searchDebounceTimer.Stop();
-            _searchDebounceTimer.Start();
-        }
-
-        private void SearchDebounceTimer_Tick(object sender, EventArgs e)
-        {
-            _searchDebounceTimer.Stop();
             BuildProductTabs();
         }
 
@@ -573,40 +523,30 @@ namespace InventoryManagementSystem
             DataTable customer = clsCustomer.GetCustomerByPhone(phoneNumber);
             if (customer != null && customer.Rows.Count > 0)
             {
-                DataRow row = customer.Rows[0];
-                _selectedCustomerID = Convert.ToInt32(row["CustomerID"]);
-                _selectedCustomerName = row["CustomerName"].ToString();
+                _selectedCustomerID = Convert.ToInt32(customer.Rows[0]["CustomerID"]);
+                _selectedCustomerName = customer.Rows[0]["CustomerName"].ToString();
                 _lblCustomerName.Text = _selectedCustomerName;
                 _lblCustomerName.ForeColor = Color.FromArgb(44, 62, 80);
-                _btnAddCustomer.Text = clsLanguageManager.GetString("Change");
-
-                // Display loyalty info
-                int points = row["LoyaltyPoints"] != DBNull.Value ? Convert.ToInt32(row["LoyaltyPoints"]) : 0;
-                string tier = row["Tier"] != DBNull.Value ? row["Tier"].ToString() : "Bronze";
-                decimal totalSpent = row["TotalSpent"] != DBNull.Value ? Convert.ToDecimal(row["TotalSpent"]) : 0;
-                
-                // Show loyalty info in a tooltip or additional label if available
-                // For now, append to customer name display
-                _lblCustomerName.Text += $" ({tier} - {points} pts)";
+                _btnAddCustomer.Text = "Change";
             }
             else
             {
                 _selectedCustomerID = null;
                 _selectedCustomerName = "";
-                _lblCustomerName.Text = clsLanguageManager.GetString("New customer");
+                _lblCustomerName.Text = "New customer";
                 _lblCustomerName.ForeColor = Color.FromArgb(96, 125, 139);
-                _btnAddCustomer.Text = clsLanguageManager.GetString("+ New");
+                _btnAddCustomer.Text = "+ New";
             }
         }
 
         private void btnAddCustomer_Click(object sender, EventArgs e)
         {
-            using (frmAddCustomerPOS addCustomerForm = new frmAddCustomerPOS())
+            using (frmAddCustomer addCustomerForm = new frmAddCustomer())
             {
                 // Pre-fill phone number if entered
                 if (!string.IsNullOrWhiteSpace(_txtCustomerPhone.Text))
                 {
-                    addCustomerForm.txtPhone.Text = _txtCustomerPhone.Text.Trim();
+                    addCustomerForm.PhoneNumber = _txtCustomerPhone.Text.Trim();
                 }
 
                 DialogResult result = addCustomerForm.ShowDialog(this);
@@ -615,111 +555,11 @@ namespace InventoryManagementSystem
                 {
                     _selectedCustomerID = addCustomerForm.CustomerID;
                     _selectedCustomerName = addCustomerForm.CustomerName;
-                    _txtCustomerPhone.Text = addCustomerForm.txtPhone.Text;
+                    _txtCustomerPhone.Text = addCustomerForm.PhoneNumber;
                     _lblCustomerName.Text = _selectedCustomerName;
                     _lblCustomerName.ForeColor = Color.FromArgb(44, 62, 80);
-                    _btnAddCustomer.Text = clsLanguageManager.GetString("Change");
+                    _btnAddCustomer.Text = "Change";
                 }
-            }
-        }
-
-        private void btnViewHistory_Click(object sender, EventArgs e)
-        {
-            if (!_selectedCustomerID.HasValue)
-            {
-                MessageBox.Show("Please select a customer first by entering their phone number.", "Customer History", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                _txtCustomerPhone.Focus();
-                return;
-            }
-
-            DataTable orderHistory = clsCustomer.GetCustomerOrders(_selectedCustomerID.Value);
-            
-            if (orderHistory == null || orderHistory.Rows.Count == 0)
-            {
-                MessageBox.Show($"No purchase history found for {_selectedCustomerName}.", "Customer History", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            // Show history in a dialog
-            using (Form historyForm = new Form
-            {
-                Text = $"Purchase History - {_selectedCustomerName}",
-                Size = new Size(700, 500),
-                StartPosition = FormStartPosition.CenterParent,
-                FormBorderStyle = FormBorderStyle.FixedDialog,
-                MinimizeBox = false,
-                MaximizeBox = false
-            })
-            {
-                clsFormTheme.ApplyFormStyle(historyForm);
-                clsFormTheme.CreateHeaderPanel(historyForm, "Customer Purchase History", clsFormTheme.Icons.Reports);
-
-                var mainPanel = new TableLayoutPanel
-                {
-                    Dock = DockStyle.Fill,
-                    ColumnCount = 1,
-                    RowCount = 2,
-                    Padding = new Padding(20)
-                };
-                mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-                mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 50));
-
-                var grid = new DataGridView
-                {
-                    Dock = DockStyle.Fill,
-                    AutoGenerateColumns = false,
-                    ReadOnly = true,
-                    AllowUserToAddRows = false,
-                    DataSource = orderHistory
-                };
-
-                grid.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    DataPropertyName = "OrderID",
-                    HeaderText = "Order ID",
-                    Width = 70
-                });
-                grid.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    DataPropertyName = "OrderDate",
-                    HeaderText = "Date",
-                    Width = 130
-                });
-                grid.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    DataPropertyName = "TotalAmount",
-                    HeaderText = "Total",
-                    Width = 80,
-                    DefaultCellStyle = new DataGridViewCellStyle { Format = "0.00", Alignment = DataGridViewContentAlignment.MiddleRight }
-                });
-                grid.Columns.Add(new DataGridViewTextBoxColumn
-                {
-                    DataPropertyName = "PaymentMethod",
-                    HeaderText = "Payment",
-                    Width = 80
-                });
-
-                clsFormTheme.ApplyGridStyle(grid);
-
-                var btnClose = new Button
-                {
-                    Text = "Close",
-                    Width = 100,
-                    Height = 35,
-                    Anchor = AnchorStyles.Bottom | AnchorStyles.Right
-                };
-                clsFormTheme.ApplySecondaryButtonStyle(btnClose, clsFormTheme.Icons.Exit);
-                btnClose.Click += (s, args) => historyForm.Close();
-
-                var btnPanel = new Panel { Dock = DockStyle.Fill };
-                btnPanel.Controls.Add(btnClose);
-                btnClose.Location = new Point(540, 5);
-
-                mainPanel.Controls.Add(grid, 0, 0);
-                mainPanel.Controls.Add(btnPanel, 0, 1);
-
-                historyForm.Controls.Add(mainPanel);
-                historyForm.ShowDialog();
             }
         }
 
@@ -748,82 +588,6 @@ namespace InventoryManagementSystem
             Close();
         }
 
-        private void btnApplyCoupon_Click(object sender, EventArgs e)
-        {
-            if (_receiptItems.Count == 0)
-            {
-                MessageBox.Show("Add items to the receipt before applying a coupon.", "Coupon", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // Clear manual discount if applied (mutually exclusive)
-            if (_manualDiscountType != null)
-            {
-                ClearManualDiscount();
-            }
-
-            decimal subtotal = _receiptItems.Sum(item => item.Subtotal);
-
-            string reason;
-            clsDiscountSystem.Coupon coupon = clsDiscountSystem.ValidateCoupon(_txtCoupon.Text, subtotal, out reason);
-
-            if (coupon == null)
-            {
-                MessageBox.Show(reason, "Coupon", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                _txtCoupon.Focus();
-                return;
-            }
-
-            _appliedCoupon = coupon;
-            _txtCoupon.Text = coupon.Code;
-            _txtCoupon.Enabled = false;
-            _btnApplyCoupon.Enabled = false;
-            _btnRemoveCoupon.Enabled = true;
-            _lblStatus.Text = "Coupon " + coupon.Code + " applied.";
-
-            RefreshReceiptTotals();
-        }
-
-        private void btnRemoveCoupon_Click(object sender, EventArgs e)
-        {
-            ClearCoupon();
-            RefreshReceiptTotals();
-        }
-
-        private void btnManualDiscount_Click(object sender, EventArgs e)
-        {
-            if (_receiptItems.Count == 0)
-            {
-                MessageBox.Show("Add items to the receipt before applying a discount.", "Discount", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // Clear coupon if applied (mutually exclusive)
-            if (_appliedCoupon != null)
-            {
-                ClearCoupon();
-            }
-
-            using (var form = new frmManualDiscount())
-            {
-                if (form.ShowDialog(this) == DialogResult.OK)
-                {
-                    _manualDiscountType = form.SelectedType;
-                    _manualDiscountValue = form.DiscountValue;
-
-                    // Log manual discount to audit log
-                    string currentUser = clsUserManagement.CurrentUser != null ? clsUserManagement.CurrentUser.DisplayName : Environment.UserName;
-                    string discountInfo = _manualDiscountType == frmManualDiscount.DiscountType.Percentage
-                        ? $"{_manualDiscountValue}% discount"
-                        : $"{_manualDiscountValue:C2} discount";
-                    clsAuditLog.LogAction("Manual Discount Applied", $"{discountInfo} by {currentUser}", "POS");
-
-                    _lblStatus.Text = "Manual discount applied.";
-                    RefreshReceiptTotals();
-                }
-            }
-        }
-
         private void btnRemoveItem_Click(object sender, EventArgs e)
         {
             if (_gridReceipt.CurrentRow == null)
@@ -839,403 +603,7 @@ namespace InventoryManagementSystem
 
         private void btnCompleteOrder_Click(object sender, EventArgs e)
         {
-            _btnCompleteOrder.Enabled = false;
-            try
-            {
-                CompleteOrder();
-            }
-            finally
-            {
-                _btnCompleteOrder.Enabled = true;
-            }
-        }
-
-        private void btnPrintReceipt_Click(object sender, EventArgs e)
-        {
-            if (_lastCompletedOrderID == -1)
-            {
-                MessageBox.Show("Please complete an order first to print the receipt.", "Print", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            using (frmPrintReceipt printForm = new frmPrintReceipt())
-            {
-                printForm.OrderIDTextBox.Text = _lastCompletedOrderID.ToString();
-                printForm.SearchOrder();
-                printForm.ShowDialog(this);
-            }
-        }
-
-        private void btnClearAll_Click(object sender, EventArgs e)
-        {
-            if (_receiptItems.Count == 0)
-            {
-                MessageBox.Show("Receipt is already empty.", "Clear All", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            var result = MessageBox.Show("Are you sure you want to clear all items from the receipt?", "Clear All", 
-                MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            
-            if (result == DialogResult.Yes)
-            {
-                _receiptItems.Clear();
-                ClearCoupon();
-                RefreshReceiptTotals();
-                _lblStatus.Text = "Receipt cleared.";
-            }
-        }
-
-        private void btnHoldOrder_Click(object sender, EventArgs e)
-        {
-            if (_receiptItems.Count == 0)
-            {
-                MessageBox.Show("Add items to the receipt before holding an order.", "Hold Order", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            // Ask for optional notes
-            string notes = "";
-            using (var notesForm = new Form())
-            {
-                notesForm.Text = "Hold Order Notes (Optional)";
-                notesForm.Size = new Size(400, 200);
-                notesForm.StartPosition = FormStartPosition.CenterParent;
-                notesForm.FormBorderStyle = FormBorderStyle.FixedDialog;
-                notesForm.MaximizeBox = false;
-                notesForm.MinimizeBox = false;
-
-                clsFormTheme.ApplyFormStyle(notesForm);
-                clsFormTheme.CreateHeaderPanel(notesForm, "Hold Order Notes", clsFormTheme.Icons.Save);
-
-                var txtNotes = new TextBox
-                {
-                    Multiline = true,
-                    Location = new Point(20, 60),
-                    Size = new Size(340, 60),
-                    ScrollBars = ScrollBars.Vertical
-                };
-                clsFormTheme.ApplyTextBoxStyle(txtNotes);
-
-                var btnSave = new Button
-                {
-                    Text = "Hold",
-                    Location = new Point(220, 130),
-                    Size = new Size(100, 35)
-                };
-                clsFormTheme.ApplyPrimaryButtonStyle(btnSave, clsFormTheme.Icons.Save);
-
-                var btnCancel = new Button
-                {
-                    Text = "Cancel",
-                    Location = new Point(330, 130),
-                    Size = new Size(100, 35)
-                };
-                clsFormTheme.ApplySecondaryButtonStyle(btnCancel, clsFormTheme.Icons.Cancel);
-
-                notesForm.Controls.Add(txtNotes);
-                notesForm.Controls.Add(btnSave);
-                notesForm.Controls.Add(btnCancel);
-
-                btnSave.Click += (s, args) =>
-                {
-                    notes = txtNotes.Text.Trim();
-                    notesForm.DialogResult = DialogResult.OK;
-                };
-
-                btnCancel.Click += (s, args) => notesForm.DialogResult = DialogResult.Cancel;
-
-                if (notesForm.ShowDialog(this) != DialogResult.OK)
-                {
-                    return;
-                }
-            }
-
-            // Create held order info
-            var heldOrder = new InventoryDataAccessLayer.clsHeldOrderData.HeldOrderInfo
-            {
-                UserID = clsUserManagement.CurrentUser?.UserID,
-                CustomerID = _selectedCustomerID,
-                CustomerName = _selectedCustomerName,
-                CustomerPhone = _txtCustomerPhone.Text.Trim(),
-                PaymentMethod = _rbCash.Checked ? "Cash" : "Visa",
-                PaymentDetails = _txtPaymentDetails.Text.Trim(),
-                CouponCode = _appliedCoupon?.Code,
-                ManualDiscountType = _manualDiscountType?.ToString(),
-                ManualDiscountValue = _manualDiscountValue > 0 ? _manualDiscountValue : (decimal?)null,
-                Notes = notes
-            };
-
-            // Add items
-            foreach (var item in _receiptItems)
-            {
-                heldOrder.Items.Add(new InventoryDataAccessLayer.clsHeldOrderData.HeldOrderItemInfo
-                {
-                    ProductID = item.ProductID,
-                    ProductName = item.ProductName,
-                    Quantity = item.Quantity,
-                    UnitPrice = item.UnitPrice,
-                    Subtotal = item.Subtotal
-                });
-            }
-
-            // Save held order
-            string errorMessage;
-            int heldOrderID = clsHeldOrder.SaveHeldOrder(heldOrder, out errorMessage);
-
-            if (heldOrderID > 0)
-            {
-                // Clear current receipt
-                _receiptItems.Clear();
-                ClearCoupon();
-                ClearManualDiscount();
-                ClearCustomerInfo();
-                RefreshReceiptTotals();
-
-                // Log to audit
-                clsAuditLog.LogAction("Order Held", $"Held order #{heldOrderID} with {heldOrder.Items.Count} items", "POS");
-
-                MessageBox.Show($"Order held successfully.\nHeld Order ID: {heldOrderID}\nItems: {heldOrder.Items.Count}", 
-                    "Hold Order", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show("Failed to hold order: " + errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void btnRetrieveHeldOrder_Click(object sender, EventArgs e)
-        {
-            if (_receiptItems.Count > 0)
-            {
-                var result = MessageBox.Show("Current receipt has items. Clear receipt before retrieving held order?", 
-                    "Retrieve Held Order", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result != DialogResult.Yes)
-                {
-                    return;
-                }
-            }
-
-            using (var heldOrdersForm = new frmHeldOrders())
-            {
-                if (heldOrdersForm.ShowDialog(this) == DialogResult.OK && heldOrdersForm.SelectedHeldOrder != null)
-                {
-                    var heldOrder = heldOrdersForm.SelectedHeldOrder;
-
-                    // Clear current receipt
-                    _receiptItems.Clear();
-                    ClearCoupon();
-                    ClearManualDiscount();
-
-                    // Restore customer info
-                    if (heldOrder.CustomerID.HasValue)
-                    {
-                        _selectedCustomerID = heldOrder.CustomerID;
-                        _selectedCustomerName = heldOrder.CustomerName;
-                        _txtCustomerPhone.Text = heldOrder.CustomerPhone;
-                        _lblCustomerName.Text = heldOrder.CustomerName;
-                        _lblCustomerName.ForeColor = Color.FromArgb(44, 62, 80);
-                        _btnAddCustomer.Text = "Change";
-                    }
-
-                    // Restore payment method
-                    if (heldOrder.PaymentMethod == "Visa")
-                    {
-                        _rbVisa.Checked = true;
-                    }
-                    else
-                    {
-                        _rbCash.Checked = true;
-                    }
-
-                    _txtPaymentDetails.Text = heldOrder.PaymentDetails;
-
-                    // Restore coupon
-                    if (!string.IsNullOrEmpty(heldOrder.CouponCode))
-                    {
-                        decimal subtotal = 0; // Will be calculated after items are added
-                        string reason;
-                        var coupon = clsDiscountSystem.ValidateCoupon(heldOrder.CouponCode, subtotal, out reason);
-                        if (coupon != null)
-                        {
-                            _appliedCoupon = coupon;
-                            _txtCoupon.Text = coupon.Code;
-                            _txtCoupon.Enabled = false;
-                            _btnApplyCoupon.Enabled = false;
-                            _btnRemoveCoupon.Enabled = true;
-                        }
-                    }
-
-                    // Restore manual discount
-                    if (!string.IsNullOrEmpty(heldOrder.ManualDiscountType) && heldOrder.ManualDiscountValue.HasValue)
-                    {
-                        if (heldOrder.ManualDiscountType == "Percentage")
-                        {
-                            _manualDiscountType = frmManualDiscount.DiscountType.Percentage;
-                        }
-                        else
-                        {
-                            _manualDiscountType = frmManualDiscount.DiscountType.FixedAmount;
-                        }
-                        _manualDiscountValue = heldOrder.ManualDiscountValue.Value;
-                    }
-
-                    // Add items to receipt
-                    foreach (var item in heldOrder.Items)
-                    {
-                        _receiptItems.Add(new ReceiptItem
-                        {
-                            ProductID = item.ProductID,
-                            ProductName = item.ProductName,
-                            Quantity = item.Quantity,
-                            UnitPrice = item.UnitPrice,
-                            AvailableStock = 0 // Will be updated when needed
-                        });
-                    }
-
-                    RefreshReceiptTotals();
-
-                    // Log to audit
-                    clsAuditLog.LogAction("Held Order Retrieved", $"Retrieved held order #{heldOrder.HeldOrderID} with {heldOrder.Items.Count} items", "POS");
-
-                    MessageBox.Show($"Held order retrieved successfully.\nItems: {heldOrder.Items.Count}", 
-                        "Retrieve", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-        }
-
-        private void btnQuickAdd_Click(object sender, EventArgs e)
-        {
-            // Show a dialog to quickly add a product by name or barcode
-            using (Form quickAddForm = new Form())
-            {
-                quickAddForm.Text = "Quick Add Product";
-                quickAddForm.Size = new Size(400, 200);
-                quickAddForm.StartPosition = FormStartPosition.CenterParent;
-                quickAddForm.FormBorderStyle = FormBorderStyle.FixedDialog;
-                quickAddForm.MaximizeBox = false;
-                quickAddForm.MinimizeBox = false;
-
-                clsFormTheme.ApplyFormStyle(quickAddForm);
-
-                var layout = new TableLayoutPanel
-                {
-                    Dock = DockStyle.Fill,
-                    ColumnCount = 1,
-                    RowCount = 3,
-                    Padding = new Padding(20)
-                };
-                layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
-                layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
-                layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-
-                var lblPrompt = new Label
-                {
-                    Text = "Enter product name or barcode:",
-                    Dock = DockStyle.Fill,
-                    TextAlign = ContentAlignment.MiddleLeft
-                };
-
-                var txtInput = new TextBox
-                {
-                    Dock = DockStyle.Fill
-                };
-                clsFormTheme.ApplyTextBoxStyle(txtInput);
-
-                var btnPanel = new FlowLayoutPanel
-                {
-                    Dock = DockStyle.Fill,
-                    FlowDirection = FlowDirection.RightToLeft
-                };
-
-                var btnAdd = new Button
-                {
-                    Text = "Add",
-                    Size = new Size(80, 30),
-                    Margin = new Padding(5)
-                };
-                clsFormTheme.ApplySuccessButtonStyle(btnAdd, clsFormTheme.Icons.Add);
-
-                var btnCancel = new Button
-                {
-                    Text = "Cancel",
-                    Size = new Size(80, 30),
-                    Margin = new Padding(5)
-                };
-                clsFormTheme.ApplySecondaryButtonStyle(btnCancel, clsFormTheme.Icons.Cancel);
-
-                btnPanel.Controls.Add(btnCancel);
-                btnPanel.Controls.Add(btnAdd);
-
-                layout.Controls.Add(lblPrompt, 0, 0);
-                layout.Controls.Add(txtInput, 0, 1);
-                layout.Controls.Add(btnPanel, 0, 2);
-
-                quickAddForm.Controls.Add(layout);
-                txtInput.Focus();
-
-                btnAdd.Click += (s, args) =>
-                {
-                    if (string.IsNullOrWhiteSpace(txtInput.Text))
-                    {
-                        MessageBox.Show("Please enter a product name or barcode.", "Quick Add", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    string input = txtInput.Text.Trim();
-                    DataRow[] matches = _productsTable.AsEnumerable()
-                        .Where(row => row["ProductName"].ToString().ToLower().Contains(input.ToLower()) ||
-                                     row["Barcode"].ToString().Trim() == input)
-                        .ToArray();
-
-                    if (matches.Length == 0)
-                    {
-                        MessageBox.Show("Product not found.", "Quick Add", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
-
-                    if (matches.Length == 1)
-                    {
-                        DataRow product = matches[0];
-                        int productID = Convert.ToInt32(product["ProductID"]);
-                        string productName = product["ProductName"].ToString();
-                        decimal price = Convert.ToDecimal(product["Price"]);
-                        int availableStock = Convert.ToInt32(product["Quantity"]);
-
-                        AddToReceipt(productID, productName, price, availableStock);
-                        quickAddForm.DialogResult = DialogResult.OK;
-                    }
-                    else
-                    {
-                        // Multiple matches - show selection dialog
-                        MessageBox.Show($"Found {matches.Length} matches. Please use the product list to select.", "Quick Add", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                };
-
-                btnCancel.Click += (s, args) => quickAddForm.DialogResult = DialogResult.Cancel;
-                txtInput.KeyDown += (s, args) =>
-                {
-                    if (args.KeyCode == Keys.Enter)
-                        btnAdd.PerformClick();
-                };
-
-                quickAddForm.ShowDialog(this);
-            }
-        }
-
-        private void btnVoidLast_Click(object sender, EventArgs e)
-        {
-            if (_receiptItems.Count == 0)
-            {
-                MessageBox.Show("Receipt is empty.", "Void Last", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            // Remove the last item added
-            var lastItem = _receiptItems.Last();
-            _receiptItems.Remove(lastItem);
-            RefreshReceiptTotals();
-            _lblStatus.Text = "Last item voided.";
+            CompleteOrder();
         }
 
         private void gridReceipt_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
@@ -1275,138 +643,93 @@ namespace InventoryManagementSystem
             RefreshReceiptTotals();
         }
 
+        private void totalsPanel_Resize(object sender, EventArgs e)
+        {
+            Panel panel = sender as Panel;
+            if (panel == null)
+                return;
+
+            _lblSubtotal.Width = panel.ClientSize.Width;
+            _lblTax.Width = panel.ClientSize.Width;
+            _lblTotal.Width = panel.ClientSize.Width;
+            _btnCompleteOrder.Left = panel.ClientSize.Width - _btnCompleteOrder.Width;
+        }
+
         private void topPanel_Resize(object sender, EventArgs e)
         {
-            int right = this.ClientSize.Width - 16;
-            _btnReport.Left = right - _btnReport.Width;
+            int right = _topPanel.ClientSize.Width - 16;
+            _btnClose.Left = right - _btnClose.Width;
+            _btnReport.Left = _btnClose.Left - _btnReport.Width - 10;
             _btnRefresh.Left = _btnReport.Left - _btnRefresh.Width - 10;
+            _txtSearch.Left = _btnRefresh.Left - _txtSearch.Width - 12;
         }
 
         private void frmPOS_KeyDown(object sender, KeyEventArgs e)
         {
-            // F2 - Quick Add
-            if (e.KeyCode == Keys.F2)
+            if (e.KeyCode == Keys.F5)
             {
-                btnQuickAdd_Click(null, null);
-                e.Handled = true;
+                LoadProducts();
                 e.SuppressKeyPress = true;
             }
-            // F4 - Complete Order
-            else if (e.KeyCode == Keys.F4)
-            {
-                if (_btnCompleteOrder.Enabled)
-                    btnCompleteOrder_Click(null, null);
-                e.Handled = true;
-                e.SuppressKeyPress = true;
-            }
-            // F5 - Refresh Products
-            else if (e.KeyCode == Keys.F5)
-            {
-                btnRefresh_Click(null, null);
-                e.Handled = true;
-                e.SuppressKeyPress = true;
-            }
-            // Delete - Remove selected item
-            else if (e.KeyCode == Keys.Delete && _gridReceipt.Focused)
-            {
-                btnRemoveItem_Click(null, null);
-                e.Handled = true;
-                e.SuppressKeyPress = true;
-            }
-            // Escape - Clear all (with confirmation) if receipt has items, otherwise close form
             else if (e.KeyCode == Keys.Escape)
             {
-                if (_receiptItems.Count > 0)
-                {
-                    btnClearAll_Click(null, null);
-                }
-                else
-                {
-                    Close();
-                }
-                e.Handled = true;
-                e.SuppressKeyPress = true;
+                Close();
             }
-            // Ctrl+Enter to complete order
             else if (e.Control && e.KeyCode == Keys.Enter)
             {
-                if (_btnCompleteOrder.Enabled)
-                    btnCompleteOrder_Click(null, null);
-                e.Handled = true;
+                CompleteOrder();
                 e.SuppressKeyPress = true;
             }
         }
 
-        private void frmPOS_KeyPress(object sender, KeyPressEventArgs e)
+        private class ReceiptItem
         {
-            // Process barcode scanner input ONLY when not typing in a textbox
-            // This prevents interference with normal typing in coupon/search/payment fields
-            if (!(this.ActiveControl is TextBox))
-            {
-                clsBarcodeScanner.ProcessKeyPress(e, this.ActiveControl);
-            }
+            public int ProductID { get; set; }
+            public string ProductName { get; set; }
+            public int Quantity { get; set; }
+            public decimal UnitPrice { get; set; }
+            public int AvailableStock { get; set; }
+
+            public decimal Subtotal => Quantity * UnitPrice;
         }
 
-        private void BarcodeScanned(string barcode)
+        // Discount tracking
+        private decimal _manualDiscountAmount = 0;
+        private string _manualDiscountType = ""; // "percentage" or "fixed"
+        private string _appliedCouponCode = "";
+        private decimal _couponDiscountAmount = 0;
+
+        private void _topPanel_Paint(object sender, PaintEventArgs e)
         {
-            // Search for product by barcode and add to receipt
-            DataRow[] matches = _productsTable.AsEnumerable()
-                .Where(row => row["Barcode"].ToString().Trim() == barcode)
-                .ToArray();
 
-            if (matches.Length > 0)
-            {
-                DataRow product = matches[0];
-                int productID = Convert.ToInt32(product["ProductID"]);
-                string productName = product["ProductName"].ToString();
-                decimal price = Convert.ToDecimal(product["Price"]);
-                int availableStock = Convert.ToInt32(product["Quantity"]);
-                string barcodeValue = product["Barcode"].ToString();
-
-                // Add to cache for fast-path next time
-                clsBarcodeScanner.AddToCache(barcodeValue, productID, productName, price);
-
-                AddToReceipt(productID, productName, price, availableStock);
-            }
-            else
-            {
-                MessageBox.Show("Product not found for barcode: " + barcode, "Barcode Scan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
         }
 
-        private void BarcodeProductFound(int productID, string productName, decimal price)
-        {
-            // Fast-path: product found in cache, need to get available stock from products table
-            DataRow[] matches = _productsTable.AsEnumerable()
-                .Where(row => Convert.ToInt32(row["ProductID"]) == productID)
-                .ToArray();
+        // ── Actions menu handlers ───────────────────────────────────────────────
 
-            int availableStock = 0;
-            if (matches.Length > 0)
+        private void button1_Click(object sender, EventArgs e)
+        {
+            using (frmPOSActions actionsForm = new frmPOSActions())
             {
-                availableStock = Convert.ToInt32(matches[0]["Quantity"]);
+                // Pass receipt data to actions form
+                actionsForm.ReceiptItems = _receiptItems;
+                actionsForm.ReceiptGrid = _gridReceipt;
+                actionsForm.RefreshTotals = RefreshReceiptTotals;
+                actionsForm.ClearCustomerInfo = ClearCustomerInfo;
+                actionsForm.SelectedCustomerID = _selectedCustomerID;
+                actionsForm.ProductsTable = _productsTable;
+                actionsForm.ApplyManualDiscount = ApplyManualDiscount;
+                actionsForm.ApplyCoupon = ApplyCoupon;
+                actionsForm.ClearDiscounts = ClearDiscounts;
+
+                actionsForm.ShowDialog(this);
+
+                // Refresh after actions form closes
+                if (actionsForm.DialogResult == DialogResult.OK)
+                {
+                    RefreshReceiptTotals();
+                    LoadProducts();
+                }
             }
-
-            // Add to receipt
-            AddToReceipt(productID, productName, price, availableStock);
         }
-
-        private void ApplyLocalization()
-        {
-            clsLanguageManager.ApplyLanguage(this);
-            Text = clsLanguageManager.GetString("Point of Sale (POS)");
-        }
-
-    }
-
-    public class ReceiptItem
-    {
-        public int ProductID { get; set; }
-        public string ProductName { get; set; }
-        public decimal UnitPrice { get; set; }
-        public int Quantity { get; set; }
-        public int AvailableStock { get; set; }
-
-        public decimal Subtotal => Quantity * UnitPrice;
     }
 }

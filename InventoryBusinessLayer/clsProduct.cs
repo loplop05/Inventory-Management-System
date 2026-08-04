@@ -148,9 +148,9 @@ namespace InventoryBusinessLayer
             return clsProductData.DeleteProduct(ProductID);
         }
 
-        public static DataTable GetAllProducts()
+        public static bool GetAllProducts(out DataTable products, out string errorMessage)
         {
-            return clsProductData.GetAllProducts();
+            return clsProductData.GetAllProducts(out products, out errorMessage);
         }
 
         public static clsProduct FindProduct(int ProductID)

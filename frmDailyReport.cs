@@ -71,7 +71,7 @@ namespace InventoryManagementSystem
             string errorMessage;
             if (!clsPOS.EnsurePosSetupAndSampleData(out errorMessage))
             {
-                MessageBox.Show("Report setup failed: " + errorMessage, "Report", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, errorMessage, "Report Setup Failed");
                 return;
             }
 
@@ -156,11 +156,11 @@ namespace InventoryManagementSystem
                 try
                 {
                     File.WriteAllText(dialog.FileName, BuildCsvReport(), Encoding.UTF8);
-                    MessageBox.Show("Daily report exported successfully.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    clsFormTheme.ShowSuccess(this, "Daily report exported successfully.", "Export");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Export failed: " + ex.Message, "Export", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    clsFormTheme.ShowError(this, ex.Message, "Export Failed");
                 }
             }
         }
@@ -184,16 +184,16 @@ namespace InventoryManagementSystem
 
                     if (clsReportExporter.ExportMultipleTablesToHtml(tables, titles, "Daily Sales Report", dialog.FileName, out errorMessage))
                     {
-                        MessageBox.Show("Daily report exported to HTML successfully.\n\nYou can open the HTML file in your browser and print to PDF from there.", "Export", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        clsFormTheme.ShowSuccess(this, "Daily report exported to HTML successfully.\n\nYou can open the HTML file in your browser and print to PDF from there.", "Export");
                     }
                     else
                     {
-                        MessageBox.Show("Export failed: " + errorMessage, "Export", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        clsFormTheme.ShowError(this, errorMessage, "Export Failed");
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Export failed: " + ex.Message, "Export", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    clsFormTheme.ShowError(this, ex.Message, "Export Failed");
                 }
             }
         }

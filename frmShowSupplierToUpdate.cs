@@ -188,31 +188,25 @@ namespace InventoryManagementSystem
 
                 if (isSaved)
                 {
-                    MessageBox.Show(
+                    clsFormTheme.ShowSuccess(this,
                         "Supplier updated successfully.",
-                        "Success",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                        "Success");
 
                     DialogResult = DialogResult.OK;
                     Close();
                 }
                 else
                 {
-                    MessageBox.Show(
+                    clsFormTheme.ShowError(this,
                         "Failed to update the supplier.",
-                        "Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                        "Error");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
+                clsFormTheme.ShowError(this,
                     ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                    "Error");
             }
             finally
             {

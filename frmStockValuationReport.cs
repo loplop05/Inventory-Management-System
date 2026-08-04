@@ -80,11 +80,9 @@ namespace InventoryManagementSystem
             {
                 _reportTable = new DataTable();
 
-                MessageBox.Show(
+                clsFormTheme.ShowError(this,
                     ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                    "Error");
             }
             finally
             {
@@ -173,11 +171,9 @@ namespace InventoryManagementSystem
         {
             if (_reportTable.Rows.Count == 0)
             {
-                MessageBox.Show(
+                clsFormTheme.ShowInfo(this,
                     "There is no report data to export.",
-                    "Export Report",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                    "Export Report");
                 return;
             }
 
@@ -220,19 +216,11 @@ namespace InventoryManagementSystem
 
                     File.WriteAllText(saveFileDialog.FileName, csv.ToString(), Encoding.UTF8);
 
-                    MessageBox.Show(
-                        "Stock valuation report exported successfully.",
-                        "Export Report",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    clsFormTheme.ShowSuccess(this, "Stock valuation report exported successfully.", "Export Report");
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(
-                        ex.Message,
-                        "Export Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    clsFormTheme.ShowError(this, ex.Message, "Export Error");
                 }
             }
         }

@@ -621,7 +621,7 @@ namespace InventoryManagementSystem
         /// Applies a polished card style to a POS product tile panel,
         /// with a colored top accent bar and hover effect.
         /// </summary>
-        public static void StyleProductTile(Panel tile, bool inStock)
+        public static void StyleProductTile(Panel tile, bool inStock, bool lowStock = false)
         {
             tile.BackColor   = CardColor;
             tile.BorderStyle = BorderStyle.None;
@@ -637,8 +637,15 @@ namespace InventoryManagementSystem
                 using (SolidBrush fill = new SolidBrush(CardColor))
                     g.FillRectangle(fill, r);
 
-                // Top accent bar
-                Color accentColor = inStock ? PrimaryColor : Color.FromArgb(203, 213, 225);
+                // Top accent bar - three states: success (in stock), warning (low stock), danger (out of stock)
+                Color accentColor;
+                if (!inStock)
+                    accentColor = DangerColor;
+                else if (lowStock)
+                    accentColor = WarningColor;
+                else
+                    accentColor = PrimaryColor;
+
                 using (SolidBrush accent = new SolidBrush(accentColor))
                     g.FillRectangle(accent, new Rectangle(0, 0, tile.Width, 4));
 
@@ -651,8 +658,61 @@ namespace InventoryManagementSystem
             tile.MouseEnter += (s, e) =>
             {
                 if (inStock) tile.BackColor = Color.FromArgb(239, 246, 255);  // Blue 50
+                tile.Invalidate();
             };
-            tile.MouseLeave += (s, e) => tile.BackColor = CardColor;
+            tile.MouseLeave += (s, e) => tile.Invalidate();
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
+        //  THEMED MESSAGE BOX
+        // ════════════════════════════════════════════════════════════════════════
+
+        public static void ShowInfo(Form owner, string message, string title = "Information")
+        {
+            using (var dlg = new frmThemedMessageBox(message, title, ThemedMessageBoxIcon.Info, ThemedMessageBoxButtons.OK))
+            {
+                dlg.ShowDialog(owner);
+            }
+        }
+
+        public static void ShowSuccess(Form owner, string message, string title = "Success")
+        {
+            using (var dlg = new frmThemedMessageBox(message, title, ThemedMessageBoxIcon.Success, ThemedMessageBoxButtons.OK))
+            {
+                dlg.ShowDialog(owner);
+            }
+        }
+
+        public static void ShowWarning(Form owner, string message, string title = "Warning")
+        {
+            using (var dlg = new frmThemedMessageBox(message, title, ThemedMessageBoxIcon.Warning, ThemedMessageBoxButtons.OK))
+            {
+                dlg.ShowDialog(owner);
+            }
+        }
+
+        public static void ShowError(Form owner, string message, string title = "Error")
+        {
+            using (var dlg = new frmThemedMessageBox(message, title, ThemedMessageBoxIcon.Error, ThemedMessageBoxButtons.OK))
+            {
+                dlg.ShowDialog(owner);
+            }
+        }
+
+        public static DialogResult ShowConfirm(Form owner, string message, string title = "Confirm")
+        {
+            using (var dlg = new frmThemedMessageBox(message, title, ThemedMessageBoxIcon.Warning, ThemedMessageBoxButtons.OKCancel))
+            {
+                return dlg.ShowDialog(owner);
+            }
+        }
+
+        public static DialogResult ShowYesNo(Form owner, string message, string title = "Confirm")
+        {
+            using (var dlg = new frmThemedMessageBox(message, title, ThemedMessageBoxIcon.Warning, ThemedMessageBoxButtons.YesNo))
+            {
+                return dlg.ShowDialog(owner);
+            }
         }
     }
 }

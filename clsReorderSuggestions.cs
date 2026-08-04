@@ -34,7 +34,12 @@ namespace InventoryManagementSystem
         public static List<ReorderItem> GetReorderSuggestions(int? customThreshold = null)
         {
             List<ReorderItem> suggestions = new List<ReorderItem>();
-            DataTable products = clsProduct.GetAllProducts();
+            string errorMessage;
+            DataTable products;
+            if (!clsProduct.GetAllProducts(out products, out errorMessage))
+            {
+                return suggestions;
+            }
 
             if (products == null) return suggestions;
 

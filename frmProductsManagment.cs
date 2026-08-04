@@ -95,7 +95,13 @@ namespace InventoryManagementSystem
 
             try
             {
-                _productsTable = await Task.Run(() => clsProduct.GetAllProducts());
+                string errorMessage;
+                _productsTable = await Task.Run(() => 
+                {
+                    DataTable dt;
+                    clsProduct.GetAllProducts(out dt, out errorMessage);
+                    return dt;
+                });
                 _currentPage = 1;
                 DisplayCurrentPage();
             }
@@ -104,7 +110,7 @@ namespace InventoryManagementSystem
                 _productsTable = new DataTable();
                 DisplayCurrentPage();
 
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, ex.Message, "Error");
             }
             finally
             {

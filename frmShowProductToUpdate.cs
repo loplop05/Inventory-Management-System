@@ -98,7 +98,7 @@ namespace InventoryManagementSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading categories: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "Error loading categories: " + ex.Message, "Error");
             }
         }
 
@@ -113,7 +113,7 @@ namespace InventoryManagementSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading suppliers: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "Error loading suppliers: " + ex.Message, "Error");
             }
         }
 
@@ -321,31 +321,25 @@ namespace InventoryManagementSystem
 
                 if (isSaved)
                 {
-                    MessageBox.Show(
+                    clsFormTheme.ShowSuccess(this,
                         "Product updated successfully.",
-                        "Success",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                        "Success");
 
                     DialogResult = DialogResult.OK;
                     Close();
                 }
                 else
                 {
-                    MessageBox.Show(
+                    clsFormTheme.ShowError(this,
                         "Failed to update the product.",
-                        "Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                        "Error");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
+                clsFormTheme.ShowError(this,
                     ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                    "Error");
             }
             finally
             {

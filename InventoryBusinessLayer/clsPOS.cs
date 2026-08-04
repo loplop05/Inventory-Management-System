@@ -12,9 +12,9 @@ namespace InventoryBusinessLayer
             return clsPOSData.EnsurePosSetupAndSampleData(out errorMessage);
         }
 
-        public static DataTable GetProductsForPOS()
+        public static bool GetProductsForPOS(out DataTable products, out string errorMessage)
         {
-            return clsPOSData.GetProductsForPOS();
+            return clsPOSData.GetProductsForPOS(out products, out errorMessage);
         }
 
         public static bool CompleteOrder(DataTable orderItems, decimal taxRate, out int orderID, out string errorMessage)
@@ -49,7 +49,13 @@ namespace InventoryBusinessLayer
 
         public static DataTable GetLowStockProducts(int threshold)
         {
-            DataTable allProducts = clsProduct.GetAllProducts();
+            string errorMessage;
+            DataTable allProducts;
+            if (!clsProduct.GetAllProducts(out allProducts, out errorMessage))
+            {
+                return new DataTable();
+            }
+            
             DataTable lowStock = allProducts.Clone();
             
             foreach (DataRow row in allProducts.Rows)
@@ -71,16 +77,7 @@ namespace InventoryBusinessLayer
 
         public static DataTable GetRecentOrders(int count)
         {
-            DataTable allOrders = clsPOSData.GetTodayOrders();
-            DataTable recentOrders = allOrders.Clone();
-            
-            int rowsToCopy = Math.Min(count, allOrders.Rows.Count);
-            for (int i = 0; i < rowsToCopy; i++)
-            {
-                recentOrders.ImportRow(allOrders.Rows[i]);
-            }
-            
-            return recentOrders;
+            return clsPOSData.GetRecentOrders(count);
         }
 
         public static bool ProcessExchange(int orderID, List<clsPOSData.ExchangeItemInfo> returnedItems, List<clsPOSData.ReplacementItemInfo> replacementItems, out string errorMessage)

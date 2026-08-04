@@ -120,9 +120,9 @@ namespace InventoryDataAccessLayer
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // Return null on any error
+                    clsErrorLog.LogException("clsUserData.GetUserByUsername", ex);
                 }
             }
 
@@ -150,8 +150,9 @@ namespace InventoryDataAccessLayer
                             dt.Load(reader);
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        clsErrorLog.LogException("clsUserData.GetAllUsers", ex);
                     }
                 }
             }

@@ -104,11 +104,7 @@ namespace InventoryManagementSystem
                 _categoriesTable = new DataTable();
                 DisplayCurrentPage();
 
-                MessageBox.Show(
-                    ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, ex.Message, "Error");
             }
             finally
             {

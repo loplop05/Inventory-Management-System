@@ -98,7 +98,7 @@ namespace InventoryManagementSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading users: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "Error loading users: " + ex.Message, "Error");
             }
             finally
             {
@@ -232,7 +232,7 @@ namespace InventoryManagementSystem
         {
             if (DataGVUsers.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Please select a user to edit.", "Edit User", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please select a user to edit.", "Edit User");
                 return;
             }
 
@@ -255,7 +255,7 @@ namespace InventoryManagementSystem
         {
             if (DataGVUsers.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Please select a user to deactivate.", "Deactivate User", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please select a user to deactivate.", "Deactivate User");
                 return;
             }
 
@@ -263,20 +263,20 @@ namespace InventoryManagementSystem
             int userID = Convert.ToInt32(selectedRow["UserID"]);
             string displayName = selectedRow["DisplayName"].ToString();
 
-            var result = MessageBox.Show($"Are you sure you want to deactivate user '{displayName}'?", 
-                "Deactivate User", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            var result = clsFormTheme.ShowYesNo(this, $"Are you sure you want to deactivate user '{displayName}'?", 
+                "Deactivate User");
 
             if (result == DialogResult.Yes)
             {
                 string errorMessage;
                 if (clsUserData.DeactivateUser(userID, out errorMessage))
                 {
-                    MessageBox.Show("User deactivated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    clsFormTheme.ShowSuccess(this, "User deactivated successfully.", "Success");
                     await RefreshGridDataAsync();
                 }
                 else
                 {
-                    MessageBox.Show("Failed to deactivate user: " + errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    clsFormTheme.ShowError(this, "Failed to deactivate user: " + errorMessage, "Error");
                 }
             }
         }
@@ -285,7 +285,7 @@ namespace InventoryManagementSystem
         {
             if (DataGVUsers.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Please select a user to change password for.", "Change Password", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please select a user to change password for.", "Change Password");
                 return;
             }
 
@@ -297,7 +297,7 @@ namespace InventoryManagementSystem
             {
                 if (form.ShowDialog(this) == DialogResult.OK)
                 {
-                    MessageBox.Show("Password changed successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    clsFormTheme.ShowSuccess(this, "Password changed successfully.", "Success");
                 }
             }
         }

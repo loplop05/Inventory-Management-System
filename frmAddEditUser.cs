@@ -48,6 +48,8 @@ namespace InventoryManagementSystem
             if (!_userID.HasValue)
             {
                 // New user - password fields required
+                tableLayoutPanel.RowStyles[3].Height = 40;
+                tableLayoutPanel.RowStyles[4].Height = 40;
                 lblPassword.Visible = true;
                 lblConfirmPassword.Visible = true;
                 txtPassword.Visible = true;
@@ -58,6 +60,8 @@ namespace InventoryManagementSystem
             else
             {
                 // Edit user - password fields hidden (use Change Password button instead)
+                tableLayoutPanel.RowStyles[3].Height = 0;
+                tableLayoutPanel.RowStyles[4].Height = 0;
                 lblPassword.Visible = false;
                 lblConfirmPassword.Visible = false;
                 txtPassword.Visible = false;

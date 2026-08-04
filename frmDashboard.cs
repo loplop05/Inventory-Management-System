@@ -69,8 +69,7 @@ namespace InventoryManagementSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error loading dashboard data: " + ex.Message, "Error", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, ex.Message, "Error");
             }
         }
 
@@ -249,7 +248,12 @@ namespace InventoryManagementSystem
         {
             try
             {
-                DataTable allProducts = clsProduct.GetAllProducts();
+                string errorMessage;
+                DataTable allProducts;
+                if (!clsProduct.GetAllProducts(out allProducts, out errorMessage))
+                {
+                    allProducts = new DataTable();
+                }
                 
                 if (allProducts != null)
                 {

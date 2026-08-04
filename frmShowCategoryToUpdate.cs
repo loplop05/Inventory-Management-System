@@ -149,11 +149,9 @@ namespace InventoryManagementSystem
                         return;
 
                     case clsCategory.enValidateCategory.NotFound:
-                        MessageBox.Show(
+                        clsFormTheme.ShowError(this,
                             "The category no longer exists.",
-                            "Error",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
+                            "Error");
                         return;
                 }
 
@@ -161,31 +159,25 @@ namespace InventoryManagementSystem
 
                 if (isSaved)
                 {
-                    MessageBox.Show(
+                    clsFormTheme.ShowSuccess(this,
                         "Category updated successfully.",
-                        "Success",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                        "Success");
 
                     DialogResult = DialogResult.OK;
                     Close();
                 }
                 else
                 {
-                    MessageBox.Show(
+                    clsFormTheme.ShowError(this,
                         "Failed to update the category.",
-                        "Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                        "Error");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
+                clsFormTheme.ShowError(this,
                     ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                    "Error");
             }
             finally
             {

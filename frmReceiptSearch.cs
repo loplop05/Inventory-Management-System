@@ -100,7 +100,7 @@ namespace InventoryManagementSystem
             string input = _txtOrderID.Text.Trim();
             if (string.IsNullOrWhiteSpace(input))
             {
-                MessageBox.Show("Please enter an Order ID or Customer Phone Number.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please enter an Order ID or Customer Phone Number.", "Search");
                 _txtOrderID.Focus();
                 return;
             }
@@ -131,7 +131,7 @@ namespace InventoryManagementSystem
                 }
             }
 
-            MessageBox.Show("No matching order or customer found.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            clsFormTheme.ShowInfo(this, "No matching order or customer found.", "Search");
             ClearDisplay();
         }
 
@@ -142,7 +142,7 @@ namespace InventoryManagementSystem
 
             if (_currentOrderDetails == null || _currentOrderDetails.Rows.Count == 0)
             {
-                MessageBox.Show("Order not found.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowInfo(this, "Order not found.", "Search");
                 ClearDisplay();
                 return;
             }
@@ -193,7 +193,7 @@ namespace InventoryManagementSystem
             else
             {
                 _gridOrderItems.DataSource = null;
-                MessageBox.Show("No items found for this order.", "Order Items", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowInfo(this, "No items found for this order.", "Order Items");
                 _btnExchange.Enabled = false;
             }
         }

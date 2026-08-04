@@ -90,7 +90,7 @@ namespace InventoryManagementSystem
         {
             if (string.IsNullOrWhiteSpace(_txtOrderID.Text))
             {
-                MessageBox.Show("Please enter an Order ID.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please enter an Order ID.", "Search");
                 _txtOrderID.Focus();
                 return;
             }
@@ -98,7 +98,7 @@ namespace InventoryManagementSystem
             int orderID;
             if (!int.TryParse(_txtOrderID.Text.Trim(), out orderID))
             {
-                MessageBox.Show("Invalid Order ID format.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Invalid Order ID format.", "Search");
                 _txtOrderID.Focus();
                 return;
             }
@@ -113,7 +113,7 @@ namespace InventoryManagementSystem
 
             if (_currentOrderDetails == null || _currentOrderDetails.Rows.Count == 0)
             {
-                MessageBox.Show("Order not found.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowInfo(this, "Order not found.", "Search");
                 ClearDisplay();
                 return;
             }
@@ -211,11 +211,9 @@ namespace InventoryManagementSystem
             if (_currentOrderID == -1)
                 return;
 
-            DialogResult result = MessageBox.Show(
+            DialogResult result = clsFormTheme.ShowYesNo(this,
                 "Do you want to print this receipt?",
-                "Print Receipt",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+                "Print Receipt");
 
             if (result == DialogResult.Yes)
             {
@@ -241,7 +239,7 @@ namespace InventoryManagementSystem
             if (printDialog.ShowDialog() == DialogResult.OK)
             {
                 printDoc.Print();
-                MessageBox.Show("Receipt printed successfully.", "Print", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowSuccess(this, "Receipt printed successfully.", "Print");
             }
         }
 
@@ -307,19 +305,17 @@ namespace InventoryManagementSystem
         {
             if (_currentOrderID == -1)
             {
-                MessageBox.Show("Please load a receipt first.", "Void", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please load a receipt first.", "Void");
                 return;
             }
 
-            DialogResult result = MessageBox.Show(
+            DialogResult result = clsFormTheme.ShowYesNo(this,
                 $"Are you sure you want to void Order {_currentOrderID}?\n\nThis will:\n" +
                 "- Reverse all stock changes\n" +
                 "- Deduct any loyalty points awarded\n" +
                 "- Mark the order as voided\n\n" +
                 "This action cannot be undone.",
-                "Confirm Void",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning);
+                "Confirm Void");
 
             if (result != DialogResult.Yes)
                 return;
@@ -381,7 +377,7 @@ namespace InventoryManagementSystem
                 
                 if (reasonForm.ShowDialog() == DialogResult.OK && string.IsNullOrWhiteSpace(txtReason.Text))
                 {
-                    MessageBox.Show("A reason is required to void an order.", "Void", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    clsFormTheme.ShowWarning(this, "A reason is required to void an order.", "Void");
                     return;
                 }
                 
@@ -395,12 +391,12 @@ namespace InventoryManagementSystem
                     // Log the void action
                     clsAuditLog.LogAction("Order Voided", $"Order {_currentOrderID} voided. Reason: {reason}", "POS");
                     
-                    MessageBox.Show($"Order {_currentOrderID} has been voided successfully.", "Void", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    clsFormTheme.ShowSuccess(this, $"Order {_currentOrderID} has been voided successfully.", "Void");
                     ClearDisplay();
                 }
                 else
                 {
-                    MessageBox.Show("Failed to void order: " + errorMessage, "Void", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    clsFormTheme.ShowError(this, "Failed to void order: " + errorMessage, "Void");
                 }
             }
         }
@@ -419,7 +415,7 @@ namespace InventoryManagementSystem
         {
             if (_currentOrderID == -1 || _currentOrderDetails == null || _currentOrderItems == null)
             {
-                MessageBox.Show("Please load a receipt first.", "Share", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please load a receipt first.", "Share");
                 return;
             }
 
@@ -435,7 +431,7 @@ namespace InventoryManagementSystem
         {
             if (_currentOrderID == -1 || _currentOrderDetails == null || _currentOrderItems == null)
             {
-                MessageBox.Show("Please load a receipt first.", "Share", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please load a receipt first.", "Share");
                 return;
             }
 
@@ -447,18 +443,18 @@ namespace InventoryManagementSystem
         {
             if (_currentOrderID == -1 || _currentOrderDetails == null || _currentOrderItems == null)
             {
-                MessageBox.Show("Please load a receipt first.", "Copy", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please load a receipt first.", "Copy");
                 return;
             }
 
             var receiptData = BuildReceiptData();
             if (clsReceiptSharing.CopyToClipboard(receiptData))
             {
-                MessageBox.Show("Receipt copied to clipboard.", "Copy", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowSuccess(this, "Receipt copied to clipboard.", "Copy");
             }
             else
             {
-                MessageBox.Show("Failed to copy receipt to clipboard.", "Copy", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "Failed to copy receipt to clipboard.", "Copy");
             }
         }
 

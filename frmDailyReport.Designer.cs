@@ -290,7 +290,7 @@ namespace InventoryManagementSystem
             // 
             // frmDailyReport
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1066, 783);
             this.Controls.Add(this._rootLayout);

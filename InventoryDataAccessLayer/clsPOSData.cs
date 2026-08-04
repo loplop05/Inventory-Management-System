@@ -33,9 +33,10 @@ namespace InventoryDataAccessLayer
             }
         }
 
-        public static DataTable GetProductsForPOS()
+        public static bool GetProductsForPOS(out DataTable products, out string errorMessage)
         {
-            DataTable dt = new DataTable();
+            products = new DataTable();
+            errorMessage = "";
 
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
@@ -43,17 +44,17 @@ namespace InventoryDataAccessLayer
                     SELECT P.ProductID,
                            P.ProductName,
                            P.CategoryID,
-                           C.CategoryName,
+                           ISNULL(C.CategoryName, 'Uncategorized') AS CategoryName,
                            P.SupplierID,
-                           S.SupplierName,
+                           ISNULL(S.SupplierName, 'Unknown Supplier') AS SupplierName,
                            P.Price,
                            P.Quantity,
                            P.Barcode,
                            P.ImagePath
                     FROM Products P
-                    INNER JOIN Categories C ON P.CategoryID = C.CategoryID
-                    INNER JOIN Suppliers S ON P.SupplierID = S.SupplierID
-                    ORDER BY C.CategoryName, P.ProductName";
+                    LEFT JOIN Categories C ON P.CategoryID = C.CategoryID
+                    LEFT JOIN Suppliers S ON P.SupplierID = S.SupplierID
+                    ORDER BY ISNULL(C.CategoryName, 'Uncategorized'), P.ProductName";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -62,16 +63,18 @@ namespace InventoryDataAccessLayer
                         connection.Open();
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            products.Load(reader);
                         }
+                        return true;
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        errorMessage = ex.Message;
+                        clsErrorLog.LogException("clsPOSData.GetProductsForPOS", ex);
+                        return false;
                     }
                 }
             }
-
-            return dt;
         }
 
         public static bool CompleteOrder(DataTable orderItems, decimal taxRate, out int orderID, out string errorMessage)
@@ -363,8 +366,47 @@ namespace InventoryDataAccessLayer
                             dt.Load(reader);
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        clsErrorLog.LogException("clsPOSData.GetTodayOrderSummary", ex);
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetRecentOrders(int count)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"
+                    SELECT TOP (@Count) OrderID,
+                           OrderDate,
+                           Subtotal,
+                           TaxAmount,
+                           TotalAmount,
+                           PaymentMethod
+                    FROM Orders
+                    WHERE OrderDate >= DATEADD(DAY, -7, GETDATE())
+                    ORDER BY OrderDate DESC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Count", count);
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            dt.Load(reader);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        clsErrorLog.LogException("clsPOSData.GetRecentOrders", ex);
                     }
                 }
             }
@@ -435,8 +477,9 @@ namespace InventoryDataAccessLayer
                                 dt.Load(reader);
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        clsErrorLog.LogException("clsPOSData.GetTodayOrders", ex);
                     }
                 }
             }
