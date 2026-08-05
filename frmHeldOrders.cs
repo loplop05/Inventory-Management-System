@@ -17,6 +17,15 @@ namespace InventoryManagementSystem
 
         private void frmHeldOrders_Load(object sender, EventArgs e)
         {
+            // Ensure HeldOrders tables exist in database
+            string migrationError;
+            if (!clsDatabaseMigration.EnsureHeldOrdersTablesExist(out migrationError))
+            {
+                MessageBox.Show("Failed to initialize held orders tables: " + migrationError, "Database Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Held Orders", clsFormTheme.Icons.Save);
 
@@ -49,6 +58,7 @@ namespace InventoryManagementSystem
 
             gridHeldOrders.Columns.Add(new DataGridViewTextBoxColumn
             {
+                Name = "HeldOrderID",
                 DataPropertyName = "HeldOrderID",
                 HeaderText = "ID",
                 Width = 60
@@ -56,6 +66,7 @@ namespace InventoryManagementSystem
 
             gridHeldOrders.Columns.Add(new DataGridViewTextBoxColumn
             {
+                Name = "CreatedDate",
                 DataPropertyName = "CreatedDate",
                 HeaderText = "Date",
                 Width = 150
@@ -63,6 +74,7 @@ namespace InventoryManagementSystem
 
             gridHeldOrders.Columns.Add(new DataGridViewTextBoxColumn
             {
+                Name = "CustomerName",
                 DataPropertyName = "CustomerName",
                 HeaderText = "Customer",
                 Width = 150
@@ -70,6 +82,7 @@ namespace InventoryManagementSystem
 
             gridHeldOrders.Columns.Add(new DataGridViewTextBoxColumn
             {
+                Name = "ItemCount",
                 DataPropertyName = "ItemCount",
                 HeaderText = "Items",
                 Width = 60
@@ -77,6 +90,7 @@ namespace InventoryManagementSystem
 
             gridHeldOrders.Columns.Add(new DataGridViewTextBoxColumn
             {
+                Name = "TotalAmount",
                 DataPropertyName = "TotalAmount",
                 HeaderText = "Total",
                 Width = 80,
@@ -85,6 +99,7 @@ namespace InventoryManagementSystem
 
             gridHeldOrders.Columns.Add(new DataGridViewTextBoxColumn
             {
+                Name = "Notes",
                 DataPropertyName = "Notes",
                 HeaderText = "Notes",
                 Width = 200

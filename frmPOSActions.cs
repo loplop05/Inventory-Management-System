@@ -224,6 +224,15 @@ namespace InventoryManagementSystem
                 return;
             }
 
+            // Ensure HeldOrders tables exist in database
+            string migrationError;
+            if (!clsDatabaseMigration.EnsureHeldOrdersTablesExist(out migrationError))
+            {
+                MessageBox.Show("Failed to initialize held orders tables: " + migrationError, "Database Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             using (frmInputBox inputForm = new frmInputBox("Enter notes for this held order:", "Hold Order"))
             {
                 if (inputForm.ShowDialog(this) != DialogResult.OK)
@@ -283,73 +292,94 @@ namespace InventoryManagementSystem
 
         private void _btnRetrieveHeld_Click(object sender, EventArgs e)
         {
+            // Ensure HeldOrders tables exist in database
+            string migrationError;
+            if (!clsDatabaseMigration.EnsureHeldOrdersTablesExist(out migrationError))
+            {
+                MessageBox.Show("Failed to initialize held orders tables: " + migrationError, "Database Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             using (frmHeldOrders heldForm = new frmHeldOrders())
             {
                 if (heldForm.ShowDialog(this) == DialogResult.OK && heldForm.SelectedHeldOrder != null)
                 {
                     var heldOrder = heldForm.SelectedHeldOrder;
 
-                    // Clear current receipt
-                    var clearMethod = ReceiptItems.GetType().GetMethod("Clear");
-                    if (clearMethod != null)
-                        clearMethod.Invoke(ReceiptItems, null);
-
-                    // Add held order items to receipt
-                    foreach (var item in heldOrder.Items)
+                    try
                     {
-                        // Look up current stock from products table
-                        int currentStock = 0;
-                        if (ProductsTable != null)
-                        {
-                            var matches = ProductsTable.Select("ProductID = " + item.ProductID);
-                            if (matches.Length > 0)
-                                currentStock = Convert.ToInt32(matches[0]["Quantity"]);
-                        }
+                        // Clear current receipt
+                        var clearMethod = ReceiptItems.GetType().GetMethod("Clear");
+                        if (clearMethod != null)
+                            clearMethod.Invoke(ReceiptItems, null);
 
-                        // Warn if stock is insufficient
-                        if (currentStock < item.Quantity)
-                        {
-                            MessageBox.Show($"Product '{item.ProductName}' has insufficient stock. Available: {currentStock}, Held: {item.Quantity}.",
-                                "Stock Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            item.Quantity = Math.Min(item.Quantity, currentStock);
-                        }
-
-                        // Create a new ReceiptItem instance
+                        // Get the ReceiptItem type from the BindingList
                         var receiptItemType = ReceiptItems.GetType().GetGenericArguments()[0];
-                        var receiptItem = Activator.CreateInstance(receiptItemType);
 
-                        var productIDProp = receiptItemType.GetProperty("ProductID");
-                        var productNameProp = receiptItemType.GetProperty("ProductName");
-                        var quantityProp = receiptItemType.GetProperty("Quantity");
-                        var unitPriceProp = receiptItemType.GetProperty("UnitPrice");
-                        var availableStockProp = receiptItemType.GetProperty("AvailableStock");
+                        // Add held order items to receipt
+                        foreach (var item in heldOrder.Items)
+                        {
+                            // Look up current stock from products table
+                            int currentStock = 0;
+                            if (ProductsTable != null)
+                            {
+                                var matches = ProductsTable.Select("ProductID = " + item.ProductID);
+                                if (matches.Length > 0)
+                                    currentStock = Convert.ToInt32(matches[0]["Quantity"]);
+                            }
 
-                        if (productIDProp != null) productIDProp.SetValue(receiptItem, item.ProductID);
-                        if (productNameProp != null) productNameProp.SetValue(receiptItem, item.ProductName);
-                        if (quantityProp != null) quantityProp.SetValue(receiptItem, item.Quantity);
-                        if (unitPriceProp != null) unitPriceProp.SetValue(receiptItem, item.UnitPrice);
-                        if (availableStockProp != null) availableStockProp.SetValue(receiptItem, currentStock);
+                            // Warn if stock is insufficient
+                            if (currentStock < item.Quantity)
+                            {
+                                MessageBox.Show($"Product '{item.ProductName}' has insufficient stock. Available: {currentStock}, Held: {item.Quantity}.",
+                                    "Stock Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                item.Quantity = Math.Min(item.Quantity, currentStock);
+                            }
 
-                        var addMethod = ReceiptItems.GetType().GetMethod("Add");
-                        if (addMethod != null)
-                            addMethod.Invoke(ReceiptItems, new object[] { receiptItem });
+                            // Create a new ReceiptItem instance using the actual type
+                            var receiptItem = Activator.CreateInstance(receiptItemType);
+
+                            var productIDProp = receiptItemType.GetProperty("ProductID");
+                            var productNameProp = receiptItemType.GetProperty("ProductName");
+                            var quantityProp = receiptItemType.GetProperty("Quantity");
+                            var unitPriceProp = receiptItemType.GetProperty("UnitPrice");
+                            var availableStockProp = receiptItemType.GetProperty("AvailableStock");
+
+                            if (productIDProp != null) productIDProp.SetValue(receiptItem, item.ProductID);
+                            if (productNameProp != null) productNameProp.SetValue(receiptItem, item.ProductName);
+                            if (quantityProp != null) quantityProp.SetValue(receiptItem, item.Quantity);
+                            if (unitPriceProp != null) unitPriceProp.SetValue(receiptItem, item.UnitPrice);
+                            if (availableStockProp != null) availableStockProp.SetValue(receiptItem, currentStock);
+
+                            var addMethod = ReceiptItems.GetType().GetMethod("Add");
+                            if (addMethod != null)
+                                addMethod.Invoke(ReceiptItems, new object[] { receiptItem });
+                        }
+
+                        // Set customer info if available
+                        if (heldOrder.CustomerID.HasValue)
+                        {
+                            SelectedCustomerID = heldOrder.CustomerID;
+                            // TODO: Update customer display in frmPOS
+                        }
+
+                        RefreshTotals?.Invoke();
+                        UpdateButtonStates();
+
+                        // Clear discounts when retrieving held order
+                        ClearDiscounts?.Invoke();
+
+                        // Delete the held order after retrieval
+                        string errorMessage;
+                        clsHeldOrder.DeleteHeldOrder(heldOrder.HeldOrderID, out errorMessage);
+
+                        MessageBox.Show("Held order retrieved successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
-
-                    // Set customer info if available
-                    if (heldOrder.CustomerID.HasValue)
+                    catch (Exception ex)
                     {
-                        SelectedCustomerID = heldOrder.CustomerID;
-                        // TODO: Update customer display in frmPOS
+                        MessageBox.Show("Error retrieving held order: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-
-                    RefreshTotals?.Invoke();
-                    UpdateButtonStates();
-
-                    // Delete the held order after retrieval
-                    string errorMessage;
-                    clsHeldOrder.DeleteHeldOrder(heldOrder.HeldOrderID, out errorMessage);
-
-                    MessageBox.Show("Held order retrieved successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
