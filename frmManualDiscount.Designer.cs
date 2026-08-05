@@ -27,18 +27,18 @@ namespace InventoryManagementSystem
             // lblDiscountType
             // 
             this.lblDiscountType.AutoSize = true;
-            this.lblDiscountType.Location = new System.Drawing.Point(30, 100);
+            this.lblDiscountType.Location = new System.Drawing.Point(27, 67);
             this.lblDiscountType.Name = "lblDiscountType";
-            this.lblDiscountType.Size = new System.Drawing.Size(90, 20);
+            this.lblDiscountType.Size = new System.Drawing.Size(97, 16);
             this.lblDiscountType.TabIndex = 0;
             this.lblDiscountType.Text = "Discount Type:";
             // 
             // rbPercentage
             // 
             this.rbPercentage.AutoSize = true;
-            this.rbPercentage.Location = new System.Drawing.Point(150, 97);
+            this.rbPercentage.Location = new System.Drawing.Point(147, 64);
             this.rbPercentage.Name = "rbPercentage";
-            this.rbPercentage.Size = new System.Drawing.Size(100, 24);
+            this.rbPercentage.Size = new System.Drawing.Size(98, 20);
             this.rbPercentage.TabIndex = 1;
             this.rbPercentage.TabStop = true;
             this.rbPercentage.Text = "Percentage";
@@ -47,9 +47,9 @@ namespace InventoryManagementSystem
             // rbFixedAmount
             // 
             this.rbFixedAmount.AutoSize = true;
-            this.rbFixedAmount.Location = new System.Drawing.Point(270, 97);
+            this.rbFixedAmount.Location = new System.Drawing.Point(267, 64);
             this.rbFixedAmount.Name = "rbFixedAmount";
-            this.rbFixedAmount.Size = new System.Drawing.Size(110, 24);
+            this.rbFixedAmount.Size = new System.Drawing.Size(109, 20);
             this.rbFixedAmount.TabIndex = 2;
             this.rbFixedAmount.TabStop = true;
             this.rbFixedAmount.Text = "Fixed Amount";
@@ -58,18 +58,18 @@ namespace InventoryManagementSystem
             // lblDiscountValue
             // 
             this.lblDiscountValue.AutoSize = true;
-            this.lblDiscountValue.Location = new System.Drawing.Point(30, 150);
+            this.lblDiscountValue.Location = new System.Drawing.Point(27, 159);
             this.lblDiscountValue.Name = "lblDiscountValue";
-            this.lblDiscountValue.Size = new System.Drawing.Size(100, 20);
+            this.lblDiscountValue.Size = new System.Drawing.Size(100, 16);
             this.lblDiscountValue.TabIndex = 3;
             this.lblDiscountValue.Text = "Discount Value:";
             // 
             // txtDiscountValue
             // 
-            this.txtDiscountValue.Location = new System.Drawing.Point(150, 147);
+            this.txtDiscountValue.Location = new System.Drawing.Point(147, 156);
             this.txtDiscountValue.MaxLength = 10;
             this.txtDiscountValue.Name = "txtDiscountValue";
-            this.txtDiscountValue.Size = new System.Drawing.Size(150, 27);
+            this.txtDiscountValue.Size = new System.Drawing.Size(150, 22);
             this.txtDiscountValue.TabIndex = 4;
             this.txtDiscountValue.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtDiscountValue_KeyPress);
             // 
@@ -108,14 +108,15 @@ namespace InventoryManagementSystem
             this.Controls.Add(this.rbPercentage);
             this.Controls.Add(this.lblDiscountType);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.KeyPreview = true;
             this.Name = "frmManualDiscount";
             this.Text = "Manual Discount";
             this.Load += new System.EventHandler(this.frmManualDiscount_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         private System.Windows.Forms.Label lblDiscountType;
