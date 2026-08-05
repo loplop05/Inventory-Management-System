@@ -18,13 +18,14 @@ namespace InventoryManagementSystem
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            this._rootLayout = new System.Windows.Forms.TableLayoutPanel();
+            this._sidebar = new ucSidebarNav();
+            this._contentPanel = new System.Windows.Forms.Panel();
+            this._headerPanel = new System.Windows.Forms.Panel();
+            this._lblPageTitle = new System.Windows.Forms.Label();
+            this._mainLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this._topPanel = new System.Windows.Forms.Panel();
-            this._lblTitle = new System.Windows.Forms.Label();
             this._txtSearch = new System.Windows.Forms.TextBox();
             this._btnRefresh = new System.Windows.Forms.Button();
-            this._btnReport = new System.Windows.Forms.Button();
-            this._btnClose = new System.Windows.Forms.Button();
             this._customerPanel = new System.Windows.Forms.Panel();
             this._lblCustomerPhone = new System.Windows.Forms.Label();
             this._txtCustomerPhone = new System.Windows.Forms.TextBox();
@@ -53,7 +54,9 @@ namespace InventoryManagementSystem
             this._btnCompleteOrder = new System.Windows.Forms.Button();
             this._lblReceiptTitle = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this._rootLayout.SuspendLayout();
+            this._headerPanel.SuspendLayout();
+            this._contentPanel.SuspendLayout();
+            this._mainLayoutPanel.SuspendLayout();
             this._topPanel.SuspendLayout();
             this._customerPanel.SuspendLayout();
             this._paymentPanel.SuspendLayout();
@@ -66,92 +69,94 @@ namespace InventoryManagementSystem
             this._totalsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // _rootLayout
+            // _sidebar
             // 
-            this._rootLayout.ColumnCount = 1;
-            this._rootLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._rootLayout.Controls.Add(this._topPanel, 0, 0);
-            this._rootLayout.Controls.Add(this._splitContainer, 0, 1);
-            this._rootLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._rootLayout.Location = new System.Drawing.Point(0, 0);
-            this._rootLayout.Name = "_rootLayout";
-            this._rootLayout.RowCount = 2;
-            this._rootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 186F));
-            this._rootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._rootLayout.Size = new System.Drawing.Size(1318, 783);
-            this._rootLayout.TabIndex = 0;
+            this._sidebar.Dock = System.Windows.Forms.DockStyle.Left;
+            this._sidebar.Location = new System.Drawing.Point(0, 0);
+            this._sidebar.Name = "_sidebar";
+            this._sidebar.Size = new System.Drawing.Size(240, 698);
+            this._sidebar.TabIndex = 0;
+            // 
+            // _contentPanel
+            // 
+            this._contentPanel.Controls.Add(this._mainLayoutPanel);
+            this._contentPanel.Controls.Add(this._headerPanel);
+            this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._contentPanel.Location = new System.Drawing.Point(240, 0);
+            this._contentPanel.Name = "_contentPanel";
+            this._contentPanel.Size = new System.Drawing.Size(1126, 698);
+            this._contentPanel.TabIndex = 1;
+            // 
+            // _headerPanel
+            // 
+            this._headerPanel.Controls.Add(this._lblPageTitle);
+            this._headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this._headerPanel.Location = new System.Drawing.Point(0, 0);
+            this._headerPanel.Name = "_headerPanel";
+            this._headerPanel.Size = new System.Drawing.Size(1126, 60);
+            this._headerPanel.TabIndex = 0;
+            // 
+            // _lblPageTitle
+            // 
+            this._lblPageTitle.AutoSize = true;
+            this._lblPageTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            this._lblPageTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
+            this._lblPageTitle.Location = new System.Drawing.Point(20, 15);
+            this._lblPageTitle.Name = "_lblPageTitle";
+            this._lblPageTitle.Size = new System.Drawing.Size(133, 32);
+            this._lblPageTitle.TabIndex = 0;
+            this._lblPageTitle.Text = "Point of Sale";
+            // 
+            // _mainLayoutPanel
+            // 
+            this._mainLayoutPanel.ColumnCount = 1;
+            this._mainLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this._mainLayoutPanel.Controls.Add(this._topPanel, 0, 0);
+            this._mainLayoutPanel.Controls.Add(this._splitContainer, 0, 1);
+            this._mainLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._mainLayoutPanel.Location = new System.Drawing.Point(0, 60);
+            this._mainLayoutPanel.Name = "_mainLayoutPanel";
+            this._mainLayoutPanel.RowCount = 2;
+            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
+            this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this._mainLayoutPanel.Size = new System.Drawing.Size(1126, 638);
+            this._mainLayoutPanel.TabIndex = 1;
             // 
             // _topPanel
             // 
             this._topPanel.BackColor = System.Drawing.Color.White;
-            this._topPanel.Controls.Add(this._lblTitle);
             this._topPanel.Controls.Add(this._txtSearch);
             this._topPanel.Controls.Add(this._btnRefresh);
-            this._topPanel.Controls.Add(this._btnReport);
-            this._topPanel.Controls.Add(this._btnClose);
             this._topPanel.Controls.Add(this._customerPanel);
             this._topPanel.Controls.Add(this._paymentPanel);
             this._topPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._topPanel.Location = new System.Drawing.Point(3, 3);
+            this._topPanel.Location = new System.Drawing.Point(0, 0);
             this._topPanel.Name = "_topPanel";
-            this._topPanel.Padding = new System.Windows.Forms.Padding(16, 14, 16, 10);
-            this._topPanel.Size = new System.Drawing.Size(1312, 180);
+            this._topPanel.Padding = new System.Windows.Forms.Padding(16, 10, 16, 10);
+            this._topPanel.Size = new System.Drawing.Size(1126, 120);
             this._topPanel.TabIndex = 0;
             this._topPanel.Paint += new System.Windows.Forms.PaintEventHandler(this._topPanel_Paint);
             this._topPanel.Resize += new System.EventHandler(this.topPanel_Resize);
             // 
-            // _lblTitle
-            // 
-            this._lblTitle.AutoSize = true;
-            this._lblTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this._lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
-            this._lblTitle.Location = new System.Drawing.Point(16, 17);
-            this._lblTitle.Name = "_lblTitle";
-            this._lblTitle.Size = new System.Drawing.Size(196, 41);
-            this._lblTitle.TabIndex = 0;
-            this._lblTitle.Text = "Point of Sale";
-            // 
             // _txtSearch
             // 
             this._txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._txtSearch.Location = new System.Drawing.Point(628, 22);
+            this._txtSearch.Location = new System.Drawing.Point(700, 10);
             this._txtSearch.Name = "_txtSearch";
-            this._txtSearch.Size = new System.Drawing.Size(360, 30);
+            this._txtSearch.Size = new System.Drawing.Size(300, 30);
             this._txtSearch.TabIndex = 1;
             this._txtSearch.TextChanged += new System.EventHandler(this.txtSearch_TextChanged);
             // 
             // _btnRefresh
             // 
             this._btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._btnRefresh.Location = new System.Drawing.Point(1000, 19);
+            this._btnRefresh.Location = new System.Drawing.Point(1010, 7);
             this._btnRefresh.Name = "_btnRefresh";
-            this._btnRefresh.Size = new System.Drawing.Size(96, 34);
+            this._btnRefresh.Size = new System.Drawing.Size(100, 34);
             this._btnRefresh.TabIndex = 2;
             this._btnRefresh.Text = "Refresh";
             this._btnRefresh.UseVisualStyleBackColor = true;
             this._btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
-            // _btnReport
-            // 
-            this._btnReport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._btnReport.Location = new System.Drawing.Point(1106, 19);
-            this._btnReport.Name = "_btnReport";
-            this._btnReport.Size = new System.Drawing.Size(120, 34);
-            this._btnReport.TabIndex = 3;
-            this._btnReport.Text = "Daily Report";
-            this._btnReport.UseVisualStyleBackColor = true;
-            this._btnReport.Click += new System.EventHandler(this.btnReport_Click);
-            // 
-            // _btnClose
-            // 
-            this._btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._btnClose.Location = new System.Drawing.Point(1236, 19);
-            this._btnClose.Name = "_btnClose";
-            this._btnClose.Size = new System.Drawing.Size(76, 34);
-            this._btnClose.TabIndex = 4;
-            this._btnClose.Text = "Close";
-            this._btnClose.UseVisualStyleBackColor = true;
-            this._btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // _customerPanel
             // 
@@ -160,9 +165,9 @@ namespace InventoryManagementSystem
             this._customerPanel.Controls.Add(this._txtCustomerPhone);
             this._customerPanel.Controls.Add(this._btnAddCustomer);
             this._customerPanel.Controls.Add(this._lblCustomerName);
-            this._customerPanel.Location = new System.Drawing.Point(16, 65);
+            this._customerPanel.Location = new System.Drawing.Point(16, 50);
             this._customerPanel.Name = "_customerPanel";
-            this._customerPanel.Size = new System.Drawing.Size(1264, 50);
+            this._customerPanel.Size = new System.Drawing.Size(1094, 30);
             this._customerPanel.TabIndex = 5;
             // 
             // _lblCustomerPhone
@@ -213,9 +218,9 @@ namespace InventoryManagementSystem
             this._paymentPanel.Controls.Add(this._rbVisa);
             this._paymentPanel.Controls.Add(this._txtPaymentDetails);
             this._paymentPanel.Controls.Add(this._lblPaymentDetails);
-            this._paymentPanel.Location = new System.Drawing.Point(16, 125);
+            this._paymentPanel.Location = new System.Drawing.Point(16, 85);
             this._paymentPanel.Name = "_paymentPanel";
-            this._paymentPanel.Size = new System.Drawing.Size(1264, 45);
+            this._paymentPanel.Size = new System.Drawing.Size(1094, 25);
             this._paymentPanel.TabIndex = 6;
             // 
             // _lblPaymentMethod
@@ -276,7 +281,7 @@ namespace InventoryManagementSystem
             // _splitContainer
             // 
             this._splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._splitContainer.Location = new System.Drawing.Point(3, 189);
+            this._splitContainer.Location = new System.Drawing.Point(0, 120);
             this._splitContainer.Name = "_splitContainer";
             // 
             // _splitContainer.Panel1
@@ -288,8 +293,8 @@ namespace InventoryManagementSystem
             // 
             this._splitContainer.Panel2.Controls.Add(this._receiptPanel);
             this._splitContainer.Panel2.Padding = new System.Windows.Forms.Padding(0, 14, 14, 14);
-            this._splitContainer.Size = new System.Drawing.Size(1312, 591);
-            this._splitContainer.SplitterDistance = 830;
+            this._splitContainer.Size = new System.Drawing.Size(1126, 518);
+            this._splitContainer.SplitterDistance = 700;
             this._splitContainer.TabIndex = 1;
             // 
             // _tabsProducts
@@ -299,7 +304,7 @@ namespace InventoryManagementSystem
             this._tabsProducts.Location = new System.Drawing.Point(14, 14);
             this._tabsProducts.Name = "_tabsProducts";
             this._tabsProducts.SelectedIndex = 0;
-            this._tabsProducts.Size = new System.Drawing.Size(802, 563);
+            this._tabsProducts.Size = new System.Drawing.Size(672, 490);
             this._tabsProducts.TabIndex = 0;
             // 
             // _receiptPanel
@@ -313,7 +318,7 @@ namespace InventoryManagementSystem
             this._receiptPanel.Location = new System.Drawing.Point(0, 14);
             this._receiptPanel.Name = "_receiptPanel";
             this._receiptPanel.Padding = new System.Windows.Forms.Padding(14);
-            this._receiptPanel.Size = new System.Drawing.Size(464, 563);
+            this._receiptPanel.Size = new System.Drawing.Size(410, 490);
             this._receiptPanel.TabIndex = 0;
             // 
             // _gridReceipt
@@ -492,14 +497,18 @@ namespace InventoryManagementSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1318, 783);
-            this.Controls.Add(this._rootLayout);
+            this.ClientSize = new System.Drawing.Size(1366, 768);
+            this.Controls.Add(this._contentPanel);
+            this.Controls.Add(this._sidebar);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.MinimumSize = new System.Drawing.Size(1100, 650);
+            this.MinimumSize = new System.Drawing.Size(1200, 650);
             this.Name = "frmPOS";
             this.Text = "Point of Sale";
             this.Load += new System.EventHandler(this.frmPOS_Load);
-            this._rootLayout.ResumeLayout(false);
+            this._headerPanel.ResumeLayout(false);
+            this._headerPanel.PerformLayout();
+            this._contentPanel.ResumeLayout(false);
+            this._mainLayoutPanel.ResumeLayout(false);
             this._topPanel.ResumeLayout(false);
             this._topPanel.PerformLayout();
             this._customerPanel.ResumeLayout(false);
@@ -517,13 +526,14 @@ namespace InventoryManagementSystem
 
         }
 
-        private System.Windows.Forms.TableLayoutPanel _rootLayout;
+        private ucSidebarNav _sidebar;
+        private System.Windows.Forms.Panel _contentPanel;
+        private System.Windows.Forms.Panel _headerPanel;
+        private System.Windows.Forms.Label _lblPageTitle;
+        private System.Windows.Forms.TableLayoutPanel _mainLayoutPanel;
         private System.Windows.Forms.Panel _topPanel;
-        private System.Windows.Forms.Label _lblTitle;
         private System.Windows.Forms.TextBox _txtSearch;
         private System.Windows.Forms.Button _btnRefresh;
-        private System.Windows.Forms.Button _btnReport;
-        private System.Windows.Forms.Button _btnClose;
         private System.Windows.Forms.SplitContainer _splitContainer;
         private System.Windows.Forms.TabControl _tabsProducts;
         private System.Windows.Forms.Panel _receiptPanel;

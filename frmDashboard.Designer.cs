@@ -58,8 +58,8 @@ namespace InventoryManagementSystem
             // 
             // _contentPanel
             // 
-            this._contentPanel.Controls.Add(this._summaryCardsPanel);
             this._contentPanel.Controls.Add(this._contentLayoutPanel);
+            this._contentPanel.Controls.Add(this._summaryCardsPanel);
             this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._contentPanel.Location = new System.Drawing.Point(240, 0);
             this._contentPanel.Name = "_contentPanel";

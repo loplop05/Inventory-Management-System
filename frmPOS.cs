@@ -85,6 +85,11 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
+
+            // Wire sidebar navigation
+            _sidebar.NavigationRequested += OnSidebarNavigation;
+            _sidebar.SetActive("POS");
+
             clsFormTheme.ApplyTextBoxStyle(_txtSearch);
             clsFormTheme.ApplyTextBoxStyle(_txtCustomerPhone);
             clsFormTheme.ApplyTextBoxStyle(_txtPaymentDetails);
@@ -94,17 +99,11 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh);
             SetIconButtonText(_btnRefresh, clsFormTheme.Icons.Refresh, "Refresh", 14F, 10F, FontStyle.Regular);
 
-            clsFormTheme.ApplySecondaryButtonStyle(_btnReport);
-            SetIconButtonText(_btnReport, clsFormTheme.Icons.Reports, "Report", 14F, 10F, FontStyle.Regular);
-
             clsFormTheme.ApplyDangerButtonStyle(_btnRemoveItem);
             SetIconButtonText(_btnRemoveItem, clsFormTheme.Icons.Delete, "Remove", 14F, 10F, FontStyle.Regular);
 
             clsFormTheme.ApplySuccessButtonStyle(_btnCompleteOrder);
             SetIconButtonText(_btnCompleteOrder, clsFormTheme.Icons.Money, "Complete Order", 16F, 12F, FontStyle.Bold);
-
-            clsFormTheme.ApplySecondaryButtonStyle(_btnClose);
-            SetIconButtonText(_btnClose, clsFormTheme.Icons.Exit, "Close", 14F, 10F, FontStyle.Regular);
 
             // ── Receipt grid ───────────────────────────────────────────────────
             clsFormTheme.ApplyGridStyle(_gridReceipt);
@@ -113,6 +112,39 @@ namespace InventoryManagementSystem
             _receiptItems.ListChanged += ReceiptItems_ListChanged;
 
             KeyDown += frmPOS_KeyDown;
+        }
+
+        private void OnSidebarNavigation(string screenKey)
+        {
+            switch (screenKey)
+            {
+                case "Dashboard":
+                    var dashboardForm = new frmDashboard();
+                    dashboardForm.Show();
+                    this.Close();
+                    break;
+                case "POS":
+                    // Already on POS
+                    break;
+                case "Inventory":
+                    var inventoryForm = new frmProductsManagment();
+                    inventoryForm.Show();
+                    this.Close();
+                    break;
+                case "Orders":
+                    var receiptForm = new frmReceiptSearch();
+                    receiptForm.Show();
+                    this.Close();
+                    break;
+                case "Reports":
+                    var reportForm = new frmDailyReport();
+                    reportForm.Show();
+                    this.Close();
+                    break;
+                case "Support":
+                    // Help system integration - to be implemented
+                    break;
+            }
         }
 
         private void frmPOS_Load(object sender, EventArgs e)
@@ -658,9 +690,7 @@ namespace InventoryManagementSystem
         private void topPanel_Resize(object sender, EventArgs e)
         {
             int right = _topPanel.ClientSize.Width - 16;
-            _btnClose.Left = right - _btnClose.Width;
-            _btnReport.Left = _btnClose.Left - _btnReport.Width - 10;
-            _btnRefresh.Left = _btnReport.Left - _btnRefresh.Width - 10;
+            _btnRefresh.Left = right - _btnRefresh.Width;
             _txtSearch.Left = _btnRefresh.Left - _txtSearch.Width - 12;
         }
 
