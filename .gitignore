@@ -364,3 +364,7 @@ App.config.local
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Product images folder - ignore contents but keep folder structure
+ProductImages/*
+!ProductImages/.gitkeep

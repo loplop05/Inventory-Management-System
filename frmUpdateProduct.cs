@@ -1,6 +1,7 @@
 using InventoryBusinessLayer;
 using System;
 using System.Drawing;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -41,6 +42,9 @@ namespace InventoryManagementSystem
 
             // Style text box
             clsFormTheme.ApplyTextBoxStyle(txtUpdateProductID);
+
+            // Style picture box
+            _picPreview.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(242)))), ((int)(((byte)(245)))));
 
             btnSearch.Enabled = false;
             AcceptButton = btnSearch;
@@ -132,7 +136,35 @@ namespace InventoryManagementSystem
                         txtUpdateProductID,
                         _errorProvider,
                         "Product not found by ID or barcode.");
+                    _picPreview.Image = null;
                     return;
+                }
+
+                // Load product image preview
+                if (!string.IsNullOrEmpty(product.ImagePath))
+                {
+                    try
+                    {
+                        string fullPath = Path.Combine(Application.StartupPath, product.ImagePath);
+                        if (File.Exists(fullPath))
+                        {
+                            _picPreview.Load(fullPath);
+                        }
+                        else
+                        {
+                            _picPreview.Image = null;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // If image fails to load, just leave preview empty
+                        System.Diagnostics.Debug.WriteLine("Failed to load product image: " + ex.Message);
+                        _picPreview.Image = null;
+                    }
+                }
+                else
+                {
+                    _picPreview.Image = null;
                 }
 
                 frmShowProductToUpdate frm = new frmShowProductToUpdate(product);

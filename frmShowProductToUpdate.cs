@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,6 +15,7 @@ namespace InventoryManagementSystem
         private clsProduct _Product;
         private ErrorProvider _errorProvider;
         private bool _isUpdating = false;
+        private string _selectedImagePath = null;
 
         public frmShowProductToUpdate(clsProduct product)
         {
@@ -33,6 +35,13 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewPrice);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewQuantity);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewBarcode);
+
+            // Style browse button
+            clsFormTheme.ApplySecondaryButtonStyle(_btnBrowseImage);
+
+            // Style combo boxes
+            clsFormTheme.ApplyComboBoxStyle(cmbNewCategory);
+            clsFormTheme.ApplyComboBoxStyle(cmbNewSupplier);
 
             lblProductName.BackColor = Color.Transparent;
             lblProductName.ForeColor = clsFormTheme.HeaderColor;
@@ -82,6 +91,27 @@ namespace InventoryManagementSystem
 
             cmbNewCategory.SelectedValue = _Product.CategoryID;
             cmbNewSupplier.SelectedValue = _Product.SupplierID;
+
+            // Load existing image if available
+            _selectedImagePath = _Product.ImagePath;
+            if (!string.IsNullOrEmpty(_selectedImagePath))
+            {
+                try
+                {
+                    string fullPath = Path.Combine(Application.StartupPath, _selectedImagePath);
+                    if (File.Exists(fullPath))
+                    {
+                        _picPreview.Load(fullPath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // If image fails to load, just leave preview empty
+                    System.Diagnostics.Debug.WriteLine("Failed to load product image: " + ex.Message);
+                }
+            }
+
+            UpdateImageButtonText();
 
             ValidateAllInputs(); // Initial validation to set button state
             txtBoxNewProductName.Focus();
@@ -282,6 +312,7 @@ namespace InventoryManagementSystem
             }
             _Product.CategoryID = (int)cmbNewCategory.SelectedValue;
             _Product.SupplierID = (int)cmbNewSupplier.SelectedValue;
+            _Product.ImagePath = _selectedImagePath;
 
             SetUpdatingState(true);
 
@@ -406,6 +437,53 @@ namespace InventoryManagementSystem
         {
             if (e.KeyCode == Keys.Escape)
                 Close();
+        }
+
+        private void UpdateImageButtonText()
+        {
+            if (_picPreview.Image != null)
+            {
+                _btnBrowseImage.Text = "Change Image";
+            }
+            else
+            {
+                _btnBrowseImage.Text = "Choose Image";
+            }
+        }
+
+        private void _btnBrowseImage_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog dlg = new OpenFileDialog())
+            {
+                dlg.Filter = "Image files|*.jpg;*.jpeg;*.png;*.gif";
+                dlg.Title = "Select Product Image";
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    // Validate file size before copying
+                    FileInfo fileInfo = new FileInfo(dlg.FileName);
+                    if (fileInfo.Length > 5 * 1024 * 1024) // 5 MB
+                    {
+                        clsFormTheme.ShowError(this, "Image file is too large. Maximum size is 5 MB.", "File Too Large");
+                        return;
+                    }
+
+                    try
+                    {
+                        string destFolder = Path.Combine(Application.StartupPath, "ProductImages");
+                        Directory.CreateDirectory(destFolder);
+                        string fileName = Guid.NewGuid().ToString("N") + Path.GetExtension(dlg.FileName).ToLowerInvariant();
+                        string destPath = Path.Combine(destFolder, fileName);
+                        File.Copy(dlg.FileName, destPath, overwrite: true);
+                        _selectedImagePath = Path.Combine("ProductImages", fileName);
+                        _picPreview.Load(destPath);
+                        UpdateImageButtonText();
+                    }
+                    catch (Exception ex)
+                    {
+                        clsFormTheme.ShowError(this, "Failed to load image: " + ex.Message, "Error");
+                    }
+                }
+            }
         }
     }
 }

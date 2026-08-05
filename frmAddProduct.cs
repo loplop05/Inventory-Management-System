@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,6 +14,7 @@ namespace InventoryManagementSystem
     {
         private ErrorProvider _errorProvider;
         private bool _isSaving = false;
+        private string _selectedImagePath = null;
 
         public frmAddProduct()
         {
@@ -37,6 +39,10 @@ namespace InventoryManagementSystem
             // Style combo boxes
             clsFormTheme.ApplyComboBoxStyle(cmbCategory);
             clsFormTheme.ApplyComboBoxStyle(cmbSupplier);
+
+            // Style browse button
+            clsFormTheme.ApplySecondaryButtonStyle(_btnBrowseImage);
+            UpdateImageButtonText();
 
             btnAdd.Enabled = false;
             AcceptButton = btnAdd;
@@ -240,6 +246,7 @@ namespace InventoryManagementSystem
             product.Barcode = txtBoxBarcode.Text.Trim();
             product.CategoryID = (int)cmbCategory.SelectedValue;
             product.SupplierID = (int)cmbSupplier.SelectedValue;
+            product.ImagePath = _selectedImagePath;
 
             SetSavingState(true);
 
@@ -364,6 +371,53 @@ namespace InventoryManagementSystem
         {
             if (e.KeyCode == Keys.Escape)
                 Close();
+        }
+
+        private void UpdateImageButtonText()
+        {
+            if (_picPreview.Image != null)
+            {
+                _btnBrowseImage.Text = "Change Image";
+            }
+            else
+            {
+                _btnBrowseImage.Text = "Choose Image";
+            }
+        }
+
+        private void _btnBrowseImage_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog dlg = new OpenFileDialog())
+            {
+                dlg.Filter = "Image files|*.jpg;*.jpeg;*.png;*.gif";
+                dlg.Title = "Select Product Image";
+                if (dlg.ShowDialog() == DialogResult.OK)
+                {
+                    // Validate file size before copying
+                    FileInfo fileInfo = new FileInfo(dlg.FileName);
+                    if (fileInfo.Length > 5 * 1024 * 1024) // 5 MB
+                    {
+                        clsFormTheme.ShowError(this, "Image file is too large. Maximum size is 5 MB.", "File Too Large");
+                        return;
+                    }
+
+                    try
+                    {
+                        string destFolder = Path.Combine(Application.StartupPath, "ProductImages");
+                        Directory.CreateDirectory(destFolder);
+                        string fileName = Guid.NewGuid().ToString("N") + Path.GetExtension(dlg.FileName).ToLowerInvariant();
+                        string destPath = Path.Combine(destFolder, fileName);
+                        File.Copy(dlg.FileName, destPath, overwrite: true);
+                        _selectedImagePath = Path.Combine("ProductImages", fileName);
+                        _picPreview.Load(destPath);
+                        UpdateImageButtonText();
+                    }
+                    catch (Exception ex)
+                    {
+                        clsFormTheme.ShowError(this, "Failed to load image: " + ex.Message, "Error");
+                    }
+                }
+            }
         }
     }
 }

@@ -44,12 +44,16 @@ namespace InventoryManagementSystem
             this.cmbCategory = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.cmbSupplier = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this._picPreview = new System.Windows.Forms.PictureBox();
+            this._btnBrowseImage = new System.Windows.Forms.Button();
             this._buttonPanel = new System.Windows.Forms.Panel();
-            this.btnAdd = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.btnAdd = new System.Windows.Forms.Button();
             this._headerPanel.SuspendLayout();
             this._contentPanel.SuspendLayout();
             this._fieldsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._picPreview)).BeginInit();
             this._buttonPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -59,7 +63,7 @@ namespace InventoryManagementSystem
             this._headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this._headerPanel.Location = new System.Drawing.Point(0, 0);
             this._headerPanel.Name = "_headerPanel";
-            this._headerPanel.Size = new System.Drawing.Size(600, 60);
+            this._headerPanel.Size = new System.Drawing.Size(498, 60);
             this._headerPanel.TabIndex = 0;
             // 
             // _lblPageTitle
@@ -69,7 +73,7 @@ namespace InventoryManagementSystem
             this._lblPageTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
             this._lblPageTitle.Location = new System.Drawing.Point(20, 15);
             this._lblPageTitle.Name = "_lblPageTitle";
-            this._lblPageTitle.Size = new System.Drawing.Size(127, 32);
+            this._lblPageTitle.Size = new System.Drawing.Size(196, 41);
             this._lblPageTitle.TabIndex = 0;
             this._lblPageTitle.Text = "Add Product";
             // 
@@ -80,7 +84,7 @@ namespace InventoryManagementSystem
             this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._contentPanel.Location = new System.Drawing.Point(0, 60);
             this._contentPanel.Name = "_contentPanel";
-            this._contentPanel.Size = new System.Drawing.Size(600, 440);
+            this._contentPanel.Size = new System.Drawing.Size(498, 551);
             this._contentPanel.TabIndex = 1;
             // 
             // _fieldsPanel
@@ -100,27 +104,32 @@ namespace InventoryManagementSystem
             this._fieldsPanel.Controls.Add(this.cmbCategory, 1, 4);
             this._fieldsPanel.Controls.Add(this.label7, 0, 5);
             this._fieldsPanel.Controls.Add(this.cmbSupplier, 1, 5);
+            this._fieldsPanel.Controls.Add(this.label8, 0, 6);
+            this._fieldsPanel.Controls.Add(this._picPreview, 1, 6);
+            this._fieldsPanel.Controls.Add(this._btnBrowseImage, 1, 7);
             this._fieldsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._fieldsPanel.Location = new System.Drawing.Point(0, 0);
             this._fieldsPanel.Margin = new System.Windows.Forms.Padding(20);
             this._fieldsPanel.Name = "_fieldsPanel";
-            this._fieldsPanel.RowCount = 6;
+            this._fieldsPanel.RowCount = 8;
             this._fieldsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this._fieldsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this._fieldsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this._fieldsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this._fieldsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this._fieldsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
-            this._fieldsPanel.Size = new System.Drawing.Size(600, 350);
+            this._fieldsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 130F));
+            this._fieldsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this._fieldsPanel.Size = new System.Drawing.Size(498, 461);
             this._fieldsPanel.TabIndex = 0;
             // 
             // label2
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 12);
+            this.label2.Location = new System.Drawing.Point(3, 14);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(157, 20);
+            this.label2.Size = new System.Drawing.Size(96, 16);
             this.label2.TabIndex = 1;
             this.label2.Text = "Product Name:";
             // 
@@ -128,10 +137,9 @@ namespace InventoryManagementSystem
             // 
             this.txtBoxProductName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtBoxProductName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtBoxProductName.Location = new System.Drawing.Point(123, 3);
-            this.txtBoxProductName.Margin = new System.Windows.Forms.Padding(3);
+            this.txtBoxProductName.Location = new System.Drawing.Point(153, 3);
             this.txtBoxProductName.Name = "txtBoxProductName";
-            this.txtBoxProductName.Size = new System.Drawing.Size(404, 27);
+            this.txtBoxProductName.Size = new System.Drawing.Size(342, 22);
             this.txtBoxProductName.TabIndex = 0;
             this.txtBoxProductName.TextChanged += new System.EventHandler(this.txtBoxProductName_TextChanged);
             this.txtBoxProductName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBoxProductName_KeyDown);
@@ -140,9 +148,9 @@ namespace InventoryManagementSystem
             // 
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 52);
+            this.label3.Location = new System.Drawing.Point(3, 59);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(71, 20);
+            this.label3.Size = new System.Drawing.Size(41, 16);
             this.label3.TabIndex = 4;
             this.label3.Text = "Price:";
             // 
@@ -150,10 +158,9 @@ namespace InventoryManagementSystem
             // 
             this.txtBoxPrice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtBoxPrice.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtBoxPrice.Location = new System.Drawing.Point(123, 43);
-            this.txtBoxPrice.Margin = new System.Windows.Forms.Padding(3);
+            this.txtBoxPrice.Location = new System.Drawing.Point(153, 48);
             this.txtBoxPrice.Name = "txtBoxPrice";
-            this.txtBoxPrice.Size = new System.Drawing.Size(404, 27);
+            this.txtBoxPrice.Size = new System.Drawing.Size(342, 22);
             this.txtBoxPrice.TabIndex = 1;
             this.txtBoxPrice.TextChanged += new System.EventHandler(this.txtBoxPrice_TextChanged);
             this.txtBoxPrice.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBoxPrice_KeyDown);
@@ -162,9 +169,9 @@ namespace InventoryManagementSystem
             // 
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 92);
+            this.label4.Location = new System.Drawing.Point(3, 104);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(99, 20);
+            this.label4.Size = new System.Drawing.Size(58, 16);
             this.label4.TabIndex = 6;
             this.label4.Text = "Quantity:";
             // 
@@ -172,10 +179,9 @@ namespace InventoryManagementSystem
             // 
             this.txtBoxQuantity.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtBoxQuantity.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtBoxQuantity.Location = new System.Drawing.Point(123, 83);
-            this.txtBoxQuantity.Margin = new System.Windows.Forms.Padding(3);
+            this.txtBoxQuantity.Location = new System.Drawing.Point(153, 93);
             this.txtBoxQuantity.Name = "txtBoxQuantity";
-            this.txtBoxQuantity.Size = new System.Drawing.Size(404, 27);
+            this.txtBoxQuantity.Size = new System.Drawing.Size(342, 22);
             this.txtBoxQuantity.TabIndex = 2;
             this.txtBoxQuantity.TextChanged += new System.EventHandler(this.txtBoxQuantity_TextChanged);
             this.txtBoxQuantity.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBoxQuantity_KeyDown);
@@ -184,9 +190,9 @@ namespace InventoryManagementSystem
             // 
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 132);
+            this.label5.Location = new System.Drawing.Point(3, 149);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(99, 20);
+            this.label5.Size = new System.Drawing.Size(62, 16);
             this.label5.TabIndex = 8;
             this.label5.Text = "Barcode:";
             // 
@@ -194,10 +200,9 @@ namespace InventoryManagementSystem
             // 
             this.txtBoxBarcode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtBoxBarcode.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtBoxBarcode.Location = new System.Drawing.Point(123, 123);
-            this.txtBoxBarcode.Margin = new System.Windows.Forms.Padding(3);
+            this.txtBoxBarcode.Location = new System.Drawing.Point(153, 138);
             this.txtBoxBarcode.Name = "txtBoxBarcode";
-            this.txtBoxBarcode.Size = new System.Drawing.Size(404, 27);
+            this.txtBoxBarcode.Size = new System.Drawing.Size(342, 22);
             this.txtBoxBarcode.TabIndex = 3;
             this.txtBoxBarcode.TextChanged += new System.EventHandler(this.txtBoxBarcode_TextChanged);
             this.txtBoxBarcode.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtBoxBarcode_KeyDown);
@@ -206,9 +211,9 @@ namespace InventoryManagementSystem
             // 
             this.label6.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 172);
+            this.label6.Location = new System.Drawing.Point(3, 194);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(106, 20);
+            this.label6.Size = new System.Drawing.Size(65, 16);
             this.label6.TabIndex = 10;
             this.label6.Text = "Category:";
             // 
@@ -217,10 +222,9 @@ namespace InventoryManagementSystem
             this.cmbCategory.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCategory.FormattingEnabled = true;
-            this.cmbCategory.Location = new System.Drawing.Point(123, 163);
-            this.cmbCategory.Margin = new System.Windows.Forms.Padding(3);
+            this.cmbCategory.Location = new System.Drawing.Point(153, 183);
             this.cmbCategory.Name = "cmbCategory";
-            this.cmbCategory.Size = new System.Drawing.Size(404, 28);
+            this.cmbCategory.Size = new System.Drawing.Size(342, 24);
             this.cmbCategory.TabIndex = 4;
             this.cmbCategory.SelectedIndexChanged += new System.EventHandler(this.cmbCategory_SelectedIndexChanged);
             this.cmbCategory.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmbCategory_KeyDown);
@@ -229,9 +233,9 @@ namespace InventoryManagementSystem
             // 
             this.label7.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 212);
+            this.label7.Location = new System.Drawing.Point(3, 239);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(99, 20);
+            this.label7.Size = new System.Drawing.Size(60, 16);
             this.label7.TabIndex = 12;
             this.label7.Text = "Supplier:";
             // 
@@ -240,39 +244,60 @@ namespace InventoryManagementSystem
             this.cmbSupplier.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbSupplier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSupplier.FormattingEnabled = true;
-            this.cmbSupplier.Location = new System.Drawing.Point(123, 203);
-            this.cmbSupplier.Margin = new System.Windows.Forms.Padding(3);
+            this.cmbSupplier.Location = new System.Drawing.Point(153, 228);
             this.cmbSupplier.Name = "cmbSupplier";
-            this.cmbSupplier.Size = new System.Drawing.Size(404, 28);
+            this.cmbSupplier.Size = new System.Drawing.Size(342, 24);
             this.cmbSupplier.TabIndex = 5;
             this.cmbSupplier.SelectedIndexChanged += new System.EventHandler(this.cmbSupplier_SelectedIndexChanged);
             this.cmbSupplier.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmbSupplier_KeyDown);
+            // 
+            // label8
+            // 
+            this.label8.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(3, 327);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(48, 16);
+            this.label8.TabIndex = 14;
+            this.label8.Text = "Image:";
+            // 
+            // _picPreview
+            // 
+            this._picPreview.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(242)))), ((int)(((byte)(245)))));
+            this._picPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this._picPreview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._picPreview.Location = new System.Drawing.Point(153, 273);
+            this._picPreview.Name = "_picPreview";
+            this._picPreview.Size = new System.Drawing.Size(342, 124);
+            this._picPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this._picPreview.TabIndex = 15;
+            this._picPreview.TabStop = false;
+            // 
+            // _btnBrowseImage
+            // 
+            this._btnBrowseImage.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this._btnBrowseImage.Location = new System.Drawing.Point(153, 414);
+            this._btnBrowseImage.Name = "_btnBrowseImage";
+            this._btnBrowseImage.Size = new System.Drawing.Size(120, 32);
+            this._btnBrowseImage.TabIndex = 16;
+            this._btnBrowseImage.Text = "Choose Image";
+            this._btnBrowseImage.UseVisualStyleBackColor = true;
+            this._btnBrowseImage.Click += new System.EventHandler(this._btnBrowseImage_Click);
             // 
             // _buttonPanel
             // 
             this._buttonPanel.Controls.Add(this.btnCancel);
             this._buttonPanel.Controls.Add(this.btnAdd);
             this._buttonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._buttonPanel.Location = new System.Drawing.Point(0, 350);
+            this._buttonPanel.Location = new System.Drawing.Point(0, 461);
             this._buttonPanel.Name = "_buttonPanel";
-            this._buttonPanel.Size = new System.Drawing.Size(600, 90);
+            this._buttonPanel.Size = new System.Drawing.Size(498, 90);
             this._buttonPanel.TabIndex = 1;
-            // 
-            // btnAdd
-            // 
-            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdd.Location = new System.Drawing.Point(400, 25);
-            this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(120, 40);
-            this.btnAdd.TabIndex = 0;
-            this.btnAdd.Text = "Add Product";
-            this.btnAdd.UseVisualStyleBackColor = true;
-            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(260, 25);
+            this.btnCancel.Location = new System.Drawing.Point(158, 25);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(120, 40);
             this.btnCancel.TabIndex = 1;
@@ -280,11 +305,22 @@ namespace InventoryManagementSystem
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // btnAdd
+            // 
+            this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAdd.Location = new System.Drawing.Point(298, 25);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(120, 40);
+            this.btnAdd.TabIndex = 0;
+            this.btnAdd.Text = "Add Product";
+            this.btnAdd.UseVisualStyleBackColor = true;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
             // frmAddProduct
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(600, 500);
+            this.ClientSize = new System.Drawing.Size(498, 611);
             this.Controls.Add(this._contentPanel);
             this.Controls.Add(this._headerPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -299,6 +335,7 @@ namespace InventoryManagementSystem
             this._contentPanel.ResumeLayout(false);
             this._fieldsPanel.ResumeLayout(false);
             this._fieldsPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._picPreview)).EndInit();
             this._buttonPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -322,6 +359,9 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.ComboBox cmbCategory;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox cmbSupplier;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.PictureBox _picPreview;
+        private System.Windows.Forms.Button _btnBrowseImage;
         private System.Windows.Forms.Panel _buttonPanel;
         private System.Windows.Forms.Button btnAdd;
         private System.Windows.Forms.Button btnCancel;
