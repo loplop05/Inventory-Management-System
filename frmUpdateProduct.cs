@@ -10,6 +10,20 @@ namespace InventoryManagementSystem
     {
         private ErrorProvider _errorProvider;
         private bool _isSearching = false;
+        private int _selectedProductID = -1;
+
+        public int SelectedProductID
+        {
+            get { return _selectedProductID; }
+            set
+            {
+                _selectedProductID = value;
+                if (_selectedProductID > 0)
+                {
+                    txtUpdateProductID.Text = _selectedProductID.ToString();
+                }
+            }
+        }
 
         public frmUpdateProduct()
         {

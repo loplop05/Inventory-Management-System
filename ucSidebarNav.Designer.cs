@@ -33,24 +33,26 @@ namespace InventoryManagementSystem
             this._rootPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._rootPanel.Location = new System.Drawing.Point(0, 0);
             this._rootPanel.Name = "_rootPanel";
-            this._rootPanel.Size = new System.Drawing.Size(240, 600);
+            this._rootPanel.Size = new System.Drawing.Size(186, 600);
             this._rootPanel.TabIndex = 0;
             // 
             // _navItemsPanel
             // 
             this._navItemsPanel.AutoScroll = true;
+            this._navItemsPanel.BackColor = System.Drawing.Color.PowderBlue;
             this._navItemsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._navItemsPanel.Location = new System.Drawing.Point(0, 70);
+            this._navItemsPanel.Location = new System.Drawing.Point(0, 0);
             this._navItemsPanel.Name = "_navItemsPanel";
-            this._navItemsPanel.Size = new System.Drawing.Size(240, 470);
+            this._navItemsPanel.Size = new System.Drawing.Size(186, 546);
             this._navItemsPanel.TabIndex = 1;
+            this._navItemsPanel.Paint += new System.Windows.Forms.PaintEventHandler(this._navItemsPanel_Paint);
             // 
             // _supportPanel
             // 
             this._supportPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._supportPanel.Location = new System.Drawing.Point(0, 540);
+            this._supportPanel.Location = new System.Drawing.Point(0, 546);
             this._supportPanel.Name = "_supportPanel";
-            this._supportPanel.Size = new System.Drawing.Size(240, 60);
+            this._supportPanel.Size = new System.Drawing.Size(186, 54);
             this._supportPanel.TabIndex = 2;
             // 
             // _lblTitle
@@ -60,7 +62,7 @@ namespace InventoryManagementSystem
             this._lblTitle.ForeColor = System.Drawing.Color.White;
             this._lblTitle.Location = new System.Drawing.Point(16, 16);
             this._lblTitle.Name = "_lblTitle";
-            this._lblTitle.Size = new System.Drawing.Size(110, 25);
+            this._lblTitle.Size = new System.Drawing.Size(186, 32);
             this._lblTitle.TabIndex = 0;
             this._lblTitle.Text = "ElectroPOS Pro";
             // 
@@ -71,7 +73,7 @@ namespace InventoryManagementSystem
             this._lblSubtitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(163)))), ((int)(((byte)(184)))));
             this._lblSubtitle.Location = new System.Drawing.Point(16, 41);
             this._lblSubtitle.Name = "_lblSubtitle";
-            this._lblSubtitle.Size = new System.Drawing.Size(59, 15);
+            this._lblSubtitle.Size = new System.Drawing.Size(81, 20);
             this._lblSubtitle.TabIndex = 1;
             this._lblSubtitle.Text = "Main Store";
             // 
@@ -82,7 +84,7 @@ namespace InventoryManagementSystem
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
             this.Controls.Add(this._rootPanel);
             this.Name = "ucSidebarNav";
-            this.Size = new System.Drawing.Size(240, 600);
+            this.Size = new System.Drawing.Size(186, 600);
             this._rootPanel.ResumeLayout(false);
             this._rootPanel.PerformLayout();
             this.ResumeLayout(false);

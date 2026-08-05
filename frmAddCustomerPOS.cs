@@ -17,7 +17,7 @@ namespace InventoryManagementSystem
         private void frmAddCustomerPOS_Load(object sender, EventArgs e)
         {
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Add Customer", clsFormTheme.Icons.User);
+            //clsFormTheme.CreateHeaderPanel(this, "Add Customer", clsFormTheme.Icons.User);
 
             clsFormTheme.ApplyTextBoxStyle(txtName);
             clsFormTheme.ApplyTextBoxStyle(txtPhone);

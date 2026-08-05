@@ -17,6 +17,7 @@ namespace InventoryManagementSystem
         public ucSidebarNav()
         {
             InitializeComponent();
+            DoubleBuffered = true;
             LoadBranding();
             CreateNavItems();
         }
@@ -165,6 +166,11 @@ namespace InventoryManagementSystem
                     }
                 }
             }
+        }
+
+        private void _navItemsPanel_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

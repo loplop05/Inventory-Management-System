@@ -35,8 +35,10 @@ namespace InventoryManagementSystem
                 onAdd: () => _btnAddProduct_Click(null, null)
             );
 
-            // Style Add Product button
+            // Style buttons
             clsFormTheme.ApplyPrimaryButtonStyle(_btnAddProduct, clsFormTheme.Icons.Add);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnUpdateProduct, clsFormTheme.Icons.Update);
+            clsFormTheme.ApplyDangerButtonStyle(_btnDeleteProduct, clsFormTheme.Icons.Delete);
 
             // Style search box
             clsFormTheme.ApplyTextBoxStyle(_txtSearch);
@@ -69,6 +71,8 @@ namespace InventoryManagementSystem
             Text = clsLanguageManager.GetString("Products Management");
             _lblPageTitle.Text = clsLanguageManager.GetString("Inventory");
             _btnAddProduct.Text = clsLanguageManager.GetString("Add Product");
+            _btnUpdateProduct.Text = clsLanguageManager.GetString("Update");
+            _btnDeleteProduct.Text = clsLanguageManager.GetString("Delete");
         }
 
         private void LoadCategories()
@@ -317,6 +321,59 @@ namespace InventoryManagementSystem
             if (frm.ShowDialog() == DialogResult.OK)
             {
                 await RefreshGridDataAsync();
+            }
+        }
+
+        private async void _btnUpdateProduct_Click(object sender, EventArgs e)
+        {
+            if (DataGVProducts.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a product to update.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            DataGridViewRow selectedRow = DataGVProducts.SelectedRows[0];
+            int productId = Convert.ToInt32(selectedRow.Cells["colID"].Value);
+
+            frmUpdateProduct frm = new frmUpdateProduct();
+            frm.SelectedProductID = productId;
+
+            if (frm.ShowDialog() == DialogResult.OK)
+            {
+                await RefreshGridDataAsync();
+            }
+        }
+
+        private async void _btnDeleteProduct_Click(object sender, EventArgs e)
+        {
+            if (DataGVProducts.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a product to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            DataGridViewRow selectedRow = DataGVProducts.SelectedRows[0];
+            int productId = Convert.ToInt32(selectedRow.Cells["colID"].Value);
+            string productName = selectedRow.Cells["colProduct"].Value.ToString();
+
+            DialogResult result = MessageBox.Show(
+                $"Are you sure you want to delete '{productName}'?",
+                "Confirm Delete",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Warning);
+
+            if (result == DialogResult.Yes)
+            {
+                bool isDeleted = clsProduct.DeleteProduct(productId);
+                if (isDeleted)
+                {
+                    MessageBox.Show("Product deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    await RefreshGridDataAsync();
+                }
+                else
+                {
+                    MessageBox.Show("Failed to delete product.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
