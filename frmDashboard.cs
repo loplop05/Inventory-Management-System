@@ -22,7 +22,10 @@ namespace InventoryManagementSystem
         private void ApplyTheme()
         {
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Dashboard", clsFormTheme.Icons.Home);
+
+            // Wire sidebar navigation
+            _sidebar.NavigationRequested += OnSidebarNavigation;
+            _sidebar.SetActive("Dashboard");
 
             // Setup keyboard shortcuts
             clsKeyboardShortcuts.SetupCommonShortcuts(
@@ -40,6 +43,9 @@ namespace InventoryManagementSystem
             EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
             clsLanguageManager.LanguageChanged += onLanguageChanged;
             FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
+
+            // Apply card styling
+            ApplyCardStyling();
         }
 
         private void ApplyLocalization()
@@ -85,19 +91,19 @@ namespace InventoryManagementSystem
                     decimal totalSales = Convert.ToDecimal(row["TotalSales"]);
                     int orderCount = Convert.ToInt32(row["OrderCount"]);
 
-                    lblTodaySales.Text = totalSales.ToString("C");
-                    lblOrderCount.Text = orderCount.ToString();
+                    lblTodaySalesValue.Text = totalSales.ToString("C");
+                    lblTotalOrdersValue.Text = orderCount.ToString();
                 }
                 else
                 {
-                    lblTodaySales.Text = "$0.00";
-                    lblOrderCount.Text = "0";
+                    lblTodaySalesValue.Text = "$0.00";
+                    lblTotalOrdersValue.Text = "0";
                 }
             }
             catch
             {
-                lblTodaySales.Text = "$0.00";
-                lblOrderCount.Text = "0";
+                lblTodaySalesValue.Text = "$0.00";
+                lblTotalOrdersValue.Text = "0";
             }
         }
 
@@ -109,42 +115,18 @@ namespace InventoryManagementSystem
                 
                 if (lowStock != null && lowStock.Rows.Count > 0)
                 {
-                    lblLowStockCount.Text = lowStock.Rows.Count.ToString();
-                    lblLowStockCount.ForeColor = clsFormTheme.DangerColor;
-                    
-                    gridLowStock.DataSource = lowStock;
-                    clsFormTheme.ApplyGridStyle(gridLowStock);
-                    gridLowStock.AutoGenerateColumns = false;
-                    
-                    // Configure columns
-                    if (gridLowStock.Columns.Count == 0)
-                    {
-                        gridLowStock.Columns.Add(new DataGridViewTextBoxColumn
-                        {
-                            DataPropertyName = "ProductName",
-                            HeaderText = "Product",
-                            Name = "colProduct"
-                        });
-                        
-                        gridLowStock.Columns.Add(new DataGridViewTextBoxColumn
-                        {
-                            DataPropertyName = "Quantity",
-                            HeaderText = "Stock",
-                            Name = "colQuantity"
-                        });
-                    }
+                    lblLowStockValue.Text = lowStock.Rows.Count.ToString();
+                    lblLowStockValue.ForeColor = clsFormTheme.WarningColor;
                 }
                 else
                 {
-                    lblLowStockCount.Text = "0";
-                    lblLowStockCount.ForeColor = clsFormTheme.SuccessColor;
-                    gridLowStock.DataSource = null;
+                    lblLowStockValue.Text = "0";
+                    lblLowStockValue.ForeColor = clsFormTheme.SuccessColor;
                 }
             }
             catch
             {
-                lblLowStockCount.Text = "0";
-                gridLowStock.DataSource = null;
+                lblLowStockValue.Text = "0";
             }
         }
 
@@ -157,7 +139,7 @@ namespace InventoryManagementSystem
                 if (recentOrders != null && recentOrders.Rows.Count > 0)
                 {
                     gridRecentOrders.DataSource = recentOrders;
-                    clsFormTheme.ApplyGridStyle(gridRecentOrders);
+                    clsFormTheme.ApplyDarkHeaderGridStyle(gridRecentOrders);
                     gridRecentOrders.AutoGenerateColumns = false;
                     
                     // Configure columns
@@ -165,23 +147,23 @@ namespace InventoryManagementSystem
                     {
                         gridRecentOrders.Columns.Add(new DataGridViewTextBoxColumn
                         {
-                            DataPropertyName = "OrderID",
-                            HeaderText = "Order #",
-                            Name = "colOrderID"
+                            DataPropertyName = "OrderDate",
+                            HeaderText = "Time",
+                            Name = "colTime"
                         });
                         
                         gridRecentOrders.Columns.Add(new DataGridViewTextBoxColumn
                         {
-                            DataPropertyName = "OrderDate",
-                            HeaderText = "Date",
-                            Name = "colDate"
+                            DataPropertyName = "OrderID",
+                            HeaderText = "Details",
+                            Name = "colDetails"
                         });
                         
                         gridRecentOrders.Columns.Add(new DataGridViewTextBoxColumn
                         {
                             DataPropertyName = "TotalAmount",
-                            HeaderText = "Total",
-                            Name = "colTotal"
+                            HeaderText = "Amount",
+                            Name = "colAmount"
                         });
                     }
                 }
@@ -205,7 +187,7 @@ namespace InventoryManagementSystem
                 if (topProducts != null && topProducts.Rows.Count > 0)
                 {
                     gridTopProducts.DataSource = topProducts;
-                    clsFormTheme.ApplyGridStyle(gridTopProducts);
+                    clsFormTheme.ApplyDarkHeaderGridStyle(gridTopProducts);
                     gridTopProducts.AutoGenerateColumns = false;
                     
                     // Configure columns
@@ -246,75 +228,64 @@ namespace InventoryManagementSystem
 
         private void LoadInventorySummary()
         {
-            try
-            {
-                string errorMessage;
-                DataTable allProducts;
-                if (!clsProduct.GetAllProducts(out allProducts, out errorMessage))
-                {
-                    allProducts = new DataTable();
-                }
-                
-                if (allProducts != null)
-                {
-                    int totalProducts = allProducts.Rows.Count;
-                    decimal totalValue = 0;
-                    int totalStock = 0;
+            // Not used in new design - summary cards show Today's Sales, Total Orders, Low Stock Alerts
+        }
 
-                    foreach (DataRow row in allProducts.Rows)
-                    {
-                        decimal price = Convert.ToDecimal(row["Price"]);
-                        int quantity = Convert.ToInt32(row["Quantity"]);
-                        totalValue += price * quantity;
-                        totalStock += quantity;
-                    }
-
-                    lblTotalProducts.Text = totalProducts.ToString();
-                    lblTotalStock.Text = totalStock.ToString();
-                    lblInventoryValue.Text = totalValue.ToString("C");
-                }
-                else
-                {
-                    lblTotalProducts.Text = "0";
-                    lblTotalStock.Text = "0";
-                    lblInventoryValue.Text = "$0.00";
-                }
-            }
-            catch
+        private void OnSidebarNavigation(string screenKey)
+        {
+            switch (screenKey)
             {
-                lblTotalProducts.Text = "0";
-                lblTotalStock.Text = "0";
-                lblInventoryValue.Text = "$0.00";
+                case "Dashboard":
+                    // Already on Dashboard
+                    break;
+                case "POS":
+                    var posForm = new frmPOS();
+                    posForm.Show();
+                    this.Close();
+                    break;
+                case "Inventory":
+                    var productsForm = new frmProductsManagment();
+                    productsForm.Show();
+                    this.Close();
+                    break;
+                case "Orders":
+                    var receiptForm = new frmReceiptSearch();
+                    receiptForm.Show();
+                    this.Close();
+                    break;
+                case "Reports":
+                    var reportForm = new frmDailyReport();
+                    reportForm.Show();
+                    this.Close();
+                    break;
+                case "Support":
+                    // Help system integration - to be implemented
+                    break;
             }
         }
 
-        private void btnRefresh_Click(object sender, EventArgs e)
+        private void ApplyCardStyling()
         {
-            LoadDashboardData();
+            // Apply card styling to summary cards manually (panels with accent bars)
+            _cardTodaySales.BackColor = clsFormTheme.CardColor;
+            _cardTodaySales.Paint += (s, e) => DrawCardAccent(e.Graphics, _cardTodaySales, clsFormTheme.PrimaryColor);
+            
+            _cardTotalOrders.BackColor = clsFormTheme.CardColor;
+            _cardTotalOrders.Paint += (s, e) => DrawCardAccent(e.Graphics, _cardTotalOrders, clsFormTheme.SecondaryColor);
+            
+            _cardLowStock.BackColor = clsFormTheme.CardColor;
+            _cardLowStock.Paint += (s, e) => DrawCardAccent(e.Graphics, _cardLowStock, clsFormTheme.WarningColor);
         }
 
-        private void btnViewLowStock_Click(object sender, EventArgs e)
+        private void DrawCardAccent(Graphics g, Panel panel, Color accentColor)
         {
-            var productsForm = new frmProductsManagment();
-            productsForm.Show();
-        }
-
-        private void btnViewRecentOrders_Click(object sender, EventArgs e)
-        {
-            var receiptForm = new frmReceiptSearch();
-            receiptForm.Show();
-        }
-
-        private void btnViewReports_Click(object sender, EventArgs e)
-        {
-            var reportForm = new frmDailyReport();
-            reportForm.Show();
-        }
-
-        private void btnNewSale_Click(object sender, EventArgs e)
-        {
-            var posForm = new frmPOS();
-            posForm.Show();
+            // Card border
+            using (Pen border = new Pen(clsFormTheme.CardBorderColor, 1))
+                g.DrawRectangle(border, 0, 0, panel.Width - 1, panel.Height - 1);
+            
+            // Top accent bar
+            using (SolidBrush accent = new SolidBrush(accentColor))
+                g.FillRectangle(accent, new Rectangle(0, 0, panel.Width, 3));
         }
     }
 }
