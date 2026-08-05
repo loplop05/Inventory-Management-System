@@ -23,14 +23,20 @@ namespace InventoryManagementSystem
             _errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Add New Product", clsFormTheme.Icons.Add);
-            btnAdd.Text = "Save Product";
-            btnAdd.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
+
+            // Style buttons
             clsFormTheme.ApplyPrimaryButtonStyle(btnAdd, clsFormTheme.Icons.Save);
+            clsFormTheme.ApplySecondaryButtonStyle(btnCancel);
+
+            // Style text boxes
             clsFormTheme.ApplyTextBoxStyle(txtBoxProductName);
             clsFormTheme.ApplyTextBoxStyle(txtBoxPrice);
             clsFormTheme.ApplyTextBoxStyle(txtBoxQuantity);
             clsFormTheme.ApplyTextBoxStyle(txtBoxBarcode);
+
+            // Style combo boxes
+            clsFormTheme.ApplyComboBoxStyle(cmbCategory);
+            clsFormTheme.ApplyComboBoxStyle(cmbSupplier);
 
             btnAdd.Enabled = false;
             AcceptButton = btnAdd;
@@ -46,7 +52,9 @@ namespace InventoryManagementSystem
         {
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Add New Product");
+            _lblPageTitle.Text = clsLanguageManager.GetString("Add Product");
             btnAdd.Text = clsLanguageManager.GetString("Save Product");
+            btnCancel.Text = clsLanguageManager.GetString("Cancel");
         }
 
         private void frmAddProduct_Load(object sender, EventArgs e)
@@ -186,8 +194,8 @@ namespace InventoryManagementSystem
             clsFormTheme.SetButtonBusy(
                 btnAdd,
                 isSaving,
-                "Add",
-                "Adding...");
+                "Save Product",
+                "Saving...");
         }
 
         private void txtBoxProductName_TextChanged(object sender, EventArgs e)
@@ -344,6 +352,12 @@ namespace InventoryManagementSystem
                 btnAdd.PerformClick();
                 e.SuppressKeyPress = true;
             }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
 
         private void frmAddProduct_KeyDown(object sender, KeyEventArgs e)

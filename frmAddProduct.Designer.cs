@@ -28,8 +28,10 @@ namespace InventoryManagementSystem
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this._headerPanel = new System.Windows.Forms.Panel();
+            this._lblPageTitle = new System.Windows.Forms.Label();
+            this._contentPanel = new System.Windows.Forms.Panel();
+            this._fieldsPanel = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.txtBoxProductName = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -42,49 +44,75 @@ namespace InventoryManagementSystem
             this.cmbCategory = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.cmbSupplier = new System.Windows.Forms.ComboBox();
+            this._buttonPanel = new System.Windows.Forms.Panel();
             this.btnAdd = new System.Windows.Forms.Button();
-            this.tableLayoutPanel.SuspendLayout();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this._headerPanel.SuspendLayout();
+            this._contentPanel.SuspendLayout();
+            this._fieldsPanel.SuspendLayout();
+            this._buttonPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label1
+            // _headerPanel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(180, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(186, 36);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Add Product";
+            this._headerPanel.Controls.Add(this._lblPageTitle);
+            this._headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this._headerPanel.Location = new System.Drawing.Point(0, 0);
+            this._headerPanel.Name = "_headerPanel";
+            this._headerPanel.Size = new System.Drawing.Size(600, 60);
+            this._headerPanel.TabIndex = 0;
             // 
-            // tableLayoutPanel
+            // _lblPageTitle
             // 
-            this.tableLayoutPanel.ColumnCount = 2;
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 120F));
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel.Controls.Add(this.label2, 0, 0);
-            this.tableLayoutPanel.Controls.Add(this.txtBoxProductName, 1, 0);
-            this.tableLayoutPanel.Controls.Add(this.label3, 0, 1);
-            this.tableLayoutPanel.Controls.Add(this.txtBoxPrice, 1, 1);
-            this.tableLayoutPanel.Controls.Add(this.label4, 0, 2);
-            this.tableLayoutPanel.Controls.Add(this.txtBoxQuantity, 1, 2);
-            this.tableLayoutPanel.Controls.Add(this.label5, 0, 3);
-            this.tableLayoutPanel.Controls.Add(this.txtBoxBarcode, 1, 3);
-            this.tableLayoutPanel.Controls.Add(this.label6, 0, 4);
-            this.tableLayoutPanel.Controls.Add(this.cmbCategory, 1, 4);
-            this.tableLayoutPanel.Controls.Add(this.label7, 0, 5);
-            this.tableLayoutPanel.Controls.Add(this.cmbSupplier, 1, 5);
-            this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel.Location = new System.Drawing.Point(0, 70);
-            this.tableLayoutPanel.Margin = new System.Windows.Forms.Padding(20, 0, 20, 80);
-            this.tableLayoutPanel.Name = "tableLayoutPanel";
-            this.tableLayoutPanel.RowCount = 6;
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel.Size = new System.Drawing.Size(550, 614);
-            this.tableLayoutPanel.TabIndex = 0;
+            this._lblPageTitle.AutoSize = true;
+            this._lblPageTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            this._lblPageTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
+            this._lblPageTitle.Location = new System.Drawing.Point(20, 15);
+            this._lblPageTitle.Name = "_lblPageTitle";
+            this._lblPageTitle.Size = new System.Drawing.Size(127, 32);
+            this._lblPageTitle.TabIndex = 0;
+            this._lblPageTitle.Text = "Add Product";
+            // 
+            // _contentPanel
+            // 
+            this._contentPanel.Controls.Add(this._fieldsPanel);
+            this._contentPanel.Controls.Add(this._buttonPanel);
+            this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._contentPanel.Location = new System.Drawing.Point(0, 60);
+            this._contentPanel.Name = "_contentPanel";
+            this._contentPanel.Size = new System.Drawing.Size(600, 440);
+            this._contentPanel.TabIndex = 1;
+            // 
+            // _fieldsPanel
+            // 
+            this._fieldsPanel.ColumnCount = 2;
+            this._fieldsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this._fieldsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this._fieldsPanel.Controls.Add(this.label2, 0, 0);
+            this._fieldsPanel.Controls.Add(this.txtBoxProductName, 1, 0);
+            this._fieldsPanel.Controls.Add(this.label3, 0, 1);
+            this._fieldsPanel.Controls.Add(this.txtBoxPrice, 1, 1);
+            this._fieldsPanel.Controls.Add(this.label4, 0, 2);
+            this._fieldsPanel.Controls.Add(this.txtBoxQuantity, 1, 2);
+            this._fieldsPanel.Controls.Add(this.label5, 0, 3);
+            this._fieldsPanel.Controls.Add(this.txtBoxBarcode, 1, 3);
+            this._fieldsPanel.Controls.Add(this.label6, 0, 4);
+            this._fieldsPanel.Controls.Add(this.cmbCategory, 1, 4);
+            this._fieldsPanel.Controls.Add(this.label7, 0, 5);
+            this._fieldsPanel.Controls.Add(this.cmbSupplier, 1, 5);
+            this._fieldsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._fieldsPanel.Location = new System.Drawing.Point(0, 0);
+            this._fieldsPanel.Margin = new System.Windows.Forms.Padding(20);
+            this._fieldsPanel.Name = "_fieldsPanel";
+            this._fieldsPanel.RowCount = 6;
+            this._fieldsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+            this._fieldsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+            this._fieldsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+            this._fieldsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+            this._fieldsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+            this._fieldsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
+            this._fieldsPanel.Size = new System.Drawing.Size(600, 350);
+            this._fieldsPanel.TabIndex = 0;
             // 
             // label2
             // 
@@ -220,42 +248,68 @@ namespace InventoryManagementSystem
             this.cmbSupplier.SelectedIndexChanged += new System.EventHandler(this.cmbSupplier_SelectedIndexChanged);
             this.cmbSupplier.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cmbSupplier_KeyDown);
             // 
+            // _buttonPanel
+            // 
+            this._buttonPanel.Controls.Add(this.btnCancel);
+            this._buttonPanel.Controls.Add(this.btnAdd);
+            this._buttonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this._buttonPanel.Location = new System.Drawing.Point(0, 350);
+            this._buttonPanel.Name = "_buttonPanel";
+            this._buttonPanel.Size = new System.Drawing.Size(600, 90);
+            this._buttonPanel.TabIndex = 1;
+            // 
             // btnAdd
             // 
             this.btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAdd.Location = new System.Drawing.Point(190, 514);
+            this.btnAdd.Location = new System.Drawing.Point(400, 25);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(162, 54);
-            this.btnAdd.TabIndex = 6;
-            this.btnAdd.Text = "Add";
+            this.btnAdd.Size = new System.Drawing.Size(120, 40);
+            this.btnAdd.TabIndex = 0;
+            this.btnAdd.Text = "Add Product";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.Location = new System.Drawing.Point(260, 25);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(120, 40);
+            this.btnCancel.TabIndex = 1;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
             // frmAddProduct
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(550, 614);
-            this.Controls.Add(this.btnAdd);
-            this.Controls.Add(this.tableLayoutPanel);
-            this.Controls.Add(this.label1);
+            this.ClientSize = new System.Drawing.Size(600, 500);
+            this.Controls.Add(this._contentPanel);
+            this.Controls.Add(this._headerPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmAddProduct";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Add Product";
             this.Load += new System.EventHandler(this.frmAddProduct_Load);
-            this.tableLayoutPanel.ResumeLayout(false);
-            this.tableLayoutPanel.PerformLayout();
+            this._headerPanel.ResumeLayout(false);
+            this._headerPanel.PerformLayout();
+            this._contentPanel.ResumeLayout(false);
+            this._fieldsPanel.ResumeLayout(false);
+            this._fieldsPanel.PerformLayout();
+            this._buttonPanel.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
+        private System.Windows.Forms.Panel _headerPanel;
+        private System.Windows.Forms.Label _lblPageTitle;
+        private System.Windows.Forms.Panel _contentPanel;
+        private System.Windows.Forms.TableLayoutPanel _fieldsPanel;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtBoxProductName;
         private System.Windows.Forms.Label label3;
@@ -268,6 +322,8 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.ComboBox cmbCategory;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ComboBox cmbSupplier;
+        private System.Windows.Forms.Panel _buttonPanel;
         private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

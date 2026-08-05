@@ -21,7 +21,10 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Products", clsFormTheme.Icons.Products);
+
+            // Wire sidebar navigation
+            _sidebar.NavigationRequested += OnSidebarNavigation;
+            _sidebar.SetActive("Inventory");
 
             // Setup keyboard shortcuts
             clsKeyboardShortcuts.SetupCommonShortcuts(
@@ -29,46 +32,30 @@ namespace InventoryManagementSystem
                 onEscape: () => Close(),
                 onRefresh: async () => await RefreshGridDataAsync(),
                 onSearch: () => _txtSearch.Focus(),
-                onAdd: () => btnAddProduct_Click(null, null)
+                onAdd: () => _btnAddProduct_Click(null, null)
             );
 
-            btnAddProduct.Text = "Add";
-            btnAddProduct.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnAddProduct, clsFormTheme.Icons.Add);
+            // Style Add Product button
+            clsFormTheme.ApplyPrimaryButtonStyle(_btnAddProduct, clsFormTheme.Icons.Add);
 
-            btnDeleteProduct.Text = "Delete";
-            btnDeleteProduct.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
-            clsFormTheme.ApplyDangerButtonStyle(btnDeleteProduct, clsFormTheme.Icons.Delete);
-
-            btnUpdateProduct.Text = "Update";
-            btnUpdateProduct.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnUpdateProduct, clsFormTheme.Icons.Update);
-
-            btnStockValuationReport.Text = "Stock Report";
-            btnStockValuationReport.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
-            clsFormTheme.ApplySecondaryButtonStyle(btnStockValuationReport, clsFormTheme.Icons.Chart);
-
-            _btnRefresh.Text = "Refresh";
-            _btnRefresh.Font = new Font(clsFormTheme.MainFontName, 11F);
-            clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh, clsFormTheme.Icons.Refresh);
-
-            _btnPreviousPage.Text = "\u2039  Prev";
-            clsFormTheme.ApplySecondaryButtonStyle(_btnPreviousPage);
-
-            _btnNextPage.Text = "Next  \u203A";
-            clsFormTheme.ApplySecondaryButtonStyle(_btnNextPage);
-
+            // Style search box
             clsFormTheme.ApplyTextBoxStyle(_txtSearch);
-            clsFormTheme.ApplyGridStyle(DataGVProducts);
+
+            // Style category filter
+            clsFormTheme.ApplyComboBoxStyle(_cmbCategoryFilter);
+
+            // Apply dark header grid style
+            clsFormTheme.ApplyDarkHeaderGridStyle(DataGVProducts);
 
             _toolTip.SetToolTip(_txtSearch, "Search by product ID, name, barcode, category, or supplier.");
-            _toolTip.SetToolTip(_btnRefresh, "Refresh the product list (F5).");
-            _toolTip.SetToolTip(btnStockValuationReport, "Open the stock valuation report (Ctrl+R).");
 
             clsSearchHelper.SetupAutoComplete(_txtSearch, "ProductsSearch");
 
             _lblEmptyState.Visible = false;
             KeyDown += frmProductsManagment_KeyDown;
+
+            // Load categories into filter
+            LoadCategories();
 
             clsLanguageManager.ApplyLanguage(this);
             EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
@@ -80,13 +67,64 @@ namespace InventoryManagementSystem
         {
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Products Management");
-            btnAddProduct.Text = clsLanguageManager.GetString("Add");
-            btnDeleteProduct.Text = clsLanguageManager.GetString("Delete");
-            btnUpdateProduct.Text = clsLanguageManager.GetString("Update");
-            btnStockValuationReport.Text = clsLanguageManager.GetString("Stock Report");
-            _btnRefresh.Text = clsLanguageManager.GetString("Refresh");
-            _btnPreviousPage.Text = clsLanguageManager.GetString("Previous");
-            _btnNextPage.Text = clsLanguageManager.GetString("Next");
+            _lblPageTitle.Text = clsLanguageManager.GetString("Inventory");
+            _btnAddProduct.Text = clsLanguageManager.GetString("Add Product");
+        }
+
+        private void LoadCategories()
+        {
+            try
+            {
+                _cmbCategoryFilter.Items.Clear();
+                _cmbCategoryFilter.Items.Add("All Categories");
+                _cmbCategoryFilter.SelectedIndex = 0;
+
+                DataTable categories = clsCategory.GetAllCategories();
+                if (categories != null)
+                {
+                    foreach (DataRow row in categories.Rows)
+                    {
+                        _cmbCategoryFilter.Items.Add(row["CategoryName"]);
+                    }
+                }
+            }
+            catch
+            {
+                // Ignore errors loading categories
+            }
+        }
+
+        private void OnSidebarNavigation(string screenKey)
+        {
+            switch (screenKey)
+            {
+                case "Dashboard":
+                    var dashboardForm = new frmDashboard();
+                    dashboardForm.Show();
+                    this.Close();
+                    break;
+                case "POS":
+                    var posForm = new frmPOS();
+                    posForm.Show();
+                    this.Close();
+                    break;
+                case "Inventory":
+                    // Already on Inventory
+                    break;
+                case "Orders":
+                    var receiptForm = new frmReceiptSearch();
+                    receiptForm.Show();
+                    this.Close();
+                    break;
+                case "Reports":
+                    var reportForm = new frmDailyReport();
+                    reportForm.Show();
+                    this.Close();
+                    break;
+                case "Support":
+                    // Help system integration - to be implemented
+                    break;
+            }
         }
 
         private async Task RefreshGridDataAsync()
@@ -124,18 +162,13 @@ namespace InventoryManagementSystem
             UseWaitCursor = isLoading;
             DataGVProducts.Enabled = !isLoading;
             _txtSearch.Enabled = !isLoading;
-            btnAddProduct.Enabled = !isLoading;
-            btnDeleteProduct.Enabled = !isLoading;
-            btnUpdateProduct.Enabled = !isLoading;
-            btnStockValuationReport.Enabled = !isLoading;
-            _btnRefresh.Enabled = !isLoading;
+            _cmbCategoryFilter.Enabled = !isLoading;
+            _btnAddProduct.Enabled = !isLoading;
 
             if (isLoading)
             {
                 _lblEmptyState.Text = "Loading products...";
                 _lblEmptyState.Visible = true;
-                _btnPreviousPage.Enabled = false;
-                _btnNextPage.Enabled = false;
             }
             else
             {
@@ -145,12 +178,32 @@ namespace InventoryManagementSystem
 
         private DataTable GetFilteredProducts()
         {
-            string searchText = _txtSearch.Text.Trim();
-            if (string.IsNullOrWhiteSpace(searchText))
-                return _productsTable;
+            DataTable filtered = _productsTable.Copy();
 
-            DataView view = clsSearchHelper.QuickSearch(_productsTable, searchText, "ProductID", "ProductName", "Barcode", "CategoryName", "SupplierName");
-            return view.ToTable();
+            // Apply search filter
+            string searchText = _txtSearch.Text.Trim();
+            if (!string.IsNullOrWhiteSpace(searchText))
+            {
+                DataView view = clsSearchHelper.QuickSearch(filtered, searchText, "ProductID", "ProductName", "Barcode", "CategoryName", "SupplierName");
+                filtered = view.ToTable();
+            }
+
+            // Apply category filter
+            if (_cmbCategoryFilter.SelectedIndex > 0)
+            {
+                string selectedCategory = _cmbCategoryFilter.SelectedItem.ToString();
+                DataRow[] rows = filtered.Select("CategoryName = '" + selectedCategory + "'");
+                if (rows.Length > 0)
+                {
+                    filtered = rows.CopyToDataTable();
+                }
+                else
+                {
+                    filtered = filtered.Clone();
+                }
+            }
+
+            return filtered;
         }
 
         private void DisplayCurrentPage()
@@ -175,22 +228,65 @@ namespace InventoryManagementSystem
             }
 
             DataGVProducts.DataSource = pageTable;
+            DataGVProducts.AutoGenerateColumns = false;
 
-            if (DataGVProducts.Columns.Contains("CategoryID"))
-                DataGVProducts.Columns["CategoryID"].Visible = false;
-
-            if (DataGVProducts.Columns.Contains("SupplierID"))
-                DataGVProducts.Columns["SupplierID"].Visible = false;
-
-            if (DataGVProducts.Columns.Contains("CategoryName"))
-                DataGVProducts.Columns["CategoryName"].HeaderText = "Category";
-
-            if (DataGVProducts.Columns.Contains("SupplierName"))
-                DataGVProducts.Columns["SupplierName"].HeaderText = "Supplier";
-
-            foreach (DataGridViewColumn column in DataGVProducts.Columns)
+            // Configure columns
+            if (DataGVProducts.Columns.Count == 0)
             {
-                column.SortMode = DataGridViewColumnSortMode.Automatic;
+                DataGVProducts.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "ProductID",
+                    HeaderText = "ID",
+                    Name = "colID",
+                    Width = 60
+                });
+
+                DataGVProducts.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "ProductName",
+                    HeaderText = "Product",
+                    Name = "colProduct",
+                    Width = 200
+                });
+
+                DataGVProducts.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "CategoryName",
+                    HeaderText = "Category",
+                    Name = "colCategory",
+                    Width = 120
+                });
+
+                DataGVProducts.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "Quantity",
+                    HeaderText = "Stock",
+                    Name = "colStock",
+                    Width = 80
+                });
+
+                DataGVProducts.Columns.Add(new DataGridViewTextBoxColumn
+                {
+                    DataPropertyName = "Price",
+                    HeaderText = "Price",
+                    Name = "colPrice",
+                    Width = 80
+                });
+            }
+
+            // Apply stock pill styling to Stock column
+            foreach (DataGridViewRow row in DataGVProducts.Rows)
+            {
+                if (row.Cells["colStock"].Value != null)
+                {
+                    int quantity = Convert.ToInt32(row.Cells["colStock"].Value);
+                    row.Cells["colStock"].Style.BackColor = quantity > 5 ? clsFormTheme.CurrentSuccessLightColor :
+                                                    quantity >= 1 ? clsFormTheme.CurrentWarningLightColor :
+                                                    clsFormTheme.CurrentDangerLightColor;
+                    row.Cells["colStock"].Style.ForeColor = quantity > 5 ? clsFormTheme.CurrentSuccessColor :
+                                                    quantity >= 1 ? clsFormTheme.CurrentWarningColor :
+                                                    clsFormTheme.CurrentDangerColor;
+                }
             }
 
             bool hasRows = pageTable.Rows.Count > 0;
@@ -202,13 +298,6 @@ namespace InventoryManagementSystem
                     ? "No products found. Add your first product."
                     : "No products match your search.";
             }
-
-            _lblPageInfo.Text = rowCount == 0
-                ? "No results"
-                : $"Page {_currentPage} of {totalPages}";
-
-            _btnPreviousPage.Enabled = _currentPage > 1;
-            _btnNextPage.Enabled = _currentPage < totalPages;
         }
 
         private void btnBackToPrevPage_Click(object sender, EventArgs e)
@@ -221,7 +310,7 @@ namespace InventoryManagementSystem
             await RefreshGridDataAsync();
         }
 
-        private async void btnAddProduct_Click(object sender, EventArgs e)
+        private async void _btnAddProduct_Click(object sender, EventArgs e)
         {
             frmAddProduct frm = new frmAddProduct();
 
@@ -231,67 +320,16 @@ namespace InventoryManagementSystem
             }
         }
 
-        private async void btnRefresh_Click(object sender, EventArgs e)
-        {
-            await RefreshGridDataAsync();
-        }
-
-        private async void btnDeleteProduct_Click(object sender, EventArgs e)
-        {
-            frmDeleteProduct frm = new frmDeleteProduct();
-
-            if (frm.ShowDialog() == DialogResult.OK)
-            {
-                await RefreshGridDataAsync();
-            }
-        }
-
-        private async void btnUpdateProduct_Click(object sender, EventArgs e)
-        {
-            frmUpdateProduct frm = new frmUpdateProduct();
-
-            if (frm.ShowDialog() == DialogResult.OK)
-            {
-                await RefreshGridDataAsync();
-            }
-        }
-
-        private void btnStockValuationReport_Click(object sender, EventArgs e)
-        {
-            frmStockValuationReport frm = new frmStockValuationReport();
-            frm.ShowDialog();
-        }
-
-        private void txtSearch_TextChanged(object sender, EventArgs e)
+        private void _txtSearch_TextChanged(object sender, EventArgs e)
         {
             _currentPage = 1;
             DisplayCurrentPage();
         }
 
-        private void btnPreviousPage_Click(object sender, EventArgs e)
+        private void _cmbCategoryFilter_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (_currentPage > 1)
-            {
-                _currentPage--;
-                DisplayCurrentPage();
-            }
-        }
-
-        private void btnNextPage_Click(object sender, EventArgs e)
-        {
-            DataTable filteredTable = GetFilteredProducts();
-            int totalPages = Math.Max(1, (int)Math.Ceiling(filteredTable.Rows.Count / (double)PageSize));
-
-            if (_currentPage < totalPages)
-            {
-                _currentPage++;
-                DisplayCurrentPage();
-            }
-        }
-
-        private void FrmProductsManagment_Paint(object sender, PaintEventArgs e)
-        {
-            clsFormTheme.DrawCard(e.Graphics, new Rectangle(DataGVProducts.Left - 10, DataGVProducts.Top - 10, DataGVProducts.Width + 20, DataGVProducts.Height + 20));
+            _currentPage = 1;
+            DisplayCurrentPage();
         }
 
         private async void frmProductsManagment_KeyDown(object sender, KeyEventArgs e)
@@ -303,12 +341,7 @@ namespace InventoryManagementSystem
             }
             else if (e.Control && e.KeyCode == Keys.N)
             {
-                btnAddProduct.PerformClick();
-                e.SuppressKeyPress = true;
-            }
-            else if (e.Control && e.KeyCode == Keys.R)
-            {
-                btnStockValuationReport.PerformClick();
+                _btnAddProduct_Click(null, null);
                 e.SuppressKeyPress = true;
             }
             else if (e.KeyCode == Keys.Escape)

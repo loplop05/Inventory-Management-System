@@ -20,10 +20,12 @@ namespace InventoryManagementSystem
             _errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Update Product", clsFormTheme.Icons.Update);
-            btnSearch.Text = "Find Product";
-            btnSearch.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
+
+            // Style buttons
             clsFormTheme.ApplyPrimaryButtonStyle(btnSearch, clsFormTheme.Icons.Search);
+            clsFormTheme.ApplySecondaryButtonStyle(btnCancel);
+
+            // Style text box
             clsFormTheme.ApplyTextBoxStyle(txtUpdateProductID);
 
             btnSearch.Enabled = false;
@@ -41,7 +43,9 @@ namespace InventoryManagementSystem
         {
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Update Product");
+            _lblPageTitle.Text = clsLanguageManager.GetString("Update Product");
             btnSearch.Text = clsLanguageManager.GetString("Find Product");
+            btnCancel.Text = clsLanguageManager.GetString("Cancel");
         }
 
         private bool IsProductLookupValid()
@@ -150,6 +154,12 @@ namespace InventoryManagementSystem
                 await UpdateProduct();
                 e.SuppressKeyPress = true;
             }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
 
         private void frmUpdateProduct_KeyDown(object sender, KeyEventArgs e)
