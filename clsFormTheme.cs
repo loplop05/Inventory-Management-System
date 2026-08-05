@@ -1,4 +1,5 @@
 using System;
+using System.Configuration;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -82,9 +83,12 @@ namespace InventoryManagementSystem
         // Semantic
         public static readonly Color SuccessColor         = Color.FromArgb(5,   150, 105);  // Emerald 600
         public static readonly Color SuccessHoverColor    = Color.FromArgb(4,   120, 87);   // Emerald 700
+        public static readonly Color SuccessLightColor    = Color.FromArgb(209, 250, 229);  // Emerald 100
         public static readonly Color DangerColor          = Color.FromArgb(220, 38,  38);   // Red 600
         public static readonly Color DangerHoverColor     = Color.FromArgb(185, 28,  28);   // Red 700
+        public static readonly Color DangerLightColor     = Color.FromArgb(254, 226, 226);  // Red 100
         public static readonly Color WarningColor         = Color.FromArgb(217, 119, 6);    // Amber 600
+        public static readonly Color WarningLightColor    = Color.FromArgb(254, 243, 199);  // Amber 100
         public static readonly Color InfoColor            = Color.FromArgb(6,   182, 212);  // Cyan 500
 
         // Surface / structural
@@ -118,9 +122,12 @@ namespace InventoryManagementSystem
         // Semantic (adjusted for dark mode)
         public static readonly Color DarkSuccessColor         = Color.FromArgb(74,  222, 128);  // Emerald 400
         public static readonly Color DarkSuccessHoverColor    = Color.FromArgb(52,  211, 153);  // Emerald 500
+        public static readonly Color DarkSuccessLightColor    = Color.FromArgb(6,   95,  70);   // Emerald 900
         public static readonly Color DarkDangerColor          = Color.FromArgb(248, 113, 113);  // Red 400
         public static readonly Color DarkDangerHoverColor     = Color.FromArgb(239, 68,  68);   // Red 500
+        public static readonly Color DarkDangerLightColor     = Color.FromArgb(127, 29,  29);   // Red 900
         public static readonly Color DarkWarningColor         = Color.FromArgb(251, 191, 36);  // Amber 400
+        public static readonly Color DarkWarningLightColor    = Color.FromArgb(120, 53,  15);   // Amber 900
         public static readonly Color DarkInfoColor            = Color.FromArgb(34,  211, 238);  // Cyan 400
 
         // Surface / structural
@@ -152,13 +159,17 @@ namespace InventoryManagementSystem
         public static Color TextMuted => IsDarkMode ? DarkTextMuted : LightTextMuted;
         public static Color CurrentPrimaryColor => IsDarkMode ? DarkPrimaryColor : PrimaryColor;
         public static Color CurrentPrimaryHoverColor => IsDarkMode ? DarkPrimaryHoverColor : PrimaryHoverColor;
+        public static Color CurrentPrimaryLightColor => IsDarkMode ? DarkPrimaryLightColor : PrimaryLightColor;
         public static Color CurrentSecondaryColor => IsDarkMode ? DarkSecondaryColor : SecondaryColor;
         public static Color CurrentSecondaryHoverColor => IsDarkMode ? DarkSecondaryHoverColor : SecondaryHoverColor;
         public static Color CurrentSuccessColor => IsDarkMode ? DarkSuccessColor : SuccessColor;
         public static Color CurrentSuccessHoverColor => IsDarkMode ? DarkSuccessHoverColor : SuccessHoverColor;
+        public static Color CurrentSuccessLightColor => IsDarkMode ? DarkSuccessLightColor : SuccessLightColor;
         public static Color CurrentDangerColor => IsDarkMode ? DarkDangerColor : DangerColor;
         public static Color CurrentDangerHoverColor => IsDarkMode ? DarkDangerHoverColor : DangerHoverColor;
+        public static Color CurrentDangerLightColor => IsDarkMode ? DarkDangerLightColor : DangerLightColor;
         public static Color CurrentWarningColor => IsDarkMode ? DarkWarningColor : WarningColor;
+        public static Color CurrentWarningLightColor => IsDarkMode ? DarkWarningLightColor : WarningLightColor;
         public static Color CurrentInfoColor => IsDarkMode ? DarkInfoColor : InfoColor;
 
         // ─── Typography ─────────────────────────────────────────────────────────
@@ -401,6 +412,136 @@ namespace InventoryManagementSystem
             header.BringToFront();
         }
 
+        /// <summary>
+        /// Creates an app header panel with search box and icon row.
+        /// This is an overload of CreateHeaderPanel for the new design system.
+        /// </summary>
+        public static void CreateAppHeaderPanel(Form form, string searchPlaceholder, Action<string> onSearch)
+        {
+            // Reserve room for the header
+            form.Padding = new Padding(form.Padding.Left, 70, form.Padding.Right, form.Padding.Bottom);
+
+            Panel header = new Panel
+            {
+                Location  = new Point(0, 0),
+                Width     = form.ClientSize.Width,
+                Height    = 70,
+                Anchor    = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right,
+                BackColor = HeaderColor
+            };
+
+            // Gradient paint
+            header.Paint += (s, e) =>
+            {
+                using (LinearGradientBrush brush = new LinearGradientBrush(
+                    header.ClientRectangle,
+                    HeaderColor,
+                    HeaderGradientEnd,
+                    LinearGradientMode.Horizontal))
+                {
+                    e.Graphics.FillRectangle(brush, header.ClientRectangle);
+                }
+            };
+
+            // App name/logo on left
+            Label lblAppName = new Label
+            {
+                Text = ConfigurationManager.AppSettings["AppName"] ?? "ElectroPOS Pro",
+                ForeColor = Color.White,
+                Font = new Font(MainFontName, 16F, FontStyle.Bold),
+                Location = new Point(20, 20),
+                AutoSize = true
+            };
+            header.Controls.Add(lblAppName);
+
+            // Centered search box
+            TextBox txtSearch = new TextBox
+            {
+                Width = 400,
+                Height = 36,
+                Location = new Point((header.ClientSize.Width - 400) / 2, 17),
+                Font = new Font(MainFontName, 10F),
+                Text = searchPlaceholder,
+                ForeColor = TextMuted,
+                BackColor = Color.FromArgb(30, 41, 59),
+                BorderStyle = BorderStyle.FixedSingle
+            };
+            txtSearch.GotFocus += (s, e) =>
+            {
+                if (txtSearch.Text == searchPlaceholder)
+                {
+                    txtSearch.Text = "";
+                    txtSearch.ForeColor = TextPrimary;
+                }
+            };
+            txtSearch.LostFocus += (s, e) =>
+            {
+                if (string.IsNullOrWhiteSpace(txtSearch.Text))
+                {
+                    txtSearch.Text = searchPlaceholder;
+                    txtSearch.ForeColor = TextMuted;
+                }
+            };
+            txtSearch.KeyDown += (s, e) =>
+            {
+                if (e.KeyCode == Keys.Enter && !string.IsNullOrWhiteSpace(txtSearch.Text) && txtSearch.Text != searchPlaceholder)
+                {
+                    onSearch?.Invoke(txtSearch.Text);
+                }
+            };
+            header.Controls.Add(txtSearch);
+
+            // Right-aligned icon row
+            int iconRight = header.ClientSize.Width - 20;
+            int iconSpacing = 40;
+
+            // Notification bell
+            Label lblNotification = new Label
+            {
+                Text = Icons.Info,
+                Font = new Font(IconFontName, 16F),
+                ForeColor = Color.White,
+                Location = new Point(iconRight - iconSpacing * 2, 22),
+                AutoSize = true,
+                Cursor = Cursors.Hand
+            };
+            header.Controls.Add(lblNotification);
+
+            // Settings gear
+            Label lblSettings = new Label
+            {
+                Text = Icons.Settings,
+                Font = new Font(IconFontName, 16F),
+                ForeColor = Color.White,
+                Location = new Point(iconRight - iconSpacing, 22),
+                AutoSize = true,
+                Cursor = Cursors.Hand
+            };
+            header.Controls.Add(lblSettings);
+
+            // Avatar placeholder
+            Panel avatarPanel = new Panel
+            {
+                Width = 36,
+                Height = 36,
+                Location = new Point(iconRight + 10, 17),
+                BackColor = PrimaryColor,
+                Cursor = Cursors.Hand
+            };
+            avatarPanel.Paint += (s, e) =>
+            {
+                using (SolidBrush brush = new SolidBrush(Color.White))
+                using (Font font = new Font(MainFontName, 12F, FontStyle.Bold))
+                {
+                    e.Graphics.DrawString("U", font, brush, 10, 8);
+                }
+            };
+            header.Controls.Add(avatarPanel);
+
+            form.Controls.Add(header);
+            header.BringToFront();
+        }
+
         // ════════════════════════════════════════════════════════════════════════
         //  CARD / PANEL DRAWING
         // ════════════════════════════════════════════════════════════════════════
@@ -611,6 +752,164 @@ namespace InventoryManagementSystem
             grid.RowHeadersVisible    = false;
             grid.AllowUserToResizeRows = false;
             grid.AllowUserToAddRows   = false;
+        }
+
+        /// <summary>
+        /// Applies grid styling with dark header (navy background, white text).
+        /// This is a variant of ApplyGridStyle with overridden header colors.
+        /// </summary>
+        public static void ApplyDarkHeaderGridStyle(DataGridView grid)
+        {
+            // Apply base grid styling first
+            ApplyGridStyle(grid);
+
+            // Override header colors to dark navy
+            grid.ColumnHeadersDefaultCellStyle.BackColor = HeaderColor;
+            grid.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
+        //  PILL STYLING (Shared Helper)
+        // ════════════════════════════════════════════════════════════════════════
+
+        private static void ApplyPillRegion(Control control)
+        {
+            int radius = control.Height / 2;
+            GraphicsPath path = new GraphicsPath();
+            path.AddArc(0, 0, radius, radius, 180, 90);
+            path.AddArc(control.Width - radius, 0, radius, radius, 270, 90);
+            path.AddArc(control.Width - radius, control.Height - radius, radius, radius, 0, 90);
+            path.AddArc(0, control.Height - radius, radius, radius, 90, 90);
+            path.CloseFigure();
+            control.Region = new Region(path);
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
+        //  STOCK PILL STYLING
+        // ════════════════════════════════════════════════════════════════════════
+
+        /// <summary>
+        /// Styles a Label as a stock status pill with rounded corners and color coding.
+        /// </summary>
+        public static void ApplyStockPill(Label lbl, int quantity, bool showAsText = false)
+        {
+            lbl.TextAlign = ContentAlignment.MiddleCenter;
+            lbl.Font = new Font(MainFontName, 9F, FontStyle.Bold);
+            lbl.Padding = new Padding(12, 0, 12, 0); // Horizontal padding ≈ 6px per side
+
+            Color bgColor, fgColor;
+            string text;
+
+            if (quantity > 5)
+            {
+                bgColor = CurrentSuccessLightColor;
+                fgColor = CurrentSuccessColor;
+                text = quantity.ToString();
+            }
+            else if (quantity >= 1)
+            {
+                bgColor = CurrentWarningLightColor;
+                fgColor = CurrentWarningColor;
+                text = quantity.ToString();
+            }
+            else // quantity == 0
+            {
+                bgColor = CurrentDangerLightColor;
+                fgColor = CurrentDangerColor;
+                text = showAsText ? "Out of stock" : "0";
+            }
+
+            lbl.BackColor = bgColor;
+            lbl.ForeColor = fgColor;
+            lbl.Text = text;
+
+            // Apply rounded pill region
+            lbl.SizeChanged += (s, e) => ApplyPillRegion(lbl);
+            ApplyPillRegion(lbl);
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
+        //  STATUS PILL STYLING
+        // ════════════════════════════════════════════════════════════════════════
+
+        /// <summary>
+        /// Styles a Label as a status pill with rounded corners and color coding.
+        /// Status values: "Sale", "Stock", "Refund", "Alert"
+        /// </summary>
+        public static void ApplyStatusPill(Label lbl, string status)
+        {
+            lbl.TextAlign = ContentAlignment.MiddleCenter;
+            lbl.Font = new Font(MainFontName, 9F, FontStyle.Bold);
+            lbl.Padding = new Padding(12, 0, 12, 0);
+
+            Color bgColor, fgColor;
+
+            switch (status.ToLower())
+            {
+                case "sale":
+                    bgColor = CurrentSuccessLightColor;
+                    fgColor = CurrentSuccessColor;
+                    break;
+                case "stock":
+                    bgColor = CurrentPrimaryLightColor;
+                    fgColor = CurrentPrimaryColor;
+                    break;
+                case "refund":
+                    bgColor = CurrentDangerLightColor;
+                    fgColor = CurrentDangerColor;
+                    break;
+                case "alert":
+                    bgColor = CurrentWarningLightColor;
+                    fgColor = CurrentWarningColor;
+                    break;
+                default:
+                    bgColor = CurrentInfoColor;
+                    fgColor = TextPrimary;
+                    break;
+            }
+
+            lbl.BackColor = bgColor;
+            lbl.ForeColor = fgColor;
+            lbl.Text = status;
+
+            // Apply rounded pill region
+            lbl.SizeChanged += (s, e) => ApplyPillRegion(lbl);
+            ApplyPillRegion(lbl);
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
+        //  PILL TOGGLE BUTTON STYLING
+        // ════════════════════════════════════════════════════════════════════════
+
+        /// <summary>
+        /// Styles a Button as a pill toggle with rounded corners.
+        /// </summary>
+        public static void ApplyPillToggleStyle(Button btn, bool selected)
+        {
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.Font = new Font(MainFontName, 10F, FontStyle.Bold);
+            btn.TextAlign = ContentAlignment.MiddleCenter;
+            btn.Cursor = Cursors.Hand;
+
+            if (selected)
+            {
+                btn.BackColor = HeaderColor;
+                btn.ForeColor = Color.White;
+                btn.FlatAppearance.BorderSize = 0;
+                btn.FlatAppearance.MouseOverBackColor = HeaderColor;
+            }
+            else
+            {
+                btn.BackColor = IsDarkMode ? DarkFormBackColor : Color.White;
+                btn.ForeColor = TextPrimary;
+                btn.FlatAppearance.BorderSize = 1;
+                btn.FlatAppearance.BorderColor = CardBorderColor;
+                btn.FlatAppearance.MouseOverBackColor = FormBackColorAlt;
+            }
+
+            // Apply rounded pill region
+            btn.SizeChanged += (s, e) => ApplyPillRegion(btn);
+            ApplyPillRegion(btn);
         }
 
         // ════════════════════════════════════════════════════════════════════════
