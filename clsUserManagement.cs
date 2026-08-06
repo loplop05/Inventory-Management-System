@@ -13,6 +13,7 @@ namespace InventoryManagementSystem
         public enum UserRole
         {
             Cashier,  // POS only
+            Manager,  // Day-to-day operations, reporting, limited admin
             Admin     // Full access
         }
 
@@ -45,6 +46,11 @@ namespace InventoryManagementSystem
         /// Checks if the current user is a cashier.
         /// </summary>
         public static bool IsCashier => _currentUser?.Role == UserRole.Cashier;
+
+        /// <summary>
+        /// Checks if the current user is a manager.
+        /// </summary>
+        public static bool IsManager => _currentUser?.Role == UserRole.Manager;
 
         /// <summary>
         /// Authenticates a user with username and password.

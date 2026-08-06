@@ -235,6 +235,12 @@ namespace InventoryManagementSystem
         private async void frmCustomerManagement_Load(object sender, EventArgs e)
         {
             await RefreshGridDataAsync();
+            
+            // Action-level permission check: Delete is Admin-only
+            if (!clsUserManagement.IsAdmin)
+            {
+                btnDeleteCustomer.Visible = false;
+            }
         }
 
         private async void btnAddCustomer_Click(object sender, EventArgs e)

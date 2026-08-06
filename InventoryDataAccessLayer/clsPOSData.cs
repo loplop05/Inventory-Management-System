@@ -196,17 +196,6 @@ namespace InventoryDataAccessLayer
                             }
                         }
 
-                        // Update customer's last purchase date and loyalty points if customerID is provided
-                        if (customerID.HasValue)
-                        {
-                            int pointsEarned = (int)Math.Floor(subtotal);
-                            if (!clsCustomerData.AddLoyaltyPoints(connection, transaction, customerID.Value, pointsEarned, subtotal, out errorMessage))
-                            {
-                                transaction.Rollback();
-                                return false;
-                            }
-                        }
-
                         transaction.Commit();
                         return true;
                     }
@@ -294,25 +283,6 @@ namespace InventoryDataAccessLayer
                             }
                         }
 
-                        // Deduct loyalty points if they were awarded (1 point per JOD spent)
-                        if (customerID.HasValue && totalAmount > 0)
-                        {
-                            int pointsToDeduct = (int)Math.Floor(totalAmount);
-                            if (pointsToDeduct > 0)
-                            {
-                                using (SqlCommand loyaltyCommand = new SqlCommand(@"
-                                    UPDATE Customers
-                                    SET LoyaltyPoints = LoyaltyPoints - @PointsToDeduct
-                                    WHERE CustomerID = @CustomerID
-                                      AND LoyaltyPoints >= @PointsToDeduct;", connection, transaction))
-                                {
-                                    loyaltyCommand.Parameters.AddWithValue("@CustomerID", customerID.Value);
-                                    loyaltyCommand.Parameters.AddWithValue("@PointsToDeduct", pointsToDeduct);
-                                    loyaltyCommand.ExecuteNonQuery();
-                                }
-                            }
-                        }
-
                         // Mark order as voided
                         string voidQuery = @"
                             UPDATE Orders
@@ -331,6 +301,12 @@ namespace InventoryDataAccessLayer
                         }
 
                         transaction.Commit();
+                        
+                        // Deduct loyalty points using the consolidated business logic layer
+                        // This happens after transaction commit to ensure atomicity of the void operation itself
+                        // Note: This is called from the business layer in clsPOS.VoidOrder wrapper
+                        // We'll handle it there to avoid circular dependency
+                        
                         return true;
                     }
                 }
@@ -340,6 +316,41 @@ namespace InventoryDataAccessLayer
                     return false;
                 }
             }
+        }
+
+        public static DataTable GetOrderById(int orderID, out string errorMessage)
+        {
+            errorMessage = "";
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = @"
+                        SELECT OrderID, CustomerID, TotalAmount, Subtotal
+                        FROM Orders
+                        WHERE OrderID = @OrderID";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@OrderID", orderID);
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            dt.Load(reader);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = ex.Message;
+                    clsErrorLog.LogException("clsPOSData.GetOrderById", ex);
+                }
+            }
+
+            return dt;
         }
 
         public static DataTable GetTodayOrderSummary()

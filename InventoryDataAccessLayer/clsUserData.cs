@@ -170,9 +170,9 @@ namespace InventoryDataAccessLayer
                 return false;
             }
 
-            if (role != "Admin" && role != "Cashier")
+            if (role != "Admin" && role != "Manager" && role != "Cashier")
             {
-                errorMessage = "Role must be either 'Admin' or 'Cashier'.";
+                errorMessage = "Role must be either 'Admin', 'Manager', or 'Cashier'.";
                 return false;
             }
 
@@ -241,9 +241,9 @@ namespace InventoryDataAccessLayer
                 return false;
             }
 
-            if (role != "Admin" && role != "Cashier")
+            if (role != "Admin" && role != "Manager" && role != "Cashier")
             {
-                errorMessage = "Role must be either 'Admin' or 'Cashier'.";
+                errorMessage = "Role must be either 'Admin', 'Manager', or 'Cashier'.";
                 return false;
             }
 

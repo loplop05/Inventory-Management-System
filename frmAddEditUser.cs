@@ -41,7 +41,7 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyPrimaryButtonStyle(btnSave, clsFormTheme.Icons.Save);
             clsFormTheme.ApplySecondaryButtonStyle(btnCancel, clsFormTheme.Icons.Cancel);
 
-            cmbRole.Items.AddRange(new object[] { "Admin", "Cashier" });
+            cmbRole.Items.AddRange(new object[] { "Admin", "Manager", "Cashier" });
             if (cmbRole.Items.Count > 0)
                 cmbRole.SelectedIndex = 0;
 

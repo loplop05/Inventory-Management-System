@@ -15,198 +15,103 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Inventory Management System", clsFormTheme.Icons.Home);
 
-            // ── Categories button ──────────────────────────────────────────────
-            btnCategories.Text = "Categories";
-            btnCategories.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            btnCategories.BackColor = Color.FromArgb(59, 130, 246); // Blue
-            btnCategories.ForeColor = Color.White;
-            btnCategories.FlatStyle = FlatStyle.Flat;
-            btnCategories.FlatAppearance.BorderSize = 0;
-            btnCategories.TextAlign = ContentAlignment.MiddleCenter;
-            _toolTip.SetToolTip(btnCategories, "Manage product categories");
+            // Apply card-with-accent-bar styling to all tiles
+            StyleTile(btnPOS, clsFormTheme.Icons.POS, clsFormTheme.PrimaryColor, "Point of Sale");
+            StyleTile(btnReceiptSearch, clsFormTheme.Icons.Search, clsFormTheme.PrimaryColor, "Receipt Search");
+            StyleTile(btnPrintReceipt, clsFormTheme.Icons.Print, clsFormTheme.PrimaryColor, "Print Receipt");
 
-            // ── Suppliers button ───────────────────────────────────────────────
-            btnSuppliers.Text = "Suppliers";
-            btnSuppliers.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            btnSuppliers.BackColor = Color.FromArgb(16, 185, 129); // Green
-            btnSuppliers.ForeColor = Color.White;
-            btnSuppliers.FlatStyle = FlatStyle.Flat;
-            btnSuppliers.FlatAppearance.BorderSize = 0;
-            btnSuppliers.TextAlign = ContentAlignment.MiddleCenter;
-            _toolTip.SetToolTip(btnSuppliers, "Manage suppliers");
+            StyleTile(btnProducts, clsFormTheme.Icons.Products, clsFormTheme.SuccessColor, "Products");
+            StyleTile(btnCategories, clsFormTheme.Icons.Categories, clsFormTheme.SuccessColor, "Categories");
+            StyleTile(btnSuppliers, clsFormTheme.Icons.Suppliers, clsFormTheme.SuccessColor, "Suppliers");
+            StyleTile(btnCouponManager, clsFormTheme.Icons.Coupon, clsFormTheme.SuccessColor, "Coupon Manager");
 
-            // ── Products button ────────────────────────────────────────────────
-            btnProducts.Text = "Products";
-            btnProducts.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            btnProducts.BackColor = Color.FromArgb(245, 158, 11); // Orange
-            btnProducts.ForeColor = Color.White;
-            btnProducts.FlatStyle = FlatStyle.Flat;
-            btnProducts.FlatAppearance.BorderSize = 0;
-            btnProducts.TextAlign = ContentAlignment.MiddleCenter;
-            _toolTip.SetToolTip(btnProducts, "Manage products and inventory");
+            StyleTile(btnDashboard, clsFormTheme.Icons.Chart, clsFormTheme.InfoColor, "Dashboard");
+            StyleTile(btnAdvancedReports, clsFormTheme.Icons.Reports, clsFormTheme.InfoColor, "Advanced Reports");
+            StyleTile(btnDailyReport, clsFormTheme.Icons.Calendar, clsFormTheme.InfoColor, "Daily Report");
+            StyleTile(btnLowStockAlerts, clsFormTheme.Icons.Warning, clsFormTheme.WarningColor, "Low Stock Alerts");
 
-            // ── Receipt Search button ────────────────────────────────────────────
-            btnReceiptSearch.Text = "Receipt Search";
-            btnReceiptSearch.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            btnReceiptSearch.BackColor = Color.FromArgb(139, 92, 246); // Purple
-            btnReceiptSearch.ForeColor = Color.White;
-            btnReceiptSearch.FlatStyle = FlatStyle.Flat;
-            btnReceiptSearch.FlatAppearance.BorderSize = 0;
-            btnReceiptSearch.TextAlign = ContentAlignment.MiddleCenter;
-            _toolTip.SetToolTip(btnReceiptSearch, "Search receipts and manage exchanges");
+            StyleTile(btnUserManagement, clsFormTheme.Icons.User, clsFormTheme.HeaderColor, "User Management");
+            StyleTile(btnCustomerManagement, clsFormTheme.Icons.Customer, clsFormTheme.HeaderColor, "Customer Management");
+            StyleTile(btnAuditLogs, clsFormTheme.Icons.AuditLog, clsFormTheme.HeaderColor, "Audit Logs");
+        }
 
-            // ── Print Receipt button ─────────────────────────────────────────────
-            btnPrintReceipt.Text = "Print Receipt";
-            btnPrintReceipt.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            btnPrintReceipt.BackColor = Color.FromArgb(236, 72, 153); // Pink
-            btnPrintReceipt.ForeColor = Color.White;
-            btnPrintReceipt.FlatStyle = FlatStyle.Flat;
-            btnPrintReceipt.FlatAppearance.BorderSize = 0;
-            btnPrintReceipt.TextAlign = ContentAlignment.MiddleCenter;
-            _toolTip.SetToolTip(btnPrintReceipt, "Print order receipts");
+        private void StyleTile(Button btn, string icon, Color accentColor, string tooltipText)
+        {
+            btn.Text = "";
+            btn.Font = new Font("Segoe UI", 11F);
+            btn.BackColor = clsFormTheme.CardColor;
+            btn.ForeColor = clsFormTheme.TextPrimary;
+            btn.FlatStyle = FlatStyle.Flat;
+            btn.FlatAppearance.BorderColor = clsFormTheme.CardBorderColor;
+            btn.FlatAppearance.BorderSize = 1;
+            btn.TextAlign = ContentAlignment.MiddleCenter;
+            btn.TextImageRelation = TextImageRelation.ImageAboveText;
+            _toolTip.SetToolTip(btn, tooltipText);
 
-            // ── Dashboard button ───────────────────────────────────────────────
-            btnDashboard.Text = "Dashboard";
-            btnDashboard.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            btnDashboard.BackColor = Color.FromArgb(99, 102, 241); // Indigo
-            btnDashboard.ForeColor = Color.White;
-            btnDashboard.FlatStyle = FlatStyle.Flat;
-            btnDashboard.FlatAppearance.BorderSize = 0;
-            btnDashboard.TextAlign = ContentAlignment.MiddleCenter;
-            _toolTip.SetToolTip(btnDashboard, "View dashboard with key metrics");
+            // Custom paint to draw icon circle and text
+            btn.Paint += (s, e) =>
+            {
+                Button button = (Button)s;
+                Graphics g = e.Graphics;
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
 
-            // ── Advanced Reports button ─────────────────────────────────────────
-            btnAdvancedReports.Text = "Advanced Reports";
-            btnAdvancedReports.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            btnAdvancedReports.BackColor = Color.FromArgb(14, 165, 233); // Sky Blue
-            btnAdvancedReports.ForeColor = Color.White;
-            btnAdvancedReports.FlatStyle = FlatStyle.Flat;
-            btnAdvancedReports.FlatAppearance.BorderSize = 0;
-            btnAdvancedReports.TextAlign = ContentAlignment.MiddleCenter;
-            _toolTip.SetToolTip(btnAdvancedReports, "Generate advanced reports");
+                int iconSize = 32;
+                int iconCircleSize = 48;
+                int centerX = button.Width / 2;
+                int iconCircleY = 20;
 
-            // ── Low Stock Alerts button ─────────────────────────────────────────
-            btnLowStockAlerts.Text = "Low Stock Alerts";
-            btnLowStockAlerts.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            btnLowStockAlerts.BackColor = Color.FromArgb(239, 68, 68); // Red
-            btnLowStockAlerts.ForeColor = Color.White;
-            btnLowStockAlerts.FlatStyle = FlatStyle.Flat;
-            btnLowStockAlerts.FlatAppearance.BorderSize = 0;
-            btnLowStockAlerts.TextAlign = ContentAlignment.MiddleCenter;
-            _toolTip.SetToolTip(btnLowStockAlerts, "View low stock alerts");
+                // Draw icon circle background
+                using (SolidBrush iconBrush = new SolidBrush(accentColor))
+                using (System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath())
+                {
+                    path.AddEllipse(centerX - iconCircleSize / 2, iconCircleY, iconCircleSize, iconCircleSize);
+                    g.FillPath(iconBrush, path);
+                }
 
-            // ── Coupon Manager button ───────────────────────────────────────────
-            btnCouponManager.Text = "Coupon Manager";
-            btnCouponManager.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            btnCouponManager.BackColor = Color.FromArgb(168, 85, 247); // Purple
-            btnCouponManager.ForeColor = Color.White;
-            btnCouponManager.FlatStyle = FlatStyle.Flat;
-            btnCouponManager.FlatAppearance.BorderSize = 0;
-            btnCouponManager.TextAlign = ContentAlignment.MiddleCenter;
-            _toolTip.SetToolTip(btnCouponManager, "Manage coupons and discounts");
+                // Draw icon
+                using (Font iconFont = new Font("Segoe MDL2 Assets", iconSize))
+                using (SolidBrush iconTextBrush = new SolidBrush(Color.White))
+                {
+                    SizeF iconSizeF = g.MeasureString(icon, iconFont);
+                    g.DrawString(icon, iconFont, iconTextBrush, 
+                        centerX - iconSizeF.Width / 2, 
+                        iconCircleY + (iconCircleSize - iconSizeF.Height) / 2 - 2);
+                }
 
-            // ── POS button ─────────────────────────────────────────────────────
-            btnPOS.Text = "Point of Sale";
-            btnPOS.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            btnPOS.BackColor = Color.FromArgb(34, 197, 94); // Green
-            btnPOS.ForeColor = Color.White;
-            btnPOS.FlatStyle = FlatStyle.Flat;
-            btnPOS.FlatAppearance.BorderSize = 0;
-            btnPOS.TextAlign = ContentAlignment.MiddleCenter;
-            _toolTip.SetToolTip(btnPOS, "Open Point of Sale (POS)");
+                // Draw text
+                using (Font textFont = new Font("Segoe UI", 10F, FontStyle.Bold))
+                using (SolidBrush textBrush = new SolidBrush(clsFormTheme.TextPrimary))
+                {
+                    string text = tooltipText;
+                    SizeF textSize = g.MeasureString(text, textFont);
+                    g.DrawString(text, textFont, textBrush, 
+                        centerX - textSize.Width / 2, 
+                        iconCircleY + iconCircleSize + 10);
+                }
+            };
 
-            // ── Daily Report button ────────────────────────────────────────────
-            btnDailyReport.Text = "Daily Report";
-            btnDailyReport.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            btnDailyReport.BackColor = Color.FromArgb(249, 115, 22); // Orange
-            btnDailyReport.ForeColor = Color.White;
-            btnDailyReport.FlatStyle = FlatStyle.Flat;
-            btnDailyReport.FlatAppearance.BorderSize = 0;
-            btnDailyReport.TextAlign = ContentAlignment.MiddleCenter;
-            _toolTip.SetToolTip(btnDailyReport, "View today's sales report");
-
-            // ── Audit Logs button ──────────────────────────────────────────────
-            btnAuditLogs.Text = "Audit Logs";
-            btnAuditLogs.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            btnAuditLogs.BackColor = Color.FromArgb(79, 70, 229); // Indigo 600
-            btnAuditLogs.ForeColor = Color.White;
-            btnAuditLogs.FlatStyle = FlatStyle.Flat;
-            btnAuditLogs.FlatAppearance.BorderSize = 0;
-            btnAuditLogs.TextAlign = ContentAlignment.MiddleCenter;
-            _toolTip.SetToolTip(btnAuditLogs, "View system audit logs and activity trail");
-
-            // ── User Management button (Admin only) ───────────────────────────────
-            btnUserManagement.Text = "User Management";
-            btnUserManagement.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            btnUserManagement.BackColor = Color.FromArgb(20, 184, 166); // Teal
-            btnUserManagement.ForeColor = Color.White;
-            btnUserManagement.FlatStyle = FlatStyle.Flat;
-            btnUserManagement.FlatAppearance.BorderSize = 0;
-            btnUserManagement.TextAlign = ContentAlignment.MiddleCenter;
-            _toolTip.SetToolTip(btnUserManagement, "Manage system users and permissions");
-            // Check permission: ManageUsers
-            btnUserManagement.Visible = HasPermission(InventoryBusinessLayer.clsPermissions.ManageUsers);
-
-            // ── Customer Management button ───────────────────────────────────────
-            btnCustomerManagement.Text = "Customer Management";
-            btnCustomerManagement.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            btnCustomerManagement.BackColor = Color.FromArgb(236, 72, 153); // Pink
-            btnCustomerManagement.ForeColor = Color.White;
-            btnCustomerManagement.FlatStyle = FlatStyle.Flat;
-            btnCustomerManagement.FlatAppearance.BorderSize = 0;
-            btnCustomerManagement.TextAlign = ContentAlignment.MiddleCenter;
-            _toolTip.SetToolTip(btnCustomerManagement, "Manage customers and loyalty programs");
-            // Check permission: ManageCustomers
-            btnCustomerManagement.Visible = HasPermission(InventoryBusinessLayer.clsPermissions.ManageCustomers);
-
-            // ── Help button ────────────────────────────────────────────────────
-            btnHelp.Text = "Help";
-            btnHelp.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            btnHelp.BackColor = Color.FromArgb(107, 114, 128); // Gray
-            btnHelp.ForeColor = Color.White;
-            btnHelp.FlatStyle = FlatStyle.Flat;
-            btnHelp.FlatAppearance.BorderSize = 0;
-            btnHelp.TextAlign = ContentAlignment.MiddleCenter;
-            _toolTip.SetToolTip(btnHelp, "View help and keyboard shortcuts (F1)");
-
-            // ── Theme Toggle button - uncomment after adding to Designer ───────────
-            // btnThemeToggle.Text = clsFormTheme.IsDarkMode ? "Light Mode" : "Dark Mode";
-            // btnThemeToggle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
-            // btnThemeToggle.BackColor = Color.FromArgb(99, 102, 241); // Indigo
-            // btnThemeToggle.ForeColor = Color.White;
-            // btnThemeToggle.FlatStyle = FlatStyle.Flat;
-            // btnThemeToggle.FlatAppearance.BorderSize = 0;
-            // btnThemeToggle.TextAlign = ContentAlignment.MiddleCenter;
-            // _toolTip.SetToolTip(btnThemeToggle, "Toggle between light and dark theme");
-
-            KeyDown += frmMainMenu_KeyDown;
-            clsLanguageManager.ApplyLanguage(this);
-            EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
-            clsLanguageManager.LanguageChanged += onLanguageChanged;
-            FormClosed += (s, e) => clsLanguageManager.LanguageChanged -= onLanguageChanged;
-            // clsFormTheme.ThemeChanged += (s, e) => UpdateThemeButton();
-
-            clsAuditLog.LogAction("Application Started", "Inventory System main menu loaded", "System");
+            // Hover effect
+            btn.MouseEnter += (s, e) =>
+            {
+                btn.BackColor = clsFormTheme.FormBackColorAlt;
+            };
+            btn.MouseLeave += (s, e) =>
+            {
+                btn.BackColor = clsFormTheme.CardColor;
+            };
         }
 
         private void ApplyLocalization()
         {
             clsLanguageManager.ApplyLanguage(this);
-            btnCategories.Text = clsLanguageManager.GetString("Categories");
-            btnSuppliers.Text = clsLanguageManager.GetString("Suppliers");
-            btnProducts.Text = clsLanguageManager.GetString("Products");
-            btnReceiptSearch.Text = clsLanguageManager.GetString("Receipt Search");
-            btnPrintReceipt.Text = clsLanguageManager.GetString("Print Receipt");
-            btnDashboard.Text = clsLanguageManager.GetString("Dashboard");
-            btnAdvancedReports.Text = clsLanguageManager.GetString("Advanced Reports");
-            btnLowStockAlerts.Text = clsLanguageManager.GetString("Low Stock Alerts");
-            btnCouponManager.Text = clsLanguageManager.GetString("Coupon Manager");
-            btnPOS.Text = clsLanguageManager.GetString("Point of Sale");
-            btnDailyReport.Text = clsLanguageManager.GetString("Daily Report");
-            btnAuditLogs.Text = clsLanguageManager.GetString("Audit Logs");
-            btnUserManagement.Text = clsLanguageManager.GetString("User Management");
-            btnCustomerManagement.Text = clsLanguageManager.GetString("Customer Management");
-            btnHelp.Text = clsLanguageManager.GetString("Help");
+            // Note: Buttons use custom painting with icons, so text is set via StyleTile
+            // Localization for tooltips could be added here if needed
+        }
+
+        private void frmMainMenu_Load(object sender, EventArgs e)
+        {
+            ApplyLocalization();
+            ApplyRoleBasedAccess();
         }
 
         // ── Event handlers ─────────────────────────────────────────────────────
@@ -289,15 +194,7 @@ namespace InventoryManagementSystem
         private void btnCustomerManagement_Click(object sender, EventArgs e)
         {
             frmCustomerManagement frm = new frmCustomerManagement();
-            frm.Show();
-        }
-
-        private bool HasPermission(string permission)
-        {
-            if (clsUserManagement.CurrentUser == null)
-                return false;
-            
-            return InventoryBusinessLayer.clsPermissions.HasPermission(clsUserManagement.CurrentUser.UserID, permission);
+            frm.ShowDialog();
         }
 
         private void btnHelp_Click(object sender, EventArgs e)
@@ -322,36 +219,69 @@ namespace InventoryManagementSystem
         {
             if (e.KeyCode == Keys.Escape)
                 Close();
+            if (e.KeyCode == Keys.F1)
+            {
+                btnHelp_Click(sender, e);
+            }
         }
 
-        private void frmMainMenu_Load(object sender, EventArgs e)
-        {
-            ApplyLocalization();
-            // ApplyRoleBasedAccess(); // Uncomment after adding login functionality
-        }
-
-        // Role-based access control - uncomment after implementing login system
-        /*
+        // Role-based access control
         private void ApplyRoleBasedAccess()
         {
-            // If user is not logged in or is a cashier, hide admin-only buttons
-            if (clsUserManagement.CurrentUser == null || clsUserManagement.IsCashier)
+            // Only apply role restrictions if a user is logged in
+            // If no user is logged in, show all buttons (for testing/development)
+            if (clsUserManagement.CurrentUser == null)
             {
+                // No user logged in - show all buttons and sections
+                SetSectionVisibility(true, true, true, true);
+            }
+            else if (clsUserManagement.IsCashier)
+            {
+                // Cashiers only see POS (Sales section)
+                btnPOS.Visible = true;
+                btnReceiptSearch.Visible = false;
+                btnPrintReceipt.Visible = false;
+                
+                // Hide all other buttons
                 btnCategories.Visible = false;
                 btnSuppliers.Visible = false;
                 btnProducts.Visible = false;
-                btnReceiptSearch.Visible = false;
-                btnPrintReceipt.Visible = false;
+                btnCouponManager.Visible = false;
                 btnDashboard.Visible = false;
                 btnAdvancedReports.Visible = false;
                 btnLowStockAlerts.Visible = false;
-                btnCouponManager.Visible = false;
+                btnDailyReport.Visible = false;
                 btnAuditLogs.Visible = false;
-                btnHelp.Visible = false;
+                btnUserManagement.Visible = false;
+                btnCustomerManagement.Visible = false;
+                btnHelp.Visible = true;
 
-                // Cashiers only see POS
+                // Show only Sales section
+                SetSectionVisibility(true, false, false, false);
+            }
+            else if (clsUserManagement.IsManager)
+            {
+                // Managers see day-to-day operations but not system configuration
                 btnPOS.Visible = true;
-                btnDailyReport.Visible = false; // Cashiers shouldn't see reports
+                btnReceiptSearch.Visible = true;
+                btnPrintReceipt.Visible = true;
+                btnDashboard.Visible = true;
+                btnAdvancedReports.Visible = true;
+                btnDailyReport.Visible = true;
+                btnLowStockAlerts.Visible = true;
+                btnCategories.Visible = true;
+                btnSuppliers.Visible = true;
+                btnProducts.Visible = true;
+                btnCouponManager.Visible = true;
+                btnCustomerManagement.Visible = true;
+                btnAuditLogs.Visible = true;
+                btnHelp.Visible = true;
+                
+                // Managers cannot manage users
+                btnUserManagement.Visible = false;
+
+                // Show Sales, Catalog, Insights sections (Administration partial)
+                SetSectionVisibility(true, true, true, false);
             }
             else if (clsUserManagement.IsAdmin)
             {
@@ -368,14 +298,21 @@ namespace InventoryManagementSystem
                 btnPOS.Visible = true;
                 btnDailyReport.Visible = true;
                 btnAuditLogs.Visible = true;
+                btnUserManagement.Visible = true;
+                btnCustomerManagement.Visible = true;
                 btnHelp.Visible = true;
+
+                // Show all sections
+                SetSectionVisibility(true, true, true, true);
             }
         }
-        */
 
-        private void _buttonsPanel_Paint(object sender, PaintEventArgs e)
+        private void SetSectionVisibility(bool showSales, bool showCatalog, bool showInsights, bool showAdministration)
         {
-
+            _sectionSales.Visible = showSales;
+            _sectionCatalog.Visible = showCatalog;
+            _sectionInsights.Visible = showInsights;
+            _sectionAdministration.Visible = showAdministration;
         }
     }
 }

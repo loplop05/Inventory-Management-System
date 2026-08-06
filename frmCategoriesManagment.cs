@@ -200,6 +200,12 @@ namespace InventoryManagementSystem
         private async void frmCategoriesManagment_Load(object sender, EventArgs e)
         {
             await RefreshGridDataAsync();
+            
+            // Action-level permission check: Delete is Admin-only
+            if (!clsUserManagement.IsAdmin)
+            {
+                btnDeleteCategory.Visible = false;
+            }
         }
 
         private async void btnAddCategory_Click(object sender, EventArgs e)

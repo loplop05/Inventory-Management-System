@@ -57,6 +57,7 @@ namespace InventoryManagementSystem
             // this._txtSearch.PlaceholderText = "Search by phone or name...";
             this._txtSearch.Size = new System.Drawing.Size(250, 23);
             this._txtSearch.TabIndex = 0;
+            this._txtSearch.TextChanged += new System.EventHandler(this._txtSearch_TextChanged);
             // 
             // _btnRefresh
             // 
@@ -66,6 +67,7 @@ namespace InventoryManagementSystem
             this._btnRefresh.TabIndex = 1;
             this._btnRefresh.Text = "Refresh";
             this._btnRefresh.UseVisualStyleBackColor = true;
+            this._btnRefresh.Click += new System.EventHandler(this._btnRefresh_Click);
             // 
             // btnAddCustomer
             // 
@@ -75,6 +77,7 @@ namespace InventoryManagementSystem
             this.btnAddCustomer.TabIndex = 2;
             this.btnAddCustomer.Text = "Add";
             this.btnAddCustomer.UseVisualStyleBackColor = true;
+            this.btnAddCustomer.Click += new System.EventHandler(this.btnAddCustomer_Click);
             // 
             // btnEditCustomer
             // 
@@ -84,6 +87,7 @@ namespace InventoryManagementSystem
             this.btnEditCustomer.TabIndex = 3;
             this.btnEditCustomer.Text = "Edit";
             this.btnEditCustomer.UseVisualStyleBackColor = true;
+            this.btnEditCustomer.Click += new System.EventHandler(this.btnEditCustomer_Click);
             // 
             // btnDeleteCustomer
             // 
@@ -93,6 +97,7 @@ namespace InventoryManagementSystem
             this.btnDeleteCustomer.TabIndex = 4;
             this.btnDeleteCustomer.Text = "Delete";
             this.btnDeleteCustomer.UseVisualStyleBackColor = true;
+            this.btnDeleteCustomer.Click += new System.EventHandler(this.btnDeleteCustomer_Click);
             // 
             // btnViewDetails
             // 
@@ -102,6 +107,7 @@ namespace InventoryManagementSystem
             this.btnViewDetails.TabIndex = 5;
             this.btnViewDetails.Text = "View Details";
             this.btnViewDetails.UseVisualStyleBackColor = true;
+            this.btnViewDetails.Click += new System.EventHandler(this.btnViewDetails_Click);
             // 
             // _btnPreviousPage
             // 
@@ -111,6 +117,7 @@ namespace InventoryManagementSystem
             this._btnPreviousPage.TabIndex = 6;
             this._btnPreviousPage.Text = "Previous";
             this._btnPreviousPage.UseVisualStyleBackColor = true;
+            this._btnPreviousPage.Click += new System.EventHandler(this._btnPreviousPage_Click);
             // 
             // _btnNextPage
             // 
@@ -120,6 +127,7 @@ namespace InventoryManagementSystem
             this._btnNextPage.TabIndex = 7;
             this._btnNextPage.Text = "Next";
             this._btnNextPage.UseVisualStyleBackColor = true;
+            this._btnNextPage.Click += new System.EventHandler(this._btnNextPage_Click);
             // 
             // _lblPageInfo
             // 

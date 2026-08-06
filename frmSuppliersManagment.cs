@@ -200,6 +200,12 @@ namespace InventoryManagementSystem
         private async void frmSuppliersManagment_Load(object sender, EventArgs e)
         {
             await RefreshGridDataAsync();
+            
+            // Action-level permission check: Delete is Admin-only
+            if (!clsUserManagement.IsAdmin)
+            {
+                btnDeleteSupplier.Visible = false;
+            }
         }
 
         private async void btnAddSupplier_Click(object sender, EventArgs e)
