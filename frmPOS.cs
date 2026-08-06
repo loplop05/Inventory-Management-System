@@ -93,7 +93,9 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyTextBoxStyle(_txtSearch);
             clsFormTheme.ApplyTextBoxStyle(_txtCustomerPhone);
             clsFormTheme.ApplyTextBoxStyle(_txtPaymentDetails);
+            clsFormTheme.ApplyTextBoxStyle(_txtBarcode);
             clsFormTheme.ApplyPrimaryButtonStyle(_btnAddCustomer);
+            clsFormTheme.ApplyPrimaryButtonStyle(_btnAddByBarcode);
 
             // ── Toolbar buttons ────────────────────────────────────────────────
             clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh);
@@ -380,6 +382,59 @@ namespace InventoryManagementSystem
             }
 
             RefreshReceiptTotals();
+        }
+
+        private void _txtBarcode_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                AddProductByBarcode();
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void _btnAddByBarcode_Click(object sender, EventArgs e)
+        {
+            AddProductByBarcode();
+        }
+
+        private void AddProductByBarcode()
+        {
+            string barcode = _txtBarcode.Text.Trim();
+            if (string.IsNullOrWhiteSpace(barcode))
+            {
+                return;
+            }
+
+            DataRow[] matchingRows = _productsTable.AsEnumerable()
+                .Where(row => row["Barcode"].ToString().Equals(barcode, StringComparison.OrdinalIgnoreCase))
+                .ToArray();
+
+            if (matchingRows.Length == 0)
+            {
+                MessageBox.Show("Product not found with barcode: " + barcode, "Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                _txtBarcode.SelectAll();
+                _txtBarcode.Focus();
+                return;
+            }
+
+            DataRow productRow = matchingRows[0];
+            int productID = Convert.ToInt32(productRow["ProductID"]);
+            string productName = productRow["ProductName"].ToString();
+            decimal price = Convert.ToDecimal(productRow["Price"]);
+            int quantity = Convert.ToInt32(productRow["Quantity"]);
+
+            if (quantity <= 0)
+            {
+                MessageBox.Show("Product is out of stock: " + productName, "Out of Stock", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                _txtBarcode.SelectAll();
+                _txtBarcode.Focus();
+                return;
+            }
+
+            AddToReceipt(productID, productName, price, quantity);
+            _txtBarcode.Clear();
+            _txtBarcode.Focus();
         }
 
         private void RefreshReceiptTotals()
