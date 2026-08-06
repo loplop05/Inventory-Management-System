@@ -321,6 +321,9 @@
     <EmbeddedResource Include="frmDailyReport.resx">
       <DependentUpon>frmDailyReport.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmDashboard.resx">
+      <DependentUpon>frmDashboard.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmDeleteCategory.resx">
       <DependentUpon>frmDeleteCategory.cs</DependentUpon>
     </EmbeddedResource>

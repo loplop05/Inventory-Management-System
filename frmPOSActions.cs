@@ -164,6 +164,83 @@ namespace InventoryManagementSystem
             }
         }
 
+        private void _btnRedeemPoints_Click(object sender, EventArgs e)
+        {
+            if (ReceiptItems == null || GetReceiptItemsCount() == 0)
+            {
+                MessageBox.Show("Receipt is empty.", "Loyalty", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (SelectedCustomerID == null || !SelectedCustomerID.HasValue)
+            {
+                MessageBox.Show("Please select a customer first to redeem loyalty points.", "Loyalty", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Get customer loyalty info
+            string errorMessage;
+            var loyaltyInfo = clsLoyalty.GetCustomerLoyaltyInfo(SelectedCustomerID.Value, out errorMessage);
+            if (loyaltyInfo == null)
+            {
+                MessageBox.Show("Could not retrieve loyalty information: " + errorMessage, "Loyalty", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            DataRow row = loyaltyInfo.Rows[0];
+            int availablePoints = row["LoyaltyPoints"] != DBNull.Value ? Convert.ToInt32(row["LoyaltyPoints"]) : 0;
+            decimal discountAvailable = row["DiscountAvailable"] != DBNull.Value ? Convert.ToDecimal(row["DiscountAvailable"]) : 0;
+
+            if (availablePoints < 100)
+            {
+                MessageBox.Show("Customer needs at least 100 points to redeem. Current points: " + availablePoints, "Loyalty", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Ask how many points to redeem
+            using (frmInputBox inputForm = new frmInputBox($"Enter points to redeem (100-{availablePoints}, 100 pts = $1):", "Redeem Points"))
+            {
+                if (inputForm.ShowDialog(this) != DialogResult.OK || string.IsNullOrWhiteSpace(inputForm.InputValue))
+                    return;
+
+                if (!int.TryParse(inputForm.InputValue, out int pointsToRedeem))
+                {
+                    MessageBox.Show("Please enter a valid number of points.", "Loyalty", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (pointsToRedeem < 100)
+                {
+                    MessageBox.Show("Minimum redemption is 100 points.", "Loyalty", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (pointsToRedeem > availablePoints)
+                {
+                    MessageBox.Show($"Insufficient points. Available: {availablePoints}", "Loyalty", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Redeem points
+                decimal discountAmount;
+                bool success = clsLoyalty.RedeemPoints(SelectedCustomerID.Value, pointsToRedeem, out discountAmount, out errorMessage);
+                if (!success)
+                {
+                    MessageBox.Show("Failed to redeem points: " + errorMessage, "Loyalty", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // Clear any existing discounts when redeeming points
+                ClearDiscounts?.Invoke();
+
+                // Apply the loyalty discount
+                ApplyCoupon?.Invoke("Loyalty: " + pointsToRedeem + " pts", discountAmount);
+
+                MessageBox.Show($"Points redeemed! Discount: {discountAmount:C2}", "Success",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
         private void _btnVoidItem_Click(object sender, EventArgs e)
         {
             if (ReceiptGrid == null || ReceiptGrid.CurrentRow == null)

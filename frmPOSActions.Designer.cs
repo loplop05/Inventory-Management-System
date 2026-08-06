@@ -20,6 +20,7 @@ namespace InventoryManagementSystem
             this._buttonsPanel = new System.Windows.Forms.TableLayoutPanel();
             this._btnAddDiscount = new System.Windows.Forms.Button();
             this._btnApplyCoupon = new System.Windows.Forms.Button();
+            this._btnRedeemPoints = new System.Windows.Forms.Button();
             this._btnVoidItem = new System.Windows.Forms.Button();
             this._btnVoidOrder = new System.Windows.Forms.Button();
             this._btnHoldOrder = new System.Windows.Forms.Button();
@@ -62,11 +63,12 @@ namespace InventoryManagementSystem
             this._buttonsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this._buttonsPanel.Controls.Add(this._btnAddDiscount, 0, 0);
             this._buttonsPanel.Controls.Add(this._btnApplyCoupon, 1, 0);
-            this._buttonsPanel.Controls.Add(this._btnVoidItem, 0, 1);
-            this._buttonsPanel.Controls.Add(this._btnVoidOrder, 1, 1);
-            this._buttonsPanel.Controls.Add(this._btnHoldOrder, 0, 2);
-            this._buttonsPanel.Controls.Add(this._btnRetrieveHeld, 1, 2);
-            this._buttonsPanel.Controls.Add(this._btnClose, 0, 3);
+            this._buttonsPanel.Controls.Add(this._btnRedeemPoints, 0, 1);
+            this._buttonsPanel.Controls.Add(this._btnVoidItem, 1, 1);
+            this._buttonsPanel.Controls.Add(this._btnVoidOrder, 0, 2);
+            this._buttonsPanel.Controls.Add(this._btnHoldOrder, 1, 2);
+            this._buttonsPanel.Controls.Add(this._btnRetrieveHeld, 0, 3);
+            this._buttonsPanel.Controls.Add(this._btnClose, 1, 3);
             this._buttonsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._buttonsPanel.Location = new System.Drawing.Point(3, 70);
             this._buttonsPanel.Name = "_buttonsPanel";
@@ -103,14 +105,26 @@ namespace InventoryManagementSystem
             this._btnApplyCoupon.UseVisualStyleBackColor = true;
             this._btnApplyCoupon.Click += new System.EventHandler(this._btnApplyCoupon_Click);
             // 
+            // _btnRedeemPoints
+            // 
+            this._btnRedeemPoints.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._btnRedeemPoints.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this._btnRedeemPoints.Location = new System.Drawing.Point(18, 130);
+            this._btnRedeemPoints.Name = "_btnRedeemPoints";
+            this._btnRedeemPoints.Size = new System.Drawing.Size(221, 94);
+            this._btnRedeemPoints.TabIndex = 2;
+            this._btnRedeemPoints.Text = "Redeem Points";
+            this._btnRedeemPoints.UseVisualStyleBackColor = true;
+            this._btnRedeemPoints.Click += new System.EventHandler(this._btnRedeemPoints_Click);
+            // 
             // _btnVoidItem
             // 
             this._btnVoidItem.Dock = System.Windows.Forms.DockStyle.Fill;
             this._btnVoidItem.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._btnVoidItem.Location = new System.Drawing.Point(18, 130);
+            this._btnVoidItem.Location = new System.Drawing.Point(255, 130);
             this._btnVoidItem.Name = "_btnVoidItem";
             this._btnVoidItem.Size = new System.Drawing.Size(221, 94);
-            this._btnVoidItem.TabIndex = 2;
+            this._btnVoidItem.TabIndex = 3;
             this._btnVoidItem.Text = "Void Item";
             this._btnVoidItem.UseVisualStyleBackColor = true;
             this._btnVoidItem.Click += new System.EventHandler(this._btnVoidItem_Click);
@@ -119,10 +133,10 @@ namespace InventoryManagementSystem
             // 
             this._btnVoidOrder.Dock = System.Windows.Forms.DockStyle.Fill;
             this._btnVoidOrder.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._btnVoidOrder.Location = new System.Drawing.Point(255, 130);
+            this._btnVoidOrder.Location = new System.Drawing.Point(18, 242);
             this._btnVoidOrder.Name = "_btnVoidOrder";
             this._btnVoidOrder.Size = new System.Drawing.Size(221, 94);
-            this._btnVoidOrder.TabIndex = 3;
+            this._btnVoidOrder.TabIndex = 4;
             this._btnVoidOrder.Text = "Void Order";
             this._btnVoidOrder.UseVisualStyleBackColor = true;
             this._btnVoidOrder.Click += new System.EventHandler(this._btnVoidOrder_Click);
@@ -131,10 +145,10 @@ namespace InventoryManagementSystem
             // 
             this._btnHoldOrder.Dock = System.Windows.Forms.DockStyle.Fill;
             this._btnHoldOrder.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._btnHoldOrder.Location = new System.Drawing.Point(18, 242);
+            this._btnHoldOrder.Location = new System.Drawing.Point(255, 242);
             this._btnHoldOrder.Name = "_btnHoldOrder";
             this._btnHoldOrder.Size = new System.Drawing.Size(221, 94);
-            this._btnHoldOrder.TabIndex = 4;
+            this._btnHoldOrder.TabIndex = 5;
             this._btnHoldOrder.Text = "Hold Order";
             this._btnHoldOrder.UseVisualStyleBackColor = true;
             this._btnHoldOrder.Click += new System.EventHandler(this._btnHoldOrder_Click);
@@ -143,10 +157,10 @@ namespace InventoryManagementSystem
             // 
             this._btnRetrieveHeld.Dock = System.Windows.Forms.DockStyle.Fill;
             this._btnRetrieveHeld.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._btnRetrieveHeld.Location = new System.Drawing.Point(255, 242);
+            this._btnRetrieveHeld.Location = new System.Drawing.Point(18, 354);
             this._btnRetrieveHeld.Name = "_btnRetrieveHeld";
             this._btnRetrieveHeld.Size = new System.Drawing.Size(221, 94);
-            this._btnRetrieveHeld.TabIndex = 5;
+            this._btnRetrieveHeld.TabIndex = 6;
             this._btnRetrieveHeld.Text = "Retrieve Held";
             this._btnRetrieveHeld.UseVisualStyleBackColor = true;
             this._btnRetrieveHeld.Click += new System.EventHandler(this._btnRetrieveHeld_Click);
@@ -155,10 +169,10 @@ namespace InventoryManagementSystem
             // 
             this._btnClose.Dock = System.Windows.Forms.DockStyle.Fill;
             this._btnClose.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._btnClose.Location = new System.Drawing.Point(18, 354);
+            this._btnClose.Location = new System.Drawing.Point(255, 354);
             this._btnClose.Name = "_btnClose";
             this._btnClose.Size = new System.Drawing.Size(221, 94);
-            this._btnClose.TabIndex = 6;
+            this._btnClose.TabIndex = 7;
             this._btnClose.Text = "Close";
             this._btnClose.UseVisualStyleBackColor = true;
             this._btnClose.Click += new System.EventHandler(this._btnClose_Click);
@@ -188,6 +202,7 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.TableLayoutPanel _buttonsPanel;
         private System.Windows.Forms.Button _btnAddDiscount;
         private System.Windows.Forms.Button _btnApplyCoupon;
+        private System.Windows.Forms.Button _btnRedeemPoints;
         private System.Windows.Forms.Button _btnVoidItem;
         private System.Windows.Forms.Button _btnVoidOrder;
         private System.Windows.Forms.Button _btnHoldOrder;

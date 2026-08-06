@@ -612,7 +612,13 @@ namespace InventoryManagementSystem
             {
                 _selectedCustomerID = Convert.ToInt32(customer.Rows[0]["CustomerID"]);
                 _selectedCustomerName = customer.Rows[0]["CustomerName"].ToString();
-                _lblCustomerName.Text = _selectedCustomerName;
+                
+                // Get loyalty information
+                int loyaltyPoints = customer.Rows[0]["LoyaltyPoints"] != DBNull.Value ? Convert.ToInt32(customer.Rows[0]["LoyaltyPoints"]) : 0;
+                string tier = customer.Rows[0]["Tier"] != DBNull.Value ? customer.Rows[0]["Tier"].ToString() : "Bronze";
+                decimal discountAvailable = clsLoyalty.CalculateDiscountFromPoints(loyaltyPoints);
+                
+                _lblCustomerName.Text = _selectedCustomerName + " | " + tier + " | " + loyaltyPoints + " pts ($" + discountAvailable.ToString("F2") + ")";
                 _lblCustomerName.ForeColor = Color.FromArgb(44, 62, 80);
                 _btnAddCustomer.Text = "Change";
             }

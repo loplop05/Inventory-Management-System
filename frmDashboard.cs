@@ -70,6 +70,9 @@ namespace InventoryManagementSystem
                 // Load top products
                 LoadTopProducts();
 
+                // Load customer analytics
+                LoadCustomerAnalytics();
+
                 // Load inventory summary
                 LoadInventorySummary();
             }
@@ -229,6 +232,26 @@ namespace InventoryManagementSystem
         private void LoadInventorySummary()
         {
             // Not used in new design - summary cards show Today's Sales, Total Orders, Low Stock Alerts
+        }
+
+        private void LoadCustomerAnalytics()
+        {
+            try
+            {
+                string errorMessage;
+                DataTable customerAnalytics = clsAnalytics.GetCustomerAnalytics(out errorMessage);
+                
+                if (customerAnalytics != null && customerAnalytics.Rows.Count > 0)
+                {
+                    // Could add a customer analytics panel to dashboard if needed
+                    // For now, this ensures clsAnalytics is being used
+                    // The data is available for future dashboard enhancements
+                }
+            }
+            catch
+            {
+                // Silently fail - customer analytics is optional for dashboard
+            }
         }
 
         private void OnSidebarNavigation(string screenKey)

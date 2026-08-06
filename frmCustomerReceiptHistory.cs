@@ -101,7 +101,14 @@ namespace InventoryManagementSystem
 
             _currentCustomerID = Convert.ToInt32(customer.Rows[0]["CustomerID"]);
             string customerName = customer.Rows[0]["CustomerName"].ToString();
-            lblCustomerName.Text = "Customer: " + customerName;
+            
+            // Get loyalty information
+            int loyaltyPoints = customer.Rows[0]["LoyaltyPoints"] != DBNull.Value ? Convert.ToInt32(customer.Rows[0]["LoyaltyPoints"]) : 0;
+            string tier = customer.Rows[0]["Tier"] != DBNull.Value ? customer.Rows[0]["Tier"].ToString() : "Bronze";
+            decimal totalSpent = customer.Rows[0]["TotalSpent"] != DBNull.Value ? Convert.ToDecimal(customer.Rows[0]["TotalSpent"]) : 0;
+            decimal discountAvailable = clsLoyalty.CalculateDiscountFromPoints(loyaltyPoints);
+            
+            lblCustomerName.Text = "Customer: " + customerName + " | " + tier + " | " + loyaltyPoints + " pts ($" + discountAvailable.ToString("F2") + ") | Spent: $" + totalSpent.ToString("F2");
 
             LoadCustomerOrders(_currentCustomerID.Value);
         }
