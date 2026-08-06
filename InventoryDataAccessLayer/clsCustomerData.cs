@@ -650,5 +650,84 @@ namespace InventoryDataAccessLayer
 
             return dt;
         }
+
+        public static DataTable GetCustomerCountByTier(out string errorMessage)
+        {
+            errorMessage = "";
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    EnsureLoyaltyColumns(connection);
+
+                    string query = @"
+                        SELECT Tier, COUNT(*) AS CustomerCount
+                        FROM Customers
+                        GROUP BY Tier
+                        ORDER BY CASE 
+                            WHEN Tier = 'Platinum' THEN 1
+                            WHEN Tier = 'Gold' THEN 2
+                            WHEN Tier = 'Silver' THEN 3
+                            WHEN Tier = 'Bronze' THEN 4
+                            ELSE 5
+                        END";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            dt.Load(reader);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = ex.Message;
+                    clsErrorLog.LogException("clsCustomerData.GetCustomerCountByTier", ex);
+                }
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetTopLoyaltyMembers(int topN, out string errorMessage)
+        {
+            errorMessage = "";
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    EnsureLoyaltyColumns(connection);
+
+                    string query = @"
+                        SELECT TOP (@TopN) CustomerID, CustomerName, PhoneNumber, LoyaltyPoints, TotalSpent, Tier
+                        FROM Customers
+                        WHERE LoyaltyPoints > 0
+                        ORDER BY TotalSpent DESC";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@TopN", topN);
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            dt.Load(reader);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = ex.Message;
+                    clsErrorLog.LogException("clsCustomerData.GetTopLoyaltyMembers", ex);
+                }
+            }
+
+            return dt;
+        }
     }
 }

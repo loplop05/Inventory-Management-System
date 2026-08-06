@@ -221,5 +221,15 @@ namespace InventoryBusinessLayer
                 return false;
             }
         }
+
+        public static DataTable GetCustomerCountByTier(out string errorMessage)
+        {
+            return clsCustomer.GetCustomerCountByTier(out errorMessage);
+        }
+
+        public static DataTable GetTopLoyaltyMembers(int topN, out string errorMessage)
+        {
+            return clsCustomer.GetTopLoyaltyMembers(topN, out errorMessage);
+        }
     }
 }
