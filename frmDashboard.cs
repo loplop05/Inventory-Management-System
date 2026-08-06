@@ -15,6 +15,7 @@ namespace InventoryManagementSystem
         private Dictionary<int, decimal> _hourlySalesData;
         private Dictionary<string, decimal> _categoryData;
         private Dictionary<string, decimal> _paymentData;
+        private Dictionary<string, int> _loyaltyTierData;
 
         public frmDashboard()
         {
@@ -65,11 +66,16 @@ namespace InventoryManagementSystem
             _btnSectionOverview.Click += (s, e) => SwitchSection("Overview");
             _btnSectionSales.Click += (s, e) => SwitchSection("Sales");
             _btnSectionInventory.Click += (s, e) => SwitchSection("Inventory");
+            _btnSectionCustomers.Click += (s, e) => SwitchSection("Customers");
 
             // Apply pill toggle styling
             clsFormTheme.ApplyPillToggleStyle(_btnSectionOverview, true);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionSales, false);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionInventory, false);
+            clsFormTheme.ApplyPillToggleStyle(_btnSectionCustomers, false);
+
+            // Wire up loyalty chart paint event
+            pnlLoyaltyChart.Paint += pnlLoyaltyChart_Paint;
         }
 
         private void ApplyLocalization()
@@ -108,6 +114,15 @@ namespace InventoryManagementSystem
 
                 // Load low stock products for inventory section
                 LoadLowStockProducts();
+
+                // Load loyalty analytics for customers section
+                LoadLoyaltyAnalytics();
+
+                // Load customer analytics for customers section
+                LoadCustomerAnalytics();
+
+                // Load profit margin for customers section
+                LoadProfitMargin();
             }
             catch (Exception ex)
             {
@@ -121,11 +136,13 @@ namespace InventoryManagementSystem
             _pnlSectionOverview.Visible = false;
             _pnlSectionSales.Visible = false;
             _pnlSectionInventory.Visible = false;
+            _pnlSectionCustomers.Visible = false;
 
             // Reset all button styles
             clsFormTheme.ApplyPillToggleStyle(_btnSectionOverview, false);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionSales, false);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionInventory, false);
+            clsFormTheme.ApplyPillToggleStyle(_btnSectionCustomers, false);
 
             // Show selected section and style button
             switch (section)
@@ -141,6 +158,10 @@ namespace InventoryManagementSystem
                 case "Inventory":
                     _pnlSectionInventory.Visible = true;
                     clsFormTheme.ApplyPillToggleStyle(_btnSectionInventory, true);
+                    break;
+                case "Customers":
+                    _pnlSectionCustomers.Visible = true;
+                    clsFormTheme.ApplyPillToggleStyle(_btnSectionCustomers, true);
                     break;
             }
         }
@@ -310,26 +331,6 @@ namespace InventoryManagementSystem
         private void LoadInventorySummary()
         {
             // Not used in new design - summary cards show Today's Sales, Total Orders, Low Stock Alerts
-        }
-
-        private void LoadCustomerAnalytics()
-        {
-            try
-            {
-                string errorMessage;
-                DataTable customerAnalytics = clsAnalytics.GetCustomerAnalytics(out errorMessage);
-                
-                if (customerAnalytics != null && customerAnalytics.Rows.Count > 0)
-                {
-                    // Could add a customer analytics panel to dashboard if needed
-                    // For now, this ensures clsAnalytics is being used
-                    // The data is available for future dashboard enhancements
-                }
-            }
-            catch
-            {
-                // Silently fail - customer analytics is optional for dashboard
-            }
         }
 
         private void LoadSparklineData()
@@ -673,6 +674,194 @@ namespace InventoryManagementSystem
             catch
             {
                 gridLowStockProducts.DataSource = null;
+            }
+        }
+
+        private void LoadLoyaltyAnalytics()
+        {
+            try
+            {
+                string errorMessage;
+                DataTable tierData = clsCustomer.GetCustomerCountByTier(out errorMessage);
+                
+                if (tierData != null && tierData.Rows.Count > 0)
+                {
+                    _loyaltyTierData = new Dictionary<string, int>();
+                    
+                    foreach (DataRow row in tierData.Rows)
+                    {
+                        string tier = row["Tier"].ToString();
+                        int count = Convert.ToInt32(row["CustomerCount"]);
+                        _loyaltyTierData[tier] = count;
+                    }
+                }
+                else
+                {
+                    _loyaltyTierData = new Dictionary<string, int>();
+                }
+                
+                pnlLoyaltyChart.Invalidate();
+                
+                // Load top loyalty members
+                DataTable topMembers = clsCustomer.GetTopLoyaltyMembers(5, out errorMessage);
+                if (topMembers != null && topMembers.Rows.Count > 0)
+                {
+                    gridTopLoyaltyMembers.DataSource = topMembers;
+                    gridTopLoyaltyMembers.Columns["CustomerID"].Visible = false;
+                    gridTopLoyaltyMembers.Columns["PhoneNumber"].Visible = false;
+                    gridTopLoyaltyMembers.Columns["CustomerName"].HeaderText = "Name";
+                    gridTopLoyaltyMembers.Columns["LoyaltyPoints"].HeaderText = "Points";
+                    gridTopLoyaltyMembers.Columns["TotalSpent"].HeaderText = "Total Spent";
+                    gridTopLoyaltyMembers.Columns["Tier"].HeaderText = "Tier";
+                }
+            }
+            catch
+            {
+                _loyaltyTierData = new Dictionary<string, int>();
+            }
+        }
+
+        private void LoadCustomerAnalytics()
+        {
+            try
+            {
+                string errorMessage;
+                DataTable customerData = clsAnalytics.GetCustomerAnalytics(out errorMessage);
+                
+                if (customerData != null && customerData.Rows.Count > 0)
+                {
+                    gridCustomerAnalytics.DataSource = customerData;
+                    gridCustomerAnalytics.Columns["CustomerID"].Visible = false;
+                    gridCustomerAnalytics.Columns["CustomerName"].HeaderText = "Name";
+                    gridCustomerAnalytics.Columns["PhoneNumber"].HeaderText = "Phone";
+                    gridCustomerAnalytics.Columns["LoyaltyPoints"].HeaderText = "Points";
+                    gridCustomerAnalytics.Columns["TotalSpent"].HeaderText = "Total Spent";
+                    gridCustomerAnalytics.Columns["Tier"].HeaderText = "Tier";
+                    gridCustomerAnalytics.Columns["OrderCount"].HeaderText = "Orders";
+                    gridCustomerAnalytics.Columns["LastPurchaseDate"].HeaderText = "Last Purchase";
+                }
+                else
+                {
+                    gridCustomerAnalytics.DataSource = null;
+                }
+            }
+            catch
+            {
+                gridCustomerAnalytics.DataSource = null;
+            }
+        }
+
+        private void LoadProfitMargin()
+        {
+            try
+            {
+                string errorMessage;
+                DateTime startDate = DateTime.Today.AddDays(-7);
+                DateTime endDate = DateTime.Today;
+                DataTable profitData = clsAnalytics.GetProfitMargin(startDate, endDate, out errorMessage);
+                
+                if (profitData != null && profitData.Rows.Count > 0)
+                {
+                    // Check if cost data is populated (CostPrice should not be null or 0 for all rows)
+                    bool hasCostData = false;
+                    foreach (DataRow row in profitData.Rows)
+                    {
+                        if (row["CostPrice"] != DBNull.Value && Convert.ToDecimal(row["CostPrice"]) > 0)
+                        {
+                            hasCostData = true;
+                            break;
+                        }
+                    }
+                    
+                    if (hasCostData)
+                    {
+                        // Calculate overall profit margin
+                        decimal totalRevenue = 0;
+                        decimal totalCost = 0;
+                        
+                        foreach (DataRow row in profitData.Rows)
+                        {
+                            if (row["TotalRevenue"] != DBNull.Value)
+                                totalRevenue += Convert.ToDecimal(row["TotalRevenue"]);
+                            if (row["TotalCost"] != DBNull.Value)
+                                totalCost += Convert.ToDecimal(row["TotalCost"]);
+                        }
+                        
+                        decimal profitMargin = totalRevenue > 0 ? ((totalRevenue - totalCost) / totalRevenue) * 100 : 0;
+                        lblProfitMargin.Text = "Profit Margin: " + profitMargin.ToString("F1") + "%";
+                    }
+                    else
+                    {
+                        lblProfitMargin.Text = "Cost data not populated";
+                        lblProfitMargin.ForeColor = Color.FromArgb(148, 163, 184);
+                    }
+                }
+                else
+                {
+                    lblProfitMargin.Text = "No sales data";
+                    lblProfitMargin.ForeColor = Color.FromArgb(148, 163, 184);
+                }
+            }
+            catch
+            {
+                lblProfitMargin.Text = "Cost data not populated";
+                lblProfitMargin.ForeColor = Color.FromArgb(148, 163, 184);
+            }
+        }
+
+        private void pnlLoyaltyChart_Paint(object sender, PaintEventArgs e)
+        {
+            if (_loyaltyTierData == null || _loyaltyTierData.Count == 0)
+                return;
+            
+            DrawPieChart(e.Graphics, pnlLoyaltyChart.ClientSize, _loyaltyTierData);
+        }
+
+        private void DrawPieChart(Graphics g, Size size, Dictionary<string, int> data)
+        {
+            if (data == null || data.Count == 0)
+                return;
+            
+            int total = data.Values.Sum();
+            if (total == 0) return;
+            
+            float centerX = size.Width / 2f;
+            float centerY = size.Height / 2f;
+            float radius = Math.Min(size.Width, size.Height) / 2f - 5;
+            
+            Color[] colors = new Color[]
+            {
+                Color.FromArgb(37, 99, 235),   // Blue
+                Color.FromArgb(34, 197, 94),   // Green
+                Color.FromArgb(234, 179, 8),  // Yellow
+                Color.FromArgb(168, 85, 247)   // Purple
+            };
+            
+            float startAngle = 0;
+            int colorIndex = 0;
+            
+            using (Font font = new Font("Segoe UI", 8))
+            using (Brush textBrush = new SolidBrush(Color.FromArgb(44, 62, 80)))
+            {
+                foreach (var kvp in data)
+                {
+                    float sweepAngle = (float)kvp.Value / total * 360;
+                    
+                    using (Brush brush = new SolidBrush(colors[colorIndex % colors.Length]))
+                    {
+                        g.FillPie(brush, centerX - radius, centerY - radius, radius * 2, radius * 2, startAngle, sweepAngle);
+                    }
+                    
+                    // Draw legend
+                    float legendX = 5;
+                    float legendY = 5 + colorIndex * 20;
+                    g.FillRectangle(new SolidBrush(colors[colorIndex % colors.Length]), legendX, legendY, 12, 12);
+                    string label = kvp.Key + " (" + kvp.Value + ")";
+                    g.DrawString(label, font, textBrush, legendX + 16, legendY);
+                    
+                    startAngle += sweepAngle;
+                    colorIndex++;
+                }
             }
         }
 
