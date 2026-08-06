@@ -693,6 +693,62 @@ namespace InventoryDataAccessLayer
             return dt;
         }
 
+        public static bool UpdateCustomerReferrer(int customerID, int referrerID, out string errorMessage)
+        {
+            errorMessage = "";
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    EnsureReferralColumn(connection);
+
+                    string query = "UPDATE Customers SET ReferredBy = @ReferrerID WHERE CustomerID = @CustomerID";
+
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@CustomerID", customerID);
+                        command.Parameters.AddWithValue("@ReferrerID", referrerID);
+                        command.ExecuteNonQuery();
+                    }
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = ex.Message;
+                    clsErrorLog.LogException("clsCustomerData.UpdateCustomerReferrer", ex);
+                    return false;
+                }
+            }
+        }
+
+        private static void EnsureReferralColumn(SqlConnection connection)
+        {
+            // Check if ReferredBy column exists
+            string checkQuery = @"
+                SELECT COUNT(*) 
+                FROM sys.columns 
+                WHERE object_id = OBJECT_ID('Customers') 
+                AND name = 'ReferredBy'";
+
+            using (SqlCommand command = new SqlCommand(checkQuery, connection))
+            {
+                int columnExists = Convert.ToInt32(command.ExecuteScalar());
+
+                if (columnExists == 0)
+                {
+                    // Add ReferredBy column
+                    string alterQuery = "ALTER TABLE Customers ADD ReferredBy INT NULL";
+                    using (SqlCommand alterCmd = new SqlCommand(alterQuery, connection))
+                    {
+                        alterCmd.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
         public static DataTable GetTopLoyaltyMembers(int topN, out string errorMessage)
         {
             errorMessage = "";

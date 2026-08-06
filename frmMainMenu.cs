@@ -144,8 +144,20 @@ namespace InventoryManagementSystem
             btnUserManagement.FlatAppearance.BorderSize = 0;
             btnUserManagement.TextAlign = ContentAlignment.MiddleCenter;
             _toolTip.SetToolTip(btnUserManagement, "Manage system users and permissions");
-            // Temporarily always visible for testing - change back to clsUserManagement.IsAdmin after testing
-            btnUserManagement.Visible = true;
+            // Check permission: ManageUsers
+            btnUserManagement.Visible = HasPermission(InventoryBusinessLayer.clsPermissions.ManageUsers);
+
+            // ── Customer Management button ───────────────────────────────────────
+            btnCustomerManagement.Text = "Customer Management";
+            btnCustomerManagement.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            btnCustomerManagement.BackColor = Color.FromArgb(236, 72, 153); // Pink
+            btnCustomerManagement.ForeColor = Color.White;
+            btnCustomerManagement.FlatStyle = FlatStyle.Flat;
+            btnCustomerManagement.FlatAppearance.BorderSize = 0;
+            btnCustomerManagement.TextAlign = ContentAlignment.MiddleCenter;
+            _toolTip.SetToolTip(btnCustomerManagement, "Manage customers and loyalty programs");
+            // Check permission: ManageCustomers
+            btnCustomerManagement.Visible = HasPermission(InventoryBusinessLayer.clsPermissions.ManageCustomers);
 
             // ── Help button ────────────────────────────────────────────────────
             btnHelp.Text = "Help";
@@ -193,6 +205,7 @@ namespace InventoryManagementSystem
             btnDailyReport.Text = clsLanguageManager.GetString("Daily Report");
             btnAuditLogs.Text = clsLanguageManager.GetString("Audit Logs");
             btnUserManagement.Text = clsLanguageManager.GetString("User Management");
+            btnCustomerManagement.Text = clsLanguageManager.GetString("Customer Management");
             btnHelp.Text = clsLanguageManager.GetString("Help");
         }
 
@@ -271,6 +284,20 @@ namespace InventoryManagementSystem
         {
             frmUserManagement frm = new frmUserManagement();
             frm.Show();
+        }
+
+        private void btnCustomerManagement_Click(object sender, EventArgs e)
+        {
+            frmCustomerManagement frm = new frmCustomerManagement();
+            frm.Show();
+        }
+
+        private bool HasPermission(string permission)
+        {
+            if (clsUserManagement.CurrentUser == null)
+                return false;
+            
+            return InventoryBusinessLayer.clsPermissions.HasPermission(clsUserManagement.CurrentUser.UserID, permission);
         }
 
         private void btnHelp_Click(object sender, EventArgs e)

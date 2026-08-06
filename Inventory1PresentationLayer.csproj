@@ -274,6 +274,36 @@
     <Compile Include="frmAddCustomerPOS.Designer.cs">
       <DependentUpon>frmAddCustomerPOS.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmCustomerManagement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCustomerManagement.Designer.cs">
+      <DependentUpon>frmCustomerManagement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAddEditCustomer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAddEditCustomer.Designer.cs">
+      <DependentUpon>frmAddEditCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmCustomerDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmCustomerDetails.Designer.cs">
+      <DependentUpon>frmCustomerDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmAdjustPoints.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmAdjustPoints.Designer.cs">
+      <DependentUpon>frmAdjustPoints.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmManagePermissions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmManagePermissions.Designer.cs">
+      <DependentUpon>frmManagePermissions.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmHeldOrders.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -403,6 +433,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmAddCustomerPOS.resx">
       <DependentUpon>frmAddCustomerPOS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCustomerManagement.resx">
+      <DependentUpon>frmCustomerManagement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAddEditCustomer.resx">
+      <DependentUpon>frmAddEditCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmCustomerDetails.resx">
+      <DependentUpon>frmCustomerDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmAdjustPoints.resx">
+      <DependentUpon>frmAdjustPoints.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmHeldOrders.resx">
       <DependentUpon>frmHeldOrders.cs</DependentUpon>

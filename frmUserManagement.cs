@@ -48,6 +48,10 @@ namespace InventoryManagementSystem
             btnChangePassword.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplySecondaryButtonStyle(btnChangePassword, clsFormTheme.Icons.Refresh);
 
+            btnManagePermissions.Text = "Permissions";
+            btnManagePermissions.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
+            clsFormTheme.ApplyPrimaryButtonStyle(btnManagePermissions, clsFormTheme.Icons.User);
+
             _btnRefresh.Text = "Refresh";
             _btnRefresh.Font = new Font(clsFormTheme.MainFontName, 11F);
             clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh, clsFormTheme.Icons.Refresh);
@@ -81,6 +85,7 @@ namespace InventoryManagementSystem
             btnEditUser.Text = clsLanguageManager.GetString("Edit");
             btnDeactivateUser.Text = clsLanguageManager.GetString("Deactivate");
             btnChangePassword.Text = clsLanguageManager.GetString("Change Password");
+            btnManagePermissions.Text = clsLanguageManager.GetString("Permissions");
             _btnRefresh.Text = clsLanguageManager.GetString("Refresh");
             _btnPreviousPage.Text = clsLanguageManager.GetString("Previous");
             _btnNextPage.Text = clsLanguageManager.GetString("Next");
@@ -295,10 +300,26 @@ namespace InventoryManagementSystem
 
             using (var form = new frmChangePassword(userID, displayName))
             {
-                if (form.ShowDialog(this) == DialogResult.OK)
-                {
-                    clsFormTheme.ShowSuccess(this, "Password changed successfully.", "Success");
-                }
+                form.ShowDialog(this);
+            }
+        }
+
+        private void btnManagePermissions_Click(object sender, EventArgs e)
+        {
+            if (DataGVUsers.SelectedRows.Count == 0)
+            {
+                clsFormTheme.ShowWarning(this, "Please select a user to manage permissions for.", "Manage Permissions");
+                return;
+            }
+
+            DataRow selectedRow = ((DataRowView)DataGVUsers.SelectedRows[0].DataBoundItem).Row;
+            int userID = Convert.ToInt32(selectedRow["UserID"]);
+            string displayName = selectedRow["DisplayName"].ToString();
+            int roleID = Convert.ToInt32(selectedRow["RoleID"]);
+
+            using (var form = new frmManagePermissions(userID, displayName, roleID))
+            {
+                form.ShowDialog(this);
             }
         }
     }

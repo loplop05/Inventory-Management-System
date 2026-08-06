@@ -198,6 +198,11 @@ namespace InventoryBusinessLayer
             return clsCustomerData.GetCustomerCountByTier(out errorMessage);
         }
 
+        public static bool UpdateCustomerReferrer(int customerID, int referrerID, out string errorMessage)
+        {
+            return clsCustomerData.UpdateCustomerReferrer(customerID, referrerID, out errorMessage);
+        }
+
         public static DataTable GetTopLoyaltyMembers(int topN, out string errorMessage)
         {
             return clsCustomerData.GetTopLoyaltyMembers(topN, out errorMessage);

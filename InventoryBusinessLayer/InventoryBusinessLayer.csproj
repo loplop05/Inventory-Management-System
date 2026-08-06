@@ -55,6 +55,7 @@
     <Compile Include="clsProduct.cs" />
     <Compile Include="clsReport.cs" />
     <Compile Include="clsSupplier.cs" />
+    <Compile Include="clsPermissions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

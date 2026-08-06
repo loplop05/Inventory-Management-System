@@ -35,6 +35,7 @@ namespace InventoryManagementSystem
             this.btnEditUser = new System.Windows.Forms.Button();
             this.btnDeactivateUser = new System.Windows.Forms.Button();
             this.btnChangePassword = new System.Windows.Forms.Button();
+            this.btnManagePermissions = new System.Windows.Forms.Button();
             this._lblPageInfo = new System.Windows.Forms.Label();
             this._btnPreviousPage = new System.Windows.Forms.Button();
             this._btnNextPage = new System.Windows.Forms.Button();
@@ -124,6 +125,17 @@ namespace InventoryManagementSystem
             this.btnChangePassword.UseVisualStyleBackColor = true;
             this.btnChangePassword.Click += new System.EventHandler(this.btnChangePassword_Click);
             // 
+            // btnManagePermissions
+            // 
+            this.btnManagePermissions.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnManagePermissions.Location = new System.Drawing.Point(500, 440);
+            this.btnManagePermissions.Name = "btnManagePermissions";
+            this.btnManagePermissions.Size = new System.Drawing.Size(140, 38);
+            this.btnManagePermissions.TabIndex = 7;
+            this.btnManagePermissions.Text = "Permissions";
+            this.btnManagePermissions.UseVisualStyleBackColor = true;
+            this.btnManagePermissions.Click += new System.EventHandler(this.btnManagePermissions_Click);
+            // 
             // _lblPageInfo
             // 
             this._lblPageInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -131,7 +143,7 @@ namespace InventoryManagementSystem
             this._lblPageInfo.Location = new System.Drawing.Point(620, 450);
             this._lblPageInfo.Name = "_lblPageInfo";
             this._lblPageInfo.Size = new System.Drawing.Size(59, 20);
-            this._lblPageInfo.TabIndex = 7;
+            this._lblPageInfo.TabIndex = 8;
             this._lblPageInfo.Text = "Page 1 of 1";
             // 
             // _btnPreviousPage
@@ -140,7 +152,7 @@ namespace InventoryManagementSystem
             this._btnPreviousPage.Location = new System.Drawing.Point(520, 445);
             this._btnPreviousPage.Name = "_btnPreviousPage";
             this._btnPreviousPage.Size = new System.Drawing.Size(80, 30);
-            this._btnPreviousPage.TabIndex = 8;
+            this._btnPreviousPage.TabIndex = 9;
             this._btnPreviousPage.Text = "\u2039  Prev";
             this._btnPreviousPage.UseVisualStyleBackColor = true;
             this._btnPreviousPage.Click += new System.EventHandler(this._btnPreviousPage_Click);
@@ -151,7 +163,7 @@ namespace InventoryManagementSystem
             this._btnNextPage.Location = new System.Drawing.Point(606, 445);
             this._btnNextPage.Name = "_btnNextPage";
             this._btnNextPage.Size = new System.Drawing.Size(80, 30);
-            this._btnNextPage.TabIndex = 9;
+            this._btnNextPage.TabIndex = 10;
             this._btnNextPage.Text = "Next  \u203A";
             this._btnNextPage.UseVisualStyleBackColor = true;
             this._btnNextPage.Click += new System.EventHandler(this._btnNextPage_Click);
@@ -180,6 +192,7 @@ namespace InventoryManagementSystem
             this.Controls.Add(this._btnNextPage);
             this.Controls.Add(this._btnPreviousPage);
             this.Controls.Add(this._lblPageInfo);
+            this.Controls.Add(this.btnManagePermissions);
             this.Controls.Add(this.btnChangePassword);
             this.Controls.Add(this.btnDeactivateUser);
             this.Controls.Add(this.btnEditUser);
@@ -207,6 +220,7 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button btnEditUser;
         private System.Windows.Forms.Button btnDeactivateUser;
         private System.Windows.Forms.Button btnChangePassword;
+        private System.Windows.Forms.Button btnManagePermissions;
         private System.Windows.Forms.Label _lblPageInfo;
         private System.Windows.Forms.Button _btnPreviousPage;
         private System.Windows.Forms.Button _btnNextPage;
