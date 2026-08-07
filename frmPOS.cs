@@ -518,6 +518,33 @@ namespace InventoryManagementSystem
             return table;
         }
 
+        /// <summary>
+        /// Builds the receipt-shaped DataTables (with Subtotal columns) that
+        /// clsPrintHelper.PrintReceipt / DrawReceipt expect, and sends the receipt to print.
+        /// Must be called BEFORE _receiptItems is cleared.
+        /// </summary>
+        private void PrintCompletedReceipt(int orderID, decimal subtotal, decimal tax, decimal total, string customerName)
+        {
+            DataTable orderDetails = new DataTable();
+            orderDetails.Columns.Add("OrderID", typeof(int));
+            orderDetails.Columns.Add("OrderDate", typeof(DateTime));
+            orderDetails.Columns.Add("Subtotal", typeof(decimal));
+            orderDetails.Columns.Add("Tax", typeof(decimal));
+            orderDetails.Columns.Add("TotalAmount", typeof(decimal));
+            orderDetails.Rows.Add(orderID, DateTime.Now, subtotal, tax, total);
+
+            DataTable orderItems = new DataTable();
+            orderItems.Columns.Add("ProductName", typeof(string));
+            orderItems.Columns.Add("Quantity", typeof(int));
+            orderItems.Columns.Add("UnitPrice", typeof(decimal));
+            orderItems.Columns.Add("Subtotal", typeof(decimal));
+
+            foreach (ReceiptItem item in _receiptItems)
+                orderItems.Rows.Add(item.ProductName, item.Quantity, item.UnitPrice, item.Subtotal);
+
+            clsPrintHelper.PrintReceipt(orderDetails, orderItems, customerName);
+        }
+
         private void CompleteOrder()
         {
             if (_receiptItems.Count == 0)
@@ -564,6 +591,27 @@ namespace InventoryManagementSystem
                 return;
             }
 
+            // Compute the same totals shown on screen, before we clear the cart.
+            decimal subtotal = _receiptItems.Sum(item => item.Subtotal);
+            decimal manualDiscount = _manualDiscountType == "percentage" ? subtotal * (_manualDiscountAmount / 100m)
+                                    : _manualDiscountType == "fixed" ? _manualDiscountAmount : 0;
+            decimal totalDiscount = manualDiscount + _couponDiscountAmount;
+            decimal discountedSubtotal = Math.Max(0, subtotal - totalDiscount);
+            decimal tax = Math.Round(discountedSubtotal * TaxRate, 2);
+            decimal total = discountedSubtotal + tax;
+            string customerNameForReceipt = string.IsNullOrWhiteSpace(_selectedCustomerName) ? "Walk-in Customer" : _selectedCustomerName;
+
+            // Print BEFORE clearing _receiptItems, since PrintCompletedReceipt reads from it.
+            DialogResult printChoice = MessageBox.Show(
+    "Order #" + orderID + " completed successfully.\n\nPrint receipt?",
+    "Print Receipt",
+    MessageBoxButtons.YesNo,
+    MessageBoxIcon.Question);
+
+            if (printChoice == DialogResult.Yes)
+            {
+                PrintCompletedReceipt(orderID, subtotal, tax, total, customerNameForReceipt);
+            }
             _receiptItems.Clear();
             RefreshReceiptTotals();
             LoadProducts();
@@ -612,12 +660,12 @@ namespace InventoryManagementSystem
             {
                 _selectedCustomerID = Convert.ToInt32(customer.Rows[0]["CustomerID"]);
                 _selectedCustomerName = customer.Rows[0]["CustomerName"].ToString();
-                
+
                 // Get loyalty information
                 int loyaltyPoints = customer.Rows[0]["LoyaltyPoints"] != DBNull.Value ? Convert.ToInt32(customer.Rows[0]["LoyaltyPoints"]) : 0;
                 string tier = customer.Rows[0]["Tier"] != DBNull.Value ? customer.Rows[0]["Tier"].ToString() : "Bronze";
                 decimal discountAvailable = clsLoyalty.CalculateDiscountFromPoints(loyaltyPoints);
-                
+
                 _lblCustomerName.Text = _selectedCustomerName + " | " + tier + " | " + loyaltyPoints + " pts ($" + discountAvailable.ToString("F2") + ")";
                 _lblCustomerName.ForeColor = Color.FromArgb(44, 62, 80);
                 _btnAddCustomer.Text = "Change";
@@ -770,7 +818,7 @@ namespace InventoryManagementSystem
             {
                 var item = _receiptItems[rowIndex];
                 int newQuantity = Math.Min(item.Quantity, item.AvailableStock - item.Quantity);
-                
+
                 if (newQuantity > 0)
                 {
                     AddToReceipt(item.ProductID, item.ProductName, item.UnitPrice, newQuantity);
@@ -886,7 +934,7 @@ namespace InventoryManagementSystem
             {
                 var item = _receiptItems[rowIndex];
                 int newQuantity = item.Quantity + delta;
-                
+
                 if (newQuantity > 0 && newQuantity <= item.AvailableStock)
                 {
                     item.Quantity = newQuantity;
