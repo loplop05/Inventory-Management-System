@@ -4,7 +4,7 @@ using System.Drawing.Printing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-
+using System.Linq;
 namespace InventoryManagementSystem
 {
     /// <summary>
