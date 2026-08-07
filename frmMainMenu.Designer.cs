@@ -102,7 +102,7 @@ namespace InventoryManagementSystem
             this.btnHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHelp.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnHelp.ForeColor = clsFormTheme.TextSecondaryColor;
+            this.btnHelp.ForeColor = clsFormTheme.TextSecondary;
             this.btnHelp.Location = new System.Drawing.Point(0, 10);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(30, 20);
@@ -125,7 +125,7 @@ namespace InventoryManagementSystem
             // 
             this._lblAdministration.AutoSize = true;
             this._lblAdministration.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._lblAdministration.ForeColor = clsFormTheme.TextSecondaryColor;
+            this._lblAdministration.ForeColor = clsFormTheme.TextSecondary;
             this._lblAdministration.Location = new System.Drawing.Point(0, 0);
             this._lblAdministration.Name = "_lblAdministration";
             this._lblAdministration.Size = new System.Drawing.Size(104, 20);
@@ -153,7 +153,7 @@ namespace InventoryManagementSystem
             this.btnAuditLogs.FlatAppearance.BorderSize = 1;
             this.btnAuditLogs.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAuditLogs.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnAuditLogs.ForeColor = clsFormTheme.TextPrimaryColor;
+            this.btnAuditLogs.ForeColor = clsFormTheme.TextPrimary;
             this.btnAuditLogs.Location = new System.Drawing.Point(3, 3);
             this.btnAuditLogs.Name = "btnAuditLogs";
             this.btnAuditLogs.Size = new System.Drawing.Size(200, 110);
@@ -169,7 +169,7 @@ namespace InventoryManagementSystem
             this.btnUserManagement.FlatAppearance.BorderSize = 1;
             this.btnUserManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnUserManagement.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnUserManagement.ForeColor = clsFormTheme.TextPrimaryColor;
+            this.btnUserManagement.ForeColor = clsFormTheme.TextPrimary;
             this.btnUserManagement.Location = new System.Drawing.Point(209, 3);
             this.btnUserManagement.Name = "btnUserManagement";
             this.btnUserManagement.Size = new System.Drawing.Size(200, 110);
@@ -185,7 +185,7 @@ namespace InventoryManagementSystem
             this.btnCustomerManagement.FlatAppearance.BorderSize = 1;
             this.btnCustomerManagement.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCustomerManagement.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnCustomerManagement.ForeColor = clsFormTheme.TextPrimaryColor;
+            this.btnCustomerManagement.ForeColor = clsFormTheme.TextPrimary;
             this.btnCustomerManagement.Location = new System.Drawing.Point(415, 3);
             this.btnCustomerManagement.Name = "btnCustomerManagement";
             this.btnCustomerManagement.Size = new System.Drawing.Size(200, 110);
@@ -208,7 +208,7 @@ namespace InventoryManagementSystem
             // 
             this._lblInsights.AutoSize = true;
             this._lblInsights.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._lblInsights.ForeColor = clsFormTheme.TextSecondaryColor;
+            this._lblInsights.ForeColor = clsFormTheme.TextSecondary;
             this._lblInsights.Location = new System.Drawing.Point(0, 0);
             this._lblInsights.Name = "_lblInsights";
             this._lblInsights.Size = new System.Drawing.Size(165, 20);
@@ -237,7 +237,7 @@ namespace InventoryManagementSystem
             this.btnLowStockAlerts.FlatAppearance.BorderSize = 1;
             this.btnLowStockAlerts.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLowStockAlerts.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnLowStockAlerts.ForeColor = clsFormTheme.TextPrimaryColor;
+            this.btnLowStockAlerts.ForeColor = clsFormTheme.TextPrimary;
             this.btnLowStockAlerts.Location = new System.Drawing.Point(3, 3);
             this.btnLowStockAlerts.Name = "btnLowStockAlerts";
             this.btnLowStockAlerts.Size = new System.Drawing.Size(200, 110);
@@ -253,7 +253,7 @@ namespace InventoryManagementSystem
             this.btnDailyReport.FlatAppearance.BorderSize = 1;
             this.btnDailyReport.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDailyReport.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnDailyReport.ForeColor = clsFormTheme.TextPrimaryColor;
+            this.btnDailyReport.ForeColor = clsFormTheme.TextPrimary;
             this.btnDailyReport.Location = new System.Drawing.Point(209, 3);
             this.btnDailyReport.Name = "btnDailyReport";
             this.btnDailyReport.Size = new System.Drawing.Size(200, 110);
@@ -269,7 +269,7 @@ namespace InventoryManagementSystem
             this.btnAdvancedReports.FlatAppearance.BorderSize = 1;
             this.btnAdvancedReports.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnAdvancedReports.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnAdvancedReports.ForeColor = clsFormTheme.TextPrimaryColor;
+            this.btnAdvancedReports.ForeColor = clsFormTheme.TextPrimary;
             this.btnAdvancedReports.Location = new System.Drawing.Point(415, 3);
             this.btnAdvancedReports.Name = "btnAdvancedReports";
             this.btnAdvancedReports.Size = new System.Drawing.Size(200, 110);
@@ -285,7 +285,7 @@ namespace InventoryManagementSystem
             this.btnDashboard.FlatAppearance.BorderSize = 1;
             this.btnDashboard.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDashboard.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnDashboard.ForeColor = clsFormTheme.TextPrimaryColor;
+            this.btnDashboard.ForeColor = clsFormTheme.TextPrimary;
             this.btnDashboard.Location = new System.Drawing.Point(621, 3);
             this.btnDashboard.Name = "btnDashboard";
             this.btnDashboard.Size = new System.Drawing.Size(200, 110);
@@ -308,7 +308,7 @@ namespace InventoryManagementSystem
             // 
             this._lblCatalog.AutoSize = true;
             this._lblCatalog.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._lblCatalog.ForeColor = clsFormTheme.TextSecondaryColor;
+            this._lblCatalog.ForeColor = clsFormTheme.TextSecondary;
             this._lblCatalog.Location = new System.Drawing.Point(0, 0);
             this._lblCatalog.Name = "_lblCatalog";
             this._lblCatalog.Size = new System.Drawing.Size(70, 20);
@@ -337,7 +337,7 @@ namespace InventoryManagementSystem
             this.btnCouponManager.FlatAppearance.BorderSize = 1;
             this.btnCouponManager.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCouponManager.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnCouponManager.ForeColor = clsFormTheme.TextPrimaryColor;
+            this.btnCouponManager.ForeColor = clsFormTheme.TextPrimary;
             this.btnCouponManager.Location = new System.Drawing.Point(3, 3);
             this.btnCouponManager.Name = "btnCouponManager";
             this.btnCouponManager.Size = new System.Drawing.Size(200, 110);
@@ -353,7 +353,7 @@ namespace InventoryManagementSystem
             this.btnSuppliers.FlatAppearance.BorderSize = 1;
             this.btnSuppliers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSuppliers.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnSuppliers.ForeColor = clsFormTheme.TextPrimaryColor;
+            this.btnSuppliers.ForeColor = clsFormTheme.TextPrimary;
             this.btnSuppliers.Location = new System.Drawing.Point(209, 3);
             this.btnSuppliers.Name = "btnSuppliers";
             this.btnSuppliers.Size = new System.Drawing.Size(200, 110);
@@ -369,7 +369,7 @@ namespace InventoryManagementSystem
             this.btnCategories.FlatAppearance.BorderSize = 1;
             this.btnCategories.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCategories.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnCategories.ForeColor = clsFormTheme.TextPrimaryColor;
+            this.btnCategories.ForeColor = clsFormTheme.TextPrimary;
             this.btnCategories.Location = new System.Drawing.Point(415, 3);
             this.btnCategories.Name = "btnCategories";
             this.btnCategories.Size = new System.Drawing.Size(200, 110);
@@ -385,7 +385,7 @@ namespace InventoryManagementSystem
             this.btnProducts.FlatAppearance.BorderSize = 1;
             this.btnProducts.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnProducts.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnProducts.ForeColor = clsFormTheme.TextPrimaryColor;
+            this.btnProducts.ForeColor = clsFormTheme.TextPrimary;
             this.btnProducts.Location = new System.Drawing.Point(621, 3);
             this.btnProducts.Name = "btnProducts";
             this.btnProducts.Size = new System.Drawing.Size(200, 110);
@@ -408,7 +408,7 @@ namespace InventoryManagementSystem
             // 
             this._lblSales.AutoSize = true;
             this._lblSales.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
-            this._lblSales.ForeColor = clsFormTheme.TextSecondaryColor;
+            this._lblSales.ForeColor = clsFormTheme.TextSecondary;
             this._lblSales.Location = new System.Drawing.Point(0, 0);
             this._lblSales.Name = "_lblSales";
             this._lblSales.Size = new System.Drawing.Size(136, 20);
@@ -436,7 +436,7 @@ namespace InventoryManagementSystem
             this.btnPrintReceipt.FlatAppearance.BorderSize = 1;
             this.btnPrintReceipt.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPrintReceipt.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnPrintReceipt.ForeColor = clsFormTheme.TextPrimaryColor;
+            this.btnPrintReceipt.ForeColor = clsFormTheme.TextPrimary;
             this.btnPrintReceipt.Location = new System.Drawing.Point(3, 3);
             this.btnPrintReceipt.Name = "btnPrintReceipt";
             this.btnPrintReceipt.Size = new System.Drawing.Size(200, 110);
@@ -452,7 +452,7 @@ namespace InventoryManagementSystem
             this.btnReceiptSearch.FlatAppearance.BorderSize = 1;
             this.btnReceiptSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReceiptSearch.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnReceiptSearch.ForeColor = clsFormTheme.TextPrimaryColor;
+            this.btnReceiptSearch.ForeColor = clsFormTheme.TextPrimary;
             this.btnReceiptSearch.Location = new System.Drawing.Point(209, 3);
             this.btnReceiptSearch.Name = "btnReceiptSearch";
             this.btnReceiptSearch.Size = new System.Drawing.Size(200, 110);
@@ -468,7 +468,7 @@ namespace InventoryManagementSystem
             this.btnPOS.FlatAppearance.BorderSize = 1;
             this.btnPOS.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnPOS.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.btnPOS.ForeColor = clsFormTheme.TextPrimaryColor;
+            this.btnPOS.ForeColor = clsFormTheme.TextPrimary;
             this.btnPOS.Location = new System.Drawing.Point(415, 3);
             this.btnPOS.Name = "btnPOS";
             this.btnPOS.Size = new System.Drawing.Size(200, 110);
