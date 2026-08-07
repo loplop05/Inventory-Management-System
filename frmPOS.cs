@@ -722,7 +722,70 @@ namespace InventoryManagementSystem
 
         private void gridReceipt_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
+            if (_gridReceipt.Columns[e.ColumnIndex].DataPropertyName != "Quantity" || e.RowIndex < 0)
+                return;
+
             RefreshReceiptTotals();
+        }
+
+        private void gridReceipt_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            // Show context menu on right-click
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
+            {
+                _gridReceipt.ClearSelection();
+                _gridReceipt.Rows[e.RowIndex].Selected = true;
+                _contextMenuReceipt.Show(Cursor.Position);
+            }
+        }
+
+        private void menuItemEditQty_Click(object sender, EventArgs e)
+        {
+            if (_gridReceipt.CurrentRow == null)
+                return;
+
+            _gridReceipt.BeginEdit(true);
+            _gridReceipt.CurrentCell = _gridReceipt.Rows[_gridReceipt.CurrentRow.Index].Cells[_colQuantity.Index];
+        }
+
+        private void menuItemApplyDiscount_Click(object sender, EventArgs e)
+        {
+            // TODO: Implement item discount logic
+            // This should reuse existing manual discount functionality
+            clsFormTheme.ShowInfo(this, "Item Discount feature coming soon");
+        }
+
+        private void menuItemRemove_Click(object sender, EventArgs e)
+        {
+            btnRemoveItem_Click(sender, e);
+        }
+
+        private void menuItemDuplicate_Click(object sender, EventArgs e)
+        {
+            if (_gridReceipt.CurrentRow == null)
+                return;
+
+            int rowIndex = _gridReceipt.CurrentRow.Index;
+            if (rowIndex >= 0 && rowIndex < _receiptItems.Count)
+            {
+                var item = _receiptItems[rowIndex];
+                int newQuantity = Math.Min(item.Quantity, item.AvailableStock - item.Quantity);
+                
+                if (newQuantity > 0)
+                {
+                    AddToReceipt(item.ProductID, item.ProductName, item.UnitPrice, newQuantity);
+                }
+                else
+                {
+                    clsFormTheme.ShowWarning(this, "Not enough stock to duplicate this item", "Cannot Duplicate");
+                }
+            }
+        }
+
+        private void menuItemAddNote_Click(object sender, EventArgs e)
+        {
+            // TODO: Implement cart notes (requires schema change per roadmap)
+            clsFormTheme.ShowInfo(this, "Cart Notes feature coming soon (requires schema change)");
         }
 
         private void gridReceipt_DataError(object sender, DataGridViewDataErrorEventArgs e)
@@ -757,19 +820,84 @@ namespace InventoryManagementSystem
 
         private void frmPOS_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F5)
+            // F2/F3 - Focus search box
+            if (e.KeyCode == Keys.F2 || e.KeyCode == Keys.F3)
+            {
+                _txtSearch.Focus();
+                e.SuppressKeyPress = true;
+            }
+            // F4 - Complete order
+            else if (e.KeyCode == Keys.F4)
+            {
+                CompleteOrder();
+                e.SuppressKeyPress = true;
+            }
+            // F5 - Refresh products
+            else if (e.KeyCode == Keys.F5)
             {
                 LoadProducts();
                 e.SuppressKeyPress = true;
             }
+            // Delete - Remove selected receipt line
+            else if (e.KeyCode == Keys.Delete)
+            {
+                btnRemoveItem_Click(sender, e);
+                e.SuppressKeyPress = true;
+            }
+            // Plus - Increase quantity of selected line
+            else if (e.KeyCode == Keys.Add || (e.Shift && e.KeyCode == Keys.Oemplus))
+            {
+                AdjustSelectedLineQuantity(1);
+                e.SuppressKeyPress = true;
+            }
+            // Minus - Decrease quantity of selected line
+            else if (e.KeyCode == Keys.Subtract || e.KeyCode == Keys.OemMinus)
+            {
+                AdjustSelectedLineQuantity(-1);
+                e.SuppressKeyPress = true;
+            }
+            // Ctrl+H - Hold order (not yet implemented - placeholder)
+            else if (e.Control && e.KeyCode == Keys.H)
+            {
+                // TODO: Implement HoldOrder functionality
+                clsFormTheme.ShowInfo(this, "Hold Order feature coming soon");
+                e.SuppressKeyPress = true;
+            }
+            // Escape - Close form
             else if (e.KeyCode == Keys.Escape)
             {
                 Close();
             }
+            // Ctrl+Enter - Complete order (existing shortcut)
             else if (e.Control && e.KeyCode == Keys.Enter)
             {
                 CompleteOrder();
                 e.SuppressKeyPress = true;
+            }
+        }
+
+        private void AdjustSelectedLineQuantity(int delta)
+        {
+            if (_gridReceipt.CurrentRow == null)
+                return;
+
+            int rowIndex = _gridReceipt.CurrentRow.Index;
+            if (rowIndex >= 0 && rowIndex < _receiptItems.Count)
+            {
+                var item = _receiptItems[rowIndex];
+                int newQuantity = item.Quantity + delta;
+                
+                if (newQuantity > 0 && newQuantity <= item.AvailableStock)
+                {
+                    item.Quantity = newQuantity;
+                    _gridReceipt.Refresh();
+                    RefreshReceiptTotals();
+                }
+                else if (newQuantity <= 0)
+                {
+                    // If quantity goes to 0 or below, remove the item
+                    btnRemoveItem_Click(null, null);
+                }
             }
         }
 

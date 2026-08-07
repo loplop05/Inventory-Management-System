@@ -33,6 +33,12 @@ namespace InventoryManagementSystem
             StyleTile(btnUserManagement, clsFormTheme.Icons.User, clsFormTheme.HeaderColor, "User Management");
             StyleTile(btnCustomerManagement, clsFormTheme.Icons.Customer, clsFormTheme.HeaderColor, "Customer Management");
             StyleTile(btnAuditLogs, clsFormTheme.Icons.AuditLog, clsFormTheme.HeaderColor, "Audit Logs");
+
+            // Set initial theme button state
+            UpdateThemeButton();
+
+            // Subscribe to theme changes
+            clsFormTheme.ThemeChanged += (s, e) => UpdateThemeButton();
         }
 
         private void StyleTile(Button btn, string icon, Color accentColor, string tooltipText)
@@ -202,18 +208,16 @@ namespace InventoryManagementSystem
             clsHelpSystem.ShowHelpForm(clsHelpSystem.Topics.KeyboardShortcuts);
         }
 
-        // Theme toggle handler - uncomment after adding button to Designer
-        /*
         private void btnThemeToggle_Click(object sender, EventArgs e)
         {
             clsFormTheme.ToggleTheme();
+            UpdateThemeButton();
         }
 
         private void UpdateThemeButton()
         {
-            btnThemeToggle.Text = clsFormTheme.IsDarkMode ? "Light Mode" : "Dark Mode";
+            btnThemeToggle.Text = clsFormTheme.IsDarkMode ? "☀️" : "🌙";
         }
-        */
 
         private void frmMainMenu_KeyDown(object sender, KeyEventArgs e)
         {

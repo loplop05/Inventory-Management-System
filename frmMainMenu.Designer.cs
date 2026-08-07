@@ -30,6 +30,7 @@ namespace InventoryManagementSystem
         {
             this._contentPanel = new System.Windows.Forms.Panel();
             this._footerPanel = new System.Windows.Forms.Panel();
+            this.btnThemeToggle = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this._sectionAdministration = new System.Windows.Forms.Panel();
             this._lblAdministration = new System.Windows.Forms.Label();
@@ -85,6 +86,7 @@ namespace InventoryManagementSystem
             // 
             // _footerPanel
             // 
+            this._footerPanel.Controls.Add(this.btnThemeToggle);
             this._footerPanel.Controls.Add(this.btnHelp);
             this._footerPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this._footerPanel.Location = new System.Drawing.Point(20, 680);
@@ -92,6 +94,25 @@ namespace InventoryManagementSystem
             this._footerPanel.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
             this._footerPanel.Size = new System.Drawing.Size(1220, 20);
             this._footerPanel.TabIndex = 4;
+            // 
+            // btnThemeToggle
+            // 
+            this.btnThemeToggle.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            this.btnThemeToggle.AutoSize = true;
+            this.btnThemeToggle.BackColor = System.Drawing.Color.Transparent;
+            this.btnThemeToggle.FlatAppearance.BorderSize = 0;
+            this.btnThemeToggle.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btnThemeToggle.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btnThemeToggle.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnThemeToggle.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnThemeToggle.ForeColor = clsFormTheme.TextSecondary;
+            this.btnThemeToggle.Location = new System.Drawing.Point(1190, 10);
+            this.btnThemeToggle.Name = "btnThemeToggle";
+            this.btnThemeToggle.Size = new System.Drawing.Size(30, 20);
+            this.btnThemeToggle.TabIndex = 1;
+            this.btnThemeToggle.Text = "🌙";
+            this.btnThemeToggle.UseVisualStyleBackColor = false;
+            this.btnThemeToggle.Click += new System.EventHandler(this.btnThemeToggle_Click);
             // 
             // btnHelp
             // 
@@ -514,6 +535,8 @@ namespace InventoryManagementSystem
 
         private System.Windows.Forms.Panel _contentPanel;
         private System.Windows.Forms.Panel _footerPanel;
+        private System.Windows.Forms.Button btnThemeToggle;
+        private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.Panel _sectionAdministration;
         private System.Windows.Forms.Label _lblAdministration;
         private System.Windows.Forms.FlowLayoutPanel _flowAdministration;
@@ -537,7 +560,6 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button btnCouponManager;
         private System.Windows.Forms.Button btnPOS;
         private System.Windows.Forms.Button btnDailyReport;
-        private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.Button btnAuditLogs;
         private System.Windows.Forms.Button btnUserManagement;
         private System.Windows.Forms.Button btnCustomerManagement;

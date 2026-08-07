@@ -46,6 +46,12 @@ namespace InventoryManagementSystem
             this._colQuantity = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._colUnitPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._colSubtotal = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._contextMenuReceipt = new System.Windows.Forms.ContextMenuStrip();
+            this._menuItemEditQty = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuItemApplyDiscount = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuItemRemove = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuItemDuplicate = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuItemAddNote = new System.Windows.Forms.ToolStripMenuItem();
             this._lblStatus = new System.Windows.Forms.Label();
             this._totalsPanel = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
@@ -371,6 +377,53 @@ namespace InventoryManagementSystem
             this._gridReceipt.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridReceipt_CellEndEdit);
             this._gridReceipt.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.gridReceipt_CellValidating);
             this._gridReceipt.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.gridReceipt_DataError);
+            this._gridReceipt.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.gridReceipt_CellMouseClick);
+            // 
+            // _contextMenuReceipt
+            // 
+            this._contextMenuReceipt.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._menuItemEditQty,
+            this._menuItemApplyDiscount,
+            this._menuItemRemove,
+            this._menuItemDuplicate,
+            this._menuItemAddNote});
+            this._contextMenuReceipt.Name = "_contextMenuReceipt";
+            this._contextMenuReceipt.Size = new System.Drawing.Size(181, 114);
+            // 
+            // _menuItemEditQty
+            // 
+            this._menuItemEditQty.Name = "_menuItemEditQty";
+            this._menuItemEditQty.Size = new System.Drawing.Size(180, 22);
+            this._menuItemEditQty.Text = "Edit Quantity";
+            this._menuItemEditQty.Click += new System.EventHandler(this.menuItemEditQty_Click);
+            // 
+            // _menuItemApplyDiscount
+            // 
+            this._menuItemApplyDiscount.Name = "_menuItemApplyDiscount";
+            this._menuItemApplyDiscount.Size = new System.Drawing.Size(180, 22);
+            this._menuItemApplyDiscount.Text = "Apply Item Discount";
+            this._menuItemApplyDiscount.Click += new System.EventHandler(this.menuItemApplyDiscount_Click);
+            // 
+            // _menuItemRemove
+            // 
+            this._menuItemRemove.Name = "_menuItemRemove";
+            this._menuItemRemove.Size = new System.Drawing.Size(180, 22);
+            this._menuItemRemove.Text = "Remove Item";
+            this._menuItemRemove.Click += new System.EventHandler(this.menuItemRemove_Click);
+            // 
+            // _menuItemDuplicate
+            // 
+            this._menuItemDuplicate.Name = "_menuItemDuplicate";
+            this._menuItemDuplicate.Size = new System.Drawing.Size(180, 22);
+            this._menuItemDuplicate.Text = "Duplicate Item";
+            this._menuItemDuplicate.Click += new System.EventHandler(this.menuItemDuplicate_Click);
+            // 
+            // _menuItemAddNote
+            // 
+            this._menuItemAddNote.Name = "_menuItemAddNote";
+            this._menuItemAddNote.Size = new System.Drawing.Size(180, 22);
+            this._menuItemAddNote.Text = "Add Note";
+            this._menuItemAddNote.Click += new System.EventHandler(this.menuItemAddNote_Click);
             // 
             // _colProductName
             // 
@@ -600,6 +653,12 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.DataGridViewTextBoxColumn _colQuantity;
         private System.Windows.Forms.DataGridViewTextBoxColumn _colUnitPrice;
         private System.Windows.Forms.DataGridViewTextBoxColumn _colSubtotal;
+        private System.Windows.Forms.ContextMenuStrip _contextMenuReceipt;
+        private System.Windows.Forms.ToolStripMenuItem _menuItemEditQty;
+        private System.Windows.Forms.ToolStripMenuItem _menuItemApplyDiscount;
+        private System.Windows.Forms.ToolStripMenuItem _menuItemRemove;
+        private System.Windows.Forms.ToolStripMenuItem _menuItemDuplicate;
+        private System.Windows.Forms.ToolStripMenuItem _menuItemAddNote;
         private System.Windows.Forms.Label _lblStatus;
         private System.Windows.Forms.Panel _totalsPanel;
         private System.Windows.Forms.Label _lblSubtotal;
