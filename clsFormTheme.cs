@@ -1013,5 +1013,32 @@ namespace InventoryManagementSystem
                 return dlg.ShowDialog(owner);
             }
         }
+
+        //  TOAST NOTIFICATIONS
+        // ════════════════════════════════════════════════════════════════════════
+
+        public static void ShowToastSuccess(Form owner, string message, string title = "Success", int dismissTimeMs = 2500)
+        {
+            var toast = new frmToastNotification(message, title, dismissTimeMs, ToastIcon.Success);
+            toast.ShowToast(owner);
+        }
+
+        public static void ShowToastInfo(Form owner, string message, string title = "Information", int dismissTimeMs = 2500)
+        {
+            var toast = new frmToastNotification(message, title, dismissTimeMs, ToastIcon.Info);
+            toast.ShowToast(owner);
+        }
+
+        public static void ShowToastWarning(Form owner, string message, string title = "Warning", int dismissTimeMs = 3000)
+        {
+            var toast = new frmToastNotification(message, title, dismissTimeMs, ToastIcon.Warning);
+            toast.ShowToast(owner);
+        }
+
+        public static void ShowToastError(Form owner, string message, string title = "Error", int dismissTimeMs = 3000)
+        {
+            var toast = new frmToastNotification(message, title, dismissTimeMs, ToastIcon.Error);
+            toast.ShowToast(owner);
+        }
     }
 }
