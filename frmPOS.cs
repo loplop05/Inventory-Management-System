@@ -259,6 +259,12 @@ namespace InventoryManagementSystem
 
             clsFormTheme.StyleProductTile(tile, inStock);
 
+            // Store product data in Tag for context menu access
+            tile.Tag = new { ProductID = productID, ProductName = productName, SupplierName = supplierName, Price = price, Quantity = quantity };
+
+            // Wire up context menu for right-click
+            tile.ContextMenuStrip = _contextMenuProduct;
+
             // ── Product image ──────────────────────────────────────────────────
             PictureBox picture = new PictureBox
             {
@@ -729,6 +735,8 @@ namespace InventoryManagementSystem
             Close();
         }
 
+        private ReceiptItem _lastRemovedItem = null;
+
         private void btnRemoveItem_Click(object sender, EventArgs e)
         {
             if (_gridReceipt.CurrentRow == null)
@@ -738,8 +746,49 @@ namespace InventoryManagementSystem
             if (item == null)
                 return;
 
+            // Store for potential undo
+            _lastRemovedItem = item;
+
             _receiptItems.Remove(item);
             RefreshReceiptTotals();
+
+            // Show toast with undo option
+            clsFormTheme.ShowToastWithUndo(this, 
+                $"{item.ProductName} removed from receipt", 
+                "Item Removed", 
+                5000, 
+                UndoRemoveItem);
+        }
+
+        private void UndoRemoveItem()
+        {
+            if (_lastRemovedItem != null)
+            {
+                // Check if we can still add it back (stock might have changed)
+                var currentProduct = _productsTable.AsEnumerable()
+                    .FirstOrDefault(row => Convert.ToInt32(row["ProductID"]) == _lastRemovedItem.ProductID);
+                
+                if (currentProduct != null)
+                {
+                    int currentStock = Convert.ToInt32(currentProduct["Quantity"]);
+                    int newQuantity = Math.Min(_lastRemovedItem.Quantity, currentStock);
+                    
+                    if (newQuantity > 0)
+                    {
+                        _lastRemovedItem.AvailableStock = currentStock;
+                        _lastRemovedItem.Quantity = newQuantity;
+                        _receiptItems.Add(_lastRemovedItem);
+                        RefreshReceiptTotals();
+                        clsFormTheme.ShowToastSuccess(this, "Item restored to receipt", "Undo Successful");
+                    }
+                    else
+                    {
+                        clsFormTheme.ShowToastWarning(this, "Cannot restore - no stock available", "Undo Failed");
+                    }
+                }
+                
+                _lastRemovedItem = null;
+            }
         }
 
         private void btnCompleteOrder_Click(object sender, EventArgs e)
@@ -834,6 +883,57 @@ namespace InventoryManagementSystem
         {
             // TODO: Implement cart notes (requires schema change per roadmap)
             clsFormTheme.ShowInfo(this, "Cart Notes feature coming soon (requires schema change)");
+        }
+
+        private void menuItemProductAddToReceipt_Click(object sender, EventArgs e)
+        {
+            if (_contextMenuProduct.SourceControl == null)
+                return;
+
+            Panel tile = _contextMenuProduct.SourceControl as Panel;
+            if (tile == null || tile.Tag == null)
+                return;
+
+            var productData = (dynamic)tile.Tag;
+            AddToReceipt(productData.ProductID, productData.ProductName, productData.Price, productData.Quantity);
+        }
+
+        private void menuItemProductViewDetails_Click(object sender, EventArgs e)
+        {
+            if (_contextMenuProduct.SourceControl == null)
+                return;
+
+            Panel tile = _contextMenuProduct.SourceControl as Panel;
+            if (tile == null || tile.Tag == null)
+                return;
+
+            var productData = (dynamic)tile.Tag;
+            clsFormTheme.ShowInfo(this, 
+                $"Product: {productData.ProductName}\n" +
+                $"Supplier: {productData.SupplierName}\n" +
+                $"Price: {productData.Price:C2}\n" +
+                $"Stock: {productData.Quantity}",
+                "Product Details");
+        }
+
+        private void menuItemProductEdit_Click(object sender, EventArgs e)
+        {
+            if (_contextMenuProduct.SourceControl == null)
+                return;
+
+            Panel tile = _contextMenuProduct.SourceControl as Panel;
+            if (tile == null || tile.Tag == null)
+                return;
+
+            var productData = (dynamic)tile.Tag;
+            
+            // Open the product edit form
+            using (frmUpdateProduct updateForm = new frmUpdateProduct())
+            {
+                // Pre-select the product
+                // Note: frmUpdateProduct needs to support pre-selection
+                clsFormTheme.ShowInfo(this, "Edit Product feature - navigate to Product Management to edit this product", "Edit Product");
+            }
         }
 
         private void gridReceipt_DataError(object sender, DataGridViewDataErrorEventArgs e)

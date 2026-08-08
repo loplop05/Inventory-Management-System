@@ -52,6 +52,10 @@ namespace InventoryManagementSystem
             this._menuItemRemove = new System.Windows.Forms.ToolStripMenuItem();
             this._menuItemDuplicate = new System.Windows.Forms.ToolStripMenuItem();
             this._menuItemAddNote = new System.Windows.Forms.ToolStripMenuItem();
+            this._contextMenuProduct = new System.Windows.Forms.ContextMenuStrip();
+            this._menuItemProductAddToReceipt = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuItemProductViewDetails = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuItemProductEdit = new System.Windows.Forms.ToolStripMenuItem();
             this._lblStatus = new System.Windows.Forms.Label();
             this._totalsPanel = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
@@ -425,6 +429,36 @@ namespace InventoryManagementSystem
             this._menuItemAddNote.Text = "Add Note";
             this._menuItemAddNote.Click += new System.EventHandler(this.menuItemAddNote_Click);
             // 
+            // _contextMenuProduct
+            // 
+            this._contextMenuProduct.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._menuItemProductAddToReceipt,
+            this._menuItemProductViewDetails,
+            this._menuItemProductEdit});
+            this._contextMenuProduct.Name = "_contextMenuProduct";
+            this._contextMenuProduct.Size = new System.Drawing.Size(181, 70);
+            // 
+            // _menuItemProductAddToReceipt
+            // 
+            this._menuItemProductAddToReceipt.Name = "_menuItemProductAddToReceipt";
+            this._menuItemProductAddToReceipt.Size = new System.Drawing.Size(180, 22);
+            this._menuItemProductAddToReceipt.Text = "Add to Receipt";
+            this._menuItemProductAddToReceipt.Click += new System.EventHandler(this.menuItemProductAddToReceipt_Click);
+            // 
+            // _menuItemProductViewDetails
+            // 
+            this._menuItemProductViewDetails.Name = "_menuItemProductViewDetails";
+            this._menuItemProductViewDetails.Size = new System.Drawing.Size(180, 22);
+            this._menuItemProductViewDetails.Text = "View Details";
+            this._menuItemProductViewDetails.Click += new System.EventHandler(this.menuItemProductViewDetails_Click);
+            // 
+            // _menuItemProductEdit
+            // 
+            this._menuItemProductEdit.Name = "_menuItemProductEdit";
+            this._menuItemProductEdit.Size = new System.Drawing.Size(180, 22);
+            this._menuItemProductEdit.Text = "Edit Product";
+            this._menuItemProductEdit.Click += new System.EventHandler(this.menuItemProductEdit_Click);
+            // 
             // _colProductName
             // 
             this._colProductName.DataPropertyName = "ProductName";
@@ -659,6 +693,10 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.ToolStripMenuItem _menuItemRemove;
         private System.Windows.Forms.ToolStripMenuItem _menuItemDuplicate;
         private System.Windows.Forms.ToolStripMenuItem _menuItemAddNote;
+        private System.Windows.Forms.ContextMenuStrip _contextMenuProduct;
+        private System.Windows.Forms.ToolStripMenuItem _menuItemProductAddToReceipt;
+        private System.Windows.Forms.ToolStripMenuItem _menuItemProductViewDetails;
+        private System.Windows.Forms.ToolStripMenuItem _menuItemProductEdit;
         private System.Windows.Forms.Label _lblStatus;
         private System.Windows.Forms.Panel _totalsPanel;
         private System.Windows.Forms.Label _lblSubtotal;

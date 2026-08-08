@@ -1040,5 +1040,11 @@ namespace InventoryManagementSystem
             var toast = new frmToastNotification(message, title, dismissTimeMs, ToastIcon.Error);
             toast.ShowToast(owner);
         }
+
+        public static void ShowToastWithUndo(Form owner, string message, string title = "Item Removed", int dismissTimeMs = 5000, Action undoAction = null)
+        {
+            var toast = new frmToastNotification(message, title, dismissTimeMs, ToastIcon.Info, undoAction);
+            toast.ShowToast(owner);
+        }
     }
 }

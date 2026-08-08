@@ -16,8 +16,9 @@ namespace InventoryManagementSystem
     {
         private Timer _dismissTimer;
         private const int DefaultDismissTime = 2500; // 2.5 seconds
+        private Action _undoAction;
 
-        public frmToastNotification(string message, string title = "Success", int dismissTimeMs = DefaultDismissTime, ToastIcon icon = ToastIcon.Success)
+        public frmToastNotification(string message, string title = "Success", int dismissTimeMs = DefaultDismissTime, ToastIcon icon = ToastIcon.Success, Action undoAction = null)
         {
             InitializeComponent();
             
@@ -27,11 +28,27 @@ namespace InventoryManagementSystem
             // Style based on icon type
             SetupIcon(icon);
             
-            // Hide buttons for toast (auto-dismiss only)
-            btnOK.Visible = false;
-            btnCancel.Visible = false;
-            btnYes.Visible = false;
-            btnNo.Visible = false;
+            // Show undo button if action provided
+            if (undoAction != null)
+            {
+                _undoAction = undoAction;
+                btnYes.Visible = true;
+                btnYes.Text = "Undo";
+                btnYes.Click += (s, e) =>
+                {
+                    _dismissTimer.Stop();
+                    _undoAction();
+                    Close();
+                };
+            }
+            else
+            {
+                // Hide all buttons for auto-dismiss toast
+                btnOK.Visible = false;
+                btnCancel.Visible = false;
+                btnYes.Visible = false;
+                btnNo.Visible = false;
+            }
             
             // Make it look like a toast - smaller, no title bar
             FormBorderStyle = FormBorderStyle.None;

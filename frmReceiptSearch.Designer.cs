@@ -23,6 +23,16 @@ namespace InventoryManagementSystem
             this._txtOrderID = new System.Windows.Forms.TextBox();
             this._btnSearch = new System.Windows.Forms.Button();
             this._btnViewByPhone = new System.Windows.Forms.Button();
+            this._panelFilters = new System.Windows.Forms.Panel();
+            this._lblFromDate = new System.Windows.Forms.Label();
+            this._dtpFromDate = new System.Windows.Forms.DateTimePicker();
+            this._lblToDate = new System.Windows.Forms.Label();
+            this._dtpToDate = new System.Windows.Forms.DateTimePicker();
+            this._lblCustomerFilter = new System.Windows.Forms.Label();
+            this._txtCustomerFilter = new System.Windows.Forms.TextBox();
+            this._lblProductFilter = new System.Windows.Forms.Label();
+            this._txtProductFilter = new System.Windows.Forms.TextBox();
+            this._btnClearFilters = new System.Windows.Forms.Button();
             this._panelOrderDetails = new System.Windows.Forms.Panel();
             this._lblOrderInfo = new System.Windows.Forms.Label();
             this._gridOrderItems = new System.Windows.Forms.DataGridView();
