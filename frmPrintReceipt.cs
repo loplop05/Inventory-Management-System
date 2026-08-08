@@ -122,7 +122,11 @@ namespace InventoryManagementSystem
             DisplayReceipt();
 
             // Enable Void button if order is not already voided
-            bool isVoided = _currentOrderDetails.Rows[0]["IsVoided"] != DBNull.Value && Convert.ToBoolean(_currentOrderDetails.Rows[0]["IsVoided"]);
+            bool isVoided = false;
+            if (_currentOrderDetails.Columns.Contains("IsVoided"))
+            {
+                isVoided = _currentOrderDetails.Rows[0]["IsVoided"] != DBNull.Value && Convert.ToBoolean(_currentOrderDetails.Rows[0]["IsVoided"]);
+            }
             _btnVoid.Enabled = !isVoided;
         }
 
