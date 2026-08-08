@@ -23,15 +23,11 @@ namespace InventoryManagementSystem
             this._topPanel = new System.Windows.Forms.Panel();
             this._paymentPanel = new System.Windows.Forms.Panel();
             this._lblPaymentMethod = new System.Windows.Forms.Label();
-            this._rbCash = new System.Windows.Forms.RadioButton();
-            this._rbVisa = new System.Windows.Forms.RadioButton();
+            this._cbCash = new System.Windows.Forms.CheckBox();
+            this._cbVisa = new System.Windows.Forms.CheckBox();
             this._txtPaymentDetails = new System.Windows.Forms.TextBox();
             this._lblPaymentDetails = new System.Windows.Forms.Label();
             this._customerPanel = new System.Windows.Forms.Panel();
-            this._lblCustomerPhone = new System.Windows.Forms.Label();
-            this._txtCustomerPhone = new System.Windows.Forms.TextBox();
-            this._btnAddCustomer = new System.Windows.Forms.Button();
-            this._lblCustomerName = new System.Windows.Forms.Label();
             this._barcodePanel = new System.Windows.Forms.Panel();
             this._btnAddByBarcode = new System.Windows.Forms.Button();
             this._txtBarcode = new System.Windows.Forms.TextBox();
@@ -130,8 +126,8 @@ namespace InventoryManagementSystem
             // 
             this._paymentPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
             this._paymentPanel.Controls.Add(this._lblPaymentMethod);
-            this._paymentPanel.Controls.Add(this._rbCash);
-            this._paymentPanel.Controls.Add(this._rbVisa);
+            this._paymentPanel.Controls.Add(this._cbCash);
+            this._paymentPanel.Controls.Add(this._cbVisa);
             this._paymentPanel.Controls.Add(this._txtPaymentDetails);
             this._paymentPanel.Controls.Add(this._lblPaymentDetails);
             this._paymentPanel.Dock = System.Windows.Forms.DockStyle.Top;
@@ -152,29 +148,28 @@ namespace InventoryManagementSystem
             this._lblPaymentMethod.TabIndex = 0;
             this._lblPaymentMethod.Text = "Payment:";
             // 
-            // _rbCash
+            // _cbCash
             // 
-            this._rbCash.AutoSize = true;
-            this._rbCash.Checked = true;
-            this._rbCash.Location = new System.Drawing.Point(120, 5);
-            this._rbCash.Name = "_rbCash";
-            this._rbCash.Size = new System.Drawing.Size(68, 27);
-            this._rbCash.TabIndex = 1;
-            this._rbCash.TabStop = true;
-            this._rbCash.Text = "Cash";
-            this._rbCash.UseVisualStyleBackColor = true;
-            this._rbCash.CheckedChanged += new System.EventHandler(this.rbPayment_CheckedChanged);
+            this._cbCash.AutoSize = true;
+            this._cbCash.Checked = true;
+            this._cbCash.Location = new System.Drawing.Point(120, 5);
+            this._cbCash.Name = "_cbCash";
+            this._cbCash.Size = new System.Drawing.Size(68, 27);
+            this._cbCash.TabIndex = 1;
+            this._cbCash.Text = "Cash";
+            this._cbCash.UseVisualStyleBackColor = true;
+            this._cbCash.CheckedChanged += new System.EventHandler(this.cbPayment_CheckedChanged);
             // 
-            // _rbVisa
+            // _cbVisa
             // 
-            this._rbVisa.AutoSize = true;
-            this._rbVisa.Location = new System.Drawing.Point(221, 5);
-            this._rbVisa.Name = "_rbVisa";
-            this._rbVisa.Size = new System.Drawing.Size(62, 27);
-            this._rbVisa.TabIndex = 2;
-            this._rbVisa.Text = "Visa";
-            this._rbVisa.UseVisualStyleBackColor = true;
-            this._rbVisa.CheckedChanged += new System.EventHandler(this.rbPayment_CheckedChanged);
+            this._cbVisa.AutoSize = true;
+            this._cbVisa.Location = new System.Drawing.Point(221, 5);
+            this._cbVisa.Name = "_cbVisa";
+            this._cbVisa.Size = new System.Drawing.Size(62, 27);
+            this._cbVisa.TabIndex = 2;
+            this._cbVisa.Text = "Visa";
+            this._cbVisa.UseVisualStyleBackColor = true;
+            this._cbVisa.CheckedChanged += new System.EventHandler(this.cbPayment_CheckedChanged);
             // 
             // _txtPaymentDetails
             // 
@@ -712,8 +707,8 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Label _lblCustomerName;
         private System.Windows.Forms.Panel _paymentPanel;
         private System.Windows.Forms.Label _lblPaymentMethod;
-        private System.Windows.Forms.RadioButton _rbCash;
-        private System.Windows.Forms.RadioButton _rbVisa;
+        private System.Windows.Forms.CheckBox _cbCash;
+        private System.Windows.Forms.CheckBox _cbVisa;
         private System.Windows.Forms.TextBox _txtPaymentDetails;
         private System.Windows.Forms.Label _lblPaymentDetails;
         private System.Windows.Forms.Button button1;

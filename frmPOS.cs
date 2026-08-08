@@ -17,6 +17,7 @@ namespace InventoryManagementSystem
         private DataTable _productsTable = new DataTable();
         private int? _selectedCustomerID = null;
         private string _selectedCustomerName = "";
+        private string _orderNotes = "";
 
         // ── Icon+label button rendering ─────────────────────────────────────
         private class IconButtonInfo
@@ -264,6 +265,10 @@ namespace InventoryManagementSystem
 
             // Wire up context menu for right-click
             tile.ContextMenuStrip = _contextMenuProduct;
+
+            // Wire up hover for product preview
+            tile.MouseEnter += (s, e) => ShowProductPreview(tile);
+            tile.MouseLeave += (s, e) => HideProductPreview();
 
             // ── Product image ──────────────────────────────────────────────────
             PictureBox picture = new PictureBox
@@ -569,33 +574,26 @@ namespace InventoryManagementSystem
             }
 
             // Validate payment details if Visa is selected
-            if (_rbVisa.Checked && string.IsNullOrWhiteSpace(_txtPaymentDetails.Text))
+            if (_cbVisa.Checked && string.IsNullOrWhiteSpace(_txtPaymentDetails.Text))
             {
                 MessageBox.Show("Please enter the last 4 digits of the card.", "Payment", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 _txtPaymentDetails.Focus();
                 return;
             }
 
-            if (_rbVisa.Checked && _txtPaymentDetails.Text.Length != 4)
+            if (_cbVisa.Checked && _txtPaymentDetails.Text.Length != 4)
             {
                 MessageBox.Show("Please enter exactly 4 digits for the card.", "Payment", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 _txtPaymentDetails.Focus();
                 return;
             }
 
-            string paymentMethod = _rbCash.Checked ? "Cash" : "Visa";
-            string paymentDetails = _rbCash.Checked ? null : "****" + _txtPaymentDetails.Text;
+            string paymentMethod = _cbCash.Checked && !_cbVisa.Checked ? "Cash" : 
+                                   _cbVisa.Checked && !_cbCash.Checked ? "Visa" : "Split";
+            string paymentDetails = _cbCash.Checked && !_cbVisa.Checked ? null : "****" + _txtPaymentDetails.Text;
 
             int orderID;
             string errorMessage;
-            bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, _selectedCustomerID, paymentMethod, paymentDetails, out orderID, out errorMessage);
-
-            if (!saved)
-            {
-                MessageBox.Show("Order failed: " + errorMessage, "POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                LoadProducts();
-                return;
-            }
 
             // Compute the same totals shown on screen, before we clear the cart.
             decimal subtotal = _receiptItems.Sum(item => item.Subtotal);
@@ -605,6 +603,59 @@ namespace InventoryManagementSystem
             decimal discountedSubtotal = Math.Max(0, subtotal - totalDiscount);
             decimal tax = Math.Round(discountedSubtotal * TaxRate, 2);
             decimal total = discountedSubtotal + tax;
+
+            // Check for split payment
+            if (_cbCash.Checked && _cbVisa.Checked)
+            {
+                // Split payment - ask for amounts
+                using (frmInputBox cashInput = new frmInputBox($"Total: {total:C2}\n\nEnter Cash amount (default {total:C2}):", "Split Payment - Cash"))
+                {
+                    if (cashInput.ShowDialog(this) != DialogResult.OK)
+                        return;
+                    
+                    decimal cashAmount;
+                    string cashInputValue = string.IsNullOrWhiteSpace(cashInput.InputValue) ? total.ToString("0.00") : cashInput.InputValue;
+                    if (!decimal.TryParse(cashInputValue, out cashAmount) || cashAmount < 0 || cashAmount > total)
+                    {
+                        clsFormTheme.ShowError(this, "Invalid cash amount", "Split Payment");
+                        return;
+                    }
+                    
+                    decimal cardAmount = total - cashAmount;
+                    if (cardAmount > 0)
+                    {
+                        using (frmInputBox cardInput = new frmInputBox($"Card amount: {cardAmount:C2}\n\nEnter last 4 digits of card:", "Split Payment - Card"))
+                        {
+                            if (cardInput.ShowDialog(this) != DialogResult.OK)
+                                return;
+                            
+                            if (cardInput.InputValue.Length != 4)
+                            {
+                                clsFormTheme.ShowError(this, "Please enter exactly 4 digits", "Split Payment");
+                                return;
+                            }
+                            
+                            paymentMethod = "Split";
+                            paymentDetails = $"Cash:{cashAmount:0.00}|Card:{cardAmount:0.00}|****{cardInput.InputValue}";
+                        }
+                    }
+                    else
+                    {
+                        paymentMethod = "Cash";
+                        paymentDetails = null;
+                    }
+                }
+            }
+
+            bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, _selectedCustomerID, paymentMethod, paymentDetails, out orderID, out errorMessage);
+
+            if (!saved)
+            {
+                MessageBox.Show("Order failed: " + errorMessage, "POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                LoadProducts();
+                return;
+            }
+
             string customerNameForReceipt = string.IsNullOrWhiteSpace(_selectedCustomerName) ? "Walk-in Customer" : _selectedCustomerName;
 
             // Print BEFORE clearing _receiptItems, since PrintCompletedReceipt reads from it.
@@ -632,7 +683,8 @@ namespace InventoryManagementSystem
             _txtCustomerPhone.Text = "";
             _lblCustomerName.Text = "";
             _btnAddCustomer.Text = "+ New";
-            _rbCash.Checked = true;
+            _cbCash.Checked = true;
+            _cbVisa.Checked = false;
             _txtPaymentDetails.Text = "";
             _txtPaymentDetails.Enabled = false;
             _lblPaymentDetails.Text = "";
@@ -710,17 +762,12 @@ namespace InventoryManagementSystem
             }
         }
 
-        private void rbPayment_CheckedChanged(object sender, EventArgs e)
+        private void cbPayment_CheckedChanged(object sender, EventArgs e)
         {
-            _txtPaymentDetails.Enabled = _rbVisa.Checked;
-            if (_rbCash.Checked)
+            _txtPaymentDetails.Enabled = _cbVisa.Checked;
+            if (_cbCash.Checked && !_cbVisa.Checked)
             {
                 _txtPaymentDetails.Text = "";
-                _lblPaymentDetails.Text = "";
-            }
-            else
-            {
-                _txtPaymentDetails.Focus();
             }
         }
 
@@ -881,8 +928,14 @@ namespace InventoryManagementSystem
 
         private void menuItemAddNote_Click(object sender, EventArgs e)
         {
-            // TODO: Implement cart notes (requires schema change per roadmap)
-            clsFormTheme.ShowInfo(this, "Cart Notes feature coming soon (requires schema change)");
+            using (frmInputBox inputBox = new frmInputBox("Enter order notes:", "Order Notes"))
+            {
+                if (inputBox.ShowDialog(this) == DialogResult.OK)
+                {
+                    _orderNotes = inputBox.InputValue;
+                    clsFormTheme.ShowToastSuccess(this, "Order notes updated", "Notes Saved");
+                }
+            }
         }
 
         private void menuItemProductAddToReceipt_Click(object sender, EventArgs e)
@@ -933,6 +986,93 @@ namespace InventoryManagementSystem
                 // Pre-select the product
                 // Note: frmUpdateProduct needs to support pre-selection
                 clsFormTheme.ShowInfo(this, "Edit Product feature - navigate to Product Management to edit this product", "Edit Product");
+            }
+        }
+
+        private Panel _previewPanel = null;
+
+        private void ShowProductPreview(Panel tile)
+        {
+            if (tile.Tag == null)
+                return;
+
+            var productData = (dynamic)tile.Tag;
+
+            // Create preview panel if it doesn't exist
+            if (_previewPanel == null)
+            {
+                _previewPanel = new Panel
+                {
+                    BackColor = Color.FromArgb(255, 255, 255),
+                    BorderStyle = BorderStyle.FixedSingle,
+                    Size = new Size(200, 120),
+                    Location = new Point(tile.Right + 5, tile.Top),
+                    Visible = false
+                };
+
+                Label lblName = new Label
+                {
+                    Text = "",
+                    Location = new Point(10, 10),
+                    Size = new Size(180, 20),
+                    Font = new Font(clsFormTheme.MainFontName, 9F, FontStyle.Bold),
+                    ForeColor = clsFormTheme.HeaderColor
+                };
+
+                Label lblSupplier = new Label
+                {
+                    Text = "",
+                    Location = new Point(10, 35),
+                    Size = new Size(180, 20),
+                    Font = new Font(clsFormTheme.MainFontName, 8F),
+                    ForeColor = clsFormTheme.TextSecondary
+                };
+
+                Label lblPrice = new Label
+                {
+                    Text = "",
+                    Location = new Point(10, 60),
+                    Size = new Size(180, 20),
+                    Font = new Font(clsFormTheme.MainFontName, 9F, FontStyle.Bold),
+                    ForeColor = clsFormTheme.PrimaryColor
+                };
+
+                Label lblStock = new Label
+                {
+                    Text = "",
+                    Location = new Point(10, 85),
+                    Size = new Size(180, 20),
+                    Font = new Font(clsFormTheme.MainFontName, 8F),
+                    ForeColor = clsFormTheme.SuccessColor
+                };
+
+                _previewPanel.Controls.Add(lblName);
+                _previewPanel.Controls.Add(lblSupplier);
+                _previewPanel.Controls.Add(lblPrice);
+                _previewPanel.Controls.Add(lblStock);
+                _previewPanel.Tag = new { Name = lblName, Supplier = lblSupplier, Price = lblPrice, Stock = lblStock };
+
+                _splitContainer.Panel1.Controls.Add(_previewPanel);
+                _previewPanel.BringToFront();
+            }
+
+            // Update preview content
+            var labels = (dynamic)_previewPanel.Tag;
+            labels.Name.Text = productData.ProductName;
+            labels.Supplier.Text = "Supplier: " + productData.SupplierName;
+            labels.Price.Text = "Price: " + productData.Price.ToString("C2");
+            labels.Stock.Text = "Stock: " + productData.Quantity;
+
+            // Position and show
+            _previewPanel.Location = new Point(tile.Right + 5, tile.Top);
+            _previewPanel.Visible = true;
+        }
+
+        private void HideProductPreview()
+        {
+            if (_previewPanel != null)
+            {
+                _previewPanel.Visible = false;
             }
         }
 
