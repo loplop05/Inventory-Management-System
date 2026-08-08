@@ -42,21 +42,21 @@ namespace InventoryManagementSystem
 
             if (string.IsNullOrWhiteSpace(newPassword))
             {
-                MessageBox.Show("Password is required.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Password is required.", "Validation");
                 txtNewPassword.Focus();
                 return;
             }
 
             if (newPassword.Length < 6)
             {
-                MessageBox.Show("Password must be at least 6 characters long.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Password must be at least 6 characters long.", "Validation");
                 txtNewPassword.Focus();
                 return;
             }
 
             if (newPassword != confirmPassword)
             {
-                MessageBox.Show("Passwords do not match.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Passwords do not match.", "Validation");
                 txtConfirmPassword.Focus();
                 return;
             }
@@ -64,12 +64,12 @@ namespace InventoryManagementSystem
             string errorMessage;
             if (clsUserData.ChangePassword(_userID, newPassword, out errorMessage))
             {
-                MessageBox.Show("Password changed successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowSuccess(this, "Password changed successfully.", "Success");
                 DialogResult = DialogResult.OK;
             }
             else
             {
-                MessageBox.Show("Failed to change password: " + errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "Failed to change password: " + errorMessage, "Error");
             }
         }
 

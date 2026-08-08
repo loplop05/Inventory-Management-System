@@ -112,8 +112,7 @@ namespace InventoryManagementSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error generating report: " + ex.Message, "Error", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(null, "Error generating report: " + ex.Message, "Error");
             }
 
             return report;
@@ -385,8 +384,7 @@ namespace InventoryManagementSystem
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     System.IO.File.WriteAllText(dialog.FileName, csv);
-                    MessageBox.Show("Report exported successfully.", "Export", 
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    clsFormTheme.ShowSuccess(null, "Report exported successfully.", "Export");
                 }
             };
 

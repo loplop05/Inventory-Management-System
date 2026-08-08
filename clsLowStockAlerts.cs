@@ -91,8 +91,7 @@ namespace InventoryManagementSystem
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error checking low stock: " + ex.Message, "Error", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(null, "Error checking low stock: " + ex.Message, "Error");
             }
 
             return items;
@@ -154,8 +153,7 @@ namespace InventoryManagementSystem
             var lowStockItems = items ?? GetLowStockItems();
             if (lowStockItems.Count == 0)
             {
-                MessageBox.Show("No low stock items found.", "Low Stock Alert", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowInfo(null, "No low stock items found.", "Low Stock Alert");
                 return;
             }
 
@@ -282,7 +280,7 @@ namespace InventoryManagementSystem
             {
                 if (grid.SelectedRows.Count == 0)
                 {
-                    MessageBox.Show("Please select a product to reorder.", "Reorder", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    clsFormTheme.ShowWarning(_alertForm, "Please select a product to reorder.", "Reorder");
                     return;
                 }
                 
@@ -359,8 +357,7 @@ namespace InventoryManagementSystem
         {
             // TODO: Implement email notification system
             // This would require SMTP configuration and email template
-            MessageBox.Show($"Email notification would be sent to {recipientEmail} for {items.Count} low stock items.", 
-                "Email Alert", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            clsFormTheme.ShowInfo(null, $"Email notification would be sent to {recipientEmail} for {items.Count} low stock items.", "Email Alert");
         }
 
         // ─── Summary Report ───────────────────────────────────────────────────
@@ -460,7 +457,7 @@ Alerts Enabled: {_alertsEnabled}";
                     int reorderQty;
                     if (!int.TryParse(txtReorderQty.Text, out reorderQty) || reorderQty <= 0)
                     {
-                        MessageBox.Show("Please enter a valid reorder quantity.", "Reorder", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        clsFormTheme.ShowWarning(reorderForm, "Please enter a valid reorder quantity.", "Reorder");
                         return;
                     }
 
@@ -469,10 +466,10 @@ Alerts Enabled: {_alertsEnabled}";
                         $"Product: {item.ProductName}, Qty: {reorderQty}, Supplier: {item.Supplier}, Notes: {txtNotes.Text}", 
                         "Inventory");
 
-                    MessageBox.Show($"Reorder request created for {reorderQty} units of {item.ProductName}.\n\n" +
+                    clsFormTheme.ShowSuccess(reorderForm, $"Reorder request created for {reorderQty} units of {item.ProductName}.\n\n" +
                         $"Supplier: {item.Supplier}\n" +
                         $"Notes: {txtNotes.Text}", 
-                        "Reorder Created", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        "Reorder Created");
                     
                     reorderForm.DialogResult = DialogResult.OK;
                 };

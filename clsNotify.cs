@@ -16,7 +16,7 @@ namespace InventoryManagementSystem
         /// <param name="title">Optional title for the error dialog. Defaults to "Error".</param>
         public static void Error(string message, string title = "Error")
         {
-            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            clsFormTheme.ShowError(null, message, title);
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace InventoryManagementSystem
         /// <param name="title">Optional title for the success dialog. Defaults to "Success".</param>
         public static void Success(string message, string title = "Success")
         {
-            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            clsFormTheme.ShowSuccess(null, message, title);
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace InventoryManagementSystem
         /// <param name="title">Optional title for the warning dialog. Defaults to "Warning".</param>
         public static void Warn(string message, string title = "Warning")
         {
-            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            clsFormTheme.ShowWarning(null, message, title);
         }
 
         /// <summary>
@@ -47,11 +47,7 @@ namespace InventoryManagementSystem
         /// <returns>True if the user clicked Yes, false otherwise.</returns>
         public static bool Confirm(string message, string title = "Confirm")
         {
-            DialogResult result = MessageBox.Show(
-                message,
-                title,
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+            DialogResult result = clsFormTheme.ShowConfirm(null, message, title);
             return result == DialogResult.Yes;
         }
     }

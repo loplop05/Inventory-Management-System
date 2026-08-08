@@ -165,8 +165,7 @@ namespace InventoryManagementSystem
 
             if (!ValidateInput())
             {
-                MessageBox.Show("Please fix the validation errors before proceeding.", "Validation Error", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please fix the validation errors before proceeding.", "Validation Error");
                 return;
             }
 
@@ -196,16 +195,14 @@ namespace InventoryManagementSystem
                 CustomerName = txtCustomerName.Text.Trim();
                 PhoneNumber = txtPhoneNumber.Text.Trim();
 
-                MessageBox.Show("Customer added successfully!", "Success", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowSuccess(this, "Customer added successfully!", "Success");
 
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             else
             {
-                MessageBox.Show("Failed to add customer: " + errorMessage, "Error", 
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "Failed to add customer: " + errorMessage, "Error");
             }
         }
 

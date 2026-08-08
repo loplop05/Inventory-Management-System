@@ -79,28 +79,28 @@ namespace InventoryManagementSystem
 
             if (string.IsNullOrWhiteSpace(username))
             {
-                MessageBox.Show("Username is required.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Username is required.", "Validation");
                 txtUsername.Focus();
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(displayName))
             {
-                MessageBox.Show("Display name is required.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Display name is required.", "Validation");
                 txtDisplayName.Focus();
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(role))
             {
-                MessageBox.Show("Role is required.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Role is required.", "Validation");
                 cmbRole.Focus();
                 return;
             }
 
             if (role != "Admin" && role != "Cashier")
             {
-                MessageBox.Show("Role must be either 'Admin' or 'Cashier'.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Role must be either 'Admin' or 'Cashier'.", "Validation");
                 return;
             }
 
@@ -111,12 +111,12 @@ namespace InventoryManagementSystem
                 // Update existing user
                 if (clsUserData.UpdateUser(_userID.Value, displayName, role, out errorMessage))
                 {
-                    MessageBox.Show("User updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    clsFormTheme.ShowSuccess(this, "User updated successfully.", "Success");
                     DialogResult = DialogResult.OK;
                 }
                 else
                 {
-                    MessageBox.Show("Failed to update user: " + errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    clsFormTheme.ShowError(this, "Failed to update user: " + errorMessage, "Error");
                 }
             }
             else
@@ -127,33 +127,33 @@ namespace InventoryManagementSystem
 
                 if (string.IsNullOrWhiteSpace(password))
                 {
-                    MessageBox.Show("Password is required.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    clsFormTheme.ShowWarning(this, "Password is required.", "Validation");
                     txtPassword.Focus();
                     return;
                 }
 
                 if (password.Length < 6)
                 {
-                    MessageBox.Show("Password must be at least 6 characters long.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    clsFormTheme.ShowWarning(this, "Password must be at least 6 characters long.", "Validation");
                     txtPassword.Focus();
                     return;
                 }
 
                 if (password != confirmPassword)
                 {
-                    MessageBox.Show("Passwords do not match.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    clsFormTheme.ShowWarning(this, "Passwords do not match.", "Validation");
                     txtConfirmPassword.Focus();
                     return;
                 }
 
                 if (clsUserData.AddUser(username, password, displayName, role, out errorMessage))
                 {
-                    MessageBox.Show("User added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    clsFormTheme.ShowSuccess(this, "User added successfully.", "Success");
                     DialogResult = DialogResult.OK;
                 }
                 else
                 {
-                    MessageBox.Show("Failed to add user: " + errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    clsFormTheme.ShowError(this, "Failed to add user: " + errorMessage, "Error");
                 }
             }
         }

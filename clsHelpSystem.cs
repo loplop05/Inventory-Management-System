@@ -260,21 +260,11 @@ Keyboard Shortcuts:
         {
             if (_helpContent.ContainsKey(topic))
             {
-                MessageBox.Show(
-                    _helpContent[topic],
-                    "Help - " + topic,
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information
-                );
+                clsFormTheme.ShowInfo(null, _helpContent[topic], "Help - " + topic);
             }
             else
             {
-                MessageBox.Show(
-                    "Help topic not found.",
-                    "Help",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
+                clsFormTheme.ShowWarning(null, "Help topic not found.", "Help");
             }
         }
 
@@ -285,7 +275,7 @@ Keyboard Shortcuts:
         {
             if (!_helpContent.ContainsKey(topic))
             {
-                MessageBox.Show("Help topic not found.", "Help", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(null, "Help topic not found.", "Help");
                 return;
             }
 

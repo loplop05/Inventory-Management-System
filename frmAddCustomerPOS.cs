@@ -40,14 +40,14 @@ namespace InventoryManagementSystem
 
             if (string.IsNullOrWhiteSpace(name))
             {
-                MessageBox.Show("Customer name is required.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Customer name is required.", "Validation");
                 txtName.Focus();
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(phone))
             {
-                MessageBox.Show("Phone number is required.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Phone number is required.", "Validation");
                 txtPhone.Focus();
                 return;
             }
@@ -61,12 +61,12 @@ namespace InventoryManagementSystem
             {
                 CustomerID = customerID;
                 CustomerName = name;
-                MessageBox.Show("Customer added successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowSuccess(this, "Customer added successfully.", "Success");
                 DialogResult = DialogResult.OK;
             }
             else
             {
-                MessageBox.Show("Failed to add customer: " + errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "Failed to add customer: " + errorMessage, "Error");
             }
         }
 

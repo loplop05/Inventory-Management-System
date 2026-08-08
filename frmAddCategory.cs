@@ -143,11 +143,7 @@ namespace InventoryManagementSystem
                         return;
 
                     case clsCategory.enValidateCategory.NotFound:
-                        MessageBox.Show(
-                            "The category could not be found.",
-                            "Error",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
+                        clsFormTheme.ShowError(this, "The category could not be found.", "Error");
                         return;
                 }
 
@@ -155,11 +151,7 @@ namespace InventoryManagementSystem
 
                 if (isSaved)
                 {
-                    MessageBox.Show(
-                        "Category added successfully.",
-                        "Success",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    clsFormTheme.ShowSuccess(this, "Category added successfully.", "Success");
 
                     txtBoxCategoryName.Clear();
                     DialogResult = DialogResult.OK;
@@ -167,20 +159,12 @@ namespace InventoryManagementSystem
                 }
                 else
                 {
-                    MessageBox.Show(
-                        "Failed to add the category.",
-                        "Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    clsFormTheme.ShowError(this, "Failed to add the category.", "Error");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, ex.Message, "Error");
             }
             finally
             {

@@ -157,7 +157,7 @@ namespace InventoryManagementSystem
             string errorMessage;
             if (!clsPOS.EnsurePosSetupAndSampleData(out errorMessage))
             {
-                MessageBox.Show("POS setup failed: " + errorMessage, "POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "POS setup failed: " + errorMessage, "POS");
                 Close();
                 return;
             }
@@ -172,7 +172,7 @@ namespace InventoryManagementSystem
             string errorMessage;
             if (!clsPOS.GetProductsForPOS(out _productsTable, out errorMessage))
             {
-                MessageBox.Show("Failed to load products: " + errorMessage, "POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "Failed to load products: " + errorMessage, "POS");
                 return;
             }
             BuildProductTabs();
@@ -394,7 +394,7 @@ namespace InventoryManagementSystem
             {
                 if (existing.Quantity + 1 > availableStock)
                 {
-                    MessageBox.Show("Not enough stock available for " + productName + ".", "Stock", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    clsFormTheme.ShowWarning(this, "Not enough stock available for " + productName + ".", "Stock");
                     return;
                 }
 
@@ -443,7 +443,7 @@ namespace InventoryManagementSystem
 
             if (matchingRows.Length == 0)
             {
-                MessageBox.Show("Product not found with barcode: " + barcode, "Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Product not found with barcode: " + barcode, "Not Found");
                 _txtBarcode.SelectAll();
                 _txtBarcode.Focus();
                 return;
@@ -457,7 +457,7 @@ namespace InventoryManagementSystem
 
             if (quantity <= 0)
             {
-                MessageBox.Show("Product is out of stock: " + productName, "Out of Stock", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Product is out of stock: " + productName, "Out of Stock");
                 _txtBarcode.SelectAll();
                 _txtBarcode.Focus();
                 return;
@@ -580,7 +580,7 @@ namespace InventoryManagementSystem
         {
             if (_receiptItems.Count == 0)
             {
-                MessageBox.Show("Receipt is empty.", "POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowInfo(this, "Receipt is empty.", "POS");
                 return;
             }
 
@@ -588,7 +588,7 @@ namespace InventoryManagementSystem
             {
                 if (item.Quantity <= 0 || item.Quantity > item.AvailableStock)
                 {
-                    MessageBox.Show("Invalid quantity for " + item.ProductName + ".", "POS", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    clsFormTheme.ShowWarning(this, "Invalid quantity for " + item.ProductName + ".", "POS");
                     return;
                 }
             }
@@ -596,14 +596,14 @@ namespace InventoryManagementSystem
             // Validate payment details if Visa is selected
             if (_cbVisa.Checked && string.IsNullOrWhiteSpace(_txtPaymentDetails.Text))
             {
-                MessageBox.Show("Please enter the last 4 digits of the card.", "Payment", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please enter the last 4 digits of the card.", "Payment");
                 _txtPaymentDetails.Focus();
                 return;
             }
 
             if (_cbVisa.Checked && _txtPaymentDetails.Text.Length != 4)
             {
-                MessageBox.Show("Please enter exactly 4 digits for the card.", "Payment", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please enter exactly 4 digits for the card.", "Payment");
                 _txtPaymentDetails.Focus();
                 return;
             }
@@ -671,7 +671,7 @@ namespace InventoryManagementSystem
 
             if (!saved)
             {
-                MessageBox.Show("Order failed: " + errorMessage, "POS", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "Order failed: " + errorMessage, "POS");
                 LoadProducts();
                 return;
             }
@@ -679,11 +679,10 @@ namespace InventoryManagementSystem
             string customerNameForReceipt = string.IsNullOrWhiteSpace(_selectedCustomerName) ? "Walk-in Customer" : _selectedCustomerName;
 
             // Print BEFORE clearing _receiptItems, since PrintCompletedReceipt reads from it.
-            DialogResult printChoice = MessageBox.Show(
-    "Order #" + orderID + " completed successfully.\n\nPrint receipt?",
-    "Print Receipt",
-    MessageBoxButtons.YesNo,
-    MessageBoxIcon.Question);
+            DialogResult printChoice = clsFormTheme.ShowConfirm(
+                this,
+                "Order #" + orderID + " completed successfully.\n\nPrint receipt?",
+                "Print Receipt");
 
             if (printChoice == DialogResult.Yes)
             {
@@ -693,7 +692,7 @@ namespace InventoryManagementSystem
             RefreshReceiptTotals();
             LoadProducts();
             ClearCustomerInfo();
-            MessageBox.Show("Order #" + orderID + " completed successfully.", "POS", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            clsFormTheme.ShowInfo(this, "Order #" + orderID + " completed successfully.", "POS");
         }
 
         private void ClearCustomerInfo()
@@ -872,7 +871,7 @@ namespace InventoryManagementSystem
             if (!int.TryParse(Convert.ToString(e.FormattedValue), out quantity) || quantity <= 0)
             {
                 e.Cancel = true;
-                MessageBox.Show("Quantity must be greater than zero.", "Receipt", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Quantity must be greater than zero.", "Receipt");
                 return;
             }
 
@@ -880,7 +879,7 @@ namespace InventoryManagementSystem
             if (item != null && quantity > item.AvailableStock)
             {
                 e.Cancel = true;
-                MessageBox.Show("Quantity exceeds available stock.", "Receipt", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Quantity exceeds available stock.", "Receipt");
             }
         }
 
@@ -1193,7 +1192,7 @@ namespace InventoryManagementSystem
         private void gridReceipt_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             e.ThrowException = false;
-            MessageBox.Show("Please enter a valid value.", "Receipt", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            clsFormTheme.ShowWarning(this, "Please enter a valid value.", "Receipt");
         }
 
         private void ReceiptItems_ListChanged(object sender, ListChangedEventArgs e)

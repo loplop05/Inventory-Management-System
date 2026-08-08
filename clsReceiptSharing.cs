@@ -117,8 +117,7 @@ namespace InventoryManagementSystem
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Failed to open WhatsApp: " + ex.Message, "Error", 
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                clsFormTheme.ShowError(null, "Failed to open WhatsApp: " + ex.Message, "Error");
                 return false;
             }
         }
@@ -146,8 +145,7 @@ namespace InventoryManagementSystem
             }
             catch (Exception ex)
             {
-                System.Windows.Forms.MessageBox.Show("Failed to open email client: " + ex.Message, "Error",
-                    System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                clsFormTheme.ShowError(null, "Failed to open email client: " + ex.Message, "Error");
                 return false;
             }
         }

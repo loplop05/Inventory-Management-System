@@ -166,11 +166,7 @@ namespace InventoryManagementSystem
 
                 if (isSaved)
                 {
-                    MessageBox.Show(
-                        "Supplier added successfully.",
-                        "Success",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    clsFormTheme.ShowSuccess(this, "Supplier added successfully.", "Success");
 
                     txtBoxSupplierName.Clear();
                     txtBoxPhone.Clear();
@@ -180,20 +176,12 @@ namespace InventoryManagementSystem
                 }
                 else
                 {
-                    MessageBox.Show(
-                        "Failed to add the supplier.",
-                        "Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    clsFormTheme.ShowError(this, "Failed to add the supplier.", "Error");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, ex.Message, "Error");
             }
             finally
             {

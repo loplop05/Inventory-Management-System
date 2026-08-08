@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Windows.Forms;
 using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
+using InventoryBusinessLayer;
 
 namespace InventoryManagementSystem
 {
@@ -561,8 +563,7 @@ namespace InventoryManagementSystem
                     Coupon selected = GetSelectedCoupon(grid);
                     if (selected == null) return;
 
-                    if (MessageBox.Show("Delete coupon '" + selected.Code + "'?", "Confirm",
-                        MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    if (clsFormTheme.ShowConfirm(managerForm, "Delete coupon '" + selected.Code + "'?", "Confirm") == DialogResult.Yes)
                     {
                         RemoveCoupon(selected.Code);
                         refresh(null, EventArgs.Empty);
@@ -902,7 +903,7 @@ namespace InventoryManagementSystem
 
         private static void ShowValidationError(string message, Control controlToFocus)
         {
-            MessageBox.Show(message, "Invalid Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            clsFormTheme.ShowWarning(null, message, "Invalid Input");
             controlToFocus.Focus();
         }
 
