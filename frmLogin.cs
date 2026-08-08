@@ -39,14 +39,14 @@ namespace InventoryManagementSystem
 
             if (string.IsNullOrWhiteSpace(username))
             {
-                MessageBox.Show("Please enter username.", "Login", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please enter username.", "Login");
                 txtUsername.Focus();
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(password))
             {
-                MessageBox.Show("Please enter password.", "Login", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please enter password.", "Login");
                 txtPassword.Focus();
                 return;
             }
@@ -62,7 +62,7 @@ namespace InventoryManagementSystem
             }
             else
             {
-                MessageBox.Show("Invalid username or password.", "Login", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "Invalid username or password.", "Login");
                 txtPassword.Clear();
                 txtPassword.Focus();
             }

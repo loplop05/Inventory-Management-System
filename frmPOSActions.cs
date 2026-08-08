@@ -75,7 +75,7 @@ namespace InventoryManagementSystem
         {
             if (ReceiptItems == null || GetReceiptItemsCount() == 0)
             {
-                MessageBox.Show("Receipt is empty.", "Discount", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowInfo(this, "Receipt is empty.", "Discount");
                 return;
             }
 
@@ -95,8 +95,7 @@ namespace InventoryManagementSystem
                     // Apply the discount
                     ApplyManualDiscount?.Invoke(discountValue, typeText);
 
-                    MessageBox.Show($"Discount applied: {typeText} - {discountValue}", "Success",
-                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    clsFormTheme.ShowSuccess(this, $"Discount applied: {typeText} - {discountValue}", "Success");
                 }
             }
         }
@@ -105,7 +104,7 @@ namespace InventoryManagementSystem
         {
            if (ReceiptItems == null || GetReceiptItemsCount() == 0)
             {
-                MessageBox.Show("Receipt is empty.", "Coupon", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowInfo(this, "Receipt is empty.", "Coupon");
                 return;
             }
 
@@ -120,14 +119,13 @@ namespace InventoryManagementSystem
                 var coupon = clsDiscountSystem.GetCoupon(couponCode);
                 if (coupon == null)
                 {
-                    MessageBox.Show("Invalid coupon code.", "Coupon", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    clsFormTheme.ShowError(this, "Invalid coupon code.", "Coupon");
                     return;
                 }
 
                 if (!coupon.IsValid())
                 {
-                    MessageBox.Show("This coupon is expired or has reached its usage limit.", "Coupon",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    clsFormTheme.ShowWarning(this, "This coupon is expired or has reached its usage limit.", "Coupon");
                     return;
                 }
 
@@ -137,8 +135,7 @@ namespace InventoryManagementSystem
 
                 if (subtotal < coupon.MinimumPurchase)
                 {
-                    MessageBox.Show($"Minimum purchase of {coupon.MinimumPurchase:C2} required for this coupon.",
-                        "Coupon", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    clsFormTheme.ShowWarning(this, $"Minimum purchase of {coupon.MinimumPurchase:C2} required for this coupon.", "Coupon");
                     return;
                 }
 
@@ -159,8 +156,7 @@ namespace InventoryManagementSystem
                 // Apply the coupon
                 ApplyCoupon?.Invoke(couponCode, discount);
 
-                MessageBox.Show($"Coupon applied! Discount: {discount:C2}", "Success",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowSuccess(this, $"Coupon applied! Discount: {discount:C2}", "Success");
             }
         }
 
@@ -168,13 +164,13 @@ namespace InventoryManagementSystem
         {
             if (ReceiptItems == null || GetReceiptItemsCount() == 0)
             {
-                MessageBox.Show("Receipt is empty.", "Loyalty", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowInfo(this, "Receipt is empty.", "Loyalty");
                 return;
             }
 
             if (SelectedCustomerID == null || !SelectedCustomerID.HasValue)
             {
-                MessageBox.Show("Please select a customer first to redeem loyalty points.", "Loyalty", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please select a customer first to redeem loyalty points.", "Loyalty");
                 return;
             }
 
@@ -183,7 +179,7 @@ namespace InventoryManagementSystem
             var loyaltyInfo = clsLoyalty.GetCustomerLoyaltyInfo(SelectedCustomerID.Value, out errorMessage);
             if (loyaltyInfo == null)
             {
-                MessageBox.Show("Could not retrieve loyalty information: " + errorMessage, "Loyalty", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "Could not retrieve loyalty information: " + errorMessage, "Loyalty");
                 return;
             }
 
@@ -193,7 +189,7 @@ namespace InventoryManagementSystem
 
             if (availablePoints < 100)
             {
-                MessageBox.Show("Customer needs at least 100 points to redeem. Current points: " + availablePoints, "Loyalty", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowInfo(this, "Customer needs at least 100 points to redeem. Current points: " + availablePoints, "Loyalty");
                 return;
             }
 
@@ -205,19 +201,19 @@ namespace InventoryManagementSystem
 
                 if (!int.TryParse(inputForm.InputValue, out int pointsToRedeem))
                 {
-                    MessageBox.Show("Please enter a valid number of points.", "Loyalty", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    clsFormTheme.ShowWarning(this, "Please enter a valid number of points.", "Loyalty");
                     return;
                 }
 
                 if (pointsToRedeem < 100)
                 {
-                    MessageBox.Show("Minimum redemption is 100 points.", "Loyalty", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    clsFormTheme.ShowWarning(this, "Minimum redemption is 100 points.", "Loyalty");
                     return;
                 }
 
                 if (pointsToRedeem > availablePoints)
                 {
-                    MessageBox.Show($"Insufficient points. Available: {availablePoints}", "Loyalty", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    clsFormTheme.ShowWarning(this, $"Insufficient points. Available: {availablePoints}", "Loyalty");
                     return;
                 }
 
@@ -226,7 +222,7 @@ namespace InventoryManagementSystem
                 bool success = clsLoyalty.RedeemPoints(SelectedCustomerID.Value, pointsToRedeem, out discountAmount, out errorMessage);
                 if (!success)
                 {
-                    MessageBox.Show("Failed to redeem points: " + errorMessage, "Loyalty", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    clsFormTheme.ShowError(this, "Failed to redeem points: " + errorMessage, "Loyalty");
                     return;
                 }
 
@@ -236,8 +232,7 @@ namespace InventoryManagementSystem
                 // Apply the loyalty discount
                 ApplyCoupon?.Invoke("Loyalty: " + pointsToRedeem + " pts", discountAmount);
 
-                MessageBox.Show($"Points redeemed! Discount: {discountAmount:C2}", "Success",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowSuccess(this, $"Points redeemed! Discount: {discountAmount:C2}", "Success");
             }
         }
 
@@ -245,7 +240,7 @@ namespace InventoryManagementSystem
         {
             if (ReceiptGrid == null || ReceiptGrid.CurrentRow == null)
             {
-                MessageBox.Show("Please select an item to void.", "Void Item", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please select an item to void.", "Void Item");
                 return;
             }
 
@@ -256,8 +251,7 @@ namespace InventoryManagementSystem
             var productNameProp = item.GetType().GetProperty("ProductName");
             string productName = productNameProp != null ? productNameProp.GetValue(item).ToString() : "item";
 
-            var result = MessageBox.Show($"Void item: {productName}?", "Void Item",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var result = clsFormTheme.ShowConfirm(this, $"Void item: {productName}?", "Void Item");
 
             if (result == DialogResult.Yes)
             {
@@ -274,12 +268,11 @@ namespace InventoryManagementSystem
         {
             if (ReceiptItems == null || GetReceiptItemsCount() == 0)
             {
-                MessageBox.Show("Receipt is empty.", "Void Order", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowInfo(this, "Receipt is empty.", "Void Order");
                 return;
             }
 
-            var result = MessageBox.Show("Void entire order? This will clear all items.", "Void Order",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+            var result = clsFormTheme.ShowConfirm(this, "Void entire order? This will clear all items.", "Void Order");
 
             if (result == DialogResult.Yes)
             {
@@ -297,7 +290,7 @@ namespace InventoryManagementSystem
         {
             if (ReceiptItems == null || GetReceiptItemsCount() == 0)
             {
-                MessageBox.Show("Receipt is empty.", "Hold Order", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowInfo(this, "Receipt is empty.", "Hold Order");
                 return;
             }
 
@@ -305,8 +298,7 @@ namespace InventoryManagementSystem
             string migrationError;
             if (!clsDatabaseMigration.EnsureHeldOrdersTablesExist(out migrationError))
             {
-                MessageBox.Show("Failed to initialize held orders tables: " + migrationError, "Database Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "Failed to initialize held orders tables: " + migrationError, "Database Error");
                 return;
             }
 
@@ -349,7 +341,7 @@ namespace InventoryManagementSystem
 
                 if (heldOrderID > 0)
                 {
-                    MessageBox.Show("Order held successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    clsFormTheme.ShowSuccess(this, "Order held successfully.", "Success");
 
                     var clearMethod = ReceiptItems.GetType().GetMethod("Clear");
                     if (clearMethod != null)
@@ -362,7 +354,7 @@ namespace InventoryManagementSystem
                 }
                 else
                 {
-                    MessageBox.Show("Failed to hold order: " + errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    clsFormTheme.ShowError(this, "Failed to hold order: " + errorMessage, "Error");
                 }
             }
         }
@@ -373,8 +365,7 @@ namespace InventoryManagementSystem
             string migrationError;
             if (!clsDatabaseMigration.EnsureHeldOrdersTablesExist(out migrationError))
             {
-                MessageBox.Show("Failed to initialize held orders tables: " + migrationError, "Database Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "Failed to initialize held orders tables: " + migrationError, "Database Error");
                 return;
             }
 
@@ -409,8 +400,8 @@ namespace InventoryManagementSystem
                             // Warn if stock is insufficient
                             if (currentStock < item.Quantity)
                             {
-                                MessageBox.Show($"Product '{item.ProductName}' has insufficient stock. Available: {currentStock}, Held: {item.Quantity}.",
-                                    "Stock Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                clsFormTheme.ShowWarning(this, $"Product '{item.ProductName}' has insufficient stock. Available: {currentStock}, Held: {item.Quantity}.",
+                                    "Stock Warning");
                                 item.Quantity = Math.Min(item.Quantity, currentStock);
                             }
 
@@ -451,11 +442,11 @@ namespace InventoryManagementSystem
                         string errorMessage;
                         clsHeldOrder.DeleteHeldOrder(heldOrder.HeldOrderID, out errorMessage);
 
-                        MessageBox.Show("Held order retrieved successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        clsFormTheme.ShowSuccess(this, "Held order retrieved successfully.", "Success");
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Error retrieving held order: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        clsFormTheme.ShowError(this, "Error retrieving held order: " + ex.Message, "Error");
                     }
                 }
             }

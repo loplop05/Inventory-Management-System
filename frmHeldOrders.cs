@@ -21,8 +21,7 @@ namespace InventoryManagementSystem
             string migrationError;
             if (!clsDatabaseMigration.EnsureHeldOrdersTablesExist(out migrationError))
             {
-                MessageBox.Show("Failed to initialize held orders tables: " + migrationError, "Database Error",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "Failed to initialize held orders tables: " + migrationError, "Database Error");
                 return;
             }
 
@@ -46,7 +45,7 @@ namespace InventoryManagementSystem
 
             if (heldOrders == null)
             {
-                MessageBox.Show("Failed to load held orders: " + errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "Failed to load held orders: " + errorMessage, "Error");
                 return;
             }
 
@@ -113,7 +112,7 @@ namespace InventoryManagementSystem
         {
             if (gridHeldOrders.CurrentRow == null)
             {
-                MessageBox.Show("Please select a held order to retrieve.", "Retrieve", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please select a held order to retrieve.", "Retrieve");
                 return;
             }
 
@@ -128,7 +127,7 @@ namespace InventoryManagementSystem
             }
             else
             {
-                MessageBox.Show("Failed to retrieve held order: " + errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "Failed to retrieve held order: " + errorMessage, "Error");
             }
         }
 
@@ -136,26 +135,25 @@ namespace InventoryManagementSystem
         {
             if (gridHeldOrders.CurrentRow == null)
             {
-                MessageBox.Show("Please select a held order to delete.", "Delete", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please select a held order to delete.", "Delete");
                 return;
             }
 
             int heldOrderID = Convert.ToInt32(gridHeldOrders.CurrentRow.Cells["HeldOrderID"].Value);
 
-            var result = MessageBox.Show("Are you sure you want to delete this held order?", "Confirm Delete",
-                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var result = clsFormTheme.ShowConfirm(this, "Are you sure you want to delete this held order?", "Confirm Delete");
 
             if (result == DialogResult.Yes)
             {
                 string errorMessage;
                 if (clsHeldOrder.DeleteHeldOrder(heldOrderID, out errorMessage))
                 {
-                    MessageBox.Show("Held order deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    clsFormTheme.ShowSuccess(this, "Held order deleted successfully.", "Success");
                     LoadHeldOrders();
                 }
                 else
                 {
-                    MessageBox.Show("Failed to delete held order: " + errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    clsFormTheme.ShowError(this, "Failed to delete held order: " + errorMessage, "Error");
                 }
             }
         }

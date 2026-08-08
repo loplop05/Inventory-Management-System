@@ -113,11 +113,10 @@ namespace InventoryManagementSystem
                     return;
                 }
 
-                DialogResult result = MessageBox.Show(
+                DialogResult result = clsFormTheme.ShowConfirm(
+                    this,
                     $"Are you sure you want to delete '{category.CategoryName}'?",
-                    "Confirm Delete",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
+                    "Confirm Delete");
 
                 if (result != DialogResult.Yes)
                     return;
@@ -126,31 +125,19 @@ namespace InventoryManagementSystem
 
                 if (isDeleted)
                 {
-                    MessageBox.Show(
-                        "Category deleted successfully.",
-                        "Success",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
+                    clsFormTheme.ShowSuccess(this, "Category deleted successfully.", "Success");
 
                     DialogResult = DialogResult.OK;
                     Close();
                 }
                 else
                 {
-                    MessageBox.Show(
-                        "Failed to delete the category. It may be used by a product.",
-                        "Error",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error);
+                    clsFormTheme.ShowError(this, "Failed to delete the category. It may be used by a product.", "Error");
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    ex.Message,
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, ex.Message, "Error");
             }
             finally
             {

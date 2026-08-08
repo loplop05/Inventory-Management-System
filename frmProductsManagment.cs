@@ -334,7 +334,7 @@ namespace InventoryManagementSystem
         {
             if (DataGVProducts.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Please select a product to update.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowInfo(this, "Please select a product to update.", "No Selection");
                 return;
             }
 
@@ -354,7 +354,7 @@ namespace InventoryManagementSystem
         {
             if (DataGVProducts.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Please select a product to delete.", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowInfo(this, "Please select a product to delete.", "No Selection");
                 return;
             }
 
@@ -362,23 +362,22 @@ namespace InventoryManagementSystem
             int productId = Convert.ToInt32(selectedRow.Cells["colID"].Value);
             string productName = selectedRow.Cells["colProduct"].Value.ToString();
 
-            DialogResult result = MessageBox.Show(
+            DialogResult result = clsFormTheme.ShowConfirm(
+                this,
                 $"Are you sure you want to delete '{productName}'?",
-                "Confirm Delete",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Warning);
+                "Confirm Delete");
 
             if (result == DialogResult.Yes)
             {
                 bool isDeleted = clsProduct.DeleteProduct(productId);
                 if (isDeleted)
                 {
-                    MessageBox.Show("Product deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    clsFormTheme.ShowSuccess(this, "Product deleted successfully.", "Success");
                     await RefreshGridDataAsync();
                 }
                 else
                 {
-                    MessageBox.Show("Failed to delete product.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    clsFormTheme.ShowError(this, "Failed to delete product.", "Error");
                 }
             }
         }

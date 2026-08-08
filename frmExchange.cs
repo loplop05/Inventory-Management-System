@@ -95,12 +95,9 @@ namespace InventoryManagementSystem
             TimeSpan daysSincePurchase = DateTime.Now - orderDate;
             if (daysSincePurchase.TotalDays > ExchangeDaysLimit)
             {
-                MessageBox.Show(
+                clsFormTheme.ShowWarning(this,
                     $"This order is {daysSincePurchase.Days} days old. Exchange policy allows exchanges within {ExchangeDaysLimit} days of purchase.",
-                    "Exchange Policy",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
+                    "Exchange Policy");
                 btnProcessExchange.Enabled = false;
                 btnConfirmExchange.Enabled = false;
             }
@@ -140,20 +137,20 @@ namespace InventoryManagementSystem
         {
             if (cmbExchangeItem.SelectedIndex < 0)
             {
-                MessageBox.Show("Please select an item to exchange.", "Exchange", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please select an item to exchange.", "Exchange");
                 return;
             }
 
             int quantity;
             if (!int.TryParse(txtExchangeQuantity.Text, out quantity) || quantity <= 0)
             {
-                MessageBox.Show("Please enter a valid quantity.", "Exchange", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please enter a valid quantity.", "Exchange");
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(txtExchangeReason.Text))
             {
-                MessageBox.Show("Please provide a reason for the exchange.", "Exchange", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please provide a reason for the exchange.", "Exchange");
                 return;
             }
 
@@ -166,7 +163,7 @@ namespace InventoryManagementSystem
 
             if (quantity > originalQuantity)
             {
-                MessageBox.Show($"Cannot exchange more than the original quantity ({originalQuantity}).", "Exchange", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, $"Cannot exchange more than the original quantity ({originalQuantity}).", "Exchange");
                 return;
             }
 
@@ -243,7 +240,7 @@ namespace InventoryManagementSystem
         {
             if (_exchangeItems.Count == 0)
             {
-                MessageBox.Show("Please add at least one item to exchange before confirming.", "Exchange", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please add at least one item to exchange before confirming.", "Exchange");
                 return;
             }
 
@@ -262,13 +259,13 @@ namespace InventoryManagementSystem
             if (success)
             {
                 decimal refundAmount = _exchangeItems.Sum(i => i.ExchangeQuantity * i.UnitPrice);
-                MessageBox.Show($"Exchange processed successfully!\n\nTotal credit/refund: {refundAmount:C2}\nInventory stock has been restocked.", "Exchange Complete", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowSuccess(this, $"Exchange processed successfully!\n\nTotal credit/refund: {refundAmount:C2}\nInventory stock has been restocked.", "Exchange Complete");
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
             else
             {
-                MessageBox.Show("Failed to process exchange: " + errorMessage, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowError(this, "Failed to process exchange: " + errorMessage, "Error");
             }
         }
 

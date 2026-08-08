@@ -82,7 +82,7 @@ namespace InventoryManagementSystem
         {
             if (string.IsNullOrWhiteSpace(txtPhoneNumber.Text))
             {
-                MessageBox.Show("Please enter a phone number.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please enter a phone number.", "Search");
                 txtPhoneNumber.Focus();
                 return;
             }
@@ -92,7 +92,7 @@ namespace InventoryManagementSystem
 
             if (customer == null || customer.Rows.Count == 0)
             {
-                MessageBox.Show("Customer not found with this phone number.", "Search", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                clsFormTheme.ShowInfo(this, "Customer not found with this phone number.", "Search");
                 lblCustomerName.Text = "";
                 gridOrders.DataSource = null;
                 btnSelect.Enabled = false;

@@ -41,14 +41,14 @@ namespace InventoryManagementSystem
             decimal value;
             if (!decimal.TryParse(txtDiscountValue.Text, out value) || value < 0)
             {
-                MessageBox.Show("Please enter a valid positive number.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Please enter a valid positive number.", "Validation");
                 txtDiscountValue.Focus();
                 return;
             }
 
             if (rbPercentage.Checked && value > 100)
             {
-                MessageBox.Show("Percentage discount cannot exceed 100%.", "Validation", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                clsFormTheme.ShowWarning(this, "Percentage discount cannot exceed 100%.", "Validation");
                 txtDiscountValue.Focus();
                 return;
             }
