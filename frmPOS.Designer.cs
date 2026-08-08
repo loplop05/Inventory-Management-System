@@ -28,6 +28,10 @@ namespace InventoryManagementSystem
             this._txtPaymentDetails = new System.Windows.Forms.TextBox();
             this._lblPaymentDetails = new System.Windows.Forms.Label();
             this._customerPanel = new System.Windows.Forms.Panel();
+            this._lblCustomerPhone = new System.Windows.Forms.Label();
+            this._txtCustomerPhone = new System.Windows.Forms.TextBox();
+            this._btnAddCustomer = new System.Windows.Forms.Button();
+            this._lblCustomerName = new System.Windows.Forms.Label();
             this._barcodePanel = new System.Windows.Forms.Panel();
             this._btnAddByBarcode = new System.Windows.Forms.Button();
             this._txtBarcode = new System.Windows.Forms.TextBox();

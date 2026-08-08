@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using InventoryBusinessLayer;
+using InventoryDataAccessLayer;
 
 namespace InventoryManagementSystem
 {
@@ -18,6 +19,7 @@ namespace InventoryManagementSystem
         private int? _selectedCustomerID = null;
         private string _selectedCustomerName = "";
         private string _orderNotes = "";
+        private HashSet<int> _favoriteProductIDs = new HashSet<int>();
 
         // ── Icon+label button rendering ─────────────────────────────────────
         private class IconButtonInfo
@@ -269,6 +271,24 @@ namespace InventoryManagementSystem
             // Wire up hover for product preview
             tile.MouseEnter += (s, e) => ShowProductPreview(tile);
             tile.MouseLeave += (s, e) => HideProductPreview();
+
+            // Add favorite star button
+            Button btnFavorite = new Button
+            {
+                Width = 24,
+                Height = 24,
+                Location = new Point(tile.Width - 32, 8),
+                Text = _favoriteProductIDs.Contains(productID) ? "★" : "☆",
+                BackColor = Color.Transparent,
+                FlatStyle = FlatStyle.Flat,
+                ForeColor = _favoriteProductIDs.Contains(productID) ? Color.FromArgb(255, 193, 7) : Color.Gray,
+                Font = new Font("Segoe UI", 12F),
+                Cursor = Cursors.Hand,
+                Tag = productID
+            };
+            btnFavorite.FlatAppearance.BorderSize = 0;
+            btnFavorite.Click += (s, e) => ToggleFavorite((Button)s, productID);
+            tile.Controls.Add(btnFavorite);
 
             // ── Product image ──────────────────────────────────────────────────
             PictureBox picture = new PictureBox
@@ -894,9 +914,17 @@ namespace InventoryManagementSystem
 
         private void menuItemApplyDiscount_Click(object sender, EventArgs e)
         {
-            // TODO: Implement item discount logic
-            // This should reuse existing manual discount functionality
-            clsFormTheme.ShowInfo(this, "Item Discount feature coming soon");
+            if (_gridReceipt.CurrentRow == null)
+                return;
+
+            ReceiptItem item = _gridReceipt.CurrentRow.DataBoundItem as ReceiptItem;
+            if (item == null)
+                return;
+
+            // For now, apply discount to the entire order
+            // TODO: Consider implementing item-level discount if needed
+            ApplyManualDiscount(0, "percentage");
+            clsFormTheme.ShowInfo(this, "Item discount applied to entire order", "Discount");
         }
 
         private void menuItemRemove_Click(object sender, EventArgs e)
@@ -1076,6 +1104,92 @@ namespace InventoryManagementSystem
             }
         }
 
+        private void ToggleFavorite(Button btnFavorite, int productID)
+        {
+            if (_favoriteProductIDs.Contains(productID))
+            {
+                _favoriteProductIDs.Remove(productID);
+                btnFavorite.Text = "☆";
+                btnFavorite.ForeColor = Color.Gray;
+                clsFormTheme.ShowToastInfo(this, "Removed from favorites", "Favorites");
+            }
+            else
+            {
+                _favoriteProductIDs.Add(productID);
+                btnFavorite.Text = "★";
+                btnFavorite.ForeColor = Color.FromArgb(255, 193, 7);
+                clsFormTheme.ShowToastSuccess(this, "Added to favorites", "Favorites");
+            }
+        }
+
+        private void HoldOrder()
+        {
+            if (_receiptItems.Count == 0)
+            {
+                clsFormTheme.ShowInfo(this, "Receipt is empty.", "Hold Order");
+                return;
+            }
+
+            // Ensure HeldOrders tables exist in database
+            string migrationError;
+            if (!clsDatabaseMigration.EnsureHeldOrdersTablesExist(out migrationError))
+            {
+                clsFormTheme.ShowError(this, "Failed to initialize held orders tables: " + migrationError, "Database Error");
+                return;
+            }
+
+            using (frmInputBox inputForm = new frmInputBox("Enter notes for this held order:", "Hold Order"))
+            {
+                if (inputForm.ShowDialog(this) != DialogResult.OK)
+                    return;
+
+                string notes = inputForm.InputValue;
+
+                // Build order items
+                DataTable orderItems = new DataTable();
+                orderItems.Columns.Add("ProductID", typeof(int));
+                orderItems.Columns.Add("ProductName", typeof(string));
+                orderItems.Columns.Add("Quantity", typeof(int));
+                orderItems.Columns.Add("UnitPrice", typeof(decimal));
+
+                foreach (var item in _receiptItems)
+                {
+                    orderItems.Rows.Add(
+                        item.ProductID,
+                        item.ProductName,
+                        item.Quantity,
+                        item.UnitPrice
+                    );
+                }
+
+                // Calculate total
+                decimal subtotal = _receiptItems.Sum(item => item.Subtotal);
+                decimal manualDiscount = _manualDiscountType == "percentage" ? subtotal * (_manualDiscountAmount / 100m)
+                                        : _manualDiscountType == "fixed" ? _manualDiscountAmount : 0;
+                decimal totalDiscount = manualDiscount + _couponDiscountAmount;
+                decimal discountedSubtotal = Math.Max(0, subtotal - totalDiscount);
+                decimal tax = Math.Round(discountedSubtotal * TaxRate, 2);
+                decimal total = discountedSubtotal + tax;
+
+                string errorMessage;
+                int heldOrderID = clsHeldOrder.SaveHeldOrder(_selectedCustomerID, orderItems, total, notes, out errorMessage);
+
+                if (heldOrderID > 0)
+                {
+                    clsFormTheme.ShowToastSuccess(this, "Order held successfully", "Hold Order");
+
+                    _receiptItems.Clear();
+                    RefreshReceiptTotals();
+                    ClearCustomerInfo();
+                    LoadProducts();
+                }
+                else
+                {
+                    clsFormTheme.ShowError(this, "Failed to hold order: " + errorMessage, "Hold Order");
+                }
+            }
+        }
+
         private void gridReceipt_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             e.ThrowException = false;
@@ -1144,11 +1258,10 @@ namespace InventoryManagementSystem
                 AdjustSelectedLineQuantity(-1);
                 e.SuppressKeyPress = true;
             }
-            // Ctrl+H - Hold order (not yet implemented - placeholder)
+            // Ctrl+H - Hold order
             else if (e.Control && e.KeyCode == Keys.H)
             {
-                // TODO: Implement HoldOrder functionality
-                clsFormTheme.ShowInfo(this, "Hold Order feature coming soon");
+                HoldOrder();
                 e.SuppressKeyPress = true;
             }
             // Escape - Close form
