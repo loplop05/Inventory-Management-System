@@ -11,7 +11,6 @@ namespace InventoryManagementSystem
         {
             InitializeComponent();
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "System Audit Logs & Activity", clsFormTheme.Icons.Reports);
 
             clsFormTheme.ApplyComboBoxStyle(cmbModule);
             clsFormTheme.ApplyTextBoxStyle(txtSearch);
@@ -46,6 +45,7 @@ namespace InventoryManagementSystem
         {
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Audit Logs");
+            _lblHeaderTitle.Text = clsLanguageManager.GetString("Audit Logs");
             lblModule.Text = clsLanguageManager.GetString("Module") + ":";
             lblSearch.Text = clsLanguageManager.GetString("Search") + ":";
             btnExport.Text = clsLanguageManager.GetString("Export CSV");

@@ -21,7 +21,6 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Suppliers", clsFormTheme.Icons.Suppliers);
 
             // Setup keyboard shortcuts
             clsKeyboardShortcuts.SetupCommonShortcuts(
@@ -79,6 +78,7 @@ namespace InventoryManagementSystem
         {
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Suppliers Management");
+            _lblHeaderTitle.Text = clsLanguageManager.GetString("Suppliers Management");
             btnAddSupplier.Text = clsLanguageManager.GetString("Add");
             btnDeleteSupplier.Text = clsLanguageManager.GetString("Delete");
             btnUpdateSupplier.Text = clsLanguageManager.GetString("Update");

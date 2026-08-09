@@ -27,7 +27,6 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Categories", clsFormTheme.Icons.Categories);
 
             // Setup keyboard shortcuts
             clsKeyboardShortcuts.SetupCommonShortcuts(
@@ -81,6 +80,7 @@ namespace InventoryManagementSystem
         {
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Categories Management");
+            _lblHeaderTitle.Text = clsLanguageManager.GetString("Categories Management");
             btnAddCategory.Text = clsLanguageManager.GetString("Add");
             btnDeleteCategory.Text = clsLanguageManager.GetString("Delete");
             btnUpdateCategory.Text = clsLanguageManager.GetString("Update");
