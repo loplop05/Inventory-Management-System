@@ -268,12 +268,6 @@
     <Compile Include="frmManualDiscount.Designer.cs">
       <DependentUpon>frmManualDiscount.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmAddCustomerPOS.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmAddCustomerPOS.Designer.cs">
-      <DependentUpon>frmAddCustomerPOS.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmCustomerManagement.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -436,9 +430,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmManualDiscount.resx">
       <DependentUpon>frmManualDiscount.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="frmAddCustomerPOS.resx">
-      <DependentUpon>frmAddCustomerPOS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmCustomerManagement.resx">
       <DependentUpon>frmCustomerManagement.cs</DependentUpon>

@@ -10,15 +10,14 @@ namespace InventoryManagementSystem
         {
             InitializeComponent();
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Login", clsFormTheme.Icons.User);
-            clsFormTheme.ApplyTextBoxStyle(txtUsername);
-            clsFormTheme.ApplyTextBoxStyle(txtPassword);
-            clsFormTheme.ApplyPrimaryButtonStyle(btnLogin, clsFormTheme.Icons.Check);
-            clsFormTheme.ApplySecondaryButtonStyle(btnExit, clsFormTheme.Icons.Exit);
+            clsFormTheme.ApplyTextBoxStyle(_txtUsername);
+            clsFormTheme.ApplyTextBoxStyle(_txtPassword);
+            clsFormTheme.ApplyPrimaryButtonStyle(_btnLogin, clsFormTheme.Icons.Check);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnExit, clsFormTheme.Icons.Exit);
 
-            txtPassword.UseSystemPasswordChar = true;
-            txtPassword.MaxLength = 20;
-            txtUsername.MaxLength = 50;
+            _txtPassword.UseSystemPasswordChar = true;
+            _txtPassword.MaxLength = 20;
+            _txtUsername.MaxLength = 50;
 
             clsLanguageManager.ApplyLanguage(this);
             EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
@@ -28,26 +27,26 @@ namespace InventoryManagementSystem
 
         private void frmLogin_Load(object sender, EventArgs e)
         {
-            txtUsername.Focus();
+            _txtUsername.Focus();
             ApplyLocalization();
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            string username = txtUsername.Text.Trim();
-            string password = txtPassword.Text;
+            string username = _txtUsername.Text.Trim();
+            string password = _txtPassword.Text;
 
             if (string.IsNullOrWhiteSpace(username))
             {
                 clsFormTheme.ShowWarning(this, "Please enter username.", "Login");
-                txtUsername.Focus();
+                _txtUsername.Focus();
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(password))
             {
                 clsFormTheme.ShowWarning(this, "Please enter password.", "Login");
-                txtPassword.Focus();
+                _txtPassword.Focus();
                 return;
             }
 
@@ -63,8 +62,8 @@ namespace InventoryManagementSystem
             else
             {
                 clsFormTheme.ShowError(this, "Invalid username or password.", "Login");
-                txtPassword.Clear();
-                txtPassword.Focus();
+                _txtPassword.Clear();
+                _txtPassword.Focus();
             }
         }
 
@@ -86,7 +85,7 @@ namespace InventoryManagementSystem
         {
             if (e.KeyCode == Keys.Enter)
             {
-                txtPassword.Focus();
+                _txtPassword.Focus();
             }
         }
 
@@ -94,10 +93,11 @@ namespace InventoryManagementSystem
         {
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Login");
-            lblUsername.Text = clsLanguageManager.GetString("Username") + ":";
-            lblPassword.Text = clsLanguageManager.GetString("Password") + ":";
-            btnLogin.Text = clsLanguageManager.GetString("Login");
-            btnExit.Text = clsLanguageManager.GetString("Exit");
+            _lblTitle.Text = clsLanguageManager.GetString("Login");
+            _lblUsername.Text = clsLanguageManager.GetString("Username") + ":";
+            _lblPassword.Text = clsLanguageManager.GetString("Password") + ":";
+            _btnLogin.Text = clsLanguageManager.GetString("Login");
+            _btnExit.Text = clsLanguageManager.GetString("Exit");
         }
     }
 }

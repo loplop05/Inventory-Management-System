@@ -17,6 +17,10 @@ namespace InventoryManagementSystem
             this._txtPhoneNumber = new System.Windows.Forms.TextBox();
             this._lblCustomerName = new System.Windows.Forms.Label();
             this._txtCustomerName = new System.Windows.Forms.TextBox();
+            this._lblEmail = new System.Windows.Forms.Label();
+            this._txtEmail = new System.Windows.Forms.TextBox();
+            this._lblAddress = new System.Windows.Forms.Label();
+            this._txtAddress = new System.Windows.Forms.TextBox();
             this._lblNotes = new System.Windows.Forms.Label();
             this._txtNotes = new System.Windows.Forms.TextBox();
             this._btnSave = new System.Windows.Forms.Button();
@@ -30,6 +34,10 @@ namespace InventoryManagementSystem
             this._mainPanel.Controls.Add(this._txtPhoneNumber);
             this._mainPanel.Controls.Add(this._lblCustomerName);
             this._mainPanel.Controls.Add(this._txtCustomerName);
+            this._mainPanel.Controls.Add(this._lblEmail);
+            this._mainPanel.Controls.Add(this._txtEmail);
+            this._mainPanel.Controls.Add(this._lblAddress);
+            this._mainPanel.Controls.Add(this._txtAddress);
             this._mainPanel.Controls.Add(this._lblNotes);
             this._mainPanel.Controls.Add(this._txtNotes);
             this._mainPanel.Controls.Add(this._btnSave);
@@ -38,7 +46,7 @@ namespace InventoryManagementSystem
             this._mainPanel.Location = new System.Drawing.Point(0, 0);
             this._mainPanel.Name = "_mainPanel";
             this._mainPanel.Padding = new System.Windows.Forms.Padding(20);
-            this._mainPanel.Size = new System.Drawing.Size(400, 350);
+            this._mainPanel.Size = new System.Drawing.Size(400, 450);
             this._mainPanel.TabIndex = 0;
             // 
             // _lblPhoneNumber
@@ -77,42 +85,78 @@ namespace InventoryManagementSystem
             this._txtCustomerName.Size = new System.Drawing.Size(340, 23);
             this._txtCustomerName.TabIndex = 3;
             // 
+            // _lblEmail
+            // 
+            this._lblEmail.AutoSize = true;
+            this._lblEmail.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this._lblEmail.Location = new System.Drawing.Point(20, 140);
+            this._lblEmail.Name = "_lblEmail";
+            this._lblEmail.Size = new System.Drawing.Size(38, 19);
+            this._lblEmail.TabIndex = 4;
+            this._lblEmail.Text = "Email";
+            // 
+            // _txtEmail
+            // 
+            this._txtEmail.Location = new System.Drawing.Point(20, 165);
+            this._txtEmail.Name = "_txtEmail";
+            this._txtEmail.Size = new System.Drawing.Size(340, 23);
+            this._txtEmail.TabIndex = 5;
+            // 
+            // _lblAddress
+            // 
+            this._lblAddress.AutoSize = true;
+            this._lblAddress.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this._lblAddress.Location = new System.Drawing.Point(20, 200);
+            this._lblAddress.Name = "_lblAddress";
+            this._lblAddress.Size = new System.Drawing.Size(49, 19);
+            this._lblAddress.TabIndex = 6;
+            this._lblAddress.Text = "Address";
+            // 
+            // _txtAddress
+            // 
+            this._txtAddress.Location = new System.Drawing.Point(20, 225);
+            this._txtAddress.Multiline = true;
+            this._txtAddress.Name = "_txtAddress";
+            this._txtAddress.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this._txtAddress.Size = new System.Drawing.Size(340, 40);
+            this._txtAddress.TabIndex = 7;
+            // 
             // _lblNotes
             // 
             this._lblNotes.AutoSize = true;
             this._lblNotes.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this._lblNotes.Location = new System.Drawing.Point(20, 140);
+            this._lblNotes.Location = new System.Drawing.Point(20, 275);
             this._lblNotes.Name = "_lblNotes";
             this._lblNotes.Size = new System.Drawing.Size(45, 19);
-            this._lblNotes.TabIndex = 4;
+            this._lblNotes.TabIndex = 8;
             this._lblNotes.Text = "Notes";
             // 
             // _txtNotes
             // 
-            this._txtNotes.Location = new System.Drawing.Point(20, 165);
+            this._txtNotes.Location = new System.Drawing.Point(20, 300);
             this._txtNotes.Multiline = true;
             this._txtNotes.Name = "_txtNotes";
             // this._txtNotes.PlaceholderText = "Optional notes about this customer";
             this._txtNotes.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this._txtNotes.Size = new System.Drawing.Size(340, 80);
-            this._txtNotes.TabIndex = 5;
+            this._txtNotes.Size = new System.Drawing.Size(340, 40);
+            this._txtNotes.TabIndex = 9;
             // 
             // _btnSave
             // 
-            this._btnSave.Location = new System.Drawing.Point(20, 270);
+            this._btnSave.Location = new System.Drawing.Point(20, 370);
             this._btnSave.Name = "_btnSave";
             this._btnSave.Size = new System.Drawing.Size(100, 35);
-            this._btnSave.TabIndex = 6;
+            this._btnSave.TabIndex = 10;
             this._btnSave.Text = "Save";
             this._btnSave.UseVisualStyleBackColor = true;
             // 
             // _btnCancel
             // 
             this._btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this._btnCancel.Location = new System.Drawing.Point(260, 270);
+            this._btnCancel.Location = new System.Drawing.Point(260, 370);
             this._btnCancel.Name = "_btnCancel";
             this._btnCancel.Size = new System.Drawing.Size(100, 35);
-            this._btnCancel.TabIndex = 7;
+            this._btnCancel.TabIndex = 11;
             this._btnCancel.Text = "Cancel";
             this._btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -120,7 +164,7 @@ namespace InventoryManagementSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(400, 350);
+            this.ClientSize = new System.Drawing.Size(400, 450);
             this.Controls.Add(this._mainPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -139,6 +183,10 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.TextBox _txtPhoneNumber;
         private System.Windows.Forms.Label _lblCustomerName;
         private System.Windows.Forms.TextBox _txtCustomerName;
+        private System.Windows.Forms.Label _lblEmail;
+        private System.Windows.Forms.TextBox _txtEmail;
+        private System.Windows.Forms.Label _lblAddress;
+        private System.Windows.Forms.TextBox _txtAddress;
         private System.Windows.Forms.Label _lblNotes;
         private System.Windows.Forms.TextBox _txtNotes;
         private System.Windows.Forms.Button _btnSave;
