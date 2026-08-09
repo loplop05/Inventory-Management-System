@@ -266,7 +266,7 @@ namespace InventoryManagementSystem
             this._gridTopProducts.RowHeadersVisible = false;
             this._gridTopProducts.RowHeadersWidth = 51;
             this._gridTopProducts.RowTemplate.Height = 24;
-            this._gridTopProducts.Size = new System.Drawing.Size(1004, 238);
+            this._gridTopProducts.Size = new System.Drawing.Size(1120, 227);
             this._gridTopProducts.TabIndex = 1;
             // 
             // _lblTopProductsTitle
@@ -276,7 +276,7 @@ namespace InventoryManagementSystem
             this._lblTopProductsTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
             this._lblTopProductsTitle.Location = new System.Drawing.Point(12, 12);
             this._lblTopProductsTitle.Name = "_lblTopProductsTitle";
-            this._lblTopProductsTitle.Size = new System.Drawing.Size(1004, 34);
+            this._lblTopProductsTitle.Size = new System.Drawing.Size(1120, 34);
             this._lblTopProductsTitle.TabIndex = 0;
             this._lblTopProductsTitle.Text = "Top-Selling Products";
             // 
@@ -288,9 +288,9 @@ namespace InventoryManagementSystem
             this._buttonsPanel.Controls.Add(this._btnRefresh);
             this._buttonsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._buttonsPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this._buttonsPanel.Location = new System.Drawing.Point(3, 702);
+            this._buttonsPanel.Location = new System.Drawing.Point(3, 691);
             this._buttonsPanel.Name = "_buttonsPanel";
-            this._buttonsPanel.Size = new System.Drawing.Size(1028, 46);
+            this._buttonsPanel.Size = new System.Drawing.Size(1144, 46);
             this._buttonsPanel.TabIndex = 2;
             // 
             // _btnClose
@@ -337,14 +337,18 @@ namespace InventoryManagementSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1066, 783);
-            this.Controls.Add(this._rootLayout);
+            this.ClientSize = new System.Drawing.Size(1400, 800);
+            this.Controls.Add(this._sidebar);
+            this.Controls.Add(this._contentPanel);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.MinimumSize = new System.Drawing.Size(900, 600);
+            this.MinimumSize = new System.Drawing.Size(1200, 650);
             this.Name = "frmDailyReport";
             this.Padding = new System.Windows.Forms.Padding(16);
             this.Text = "End-of-Day Report";
             this.Load += new System.EventHandler(this.frmDailyReport_Load);
+            this._contentPanel.ResumeLayout(false);
+            this._headerPanel.ResumeLayout(false);
+            this._headerPanel.PerformLayout();
             this._rootLayout.ResumeLayout(false);
             this._summaryPanel.ResumeLayout(false);
             this._splitContainer.Panel1.ResumeLayout(false);
@@ -360,6 +364,10 @@ namespace InventoryManagementSystem
 
         }
 
+        private InventoryManagementSystem.ucSidebarNav _sidebar;
+        private System.Windows.Forms.Panel _contentPanel;
+        private System.Windows.Forms.Panel _headerPanel;
+        private System.Windows.Forms.Label _lblHeaderTitle;
         private System.Windows.Forms.TableLayoutPanel _rootLayout;
         private System.Windows.Forms.TableLayoutPanel _summaryPanel;
         private System.Windows.Forms.Label _lblOrders;

@@ -19,7 +19,6 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Daily Sales Report", clsFormTheme.Icons.Reports);
             clsFormTheme.ApplyGridStyle(_gridOrders);
             clsFormTheme.ApplyGridStyle(_gridTopProducts);
 
