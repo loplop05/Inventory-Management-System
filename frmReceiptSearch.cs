@@ -26,7 +26,6 @@ namespace InventoryManagementSystem
         private void ApplyTheme()
         {
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Receipt Search", clsFormTheme.Icons.Search);
             clsFormTheme.ApplyTextBoxStyle(_txtOrderID);
             clsFormTheme.ApplyPrimaryButtonStyle(_btnSearch, clsFormTheme.Icons.Search);
             clsFormTheme.ApplySecondaryButtonStyle(_btnViewByPhone, clsFormTheme.Icons.User);
@@ -65,6 +64,7 @@ namespace InventoryManagementSystem
         {
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Receipt Search");
+            _lblHeaderTitle.Text = clsLanguageManager.GetString("Receipt Search");
             _btnSearch.Text = clsLanguageManager.GetString("Search");
             _btnViewByPhone.Text = clsLanguageManager.GetString("By Phone");
             _btnExchange.Text = clsLanguageManager.GetString("Exchange");

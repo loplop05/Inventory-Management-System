@@ -17,6 +17,10 @@ namespace InventoryManagementSystem
 
         private void InitializeComponent()
         {
+            this._sidebar = new InventoryManagementSystem.ucSidebarNav();
+            this._contentPanel = new System.Windows.Forms.Panel();
+            this._headerPanel = new System.Windows.Forms.Panel();
+            this._lblHeaderTitle = new System.Windows.Forms.Label();
             this._mainLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this._searchPanel = new System.Windows.Forms.Panel();
             this._lblOrderID = new System.Windows.Forms.Label();
@@ -36,6 +40,8 @@ namespace InventoryManagementSystem
             this._lblPaymentInfo = new System.Windows.Forms.Label();
             this._actionsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this._btnExchange = new System.Windows.Forms.Button();
+            this._contentPanel.SuspendLayout();
+            this._headerPanel.SuspendLayout();
             this._mainLayoutPanel.SuspendLayout();
             this._searchPanel.SuspendLayout();
             this._panelOrderDetails.SuspendLayout();
@@ -43,6 +49,45 @@ namespace InventoryManagementSystem
             this._panelCustomerInfo.SuspendLayout();
             this._actionsPanel.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // _sidebar
+            // 
+            this._sidebar.Dock = System.Windows.Forms.DockStyle.Left;
+            this._sidebar.Location = new System.Drawing.Point(0, 0);
+            this._sidebar.Name = "_sidebar";
+            this._sidebar.Size = new System.Drawing.Size(250, 800);
+            this._sidebar.TabIndex = 0;
+            // 
+            // _contentPanel
+            // 
+            this._contentPanel.Controls.Add(this._headerPanel);
+            this._contentPanel.Controls.Add(this._mainLayoutPanel);
+            this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._contentPanel.Location = new System.Drawing.Point(250, 0);
+            this._contentPanel.Name = "_contentPanel";
+            this._contentPanel.Size = new System.Drawing.Size(1150, 800);
+            this._contentPanel.TabIndex = 1;
+            // 
+            // _headerPanel
+            // 
+            this._headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(58)))), ((int)(((byte)(138)))));
+            this._headerPanel.Controls.Add(this._lblHeaderTitle);
+            this._headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this._headerPanel.Location = new System.Drawing.Point(0, 0);
+            this._headerPanel.Name = "_headerPanel";
+            this._headerPanel.Size = new System.Drawing.Size(1150, 60);
+            this._headerPanel.TabIndex = 0;
+            // 
+            // _lblHeaderTitle
+            // 
+            this._lblHeaderTitle.AutoSize = true;
+            this._lblHeaderTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            this._lblHeaderTitle.ForeColor = System.Drawing.Color.White;
+            this._lblHeaderTitle.Location = new System.Drawing.Point(20, 15);
+            this._lblHeaderTitle.Name = "_lblHeaderTitle";
+            this._lblHeaderTitle.Size = new System.Drawing.Size(140, 32);
+            this._lblHeaderTitle.TabIndex = 0;
+            this._lblHeaderTitle.Text = "Receipt Search";
             // 
             // _mainLayoutPanel
             // 
@@ -52,15 +97,15 @@ namespace InventoryManagementSystem
             this._mainLayoutPanel.Controls.Add(this._panelOrderDetails, 0, 1);
             this._mainLayoutPanel.Controls.Add(this._actionsPanel, 0, 2);
             this._mainLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._mainLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this._mainLayoutPanel.Location = new System.Drawing.Point(0, 60);
             this._mainLayoutPanel.Name = "_mainLayoutPanel";
             this._mainLayoutPanel.Padding = new System.Windows.Forms.Padding(20);
             this._mainLayoutPanel.RowCount = 3;
             this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this._mainLayoutPanel.Size = new System.Drawing.Size(800, 600);
-            this._mainLayoutPanel.TabIndex = 0;
+            this._mainLayoutPanel.Size = new System.Drawing.Size(1150, 740);
+            this._mainLayoutPanel.TabIndex = 1;
             // 
             // _searchPanel
             // 
@@ -71,7 +116,7 @@ namespace InventoryManagementSystem
             this._searchPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._searchPanel.Location = new System.Drawing.Point(23, 83);
             this._searchPanel.Name = "_searchPanel";
-            this._searchPanel.Size = new System.Drawing.Size(754, 54);
+            this._searchPanel.Size = new System.Drawing.Size(1104, 54);
             this._searchPanel.TabIndex = 1;
             // 
             // _lblOrderID
@@ -125,7 +170,7 @@ namespace InventoryManagementSystem
             this._panelOrderDetails.Location = new System.Drawing.Point(23, 143);
             this._panelOrderDetails.Name = "_panelOrderDetails";
             this._panelOrderDetails.Padding = new System.Windows.Forms.Padding(20);
-            this._panelOrderDetails.Size = new System.Drawing.Size(754, 374);
+            this._panelOrderDetails.Size = new System.Drawing.Size(1104, 574);
             this._panelOrderDetails.TabIndex = 2;
             // 
             // _lblOrderInfo
@@ -153,7 +198,7 @@ namespace InventoryManagementSystem
             this._gridOrderItems.ReadOnly = true;
             this._gridOrderItems.RowHeadersVisible = false;
             this._gridOrderItems.RowHeadersWidth = 51;
-            this._gridOrderItems.Size = new System.Drawing.Size(714, 254);
+            this._gridOrderItems.Size = new System.Drawing.Size(1064, 454);
             this._gridOrderItems.TabIndex = 1;
             // 
             // colProductName
@@ -198,10 +243,10 @@ namespace InventoryManagementSystem
             this._panelCustomerInfo.Controls.Add(this._lblCustomerPhone);
             this._panelCustomerInfo.Controls.Add(this._lblPaymentInfo);
             this._panelCustomerInfo.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._panelCustomerInfo.Location = new System.Drawing.Point(20, 274);
+            this._panelCustomerInfo.Location = new System.Drawing.Point(20, 474);
             this._panelCustomerInfo.Name = "_panelCustomerInfo";
             this._panelCustomerInfo.Padding = new System.Windows.Forms.Padding(20);
-            this._panelCustomerInfo.Size = new System.Drawing.Size(714, 80);
+            this._panelCustomerInfo.Size = new System.Drawing.Size(1064, 80);
             this._panelCustomerInfo.TabIndex = 2;
             // 
             // _lblCustomerName
@@ -236,9 +281,9 @@ namespace InventoryManagementSystem
             this._actionsPanel.Controls.Add(this._btnExchange);
             this._actionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._actionsPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this._actionsPanel.Location = new System.Drawing.Point(23, 523);
+            this._actionsPanel.Location = new System.Drawing.Point(23, 723);
             this._actionsPanel.Name = "_actionsPanel";
-            this._actionsPanel.Size = new System.Drawing.Size(754, 54);
+            this._actionsPanel.Size = new System.Drawing.Size(1104, 54);
             this._actionsPanel.TabIndex = 3;
             // 
             // _btnExchange
@@ -256,15 +301,20 @@ namespace InventoryManagementSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 600);
-            this.Controls.Add(this._mainLayoutPanel);
+            this.ClientSize = new System.Drawing.Size(1400, 800);
+            this.Controls.Add(this._sidebar);
+            this.Controls.Add(this._contentPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(1200, 650);
             this.Name = "frmReceiptSearch";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Search Receipt";
             this.Load += new System.EventHandler(this.frmReceiptSearch_Load);
+            this._contentPanel.ResumeLayout(false);
+            this._headerPanel.ResumeLayout(false);
+            this._headerPanel.PerformLayout();
             this._mainLayoutPanel.ResumeLayout(false);
             this._searchPanel.ResumeLayout(false);
             this._searchPanel.PerformLayout();
@@ -280,6 +330,10 @@ namespace InventoryManagementSystem
 
         #endregion
 
+        private InventoryManagementSystem.ucSidebarNav _sidebar;
+        private System.Windows.Forms.Panel _contentPanel;
+        private System.Windows.Forms.Panel _headerPanel;
+        private System.Windows.Forms.Label _lblHeaderTitle;
         private System.Windows.Forms.TableLayoutPanel _mainLayoutPanel;
         private System.Windows.Forms.Panel _searchPanel;
         private System.Windows.Forms.Label _lblOrderID;

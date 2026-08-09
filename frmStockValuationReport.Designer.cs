@@ -28,34 +28,83 @@ namespace InventoryManagementSystem
         /// </summary>
         private void InitializeComponent()
         {
-            this.labelTitle = new System.Windows.Forms.Label();
+            this._sidebar = new InventoryManagementSystem.ucSidebarNav();
+            this._contentPanel = new System.Windows.Forms.Panel();
+            this._headerPanel = new System.Windows.Forms.Panel();
+            this._lblHeaderTitle = new System.Windows.Forms.Label();
+            this._buttonsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.btnExportCsv = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.DataGVStockValuation = new System.Windows.Forms.DataGridView();
             this.lblTotalStockValue = new System.Windows.Forms.Label();
             this.lblEmptyState = new System.Windows.Forms.Label();
+            this._contentPanel.SuspendLayout();
+            this._headerPanel.SuspendLayout();
+            this._buttonsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataGVStockValuation)).BeginInit();
             this.SuspendLayout();
             // 
-            // labelTitle
+            // _sidebar
             // 
-            this.labelTitle.AutoSize = true;
-            this.labelTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTitle.Location = new System.Drawing.Point(55, 94);
-            this.labelTitle.Name = "labelTitle";
-            this.labelTitle.Size = new System.Drawing.Size(285, 32);
-            this.labelTitle.TabIndex = 0;
-            this.labelTitle.Text = "Stock Valuation Report";
-            this.labelTitle.Anchor = System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Top;
+            this._sidebar.Dock = System.Windows.Forms.DockStyle.Left;
+            this._sidebar.Location = new System.Drawing.Point(0, 0);
+            this._sidebar.Name = "_sidebar";
+            this._sidebar.Size = new System.Drawing.Size(250, 800);
+            this._sidebar.TabIndex = 0;
+            // 
+            // _contentPanel
+            // 
+            this._contentPanel.Controls.Add(this._headerPanel);
+            this._contentPanel.Controls.Add(this._buttonsPanel);
+            this._contentPanel.Controls.Add(this.DataGVStockValuation);
+            this._contentPanel.Controls.Add(this.lblTotalStockValue);
+            this._contentPanel.Controls.Add(this.lblEmptyState);
+            this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._contentPanel.Location = new System.Drawing.Point(250, 0);
+            this._contentPanel.Name = "_contentPanel";
+            this._contentPanel.Size = new System.Drawing.Size(1150, 800);
+            this._contentPanel.TabIndex = 1;
+            // 
+            // _headerPanel
+            // 
+            this._headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(58)))), ((int)(((byte)(138)))));
+            this._headerPanel.Controls.Add(this._lblHeaderTitle);
+            this._headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this._headerPanel.Location = new System.Drawing.Point(0, 0);
+            this._headerPanel.Name = "_headerPanel";
+            this._headerPanel.Size = new System.Drawing.Size(1150, 60);
+            this._headerPanel.TabIndex = 0;
+            // 
+            // _lblHeaderTitle
+            // 
+            this._lblHeaderTitle.AutoSize = true;
+            this._lblHeaderTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            this._lblHeaderTitle.ForeColor = System.Drawing.Color.White;
+            this._lblHeaderTitle.Location = new System.Drawing.Point(20, 15);
+            this._lblHeaderTitle.Name = "_lblHeaderTitle";
+            this._lblHeaderTitle.Size = new System.Drawing.Size(215, 32);
+            this._lblHeaderTitle.TabIndex = 0;
+            this._lblHeaderTitle.Text = "Stock Valuation";
+            // 
+            // _buttonsPanel
+            // 
+            this._buttonsPanel.Controls.Add(this.btnClose);
+            this._buttonsPanel.Controls.Add(this.btnRefresh);
+            this._buttonsPanel.Controls.Add(this.btnExportCsv);
+            this._buttonsPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this._buttonsPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this._buttonsPanel.Location = new System.Drawing.Point(0, 60);
+            this._buttonsPanel.Name = "_buttonsPanel";
+            this._buttonsPanel.Size = new System.Drawing.Size(1150, 50);
+            this._buttonsPanel.TabIndex = 1;
             // 
             // btnExportCsv
             // 
-            this.btnExportCsv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExportCsv.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnExportCsv.Location = new System.Drawing.Point(536, 89);
+            this.btnExportCsv.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnExportCsv.Location = new System.Drawing.Point(0, 0);
             this.btnExportCsv.Name = "btnExportCsv";
-            this.btnExportCsv.Size = new System.Drawing.Size(122, 38);
+            this.btnExportCsv.Size = new System.Drawing.Size(120, 34);
             this.btnExportCsv.TabIndex = 0;
             this.btnExportCsv.Text = "Export CSV";
             this.btnExportCsv.UseVisualStyleBackColor = true;
@@ -63,25 +112,23 @@ namespace InventoryManagementSystem
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRefresh.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRefresh.Location = new System.Drawing.Point(672, 89);
+            this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnRefresh.Location = new System.Drawing.Point(126, 0);
             this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(130, 38);
+            this.btnRefresh.Size = new System.Drawing.Size(100, 34);
             this.btnRefresh.TabIndex = 1;
-            this.btnRefresh.Text = "Refresh (F5)";
+            this.btnRefresh.Text = "Refresh";
             this.btnRefresh.UseVisualStyleBackColor = true;
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // btnClose
             // 
-            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClose.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClose.Location = new System.Drawing.Point(816, 89);
+            this.btnClose.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.btnClose.Location = new System.Drawing.Point(232, 0);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(130, 38);
+            this.btnClose.Size = new System.Drawing.Size(100, 34);
             this.btnClose.TabIndex = 2;
-            this.btnClose.Text = "Close (Esc)";
+            this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
@@ -89,37 +136,34 @@ namespace InventoryManagementSystem
             // 
             this.DataGVStockValuation.AllowUserToAddRows = false;
             this.DataGVStockValuation.AllowUserToDeleteRows = false;
-            this.DataGVStockValuation.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.DataGVStockValuation.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.DataGVStockValuation.Location = new System.Drawing.Point(55, 155);
+            this.DataGVStockValuation.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataGVStockValuation.Location = new System.Drawing.Point(0, 110);
             this.DataGVStockValuation.Name = "DataGVStockValuation";
             this.DataGVStockValuation.ReadOnly = true;
             this.DataGVStockValuation.RowHeadersWidth = 51;
             this.DataGVStockValuation.RowTemplate.Height = 24;
-            this.DataGVStockValuation.Size = new System.Drawing.Size(891, 386);
-            this.DataGVStockValuation.TabIndex = 3;
+            this.DataGVStockValuation.Size = new System.Drawing.Size(1150, 640);
+            this.DataGVStockValuation.TabIndex = 2;
             // 
             // lblTotalStockValue
             // 
-            this.lblTotalStockValue.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblTotalStockValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalStockValue.Location = new System.Drawing.Point(55, 569);
+            this.lblTotalStockValue.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.lblTotalStockValue.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this.lblTotalStockValue.Location = new System.Drawing.Point(0, 750);
             this.lblTotalStockValue.Name = "lblTotalStockValue";
-            this.lblTotalStockValue.Size = new System.Drawing.Size(891, 32);
-            this.lblTotalStockValue.TabIndex = 4;
+            this.lblTotalStockValue.Size = new System.Drawing.Size(1150, 32);
+            this.lblTotalStockValue.TabIndex = 3;
             this.lblTotalStockValue.Text = "Total Stock Value: 0.00";
             // 
             // lblEmptyState
             // 
-            this.lblEmptyState.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblEmptyState.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Italic);
             this.lblEmptyState.ForeColor = System.Drawing.Color.DimGray;
-            this.lblEmptyState.Location = new System.Drawing.Point(210, 260);
+            this.lblEmptyState.Location = new System.Drawing.Point(300, 300);
             this.lblEmptyState.Name = "lblEmptyState";
-            this.lblEmptyState.Size = new System.Drawing.Size(580, 40);
-            this.lblEmptyState.TabIndex = 5;
+            this.lblEmptyState.Size = new System.Drawing.Size(550, 40);
+            this.lblEmptyState.TabIndex = 4;
             this.lblEmptyState.Text = "No products are available for stock valuation.";
             this.lblEmptyState.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblEmptyState.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -128,19 +172,18 @@ namespace InventoryManagementSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1002, 650);
-            this.Controls.Add(this.lblEmptyState);
-            this.Controls.Add(this.lblTotalStockValue);
-            this.Controls.Add(this.DataGVStockValuation);
-            this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.btnRefresh);
-            this.Controls.Add(this.btnExportCsv);
-            this.Controls.Add(this.labelTitle);
-            this.MinimumSize = new System.Drawing.Size(900, 500);
+            this.ClientSize = new System.Drawing.Size(1400, 800);
+            this.Controls.Add(this._sidebar);
+            this.Controls.Add(this._contentPanel);
+            this.MinimumSize = new System.Drawing.Size(1200, 650);
             this.Name = "frmStockValuationReport";
             this.Text = "Stock Valuation Report";
             this.AutoScroll = true;
             this.Load += new System.EventHandler(this.frmStockValuationReport_Load);
+            this._contentPanel.ResumeLayout(false);
+            this._headerPanel.ResumeLayout(false);
+            this._headerPanel.PerformLayout();
+            this._buttonsPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DataGVStockValuation)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -149,7 +192,11 @@ namespace InventoryManagementSystem
 
         #endregion
 
-        private System.Windows.Forms.Label labelTitle;
+        private InventoryManagementSystem.ucSidebarNav _sidebar;
+        private System.Windows.Forms.Panel _contentPanel;
+        private System.Windows.Forms.Panel _headerPanel;
+        private System.Windows.Forms.Label _lblHeaderTitle;
+        private System.Windows.Forms.FlowLayoutPanel _buttonsPanel;
         private System.Windows.Forms.Button btnExportCsv;
         private System.Windows.Forms.Button btnRefresh;
         private System.Windows.Forms.Button btnClose;
