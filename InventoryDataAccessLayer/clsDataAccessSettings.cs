@@ -7,6 +7,7 @@ namespace InventoryDataAccessLayer
     public class clsDataAccessSettings
     {
         public static string connectionString = LoadConnectionString();
+        public static decimal TaxRate = LoadTaxRate();
 
         private static string LoadConnectionString()
         {
@@ -36,6 +37,18 @@ namespace InventoryDataAccessLayer
             }
 
             return connectionString;
+        }
+
+        private static decimal LoadTaxRate()
+        {
+            string taxRateStr = ConfigurationManager.AppSettings["TaxRate"];
+            decimal taxRate;
+
+            if (decimal.TryParse(taxRateStr, out taxRate))
+                return taxRate;
+
+            // Default to 7% if not configured
+            return 0.07m;
         }
     }
 }

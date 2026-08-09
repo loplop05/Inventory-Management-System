@@ -24,23 +24,20 @@ namespace InventoryManagementSystem
         private void ApplyTheme()
         {
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Customer Receipt History", clsFormTheme.Icons.User);
             clsFormTheme.ApplyTextBoxStyle(txtPhoneNumber);
             clsFormTheme.ApplyPrimaryButtonStyle(btnSearch, clsFormTheme.Icons.Search);
             clsFormTheme.ApplySuccessButtonStyle(btnSelect, clsFormTheme.Icons.Check);
             clsFormTheme.ApplySecondaryButtonStyle(btnCancel, clsFormTheme.Icons.Cancel);
             clsFormTheme.ApplyGridStyle(gridOrders);
 
-            btnSearch.Text = "Search";
-            btnSearch.Font = new Font(clsFormTheme.MainFontName, 10F);
-
-            btnSelect.Text = "Select";
-            btnSelect.Font = new Font(clsFormTheme.MainFontName, 10F);
-
-            btnCancel.Text = "Cancel";
-            btnCancel.Font = new Font(clsFormTheme.MainFontName, 10F);
-
-            KeyDown += frmCustomerReceiptHistory_KeyDown;
+            // Setup keyboard shortcuts
+            clsKeyboardShortcuts.SetupCommonShortcuts(
+                this,
+                onEscape: () => Close(),
+                onRefresh: null,
+                onSearch: () => txtPhoneNumber.Focus(),
+                onAdd: null
+            );
 
             clsLanguageManager.ApplyLanguage(this);
             EventHandler onLanguageChanged = (s, e) => ApplyLocalization();

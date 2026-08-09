@@ -26,13 +26,21 @@ namespace InventoryManagementSystem
             }
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Held Orders", clsFormTheme.Icons.Save);
 
             clsFormTheme.ApplyGridStyle(gridHeldOrders);
             clsFormTheme.ApplyPrimaryButtonStyle(btnRetrieve, clsFormTheme.Icons.Add);
             clsFormTheme.ApplyDangerButtonStyle(btnDelete, clsFormTheme.Icons.Delete);
             clsFormTheme.ApplySecondaryButtonStyle(btnRefresh, clsFormTheme.Icons.Refresh);
             clsFormTheme.ApplySecondaryButtonStyle(btnClose, clsFormTheme.Icons.Exit);
+
+            // Setup keyboard shortcuts
+            clsKeyboardShortcuts.SetupCommonShortcuts(
+                this,
+                onEscape: () => Close(),
+                onRefresh: () => LoadHeldOrders(),
+                onSearch: null,
+                onAdd: null
+            );
 
             LoadHeldOrders();
             clsLanguageManager.ApplyLanguage(this);

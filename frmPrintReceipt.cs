@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Printing;
 using System.Windows.Forms;
 using InventoryBusinessLayer;
+using InventoryDataAccessLayer;
 
 namespace InventoryManagementSystem
 {
@@ -30,18 +31,19 @@ namespace InventoryManagementSystem
         private void ApplyTheme()
         {
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Print Receipt", clsFormTheme.Icons.Print);
             clsFormTheme.ApplyTextBoxStyle(_txtOrderID);
             clsFormTheme.ApplyPrimaryButtonStyle(_btnSearch, clsFormTheme.Icons.Search);
             clsFormTheme.ApplySuccessButtonStyle(_btnPrint, clsFormTheme.Icons.Print);
             clsFormTheme.ApplyDangerButtonStyle(_btnVoid, clsFormTheme.Icons.Delete);
 
-            // Share buttons - uncomment after adding controls to Designer
-            // clsFormTheme.ApplySecondaryButtonStyle(_btnShareWhatsApp, clsFormTheme.Icons.Share);
-            // clsFormTheme.ApplySecondaryButtonStyle(_btnShareEmail, clsFormTheme.Icons.Email);
-            // clsFormTheme.ApplySecondaryButtonStyle(_btnCopy, clsFormTheme.Icons.Copy);
-
-            KeyDown += frmPrintReceipt_KeyDown;
+            // Setup keyboard shortcuts
+            clsKeyboardShortcuts.SetupCommonShortcuts(
+                this,
+                onEscape: () => Close(),
+                onRefresh: null,
+                onSearch: () => _txtOrderID.Focus(),
+                onAdd: null
+            );
 
             clsLanguageManager.ApplyLanguage(this);
             EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
@@ -199,7 +201,7 @@ namespace InventoryManagementSystem
             decimal totalAmount = Convert.ToDecimal(order["TotalAmount"]);
 
             receipt.AppendLine($"Subtotal: {subtotal:C2}");
-            receipt.AppendLine($"Tax (7%): {taxAmount:C2}");
+            receipt.AppendLine($"Tax ({(clsDataAccessSettings.TaxRate * 100):F0}%): {taxAmount:C2}");
             receipt.AppendLine($"TOTAL: {totalAmount:C2}");
             receipt.AppendLine();
             receipt.AppendLine("========================================");

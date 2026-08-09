@@ -12,8 +12,6 @@ namespace InventoryManagementSystem
 {
     public partial class frmPOS : Form
     {
-        private const decimal TaxRate = 0.07m;
-
         private readonly BindingList<ReceiptItem> _receiptItems = new BindingList<ReceiptItem>();
         private DataTable _productsTable = new DataTable();
         private int? _selectedCustomerID = null;
@@ -488,7 +486,7 @@ namespace InventoryManagementSystem
 
             decimal totalDiscount = manualDiscount + couponDiscount;
             decimal discountedSubtotal = Math.Max(0, subtotal - totalDiscount);
-            decimal tax = Math.Round(discountedSubtotal * TaxRate, 2);
+            decimal tax = Math.Round(discountedSubtotal * clsDataAccessSettings.TaxRate, 2);
             decimal total = discountedSubtotal + tax;
 
             _lblSubtotal.Text = "Subtotal: " + subtotal.ToString("C2");
@@ -621,7 +619,7 @@ namespace InventoryManagementSystem
                                     : _manualDiscountType == "fixed" ? _manualDiscountAmount : 0;
             decimal totalDiscount = manualDiscount + _couponDiscountAmount;
             decimal discountedSubtotal = Math.Max(0, subtotal - totalDiscount);
-            decimal tax = Math.Round(discountedSubtotal * TaxRate, 2);
+            decimal tax = Math.Round(discountedSubtotal * clsDataAccessSettings.TaxRate, 2);
             decimal total = discountedSubtotal + tax;
 
             // Check for split payment
@@ -667,7 +665,7 @@ namespace InventoryManagementSystem
                 }
             }
 
-            bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, _selectedCustomerID, paymentMethod, paymentDetails, out orderID, out errorMessage);
+            bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), clsDataAccessSettings.TaxRate, _selectedCustomerID, paymentMethod, paymentDetails, out orderID, out errorMessage);
 
             if (!saved)
             {
@@ -1167,7 +1165,7 @@ namespace InventoryManagementSystem
                                         : _manualDiscountType == "fixed" ? _manualDiscountAmount : 0;
                 decimal totalDiscount = manualDiscount + _couponDiscountAmount;
                 decimal discountedSubtotal = Math.Max(0, subtotal - totalDiscount);
-                decimal tax = Math.Round(discountedSubtotal * TaxRate, 2);
+                decimal tax = Math.Round(discountedSubtotal * clsDataAccessSettings.TaxRate, 2);
                 decimal total = discountedSubtotal + tax;
 
                 string errorMessage;

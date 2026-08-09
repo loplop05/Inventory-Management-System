@@ -40,7 +40,6 @@ namespace InventoryManagementSystem
         private void ApplyTheme()
         {
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Product Exchange", clsFormTheme.Icons.Exchange);
             clsFormTheme.ApplyTextBoxStyle(txtExchangeQuantity);
             clsFormTheme.ApplyTextBoxStyle(txtExchangeReason);
             clsFormTheme.ApplyPrimaryButtonStyle(btnProcessExchange, clsFormTheme.Icons.Exchange);
@@ -50,19 +49,14 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyGridStyle(gridOriginalItems);
             clsFormTheme.ApplyGridStyle(gridNewItems);
 
-            btnProcessExchange.Text = "Add";
-            btnProcessExchange.Font = new Font(clsFormTheme.MainFontName, 10F);
-
-            btnRemoveExchange.Text = "Remove";
-            btnRemoveExchange.Font = new Font(clsFormTheme.MainFontName, 10F);
-
-            btnConfirmExchange.Text = "Confirm Exchange";
-            btnConfirmExchange.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
-
-            btnClose.Text = "Close";
-            btnClose.Font = new Font(clsFormTheme.MainFontName, 10F);
-
-            KeyDown += frmExchange_KeyDown;
+            // Setup keyboard shortcuts
+            clsKeyboardShortcuts.SetupCommonShortcuts(
+                this,
+                onEscape: () => Close(),
+                onRefresh: null,
+                onSearch: null,
+                onAdd: null
+            );
 
             clsLanguageManager.ApplyLanguage(this);
             EventHandler onLanguageChanged = (s, e) => ApplyLocalization();
