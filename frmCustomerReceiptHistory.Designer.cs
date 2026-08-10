@@ -162,12 +162,11 @@ namespace InventoryManagementSystem
             // 
             this.panelCustomerInfo.Controls.Add(this.lblCustomerName);
             this.panelCustomerInfo.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelCustomerInfo.Location = new System.Drawing.Point(0, 0);
+            this.panelCustomerInfo.Location = new System.Drawing.Point(0, 50);
             this.panelCustomerInfo.Name = "panelCustomerInfo";
             this.panelCustomerInfo.Padding = new System.Windows.Forms.Padding(20, 0, 20, 5);
-            this.panelCustomerInfo.Size = new System.Drawing.Size(900, 10);
+            this.panelCustomerInfo.Size = new System.Drawing.Size(900, 60);
             this.panelCustomerInfo.TabIndex = 8;
-            this.panelCustomerInfo.Paint += new System.Windows.Forms.PaintEventHandler(this.panelCustomerInfo_Paint);
             // 
             // frmCustomerReceiptHistory
             // 
