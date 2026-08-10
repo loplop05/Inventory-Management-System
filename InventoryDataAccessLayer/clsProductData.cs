@@ -321,5 +321,35 @@ namespace InventoryDataAccessLayer
             }
             return isFound;
         }
+
+        public static bool RestockProduct(int productID, int quantity, out string errorMessage)
+        {
+            errorMessage = "";
+            int rowsAffected = 0;
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = "UPDATE Products SET Quantity = Quantity + @Quantity WHERE ProductID = @ProductID";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ProductID", productID);
+                    command.Parameters.AddWithValue("@Quantity", quantity);
+
+                    try
+                    {
+                        connection.Open();
+                        rowsAffected = command.ExecuteNonQuery();
+                    }
+                    catch (Exception ex)
+                    {
+                        errorMessage = ex.Message;
+                        clsErrorLog.LogException("clsProductData.RestockProduct", ex);
+                        return false;
+                    }
+                }
+            }
+            return (rowsAffected > 0);
+        }
     }
 }

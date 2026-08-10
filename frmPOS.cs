@@ -102,13 +102,13 @@ namespace InventoryManagementSystem
 
             // ── Toolbar buttons ────────────────────────────────────────────────
             clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh);
-            SetIconButtonText(_btnRefresh, clsFormTheme.Icons.Refresh, "Refresh", 14F, 10F, FontStyle.Regular);
+            SetIconButtonText(_btnRefresh, clsFormTheme.Icons.Refresh, "Refresh (F5)", 14F, 10F, FontStyle.Regular);
 
             clsFormTheme.ApplyDangerButtonStyle(_btnRemoveItem);
-            SetIconButtonText(_btnRemoveItem, clsFormTheme.Icons.Delete, "Remove", 14F, 10F, FontStyle.Regular);
+            SetIconButtonText(_btnRemoveItem, clsFormTheme.Icons.Delete, "Remove (Del)", 14F, 10F, FontStyle.Regular);
 
             clsFormTheme.ApplySuccessButtonStyle(_btnCompleteOrder);
-            SetIconButtonText(_btnCompleteOrder, clsFormTheme.Icons.Money, "Complete Order", 16F, 12F, FontStyle.Bold);
+            SetIconButtonText(_btnCompleteOrder, clsFormTheme.Icons.Money, "Complete (F4)", 16F, 12F, FontStyle.Bold);
 
             // ── Receipt grid ───────────────────────────────────────────────────
             clsFormTheme.ApplyGridStyle(_gridReceipt);
@@ -593,29 +593,7 @@ namespace InventoryManagementSystem
                 }
             }
 
-            // Validate payment details if Visa is selected
-            if (_cbVisa.Checked && string.IsNullOrWhiteSpace(_txtPaymentDetails.Text))
-            {
-                clsFormTheme.ShowWarning(this, "Please enter the last 4 digits of the card.", "Payment");
-                _txtPaymentDetails.Focus();
-                return;
-            }
-
-            if (_cbVisa.Checked && _txtPaymentDetails.Text.Length != 4)
-            {
-                clsFormTheme.ShowWarning(this, "Please enter exactly 4 digits for the card.", "Payment");
-                _txtPaymentDetails.Focus();
-                return;
-            }
-
-            string paymentMethod = _cbCash.Checked && !_cbVisa.Checked ? "Cash" : 
-                                   _cbVisa.Checked && !_cbCash.Checked ? "Visa" : "Split";
-            string paymentDetails = _cbCash.Checked && !_cbVisa.Checked ? null : "****" + _txtPaymentDetails.Text;
-
-            int orderID;
-            string errorMessage;
-
-            // Compute the same totals shown on screen, before we clear the cart.
+            // Compute totals for payment dialog
             decimal subtotal = _receiptItems.Sum(item => item.Subtotal);
             decimal manualDiscount = _manualDiscountType == "percentage" ? subtotal * (_manualDiscountAmount / 100m)
                                     : _manualDiscountType == "fixed" ? _manualDiscountAmount : 0;
@@ -624,75 +602,50 @@ namespace InventoryManagementSystem
             decimal tax = Math.Round(discountedSubtotal * TaxRate, 2);
             decimal total = discountedSubtotal + tax;
 
-            // Check for split payment
-            if (_cbCash.Checked && _cbVisa.Checked)
+            // Show payment selection dialog
+            using (var paymentDialog = new frmPaymentSelection(total))
             {
-                // Split payment - ask for amounts
-                using (frmInputBox cashInput = new frmInputBox($"Total: {total:C2}\n\nEnter Cash amount (default {total:C2}):", "Split Payment - Cash"))
+                if (paymentDialog.ShowDialog(this) != DialogResult.OK)
                 {
-                    if (cashInput.ShowDialog(this) != DialogResult.OK)
-                        return;
-                    
-                    decimal cashAmount;
-                    string cashInputValue = string.IsNullOrWhiteSpace(cashInput.InputValue) ? total.ToString("0.00") : cashInput.InputValue;
-                    if (!decimal.TryParse(cashInputValue, out cashAmount) || cashAmount < 0 || cashAmount > total)
-                    {
-                        clsFormTheme.ShowError(this, "Invalid cash amount", "Split Payment");
-                        return;
-                    }
-                    
-                    decimal cardAmount = total - cashAmount;
-                    if (cardAmount > 0)
-                    {
-                        using (frmInputBox cardInput = new frmInputBox($"Card amount: {cardAmount:C2}\n\nEnter last 4 digits of card:", "Split Payment - Card"))
-                        {
-                            if (cardInput.ShowDialog(this) != DialogResult.OK)
-                                return;
-                            
-                            if (cardInput.InputValue.Length != 4)
-                            {
-                                clsFormTheme.ShowError(this, "Please enter exactly 4 digits", "Split Payment");
-                                return;
-                            }
-                            
-                            paymentMethod = "Split";
-                            paymentDetails = $"Cash:{cashAmount:0.00}|Card:{cardAmount:0.00}|****{cardInput.InputValue}";
-                        }
-                    }
-                    else
-                    {
-                        paymentMethod = "Cash";
-                        paymentDetails = null;
-                    }
+                    return; // User cancelled
+                }
+
+                string paymentMethod = paymentDialog.SelectedPaymentMethod;
+                string paymentDetails = paymentDialog.PaymentDetails;
+
+                int orderID;
+                string errorMessage;
+
+                bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, _selectedCustomerID, paymentMethod, paymentDetails, totalDiscount, _couponCode, out orderID, out errorMessage);
+
+                if (!saved)
+                {
+                    clsFormTheme.ShowError(this, errorMessage, "Order Failed");
+                    return;
+                }
+
+                // Clear receipt after successful order
+                _receiptItems.Clear();
+                _selectedCustomerID = null;
+                _selectedCustomerName = "";
+                _orderNotes = "";
+                _manualDiscountAmount = 0;
+                _manualDiscountType = "percentage";
+                _couponCode = "";
+                _couponDiscountAmount = 0;
+                UpdateTotals();
+                LoadProducts();
+
+                // Ask if user wants to print receipt
+                var result = MessageBox.Show("Order completed successfully!\n\nPrint receipt?", "Success", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (result == DialogResult.Yes)
+                {
+                    var orderDetails = clsCustomer.GetOrderDetails(orderID);
+                    var orderItems = clsCustomer.GetOrderItems(orderID);
+                    string customerName = _selectedCustomerName ?? "Guest";
+                    clsPrintHelper.PrintReceipt(orderDetails, orderItems, customerName);
                 }
             }
-
-            bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, _selectedCustomerID, paymentMethod, paymentDetails, out orderID, out errorMessage);
-
-            if (!saved)
-            {
-                clsFormTheme.ShowError(this, "Order failed: " + errorMessage, "POS");
-                LoadProducts();
-                return;
-            }
-
-            string customerNameForReceipt = string.IsNullOrWhiteSpace(_selectedCustomerName) ? "Walk-in Customer" : _selectedCustomerName;
-
-            // Print BEFORE clearing _receiptItems, since PrintCompletedReceipt reads from it.
-            DialogResult printChoice = clsFormTheme.ShowConfirm(
-                this,
-                "Order #" + orderID + " completed successfully.\n\nPrint receipt?",
-                "Print Receipt");
-
-            if (printChoice == DialogResult.Yes)
-            {
-                PrintCompletedReceipt(orderID, subtotal, tax, total, customerNameForReceipt);
-            }
-            _receiptItems.Clear();
-            RefreshReceiptTotals();
-            LoadProducts();
-            ClearCustomerInfo();
-            clsFormTheme.ShowInfo(this, "Order #" + orderID + " completed successfully.", "POS");
         }
 
         private void ClearCustomerInfo()
@@ -1221,8 +1174,14 @@ namespace InventoryManagementSystem
 
         private void frmPOS_KeyDown(object sender, KeyEventArgs e)
         {
+            // F1 - Show help
+            if (e.KeyCode == Keys.F1)
+            {
+                clsHelpSystem.ShowHelpForm(clsHelpSystem.Topics.KeyboardShortcuts);
+                e.SuppressKeyPress = true;
+            }
             // F2/F3 - Focus search box
-            if (e.KeyCode == Keys.F2 || e.KeyCode == Keys.F3)
+            else if (e.KeyCode == Keys.F2 || e.KeyCode == Keys.F3)
             {
                 _txtSearch.Focus();
                 e.SuppressKeyPress = true;

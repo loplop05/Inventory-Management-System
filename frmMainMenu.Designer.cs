@@ -58,6 +58,9 @@ namespace InventoryManagementSystem
             this.btnPrintReceipt = new System.Windows.Forms.Button();
             this.btnReceiptSearch = new System.Windows.Forms.Button();
             this.btnPOS = new System.Windows.Forms.Button();
+            this._txtQuickSearch = new System.Windows.Forms.TextBox();
+            this._searchResultsPanel = new System.Windows.Forms.Panel();
+            this._lstSearchResults = new System.Windows.Forms.ListBox();
             this._contentPanel.SuspendLayout();
             this._footerPanel.SuspendLayout();
             this._sectionAdministration.SuspendLayout();
@@ -68,6 +71,7 @@ namespace InventoryManagementSystem
             this._flowCatalog.SuspendLayout();
             this._sectionSales.SuspendLayout();
             this._flowSales.SuspendLayout();
+            this._searchResultsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // _contentPanel
@@ -78,6 +82,8 @@ namespace InventoryManagementSystem
             this._contentPanel.Controls.Add(this._sectionInsights);
             this._contentPanel.Controls.Add(this._sectionCatalog);
             this._contentPanel.Controls.Add(this._sectionSales);
+            this._contentPanel.Controls.Add(this._txtQuickSearch);
+            this._contentPanel.Controls.Add(this._searchResultsPanel);
             this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._contentPanel.Location = new System.Drawing.Point(0, 0);
             this._contentPanel.Name = "_contentPanel";
@@ -498,6 +504,41 @@ namespace InventoryManagementSystem
             this.btnPOS.UseVisualStyleBackColor = false;
             this.btnPOS.Click += new System.EventHandler(this.btnPOS_Click);
             // 
+            // _txtQuickSearch
+            // 
+            this._txtQuickSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._txtQuickSearch.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this._txtQuickSearch.Location = new System.Drawing.Point(20, 20);
+            this._txtQuickSearch.Name = "_txtQuickSearch";
+            this._txtQuickSearch.Size = new System.Drawing.Size(1220, 25);
+            this._txtQuickSearch.TabIndex = 5;
+            // 
+            // _searchResultsPanel
+            // 
+            this._searchResultsPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._searchResultsPanel.BackColor = clsFormTheme.CardColor;
+            this._searchResultsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this._searchResultsPanel.Controls.Add(this._lstSearchResults);
+            this._searchResultsPanel.Location = new System.Drawing.Point(20, 50);
+            this._searchResultsPanel.Name = "_searchResultsPanel";
+            this._searchResultsPanel.Size = new System.Drawing.Size(1220, 200);
+            this._searchResultsPanel.TabIndex = 6;
+            this._searchResultsPanel.Visible = false;
+            // 
+            // _lstSearchResults
+            // 
+            this._lstSearchResults.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._lstSearchResults.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this._lstSearchResults.FormattingEnabled = true;
+            this._lstSearchResults.IntegralHeight = false;
+            this._lstSearchResults.Location = new System.Drawing.Point(0, 0);
+            this._lstSearchResults.Name = "_lstSearchResults";
+            this._lstSearchResults.Size = new System.Drawing.Size(1218, 198);
+            this._lstSearchResults.TabIndex = 0;
+            this._lstSearchResults.DoubleClick += new System.EventHandler(this._lstSearchResults_DoubleClick);
+            // 
             // frmMainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -527,6 +568,7 @@ namespace InventoryManagementSystem
             this._sectionSales.PerformLayout();
             this._flowSales.ResumeLayout(false);
             this._flowSales.PerformLayout();
+            this._searchResultsPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -563,5 +605,8 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button btnAuditLogs;
         private System.Windows.Forms.Button btnUserManagement;
         private System.Windows.Forms.Button btnCustomerManagement;
+        private System.Windows.Forms.TextBox _txtQuickSearch;
+        private System.Windows.Forms.Panel _searchResultsPanel;
+        private System.Windows.Forms.ListBox _lstSearchResults;
     }
 }
