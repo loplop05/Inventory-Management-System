@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using InventoryBusinessLayer;
+using InventoryDataAccessLayer;
 
 namespace InventoryManagementSystem
 {
@@ -578,6 +579,41 @@ namespace InventoryManagementSystem
             _sectionCatalog.Visible = showCatalog;
             _sectionInsights.Visible = showInsights;
             _sectionAdministration.Visible = showAdministration;
+        }
+
+        private void btnSignOut_Click(object sender, EventArgs e)
+        {
+            // Check if user has an open shift and prompt to close it
+            if (clsUserManagement.CurrentUser != null && clsShift.HasOpenShift(clsUserManagement.CurrentUser.UserID))
+            {
+                var result = MessageBox.Show(
+                    "You have an open shift. Do you want to close it before signing out?", 
+                    "Open Shift",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+                
+                if (result == DialogResult.Yes)
+                {
+                    // Get the open shift ID
+                    var openShift = clsShiftData.GetOpenShiftForUser(clsUserManagement.CurrentUser.UserID);
+                    if (openShift != null && openShift.Rows.Count > 0)
+                    {
+                        int shiftID = Convert.ToInt32(openShift.Rows[0]["ShiftID"]);
+                        using (var closeShiftForm = new frmCloseShift(shiftID))
+                        {
+                            if (closeShiftForm.ShowDialog() != DialogResult.OK)
+                            {
+                                // User cancelled closing shift, don't sign out
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Sign out
+            clsUserManagement.Logout();
+            Application.Restart();
         }
     }
 }

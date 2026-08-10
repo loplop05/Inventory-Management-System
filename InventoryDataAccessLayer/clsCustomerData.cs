@@ -381,9 +381,8 @@ namespace InventoryDataAccessLayer
                 SET LoyaltyPoints = LoyaltyPoints + @PointsEarned,
                     TotalSpent = TotalSpent + @PurchaseAmount,
                     Tier = CASE 
-                        WHEN TotalSpent + @PurchaseAmount >= 5000 THEN 'Platinum'
-                        WHEN TotalSpent + @PurchaseAmount >= 2000 THEN 'Gold'
-                        WHEN TotalSpent + @PurchaseAmount >= 500 THEN 'Silver'
+                        WHEN LoyaltyPoints + @PointsEarned >= 2000 THEN 'Gold'
+                        WHEN LoyaltyPoints + @PointsEarned >= 500 THEN 'Silver'
                         ELSE 'Bronze'
                     END,
                     LastPurchaseDate = GETDATE()

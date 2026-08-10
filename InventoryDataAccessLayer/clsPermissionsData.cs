@@ -21,7 +21,7 @@ namespace InventoryDataAccessLayer
                         SELECT p.PermissionID, p.PermissionName, p.Description
                         FROM Permissions p
                         INNER JOIN RolePermissions rp ON p.PermissionID = rp.PermissionID
-                        INNER JOIN Users u ON u.RoleID = rp.RoleID
+                        INNER JOIN Users u ON u.Role = rp.RoleName
                         WHERE u.UserID = @UserID";
                     
                     using (SqlCommand command = new SqlCommand(query, connection))
@@ -87,7 +87,7 @@ namespace InventoryDataAccessLayer
                     string query = @"
                         SELECT u.UserID, p.PermissionName
                         FROM Users u
-                        INNER JOIN RolePermissions rp ON u.RoleID = rp.RoleID
+                        INNER JOIN RolePermissions rp ON u.Role = rp.RoleName
                         INNER JOIN Permissions p ON rp.PermissionID = p.PermissionID";
                     
                     using (SqlCommand command = new SqlCommand(query, connection))
@@ -119,8 +119,8 @@ namespace InventoryDataAccessLayer
                     connection.Open();
                     
                     // Get user's role
-                    string roleQuery = "SELECT RoleID FROM Users WHERE UserID = @UserID";
-                    int roleID;
+                    string roleQuery = "SELECT Role FROM Users WHERE UserID = @UserID";
+                    string roleName;
                     
                     using (SqlCommand command = new SqlCommand(roleQuery, connection))
                     {
@@ -133,7 +133,7 @@ namespace InventoryDataAccessLayer
                             return false;
                         }
                         
-                        roleID = Convert.ToInt32(result);
+                        roleName = result.ToString();
                     }
                     
                     // Get permission ID
@@ -155,11 +155,11 @@ namespace InventoryDataAccessLayer
                     }
                     
                     // Check if already assigned
-                    string checkQuery = "SELECT COUNT(*) FROM RolePermissions WHERE RoleID = @RoleID AND PermissionID = @PermissionID";
+                    string checkQuery = "SELECT COUNT(*) FROM RolePermissions WHERE RoleName = @RoleName AND PermissionID = @PermissionID";
                     
                     using (SqlCommand command = new SqlCommand(checkQuery, connection))
                     {
-                        command.Parameters.AddWithValue("@RoleID", roleID);
+                        command.Parameters.AddWithValue("@RoleName", roleName);
                         command.Parameters.AddWithValue("@PermissionID", permissionID);
                         int count = Convert.ToInt32(command.ExecuteScalar());
                         
@@ -170,12 +170,12 @@ namespace InventoryDataAccessLayer
                         }
                     }
                     
-                    // Assign permission
-                    string insertQuery = "INSERT INTO RolePermissions (RoleID, PermissionID) VALUES (@RoleID, @PermissionID)";
+                    // Assign permission to role
+                    string insertQuery = "INSERT INTO RolePermissions (RoleName, PermissionID) VALUES (@RoleName, @PermissionID)";
                     
                     using (SqlCommand command = new SqlCommand(insertQuery, connection))
                     {
-                        command.Parameters.AddWithValue("@RoleID", roleID);
+                        command.Parameters.AddWithValue("@RoleName", roleName);
                         command.Parameters.AddWithValue("@PermissionID", permissionID);
                         command.ExecuteNonQuery();
                     }
@@ -201,8 +201,8 @@ namespace InventoryDataAccessLayer
                     connection.Open();
                     
                     // Get user's role
-                    string roleQuery = "SELECT RoleID FROM Users WHERE UserID = @UserID";
-                    int roleID;
+                    string roleQuery = "SELECT Role FROM Users WHERE UserID = @UserID";
+                    string roleName;
                     
                     using (SqlCommand command = new SqlCommand(roleQuery, connection))
                     {
@@ -215,7 +215,7 @@ namespace InventoryDataAccessLayer
                             return false;
                         }
                         
-                        roleID = Convert.ToInt32(result);
+                        roleName = result.ToString();
                     }
                     
                     // Get permission ID
@@ -237,11 +237,11 @@ namespace InventoryDataAccessLayer
                     }
                     
                     // Revoke permission
-                    string deleteQuery = "DELETE FROM RolePermissions WHERE RoleID = @RoleID AND PermissionID = @PermissionID";
+                    string deleteQuery = "DELETE FROM RolePermissions WHERE RoleName = @RoleName AND PermissionID = @PermissionID";
                     
                     using (SqlCommand command = new SqlCommand(deleteQuery, connection))
                     {
-                        command.Parameters.AddWithValue("@RoleID", roleID);
+                        command.Parameters.AddWithValue("@RoleName", roleName);
                         command.Parameters.AddWithValue("@PermissionID", permissionID);
                         command.ExecuteNonQuery();
                     }
@@ -267,8 +267,8 @@ namespace InventoryDataAccessLayer
                     connection.Open();
                     
                     // Get user's role
-                    string roleQuery = "SELECT RoleID FROM Users WHERE UserID = @UserID";
-                    int roleID;
+                    string roleQuery = "SELECT Role FROM Users WHERE UserID = @UserID";
+                    string roleName;
                     
                     using (SqlCommand command = new SqlCommand(roleQuery, connection))
                     {
@@ -281,15 +281,15 @@ namespace InventoryDataAccessLayer
                             return false;
                         }
                         
-                        roleID = Convert.ToInt32(result);
+                        roleName = result.ToString();
                     }
                     
                     // Delete existing permissions for this role
-                    string deleteQuery = "DELETE FROM RolePermissions WHERE RoleID = @RoleID";
+                    string deleteQuery = "DELETE FROM RolePermissions WHERE RoleName = @RoleName";
                     
                     using (SqlCommand command = new SqlCommand(deleteQuery, connection))
                     {
-                        command.Parameters.AddWithValue("@RoleID", roleID);
+                        command.Parameters.AddWithValue("@RoleName", roleName);
                         command.ExecuteNonQuery();
                     }
                     
@@ -306,11 +306,11 @@ namespace InventoryDataAccessLayer
                             if (result != null && result != DBNull.Value)
                             {
                                 int permissionID = Convert.ToInt32(result);
-                                string insertQuery = "INSERT INTO RolePermissions (RoleID, PermissionID) VALUES (@RoleID, @PermissionID)";
+                                string insertQuery = "INSERT INTO RolePermissions (RoleName, PermissionID) VALUES (@RoleName, @PermissionID)";
                                 
                                 using (SqlCommand insertCmd = new SqlCommand(insertQuery, connection))
                                 {
-                                    insertCmd.Parameters.AddWithValue("@RoleID", roleID);
+                                    insertCmd.Parameters.AddWithValue("@RoleName", roleName);
                                     insertCmd.Parameters.AddWithValue("@PermissionID", permissionID);
                                     insertCmd.ExecuteNonQuery();
                                 }
@@ -330,93 +330,18 @@ namespace InventoryDataAccessLayer
 
         public static DataTable GetRolePermissions(int roleID, out string errorMessage)
         {
-            errorMessage = "";
-            
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
-                {
-                    connection.Open();
-                    
-                    string query = @"
-                        SELECT p.PermissionID, p.PermissionName, p.Description
-                        FROM Permissions p
-                        INNER JOIN RolePermissions rp ON p.PermissionID = rp.PermissionID
-                        WHERE rp.RoleID = @RoleID
-                        ORDER BY p.PermissionName";
-                    
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@RoleID", roleID);
-                        
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            DataTable dt = new DataTable();
-                            dt.Load(reader);
-                            return dt;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-                return null;
-            }
+            // This method is deprecated - use GetUserPermissions instead
+            // Kept for backward compatibility
+            errorMessage = "This method is deprecated. Use GetUserPermissions instead.";
+            return null;
         }
 
         public static bool SetRolePermissions(int roleID, List<string> permissions, out string errorMessage)
         {
-            errorMessage = "";
-            
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
-                {
-                    connection.Open();
-                    
-                    // Delete existing permissions for this role
-                    string deleteQuery = "DELETE FROM RolePermissions WHERE RoleID = @RoleID";
-                    
-                    using (SqlCommand command = new SqlCommand(deleteQuery, connection))
-                    {
-                        command.Parameters.AddWithValue("@RoleID", roleID);
-                        command.ExecuteNonQuery();
-                    }
-                    
-                    // Add new permissions
-                    foreach (string permission in permissions)
-                    {
-                        string permQuery = "SELECT PermissionID FROM Permissions WHERE PermissionName = @PermissionName";
-                        
-                        using (SqlCommand command = new SqlCommand(permQuery, connection))
-                        {
-                            command.Parameters.AddWithValue("@PermissionName", permission);
-                            object result = command.ExecuteScalar();
-                            
-                            if (result != null && result != DBNull.Value)
-                            {
-                                int permissionID = Convert.ToInt32(result);
-                                string insertQuery = "INSERT INTO RolePermissions (RoleID, PermissionID) VALUES (@RoleID, @PermissionID)";
-                                
-                                using (SqlCommand insertCmd = new SqlCommand(insertQuery, connection))
-                                {
-                                    insertCmd.Parameters.AddWithValue("@RoleID", roleID);
-                                    insertCmd.Parameters.AddWithValue("@PermissionID", permissionID);
-                                    insertCmd.ExecuteNonQuery();
-                                }
-                            }
-                        }
-                    }
-                    
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                errorMessage = ex.Message;
-                return false;
-            }
+            // This method is deprecated - use SetUserPermissions instead
+            // Kept for backward compatibility
+            errorMessage = "This method is deprecated. Use SetUserPermissions instead.";
+            return false;
         }
     }
 }

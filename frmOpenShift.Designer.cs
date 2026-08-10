@@ -56,7 +56,7 @@ namespace InventoryManagementSystem
             this._lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(58)))), ((int)(((byte)(138)))));
             this._lblTitle.Location = new System.Drawing.Point(3, 0);
             this._lblTitle.Name = "_lblTitle";
-            this._lblTitle.Size = new System.Drawing.Size(0, 37);
+            this._lblTitle.Size = new System.Drawing.Size(0, 46);
             this._lblTitle.TabIndex = 0;
             this._lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -67,7 +67,7 @@ namespace InventoryManagementSystem
             this._lblCashierName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(114)))), ((int)(((byte)(128)))));
             this._lblCashierName.Location = new System.Drawing.Point(3, 60);
             this._lblCashierName.Name = "_lblCashierName";
-            this._lblCashierName.Size = new System.Drawing.Size(0, 21);
+            this._lblCashierName.Size = new System.Drawing.Size(0, 28);
             this._lblCashierName.TabIndex = 1;
             // 
             // _lblDate
@@ -77,7 +77,7 @@ namespace InventoryManagementSystem
             this._lblDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(114)))), ((int)(((byte)(128)))));
             this._lblDate.Location = new System.Drawing.Point(3, 95);
             this._lblDate.Name = "_lblDate";
-            this._lblDate.Size = new System.Drawing.Size(0, 21);
+            this._lblDate.Size = new System.Drawing.Size(0, 28);
             this._lblDate.TabIndex = 2;
             // 
             // _lblStartingCash
@@ -87,16 +87,16 @@ namespace InventoryManagementSystem
             this._lblStartingCash.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
             this._lblStartingCash.Location = new System.Drawing.Point(3, 130);
             this._lblStartingCash.Name = "_lblStartingCash";
-            this._lblStartingCash.Size = new System.Drawing.Size(0, 21);
+            this._lblStartingCash.Size = new System.Drawing.Size(0, 28);
             this._lblStartingCash.TabIndex = 3;
             // 
             // _txtStartingCash
             // 
             this._txtStartingCash.Dock = System.Windows.Forms.DockStyle.Fill;
             this._txtStartingCash.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this._txtStartingCash.Location = new System.Drawing.Point(3, 165);
+            this._txtStartingCash.Location = new System.Drawing.Point(3, 168);
             this._txtStartingCash.Name = "_txtStartingCash";
-            this._txtStartingCash.Size = new System.Drawing.Size(444, 28);
+            this._txtStartingCash.Size = new System.Drawing.Size(444, 34);
             this._txtStartingCash.TabIndex = 4;
             // 
             // _buttonsPanel
@@ -113,7 +113,7 @@ namespace InventoryManagementSystem
             // 
             // _btnOpen
             // 
-            this._btnOpen.Location = new System.Drawing.Point(319, 3);
+            this._btnOpen.Location = new System.Drawing.Point(321, 3);
             this._btnOpen.Name = "_btnOpen";
             this._btnOpen.Size = new System.Drawing.Size(120, 45);
             this._btnOpen.TabIndex = 0;
@@ -122,7 +122,7 @@ namespace InventoryManagementSystem
             // 
             // _btnSkip
             // 
-            this._btnSkip.Location = new System.Drawing.Point(193, 3);
+            this._btnSkip.Location = new System.Drawing.Point(195, 3);
             this._btnSkip.Name = "_btnSkip";
             this._btnSkip.Size = new System.Drawing.Size(120, 45);
             this._btnSkip.TabIndex = 1;
@@ -131,7 +131,7 @@ namespace InventoryManagementSystem
             // 
             // _btnCancel
             // 
-            this._btnCancel.Location = new System.Drawing.Point(67, 3);
+            this._btnCancel.Location = new System.Drawing.Point(69, 3);
             this._btnCancel.Name = "_btnCancel";
             this._btnCancel.Size = new System.Drawing.Size(120, 45);
             this._btnCancel.TabIndex = 2;
@@ -152,10 +152,12 @@ namespace InventoryManagementSystem
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Open Shift";
+            this.Load += new System.EventHandler(this.frmOpenShift_Load);
             this._mainPanel.ResumeLayout(false);
             this._mainPanel.PerformLayout();
             this._buttonsPanel.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
 
         private System.Windows.Forms.TableLayoutPanel _mainPanel;

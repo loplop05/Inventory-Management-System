@@ -57,19 +57,16 @@ namespace InventoryManagementSystem
                 }
             }
 
-            // After successful login, check if user needs to open a shift (for cashiers only)
-            if (clsUserManagement.CurrentUser != null && clsUserManagement.IsCashier)
+            // After successful login, check if user needs to open a shift (for cashiers and managers)
+            if (clsUserManagement.CurrentUser != null && (clsUserManagement.IsCashier || clsUserManagement.IsManager))
             {
                 // Check if user already has an open shift
                 if (!clsShift.HasOpenShift(clsUserManagement.CurrentUser.UserID))
                 {
                     using (var openShiftForm = new frmOpenShift())
                     {
-                        if (openShiftForm.ShowDialog() != DialogResult.OK)
-                        {
-                            // Cashier didn't open a shift, allow to continue but warn
-                            clsFormTheme.ShowInfo(null, "No shift opened. You may need to open a shift to process cash payments.", "Shift");
-                        }
+                        openShiftForm.ShowDialog();
+                        // User can choose to open shift or skip - no warning needed
                     }
                 }
             }

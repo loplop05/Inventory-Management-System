@@ -119,7 +119,6 @@ namespace InventoryBusinessLayer
         {
             switch (tier)
             {
-                case "Platinum": return 0.05m; // 5%
                 case "Gold": return 0.03m; // 3%
                 case "Silver": return 0.02m; // 2%
                 default: return 0m;
