@@ -142,6 +142,187 @@ namespace InventoryManagementSystem
                 grid.Columns[columnName].DefaultCellStyle.Format = "0.00";
         }
 
+        private void _gridOrders_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
+            {
+                _gridOrders.ClearSelection();
+                _gridOrders.Rows[e.RowIndex].Selected = true;
+                _contextMenuOrders.Show(Cursor.Position);
+            }
+        }
+
+        private void _menuViewDetails_Click(object sender, EventArgs e)
+        {
+            if (_gridOrders.SelectedRows.Count == 0)
+                return;
+
+            int orderID = Convert.ToInt32(_gridOrders.SelectedRows[0].Cells["OrderID"].Value);
+            ShowOrderDetails(orderID);
+        }
+
+        private void _menuPrintReceipt_Click(object sender, EventArgs e)
+        {
+            if (_gridOrders.SelectedRows.Count == 0)
+                return;
+
+            int orderID = Convert.ToInt32(_gridOrders.SelectedRows[0].Cells["OrderID"].Value);
+            PrintOrderReceipt(orderID);
+        }
+
+        private void _menuRefund_Click(object sender, EventArgs e)
+        {
+            if (_gridOrders.SelectedRows.Count == 0)
+                return;
+
+            int orderID = Convert.ToInt32(_gridOrders.SelectedRows[0].Cells["OrderID"].Value);
+            ProcessRefund(orderID);
+        }
+
+        private void _menuVoid_Click(object sender, EventArgs e)
+        {
+            if (_gridOrders.SelectedRows.Count == 0)
+                return;
+
+            int orderID = Convert.ToInt32(_gridOrders.SelectedRows[0].Cells["OrderID"].Value);
+            VoidOrder(orderID);
+        }
+
+        private void ShowOrderDetails(int orderID)
+        {
+            var orderDetails = clsCustomer.GetOrderDetails(orderID);
+            var orderItems = clsCustomer.GetOrderItems(orderID);
+
+            if (orderDetails == null || orderDetails.Rows.Count == 0)
+            {
+                clsFormTheme.ShowError(this, "Order not found.", "Error");
+                return;
+            }
+
+            string details = $"Order ID: {orderID}\n";
+            details += $"Date: {orderDetails.Rows[0]["OrderDate"]}\n";
+            details += $"Subtotal: {Convert.ToDecimal(orderDetails.Rows[0]["Subtotal"]):C2}\n";
+            details += $"Tax: {Convert.ToDecimal(orderDetails.Rows[0]["TaxAmount"]):C2}\n";
+            details += $"Total: {Convert.ToDecimal(orderDetails.Rows[0]["TotalAmount"]):C2}\n";
+            details += $"Payment: {orderDetails.Rows[0]["PaymentMethod"]}\n";
+            
+            if (orderDetails.Rows[0]["PaymentDetails"] != DBNull.Value)
+            {
+                details += $"Payment Details: {orderDetails.Rows[0]["PaymentDetails"]}\n";
+            }
+
+            details += "\nItems:\n";
+            foreach (DataRow item in orderItems.Rows)
+            {
+                details += $"- {item["ProductName"]} x{item["Quantity"]} @ {Convert.ToDecimal(item["UnitPrice"]):C2} = {Convert.ToDecimal(item["Subtotal"]):C2}\n";
+            }
+
+            MessageBox.Show(details, "Order Details", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void PrintOrderReceipt(int orderID)
+        {
+            var orderDetails = clsCustomer.GetOrderDetails(orderID);
+            var orderItems = clsCustomer.GetOrderItems(orderID);
+            string customerName = orderDetails.Rows[0]["CustomerName"] != DBNull.Value 
+                ? orderDetails.Rows[0]["CustomerName"].ToString() 
+                : "Guest";
+
+            clsPrintHelper.PrintReceipt(orderDetails, orderItems, customerName);
+        }
+
+        private void ProcessRefund(int orderID)
+        {
+            var orderDetails = clsCustomer.GetOrderDetails(orderID);
+            if (orderDetails == null || orderDetails.Rows.Count == 0)
+            {
+                clsFormTheme.ShowError(this, "Order not found.", "Error");
+                return;
+            }
+
+            // Check if already refunded
+            if (orderDetails.Rows[0]["RefundID"] != DBNull.Value)
+            {
+                clsFormTheme.ShowWarning(this, "Order has already been refunded.", "Refund");
+                return;
+            }
+
+            // Check if voided
+            bool isVoided = orderDetails.Rows[0]["IsVoided"] != DBNull.Value && Convert.ToBoolean(orderDetails.Rows[0]["IsVoided"]);
+            if (isVoided)
+            {
+                clsFormTheme.ShowWarning(this, "Cannot refund a voided order.", "Refund");
+                return;
+            }
+
+            decimal totalAmount = Convert.ToDecimal(orderDetails.Rows[0]["TotalAmount"]);
+            var result = MessageBox.Show($"Process full refund for Order #{orderID}?\n\nAmount: {totalAmount:C2}", 
+                "Confirm Refund", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                int refundID;
+                string errorMessage;
+                bool success = clsRefund.ProcessFullRefund(orderID, "Refund from Daily Report", "Cash", 
+                    clsUserManagement.CurrentUser?.UserID ?? 0, out refundID, out errorMessage);
+
+                if (success)
+                {
+                    clsFormTheme.ShowSuccess(this, "Refund processed successfully.", "Refund");
+                    LoadReport(); // Refresh the report
+                }
+                else
+                {
+                    clsFormTheme.ShowError(this, errorMessage, "Refund Failed");
+                }
+            }
+        }
+
+        private void VoidOrder(int orderID)
+        {
+            var orderDetails = clsCustomer.GetOrderDetails(orderID);
+            if (orderDetails == null || orderDetails.Rows.Count == 0)
+            {
+                clsFormTheme.ShowError(this, "Order not found.", "Error");
+                return;
+            }
+
+            // Check if already voided
+            bool isVoided = orderDetails.Rows[0]["IsVoided"] != DBNull.Value && Convert.ToBoolean(orderDetails.Rows[0]["IsVoided"]);
+            if (isVoided)
+            {
+                clsFormTheme.ShowWarning(this, "Order is already voided.", "Void");
+                return;
+            }
+
+            // Check if already refunded
+            if (orderDetails.Rows[0]["RefundID"] != DBNull.Value)
+            {
+                clsFormTheme.ShowWarning(this, "Cannot void an order that has been refunded.", "Void");
+                return;
+            }
+
+            decimal totalAmount = Convert.ToDecimal(orderDetails.Rows[0]["TotalAmount"]);
+            var result = MessageBox.Show($"Void Order #{orderID}?\n\nThis will mark the order as voided.\nAmount: {totalAmount:C2}", 
+                "Confirm Void", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
+            if (result == DialogResult.Yes)
+            {
+                string errorMessage;
+                bool success = clsRefundData.VoidOrder(orderID, out errorMessage);
+
+                if (success)
+                {
+                    clsFormTheme.ShowSuccess(this, "Order voided successfully.", "Void");
+                    LoadReport(); // Refresh the report
+                }
+                else
+                {
+                    clsFormTheme.ShowError(this, errorMessage, "Void Failed");
+                }
+            }
+        }
+
         private void ExportReportCsv()
         {
             using (SaveFileDialog dialog = new SaveFileDialog())
