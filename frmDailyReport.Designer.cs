@@ -38,6 +38,11 @@ namespace InventoryManagementSystem
             this._btnExportCsv = new System.Windows.Forms.Button();
             this._btnExportHtml = new System.Windows.Forms.Button();
             this._btnRefresh = new System.Windows.Forms.Button();
+            this._contextMenuOrders = new System.Windows.Forms.ContextMenuStrip();
+            this._menuViewDetails = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuPrintReceipt = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuRefund = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuVoid = new System.Windows.Forms.ToolStripMenuItem();
             this._contentPanel.SuspendLayout();
             this._headerPanel.SuspendLayout();
             this._rootLayout.SuspendLayout();
@@ -227,8 +232,10 @@ namespace InventoryManagementSystem
             this._gridOrders.RowHeadersVisible = false;
             this._gridOrders.RowHeadersWidth = 51;
             this._gridOrders.RowTemplate.Height = 24;
+            this._gridOrders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this._gridOrders.Size = new System.Drawing.Size(1120, 226);
             this._gridOrders.TabIndex = 1;
+            this._gridOrders.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this._gridOrders_CellMouseClick);
             // 
             // _lblOrdersTitle
             // 
@@ -386,6 +393,11 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button _btnExportCsv;
         private System.Windows.Forms.Button _btnExportHtml;
         private System.Windows.Forms.Button _btnClose;
-        
+        private System.Windows.Forms.ContextMenuStrip _contextMenuOrders;
+        private System.Windows.Forms.ToolStripMenuItem _menuViewDetails;
+        private System.Windows.Forms.ToolStripMenuItem _menuPrintReceipt;
+        private System.Windows.Forms.ToolStripMenuItem _menuRefund;
+        private System.Windows.Forms.ToolStripMenuItem _menuVoid;
+
     }
 }

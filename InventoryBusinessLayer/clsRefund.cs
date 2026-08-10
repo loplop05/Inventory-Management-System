@@ -85,6 +85,22 @@ namespace InventoryBusinessLayer
                     return false;
                 }
 
+                // Restock inventory for refunded items
+                var itemsToRestock = clsCustomer.GetOrderItems(orderID);
+                if (itemsToRestock != null && itemsToRestock.Rows.Count > 0)
+                {
+                    foreach (DataRow item in itemsToRestock.Rows)
+                    {
+                        int productID = Convert.ToInt32(item["ProductID"]);
+                        int quantity = Convert.ToInt32(item["Quantity"]);
+                        if (!clsProduct.RestockProduct(productID, quantity, out string restockError))
+                        {
+                            errorMessage = $"Failed to restock product: {restockError}";
+                            // Don't fail the refund, just log the error
+                        }
+                    }
+                }
+
                 return true;
             }
             catch (Exception ex)
@@ -109,7 +125,45 @@ namespace InventoryBusinessLayer
                     return false;
                 }
 
+                // Check if order is voided
+                bool isVoided = order.Rows[0]["IsVoided"] != DBNull.Value && Convert.ToBoolean(order.Rows[0]["IsVoided"]);
+                if (isVoided)
+                {
+                    errorMessage = "Cannot refund a voided order.";
+                    return false;
+                }
+
                 decimal totalAmount = Convert.ToDecimal(order.Rows[0]["TotalAmount"]);
+
+                // Check if order is already fully refunded
+                if (order.Rows[0]["RefundID"] != DBNull.Value)
+                {
+                    errorMessage = "Order has already been fully refunded.";
+                    return false;
+                }
+
+                // Sum prior partial refunds for this order
+                var priorRefunds = GetRefundsByOrder(orderID, out string priorError);
+                if (priorRefunds != null)
+                {
+                    decimal priorRefundTotal = 0;
+                    foreach (var priorRefund in priorRefunds)
+                    {
+                        if (priorRefund.RefundType == "Partial" && !priorRefund.IsVoided)
+                        {
+                            priorRefundTotal += priorRefund.RefundAmount;
+                        }
+                    }
+
+                    // Check if new refund would exceed remaining refundable amount
+                    if (priorRefundTotal + refundAmount > totalAmount)
+                    {
+                        decimal remaining = totalAmount - priorRefundTotal;
+                        errorMessage = $"Refund amount exceeds remaining refundable amount. Remaining: {remaining:C}";
+                        return false;
+                    }
+                }
+
                 if (refundAmount > totalAmount)
                 {
                     errorMessage = "Refund amount cannot exceed order total.";
@@ -140,6 +194,16 @@ namespace InventoryBusinessLayer
                     {
                         errorMessage = $"Failed to add refund item: {itemError}";
                         return false;
+                    }
+                }
+
+                // Restock inventory for refunded items
+                foreach (var refundItem in refundItems)
+                {
+                    if (!clsProduct.RestockProduct(refundItem.ProductID, refundItem.Quantity, out string restockError))
+                    {
+                        errorMessage = $"Failed to restock product: {restockError}";
+                        // Don't fail the refund, just log the error
                     }
                 }
 

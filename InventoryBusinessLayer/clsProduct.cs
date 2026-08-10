@@ -148,6 +148,32 @@ namespace InventoryBusinessLayer
             return clsProductData.DeleteProduct(ProductID);
         }
 
+        public static bool RestockProduct(int productID, int quantity, out string errorMessage)
+        {
+            errorMessage = "";
+            try
+            {
+                if (!clsProductData.DoesProductExist(productID))
+                {
+                    errorMessage = "Product not found.";
+                    return false;
+                }
+
+                if (quantity <= 0)
+                {
+                    errorMessage = "Quantity must be greater than zero.";
+                    return false;
+                }
+
+                return clsProductData.RestockProduct(productID, quantity, out errorMessage);
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
+        }
+
         public static bool GetAllProducts(out DataTable products, out string errorMessage)
         {
             return clsProductData.GetAllProducts(out products, out errorMessage);

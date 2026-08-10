@@ -1,6 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
+using InventoryBusinessLayer;
 
 namespace InventoryManagementSystem
 {
@@ -14,6 +18,12 @@ namespace InventoryManagementSystem
 
             clsFormTheme.ApplyFormStyle(this);
             clsFormTheme.CreateHeaderPanel(this, "Inventory Management System", clsFormTheme.Icons.Home);
+
+            // Style quick search
+            clsFormTheme.ApplyTextBoxStyle(_txtQuickSearch);
+            _txtQuickSearch.TextChanged += _txtQuickSearch_TextChanged;
+            _txtQuickSearch.KeyDown += _txtQuickSearch_KeyDown;
+            _txtQuickSearch.Leave += (s, e) => _searchResultsPanel.Visible = false;
 
             // Apply card-with-accent-bar styling to all tiles
             StyleTile(btnPOS, clsFormTheme.Icons.POS, clsFormTheme.PrimaryColor, "Point of Sale");
@@ -39,6 +49,9 @@ namespace InventoryManagementSystem
 
             // Subscribe to theme changes
             clsFormTheme.ThemeChanged += (s, e) => UpdateThemeButton();
+
+            // Re-apply theme on activation
+            Activated += (s, e) => clsFormTheme.ApplyFormStyle(this);
         }
 
         private void StyleTile(Button btn, string icon, Color accentColor, string tooltipText)
@@ -212,6 +225,7 @@ namespace InventoryManagementSystem
         {
             clsFormTheme.ToggleTheme();
             UpdateThemeButton();
+            clsFormTheme.ApplyFormStyle(this);
         }
 
         private void UpdateThemeButton()
@@ -226,6 +240,179 @@ namespace InventoryManagementSystem
             if (e.KeyCode == Keys.F1)
             {
                 btnHelp_Click(sender, e);
+            }
+            if (e.Control && e.KeyCode == Keys.K)
+            {
+                _txtQuickSearch.Focus();
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void _txtQuickSearch_TextChanged(object sender, EventArgs e)
+        {
+            string searchText = _txtQuickSearch.Text.Trim();
+            if (string.IsNullOrWhiteSpace(searchText))
+            {
+                _searchResultsPanel.Visible = false;
+                return;
+            }
+
+            PerformQuickSearch(searchText);
+        }
+
+        private void _txtQuickSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                _txtQuickSearch.Clear();
+                _searchResultsPanel.Visible = false;
+                e.SuppressKeyPress = true;
+            }
+            else if (e.KeyCode == Keys.Enter && _lstSearchResults.SelectedIndex >= 0)
+            {
+                NavigateToSearchResult();
+                e.SuppressKeyPress = true;
+            }
+            else if (e.KeyCode == Keys.Down && _lstSearchResults.Items.Count > 0)
+            {
+                _lstSearchResults.SelectedIndex = 0;
+                _lstSearchResults.Focus();
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void _lstSearchResults_DoubleClick(object sender, EventArgs e)
+        {
+            NavigateToSearchResult();
+        }
+
+        private class SearchResult
+        {
+            public string Type { get; set; }
+            public string Name { get; set; }
+            public int ID { get; set; }
+            public string TargetForm { get; set; }
+
+            public override string ToString()
+            {
+                return $"{Type}: {Name}";
+            }
+        }
+
+        private void PerformQuickSearch(string searchText)
+        {
+            _lstSearchResults.Items.Clear();
+            var results = new List<SearchResult>();
+
+            try
+            {
+                // Search products
+                string prodError;
+                DataTable products = null;
+                if (clsProduct.GetAllProducts(out products, out prodError))
+                {
+                    foreach (DataRow row in products.Rows)
+                    {
+                        string name = row["ProductName"].ToString();
+                        string barcode = row["Barcode"].ToString();
+                        if (name.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            barcode.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            results.Add(new SearchResult
+                            {
+                                Type = "Product",
+                                Name = name,
+                                ID = Convert.ToInt32(row["ProductID"]),
+                                TargetForm = "Products"
+                            });
+                        }
+                    }
+                }
+
+                // Search customers
+                DataTable customers = clsCustomer.GetAllCustomers();
+                if (customers != null)
+                {
+                    foreach (DataRow row in customers.Rows)
+                    {
+                        string name = row["CustomerName"].ToString();
+                        string phone = row["PhoneNumber"].ToString();
+                        if (name.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            phone.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            results.Add(new SearchResult
+                            {
+                                Type = "Customer",
+                                Name = name,
+                                ID = Convert.ToInt32(row["CustomerID"]),
+                                TargetForm = "Customers"
+                            });
+                        }
+                    }
+                }
+
+                // Search suppliers
+                DataTable suppliers = clsSupplier.GetAllSuppliers();
+                if (suppliers != null)
+                {
+                    foreach (DataRow row in suppliers.Rows)
+                    {
+                        string name = row["SupplierName"].ToString();
+                        if (name.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            results.Add(new SearchResult
+                            {
+                                Type = "Supplier",
+                                Name = name,
+                                ID = Convert.ToInt32(row["SupplierID"]),
+                                TargetForm = "Suppliers"
+                            });
+                        }
+                    }
+                }
+
+                // Limit results to 20
+                if (results.Count > 20)
+                    results = results.Take(20).ToList();
+
+                foreach (var result in results)
+                {
+                    _lstSearchResults.Items.Add(result);
+                }
+
+                _searchResultsPanel.Visible = results.Count > 0;
+            }
+            catch
+            {
+                _searchResultsPanel.Visible = false;
+            }
+        }
+
+        private void NavigateToSearchResult()
+        {
+            if (_lstSearchResults.SelectedItem is SearchResult result)
+            {
+                _txtQuickSearch.Clear();
+                _searchResultsPanel.Visible = false;
+
+                switch (result.TargetForm)
+                {
+                    case "Products":
+                        var productsForm = new frmProductsManagment();
+                        productsForm.Show();
+                        this.Close();
+                        break;
+                    case "Customers":
+                        var customersForm = new frmCustomerManagement();
+                        customersForm.Show();
+                        this.Close();
+                        break;
+                    case "Suppliers":
+                        var suppliersForm = new frmSuppliersManagment();
+                        suppliersForm.Show();
+                        this.Close();
+                        break;
+                }
             }
         }
 
@@ -308,6 +495,15 @@ namespace InventoryManagementSystem
 
                 // Show all sections
                 SetSectionVisibility(true, true, true, true);
+            }
+
+            // Permission-based visibility upgrades for Manager/Cashier
+            if (!clsUserManagement.IsAdmin)
+            {
+                if (clsUserManagement.HasPermission(clsPermissions.ManageUsers))
+                    btnUserManagement.Visible = true;
+                if (clsUserManagement.HasPermission(clsPermissions.ViewAuditLogs))
+                    btnAuditLogs.Visible = true;
             }
         }
 
