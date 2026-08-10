@@ -221,6 +221,8 @@ namespace InventoryManagementSystem
             public const string Customer    = "\uE8D7";  // ContactCard (for Customer Management)
             public const string Coupon      = "\uE8EC";  // Tag (for Coupon Manager)
             public const string AuditLog    = "\uE81C";  // Clock/History (for Audit Logs)
+            public const string History     = "\uE81C";  // Clock/History (for Shift History)
+            public const string Close       = "\uE8FB";  // ChromeClose (X)
             public const string Exchange    = "\uE77C";  // Switch
             public const string Plus        = "\uE710";  // Add
             public const string Share       = "\uE72D";  // Share

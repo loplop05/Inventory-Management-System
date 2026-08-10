@@ -30,8 +30,7 @@ namespace InventoryBusinessLayer
 
             if (shiftID > 0)
             {
-                // Log the shift opening
-                clsAuditLog.LogAction("ShiftOpened", $"UserID={userID}, ShiftID={shiftID}, StartingCash={startingCash}", "Shift");
+                // Shift opened successfully - logging handled by presentation layer
             }
 
             return shiftID;
@@ -53,8 +52,7 @@ namespace InventoryBusinessLayer
 
             if (success)
             {
-                // Log the shift closing
-                clsAuditLog.LogAction("ShiftClosed", $"ShiftID={shiftID}, CountedCash={countedCash}, Notes={notes}", "Shift");
+                // Shift closed successfully - logging handled by presentation layer
             }
 
             return success;
@@ -68,6 +66,11 @@ namespace InventoryBusinessLayer
         public static decimal GetCashSalesTotal(int shiftID)
         {
             return clsShiftData.GetCashSalesTotal(shiftID);
+        }
+
+        public static decimal GetStartingCash(int shiftID)
+        {
+            return clsShiftData.GetStartingCash(shiftID);
         }
 
         public static decimal GetExpectedCash(int shiftID)

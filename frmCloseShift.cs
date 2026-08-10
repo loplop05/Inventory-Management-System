@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 using InventoryBusinessLayer;
 
@@ -54,8 +55,8 @@ namespace InventoryManagementSystem
         {
             try
             {
-                decimal startingCash = clsShiftData.GetStartingCash(_shiftID);
-                decimal cashSales = clsShiftData.GetCashSalesTotal(_shiftID);
+                decimal startingCash = clsShift.GetStartingCash(_shiftID);
+                decimal cashSales = clsShift.GetCashSalesTotal(_shiftID);
                 decimal expectedCash = startingCash + cashSales;
                 
                 _lblStartingCashValue.Text = "$" + startingCash.ToString("F2");

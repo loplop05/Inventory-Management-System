@@ -94,6 +94,7 @@ namespace InventoryManagementSystem
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Login");
             _lblTitle.Text = clsLanguageManager.GetString("Login");
+            _lblSubtitle.Text = "Inventory Management System";
             _lblUsername.Text = clsLanguageManager.GetString("Username") + ":";
             _lblPassword.Text = clsLanguageManager.GetString("Password") + ":";
             _btnLogin.Text = clsLanguageManager.GetString("Login");

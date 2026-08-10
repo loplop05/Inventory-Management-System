@@ -58,6 +58,7 @@
     <Compile Include="clsStockTransferData.cs" />
     <Compile Include="clsAnalyticsData.cs" />
     <Compile Include="clsCouponData.cs" />
+    <Compile Include="clsShiftData.cs" />
     <Compile Include="clsPermissionsData.cs" />
     <Compile Include="clsDatabaseMigration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

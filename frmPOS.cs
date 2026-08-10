@@ -639,7 +639,7 @@ namespace InventoryManagementSystem
                 int orderID;
                 string errorMessage;
 
-                bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, _selectedCustomerID, paymentMethod, paymentDetails, totalDiscount, _appliedCouponCode, shiftID, out orderID, out errorMessage);
+                bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), clsDataAccessSettings.TaxRate, _selectedCustomerID, paymentMethod, paymentDetails, totalDiscount, _appliedCouponCode, shiftID, out orderID, out errorMessage);
 
                 if (!saved)
                 {
@@ -658,7 +658,7 @@ namespace InventoryManagementSystem
                         if (!pointsEarned)
                         {
                             // Log error but don't block - loyalty failure should never block checkout
-                            clsAuditLog.LogError("LoyaltyPointsEarnFailed", $"CustomerID={_selectedCustomerID}, OrderID={orderID}, Error={loyaltyError}");
+                            clsAuditLog.LogAction("LoyaltyPointsEarnFailed", $"CustomerID={_selectedCustomerID}, OrderID={orderID}, Error={loyaltyError}", "System");
                             // Show non-blocking notification
                             clsFormTheme.ShowInfo(this, "Order completed but loyalty points could not be awarded.", "Loyalty Points");
                         }
@@ -666,7 +666,7 @@ namespace InventoryManagementSystem
                     catch (Exception ex)
                     {
                         // Log any unexpected errors
-                        clsAuditLog.LogError("LoyaltyPointsException", $"CustomerID={_selectedCustomerID}, OrderID={orderID}, Exception={ex.Message}");
+                        clsAuditLog.LogError("LoyaltyPointsException", ex);
                     }
                 }
 

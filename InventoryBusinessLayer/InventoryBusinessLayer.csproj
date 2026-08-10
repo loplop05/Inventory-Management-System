@@ -49,6 +49,8 @@
     <Compile Include="clsRefund.cs" />
     <Compile Include="clsStockTransfer.cs" />
     <Compile Include="clsLoyalty.cs" />
+    <Compile Include="clsLoyaltyProgram.cs" />
+    <Compile Include="clsShift.cs" />
     <Compile Include="clsAnalytics.cs" />
     <Compile Include="clsCoupon.cs" />
     <Compile Include="clsPOS.cs" />

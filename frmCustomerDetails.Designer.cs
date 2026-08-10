@@ -20,6 +20,9 @@ namespace InventoryManagementSystem
             this._lblPoints = new System.Windows.Forms.Label();
             this._lblTotalSpent = new System.Windows.Forms.Label();
             this._lblLastPurchase = new System.Windows.Forms.Label();
+            this._lblOrderCount = new System.Windows.Forms.Label();
+            this._lblDaysSinceLastPurchase = new System.Windows.Forms.Label();
+            this._lblRepeatBuyerBadge = new System.Windows.Forms.Label();
             this._loyaltyPanel = new System.Windows.Forms.Panel();
             this._lblLoyaltyTitle = new System.Windows.Forms.Label();
             this._lblNextTier = new System.Windows.Forms.Label();

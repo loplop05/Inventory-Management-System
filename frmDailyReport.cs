@@ -473,6 +473,91 @@ namespace InventoryManagementSystem
             LoadReport();
         }
 
+        private void btnShiftHistory_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable shiftHistory = clsShift.GetShiftHistory(null, null, null);
+                
+                if (shiftHistory == null || shiftHistory.Rows.Count == 0)
+                {
+                    clsFormTheme.ShowInfo(this, "No shift history found.", "Shift History");
+                    return;
+                }
+                
+                // Create a simple dialog to display shift history
+                using (var historyForm = new Form())
+                {
+                    historyForm.Text = "Shift History";
+                    historyForm.Size = new Size(800, 500);
+                    historyForm.StartPosition = FormStartPosition.CenterParent;
+                    historyForm.FormBorderStyle = FormBorderStyle.Sizable;
+                    
+                    var grid = new DataGridView();
+                    grid.Dock = DockStyle.Fill;
+                    grid.DataSource = shiftHistory;
+                    grid.ReadOnly = true;
+                    grid.AllowUserToAddRows = false;
+                    grid.AllowUserToDeleteRows = false;
+                    grid.RowHeadersVisible = false;
+                    grid.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                    
+                    clsFormTheme.ApplyGridStyle(grid);
+                    
+                    // Format columns
+                    if (grid.Columns.Contains("ShiftID"))
+                        grid.Columns["ShiftID"].HeaderText = "Shift ID";
+                    if (grid.Columns.Contains("Username"))
+                        grid.Columns["Username"].HeaderText = "Cashier";
+                    if (grid.Columns.Contains("OpenedAt"))
+                        grid.Columns["OpenedAt"].HeaderText = "Opened";
+                    if (grid.Columns.Contains("ClosedAt"))
+                        grid.Columns["ClosedAt"].HeaderText = "Closed";
+                    if (grid.Columns.Contains("StartingCash"))
+                        grid.Columns["StartingCash"].HeaderText = "Starting Cash";
+                    if (grid.Columns.Contains("ExpectedCash"))
+                        grid.Columns["ExpectedCash"].HeaderText = "Expected Cash";
+                    if (grid.Columns.Contains("CountedCash"))
+                        grid.Columns["CountedCash"].HeaderText = "Counted Cash";
+                    if (grid.Columns.Contains("CashDifference"))
+                        grid.Columns["CashDifference"].HeaderText = "Difference";
+                    if (grid.Columns.Contains("Status"))
+                        grid.Columns["Status"].HeaderText = "Status";
+                    if (grid.Columns.Contains("Notes"))
+                        grid.Columns["Notes"].HeaderText = "Notes";
+                    
+                    // Hide internal columns
+                    if (grid.Columns.Contains("UserID"))
+                        grid.Columns["UserID"].Visible = false;
+                    
+                    // Format currency columns
+                    foreach (string colName in new[] { "StartingCash", "ExpectedCash", "CountedCash", "CashDifference" })
+                    {
+                        if (grid.Columns.Contains(colName))
+                            grid.Columns[colName].DefaultCellStyle.Format = "C2";
+                    }
+                    
+                    var closeButton = new Button();
+                    closeButton.Text = "Close";
+                    closeButton.Dock = DockStyle.Bottom;
+                    closeButton.Height = 40;
+                    closeButton.Font = new Font(clsFormTheme.MainFontName, 11F);
+                    clsFormTheme.ApplySecondaryButtonStyle(closeButton, clsFormTheme.Icons.Close);
+                    closeButton.Click += (s, ev) => historyForm.Close();
+                    
+                    historyForm.Controls.Add(grid);
+                    historyForm.Controls.Add(closeButton);
+                    
+                    clsFormTheme.ApplyFormStyle(historyForm);
+                    historyForm.ShowDialog(this);
+                }
+            }
+            catch (Exception ex)
+            {
+                clsFormTheme.ShowError(this, "Error loading shift history: " + ex.Message, "Error");
+            }
+        }
+
         private void btnExportCsv_Click(object sender, EventArgs e)
         {
             ExportReportCsv();

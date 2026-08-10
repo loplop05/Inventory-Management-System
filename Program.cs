@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using InventoryDataAccessLayer;
+using InventoryBusinessLayer;
 
 namespace InventoryManagementSystem
 {
@@ -37,6 +39,40 @@ namespace InventoryManagementSystem
             var culture = new CultureInfo("ar-JO");
             Thread.CurrentThread.CurrentCulture = culture;
             Thread.CurrentThread.CurrentUICulture = culture;
+
+            // Ensure database migrations are applied
+            string migrationError;
+            if (!clsDatabaseMigration.EnsureShiftsTablesExist(out migrationError))
+            {
+                MessageBox.Show("Database migration failed: " + migrationError, "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Show login form first
+            using (var loginForm = new frmLogin())
+            {
+                if (loginForm.ShowDialog() != DialogResult.OK)
+                {
+                    return; // User cancelled login
+                }
+            }
+
+            // After successful login, check if user needs to open a shift (for cashiers)
+            if (clsUserManagement.CurrentUser != null && clsUserManagement.IsCashier)
+            {
+                // Check if user already has an open shift
+                if (!clsShift.HasOpenShift(clsUserManagement.CurrentUser.UserID))
+                {
+                    using (var openShiftForm = new frmOpenShift())
+                    {
+                        if (openShiftForm.ShowDialog() != DialogResult.OK)
+                        {
+                            // Cashier didn't open a shift, allow to continue but warn
+                            clsFormTheme.ShowInfo(null, "No shift opened. You may need to open a shift to process cash payments.", "Shift");
+                        }
+                    }
+                }
+            }
 
             Application.Run(new frmMainMenu());
         }

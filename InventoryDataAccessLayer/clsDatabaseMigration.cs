@@ -6,6 +6,109 @@ namespace InventoryDataAccessLayer
 {
     public static class clsDatabaseMigration
     {
+        public static bool EnsureShiftsTablesExist(out string errorMessage)
+        {
+            errorMessage = "";
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    // Check if Shifts table exists
+                    bool shiftsExists = TableExists(connection, "Shifts");
+                    bool shiftIDExists = ColumnExists(connection, "Orders", "ShiftID");
+
+                    if (shiftsExists && shiftIDExists)
+                        return true;
+
+                    // Create Shifts table
+                    if (!shiftsExists)
+                    {
+                        string createShifts = @"
+                            CREATE TABLE Shifts
+                            (
+                                ShiftID INT IDENTITY(1,1) PRIMARY KEY,
+                                UserID INT NOT NULL,
+                                OpenedAt DATETIME NOT NULL DEFAULT GETDATE(),
+                                ClosedAt DATETIME NULL,
+                                StartingCash DECIMAL(10,2) NOT NULL,
+                                ExpectedCash DECIMAL(10,2) NULL,
+                                CountedCash DECIMAL(10,2) NULL,
+                                CashDifference DECIMAL(10,2) NULL,
+                                Status NVARCHAR(20) NOT NULL DEFAULT 'Open',
+                                Notes NVARCHAR(300) NULL
+                            )";
+
+                        using (SqlCommand command = new SqlCommand(createShifts, connection))
+                        {
+                            command.ExecuteNonQuery();
+                        }
+
+                        // Add foreign key to Users if table exists
+                        if (TableExists(connection, "Users"))
+                        {
+                            try
+                            {
+                                string addFK = @"
+                                    ALTER TABLE Shifts
+                                    ADD CONSTRAINT FK_Shifts_Users FOREIGN KEY (UserID) REFERENCES Users(UserID)";
+                                using (SqlCommand command = new SqlCommand(addFK, connection))
+                                {
+                                    command.ExecuteNonQuery();
+                                }
+                            }
+                            catch { /* Ignore if FK fails */ }
+                        }
+
+                        // Create index
+                        if (!IndexExists(connection, "IX_Shifts_UserID_Status", "Shifts"))
+                        {
+                            string createIndex = "CREATE INDEX IX_Shifts_UserID_Status ON Shifts(UserID, Status)";
+                            using (SqlCommand command = new SqlCommand(createIndex, connection))
+                            {
+                                command.ExecuteNonQuery();
+                            }
+                        }
+                    }
+
+                    // Add ShiftID column to Orders table
+                    if (!shiftIDExists)
+                    {
+                        string addColumn = "ALTER TABLE Orders ADD ShiftID INT NULL";
+                        using (SqlCommand command = new SqlCommand(addColumn, connection))
+                        {
+                            command.ExecuteNonQuery();
+                        }
+
+                        // Add foreign key if Shifts table exists
+                        if (TableExists(connection, "Shifts"))
+                        {
+                            try
+                            {
+                                string addFK = @"
+                                    ALTER TABLE Orders
+                                    ADD CONSTRAINT FK_Orders_Shifts FOREIGN KEY (ShiftID) REFERENCES Shifts(ShiftID)";
+                                using (SqlCommand command = new SqlCommand(addFK, connection))
+                                {
+                                    command.ExecuteNonQuery();
+                                }
+                            }
+                            catch { /* Ignore if FK fails */ }
+                        }
+                    }
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = "Shifts database migration error: " + ex.Message;
+                    return false;
+                }
+            }
+        }
+
         public static bool EnsureHeldOrdersTablesExist(out string errorMessage)
         {
             errorMessage = "";
@@ -144,6 +247,22 @@ namespace InventoryDataAccessLayer
             using (SqlCommand command = new SqlCommand(query, connection))
             {
                 command.Parameters.AddWithValue("@TableName", tableName);
+                int count = (int)command.ExecuteScalar();
+                return count > 0;
+            }
+        }
+
+        private static bool ColumnExists(SqlConnection connection, string tableName, string columnName)
+        {
+            string query = @"
+                SELECT COUNT(*)
+                FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_NAME = @TableName AND COLUMN_NAME = @ColumnName";
+
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                command.Parameters.AddWithValue("@TableName", tableName);
+                command.Parameters.AddWithValue("@ColumnName", columnName);
                 int count = (int)command.ExecuteScalar();
                 return count > 0;
             }
