@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using InventoryBusinessLayer;
+using InventoryDataAccessLayer;
 
 namespace InventoryManagementSystem
 {
@@ -309,7 +310,8 @@ namespace InventoryManagementSystem
             if (result == DialogResult.Yes)
             {
                 string errorMessage;
-                bool success = clsRefundData.VoidOrder(orderID, out errorMessage);
+                bool success = clsPOSData.VoidOrder(orderID, "Voided from Daily Report", 
+                    clsUserManagement.CurrentUser?.Username ?? "System", out errorMessage);
 
                 if (success)
                 {
