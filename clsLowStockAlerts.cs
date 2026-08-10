@@ -2,7 +2,10 @@ using System;
 using System.Data;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Net.Mail;
+using System.Text;
 using InventoryBusinessLayer;
+using InventoryDataAccessLayer;
 
 namespace InventoryManagementSystem
 {
@@ -348,16 +351,94 @@ namespace InventoryManagementSystem
             }
         }
 
-        // ─── Email Notifications (Future Enhancement) ───────────────────────────
+        // ─── Email Notifications ───────────────────────────────────────────────────
 
         /// <summary>
-        /// Sends low stock alert via email (placeholder for future implementation).
+        /// Sends low stock alert via email.
         /// </summary>
-        public static void SendEmailAlert(List<LowStockItem> items, string recipientEmail)
+        public static void SendEmailAlert(List<LowStockItem> items, string recipientEmail = null)
         {
-            // TODO: Implement email notification system
-            // This would require SMTP configuration and email template
-            clsFormTheme.ShowInfo(null, $"Email notification would be sent to {recipientEmail} for {items.Count} low stock items.", "Email Alert");
+            if (items == null || items.Count == 0)
+                return;
+
+            // Use configured recipient if not provided
+            string toEmail = recipientEmail ?? clsDataAccessSettings.LowStockAlertEmail;
+            if (string.IsNullOrWhiteSpace(toEmail))
+            {
+                clsFormTheme.ShowWarning(null, "No email recipient configured. Please set LowStockAlertEmail in App.config.", "Email Alert");
+                return;
+            }
+
+            // Check if SMTP is configured
+            if (string.IsNullOrWhiteSpace(clsDataAccessSettings.SmtpUsername) || 
+                string.IsNullOrWhiteSpace(clsDataAccessSettings.SmtpPassword) ||
+                string.IsNullOrWhiteSpace(clsDataAccessSettings.SmtpFromEmail))
+            {
+                clsFormTheme.ShowWarning(null, "SMTP settings not configured. Please set SmtpUsername, SmtpPassword, and SmtpFromEmail in App.config.", "Email Alert");
+                return;
+            }
+
+            try
+            {
+                using (var mail = new MailMessage())
+                {
+                    mail.From = new MailAddress(clsDataAccessSettings.SmtpFromEmail, clsDataAccessSettings.SmtpFromName);
+                    mail.To.Add(toEmail);
+                    mail.Subject = $"Low Stock Alert - {items.Count} Items Need Attention";
+
+                    mail.Body = BuildEmailBody(items);
+                    mail.IsBodyHtml = false;
+
+                    using (var smtp = new SmtpClient(clsDataAccessSettings.SmtpServer, clsDataAccessSettings.SmtpPort))
+                    {
+                        smtp.EnableSsl = clsDataAccessSettings.SmtpUseSSL;
+                        smtp.Credentials = new System.Net.NetworkCredential(clsDataAccessSettings.SmtpUsername, clsDataAccessSettings.SmtpPassword);
+
+                        smtp.Send(mail);
+                        clsFormTheme.ShowSuccess(null, $"Email alert sent successfully to {toEmail} for {items.Count} low stock items.", "Email Alert");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsFormTheme.ShowError(null, "Failed to send email alert: " + ex.Message, "Email Alert");
+                clsErrorLog.LogException("clsLowStockAlerts.SendEmailAlert", ex);
+            }
+        }
+
+        /// <summary>
+        /// Builds the email body for low stock alert.
+        /// </summary>
+        private static string BuildEmailBody(List<LowStockItem> items)
+        {
+            var body = new StringBuilder();
+            body.AppendLine("LOW STOCK ALERT");
+            body.AppendLine("================");
+            body.AppendLine($"Generated: {DateTime.Now:yyyy-MM-dd HH:mm}");
+            body.AppendLine($"Total Items: {items.Count}");
+            body.AppendLine();
+
+            body.AppendLine("PRODUCTS BELOW THRESHOLD:");
+            body.AppendLine("-------------------------");
+            body.AppendLine();
+
+            foreach (var item in items)
+            {
+                body.AppendLine($"Product: {item.ProductName}");
+                body.AppendLine($"Category: {item.Category}");
+                body.AppendLine($"Supplier: {item.Supplier}");
+                body.AppendLine($"Current Stock: {item.CurrentStock}");
+                body.AppendLine($"Stock Needed: {item.StockNeeded}");
+                body.AppendLine($"Price: {item.Price:C2}");
+                body.AppendLine(item.IsOutOfStock ? "STATUS: OUT OF STOCK" : item.IsCritical ? "STATUS: CRITICAL" : "STATUS: LOW");
+                body.AppendLine();
+            }
+
+            body.AppendLine("================");
+            body.AppendLine("Please review and reorder as needed.");
+            body.AppendLine();
+
+            return body.ToString();
         }
 
         // ─── Summary Report ───────────────────────────────────────────────────

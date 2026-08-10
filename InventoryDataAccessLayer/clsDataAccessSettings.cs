@@ -8,6 +8,14 @@ namespace InventoryDataAccessLayer
     {
         public static string connectionString = LoadConnectionString();
         public static decimal TaxRate = LoadTaxRate();
+        public static string SmtpServer = ConfigurationManager.AppSettings["SmtpServer"] ?? "smtp.gmail.com";
+        public static int SmtpPort = int.TryParse(ConfigurationManager.AppSettings["SmtpPort"], out int port) ? port : 587;
+        public static bool SmtpUseSSL = bool.TryParse(ConfigurationManager.AppSettings["SmtpUseSSL"], out bool useSsl) ? useSsl : true;
+        public static string SmtpUsername = ConfigurationManager.AppSettings["SmtpUsername"] ?? "";
+        public static string SmtpPassword = ConfigurationManager.AppSettings["SmtpPassword"] ?? "";
+        public static string SmtpFromEmail = ConfigurationManager.AppSettings["SmtpFromEmail"] ?? "";
+        public static string SmtpFromName = ConfigurationManager.AppSettings["SmtpFromName"] ?? "ElectroPOS Pro";
+        public static string LowStockAlertEmail = ConfigurationManager.AppSettings["LowStockAlertEmail"] ?? "";
 
         private static string LoadConnectionString()
         {
