@@ -38,6 +38,7 @@ namespace InventoryManagementSystem
             this._btnExportCsv = new System.Windows.Forms.Button();
             this._btnExportHtml = new System.Windows.Forms.Button();
             this._btnRefresh = new System.Windows.Forms.Button();
+            this._btnShiftHistory = new System.Windows.Forms.Button();
             this._contextMenuOrders = new System.Windows.Forms.ContextMenuStrip();
             this._menuViewDetails = new System.Windows.Forms.ToolStripMenuItem();
             this._menuPrintReceipt = new System.Windows.Forms.ToolStripMenuItem();
@@ -293,6 +294,7 @@ namespace InventoryManagementSystem
             this._buttonsPanel.Controls.Add(this._btnExportCsv);
             this._buttonsPanel.Controls.Add(this._btnExportHtml);
             this._buttonsPanel.Controls.Add(this._btnRefresh);
+            this._buttonsPanel.Controls.Add(this._btnShiftHistory);
             this._buttonsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._buttonsPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this._buttonsPanel.Location = new System.Drawing.Point(3, 691);
@@ -339,6 +341,16 @@ namespace InventoryManagementSystem
             this._btnRefresh.Text = "Refresh";
             this._btnRefresh.UseVisualStyleBackColor = true;
             this._btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // _btnShiftHistory
+            // 
+            this._btnShiftHistory.Location = new System.Drawing.Point(559, 3);
+            this._btnShiftHistory.Name = "_btnShiftHistory";
+            this._btnShiftHistory.Size = new System.Drawing.Size(132, 34);
+            this._btnShiftHistory.TabIndex = 4;
+            this._btnShiftHistory.Text = "Shift History";
+            this._btnShiftHistory.UseVisualStyleBackColor = true;
+            this._btnShiftHistory.Click += new System.EventHandler(this.btnShiftHistory_Click);
             // 
             // frmDailyReport
             // 
@@ -393,6 +405,7 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button _btnExportCsv;
         private System.Windows.Forms.Button _btnExportHtml;
         private System.Windows.Forms.Button _btnClose;
+        private System.Windows.Forms.Button _btnShiftHistory;
         private System.Windows.Forms.ContextMenuStrip _contextMenuOrders;
         private System.Windows.Forms.ToolStripMenuItem _menuViewDetails;
         private System.Windows.Forms.ToolStripMenuItem _menuPrintReceipt;

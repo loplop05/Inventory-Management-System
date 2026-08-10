@@ -29,7 +29,12 @@ namespace InventoryBusinessLayer
 
         public static bool CompleteOrder(DataTable orderItems, decimal taxRate, int? customerID, string paymentMethod, string paymentDetails, decimal discountAmount, string couponCode, out int orderID, out string errorMessage)
         {
-            bool success = clsPOSData.CompleteOrder(orderItems, taxRate, customerID, paymentMethod, paymentDetails, discountAmount, couponCode, out orderID, out errorMessage);
+            return clsPOSData.CompleteOrder(orderItems, taxRate, customerID, paymentMethod, paymentDetails, discountAmount, couponCode, null, out orderID, out errorMessage);
+        }
+
+        public static bool CompleteOrder(DataTable orderItems, decimal taxRate, int? customerID, string paymentMethod, string paymentDetails, decimal discountAmount, string couponCode, int? shiftID, out int orderID, out string errorMessage)
+        {
+            bool success = clsPOSData.CompleteOrder(orderItems, taxRate, customerID, paymentMethod, paymentDetails, discountAmount, couponCode, shiftID, out orderID, out errorMessage);
             
             // Update customer's loyalty points using the consolidated business logic layer
             // This happens after order completion to ensure atomicity of the order itself

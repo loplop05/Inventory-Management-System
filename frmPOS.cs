@@ -612,10 +612,34 @@ namespace InventoryManagementSystem
                 string paymentMethod = paymentDialog.SelectedPaymentMethod;
                 string paymentDetails = paymentDialog.PaymentDetails;
 
+                // Get open shift ID for cash payments
+                int? shiftID = null;
+                if (paymentMethod == "Cash" || paymentMethod == "Split")
+                {
+                    try
+                    {
+                        DataTable openShift = clsShift.GetOpenShiftForUser(clsUserManagement.CurrentUser.UserID);
+                        if (openShift != null && openShift.Rows.Count > 0)
+                        {
+                            shiftID = Convert.ToInt32(openShift.Rows[0]["ShiftID"]);
+                        }
+                        else if (clsUserManagement.IsCashier)
+                        {
+                            // Cashiers must have an open shift for cash payments
+                            clsFormTheme.ShowError(this, "No open shift found. Please ask a manager to open a shift.", "Shift Required");
+                            return;
+                        }
+                    }
+                    catch
+                    {
+                        // Don't block on error, just proceed without shift
+                    }
+                }
+
                 int orderID;
                 string errorMessage;
 
-                bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, _selectedCustomerID, paymentMethod, paymentDetails, totalDiscount, _appliedCouponCode, out orderID, out errorMessage);
+                bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, _selectedCustomerID, paymentMethod, paymentDetails, totalDiscount, _appliedCouponCode, shiftID, out orderID, out errorMessage);
 
                 if (!saved)
                 {

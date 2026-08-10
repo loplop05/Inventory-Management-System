@@ -166,6 +166,7 @@ namespace InventoryManagementSystem
             this._flowAdministration.Controls.Add(this.btnAuditLogs);
             this._flowAdministration.Controls.Add(this.btnUserManagement);
             this._flowAdministration.Controls.Add(this.btnCustomerManagement);
+            this._flowAdministration.Controls.Add(this.btnCloseShift);
             this._flowAdministration.Dock = System.Windows.Forms.DockStyle.Top;
             this._flowAdministration.FlowDirection = System.Windows.Forms.FlowDirection.LeftToRight;
             this._flowAdministration.Location = new System.Drawing.Point(0, 25);
@@ -221,6 +222,22 @@ namespace InventoryManagementSystem
             this.btnCustomerManagement.Text = "Customer Management";
             this.btnCustomerManagement.UseVisualStyleBackColor = false;
             this.btnCustomerManagement.Click += new System.EventHandler(this.btnCustomerManagement_Click);
+            // 
+            // btnCloseShift
+            // 
+            this.btnCloseShift.BackColor = clsFormTheme.CardColor;
+            this.btnCloseShift.FlatAppearance.BorderColor = clsFormTheme.CardBorderColor;
+            this.btnCloseShift.FlatAppearance.BorderSize = 1;
+            this.btnCloseShift.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCloseShift.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnCloseShift.ForeColor = clsFormTheme.TextPrimary;
+            this.btnCloseShift.Location = new System.Drawing.Point(621, 3);
+            this.btnCloseShift.Name = "btnCloseShift";
+            this.btnCloseShift.Size = new System.Drawing.Size(200, 110);
+            this.btnCloseShift.TabIndex = 2;
+            this.btnCloseShift.Text = "Close Shift";
+            this.btnCloseShift.UseVisualStyleBackColor = false;
+            this.btnCloseShift.Click += new System.EventHandler(this.btnCloseShift_Click);
             // 
             // _sectionInsights
             // 
@@ -606,6 +623,7 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button btnAuditLogs;
         private System.Windows.Forms.Button btnUserManagement;
         private System.Windows.Forms.Button btnCustomerManagement;
+        private System.Windows.Forms.Button btnCloseShift;
         private System.Windows.Forms.TextBox _txtQuickSearch;
         private System.Windows.Forms.Panel _searchResultsPanel;
         private System.Windows.Forms.ListBox _lstSearchResults;

@@ -42,6 +42,7 @@ namespace InventoryManagementSystem
 
             StyleTile(btnUserManagement, clsFormTheme.Icons.User, clsFormTheme.HeaderColor, "User Management");
             StyleTile(btnCustomerManagement, clsFormTheme.Icons.Customer, clsFormTheme.HeaderColor, "Customer Management");
+            StyleTile(btnCloseShift, clsFormTheme.Icons.Close, clsFormTheme.HeaderColor, "Close Shift");
             StyleTile(btnAuditLogs, clsFormTheme.Icons.AuditLog, clsFormTheme.HeaderColor, "Audit Logs");
 
             // Set initial theme button state
@@ -52,6 +53,40 @@ namespace InventoryManagementSystem
 
             // Re-apply theme on activation
             Activated += (s, e) => clsFormTheme.ApplyFormStyle(this);
+
+            // Add FormClosing event to check for open shift
+            FormClosing += frmMainMenu_FormClosing;
+        }
+
+        private void frmMainMenu_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Check if user has an open shift
+            if (clsUserManagement.CurrentUser != null && !clsUserManagement.IsAdmin)
+            {
+                try
+                {
+                    DataTable openShift = clsShift.GetOpenShiftForUser(clsUserManagement.CurrentUser.UserID);
+                    
+                    if (openShift != null && openShift.Rows.Count > 0)
+                    {
+                        var result = MessageBox.Show(
+                            "You have an open shift. Close it before exiting?",
+                            "Open Shift",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Warning);
+                        
+                        if (result == DialogResult.Yes)
+                        {
+                            e.Cancel = true;
+                            btnCloseShift_Click(sender, e);
+                        }
+                    }
+                }
+                catch
+                {
+                    // Don't block closing on error
+                }
+            }
         }
 
         private void StyleTile(Button btn, string icon, Color accentColor, string tooltipText)
@@ -214,6 +249,34 @@ namespace InventoryManagementSystem
         {
             frmCustomerManagement frm = new frmCustomerManagement();
             frm.ShowDialog();
+        }
+
+        private void btnCloseShift_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable openShift = clsShift.GetOpenShiftForUser(clsUserManagement.CurrentUser.UserID);
+                
+                if (openShift == null || openShift.Rows.Count == 0)
+                {
+                    clsFormTheme.ShowInfo(this, "You do not have an open shift.", "Shift");
+                    return;
+                }
+                
+                int shiftID = Convert.ToInt32(openShift.Rows[0]["ShiftID"]);
+                
+                using (var closeShiftForm = new frmCloseShift(shiftID))
+                {
+                    if (closeShiftForm.ShowDialog(this) == DialogResult.OK)
+                    {
+                        clsFormTheme.ShowSuccess(this, "Shift closed successfully.", "Success");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsFormTheme.ShowError(this, "Error closing shift: " + ex.Message, "Error");
+            }
         }
 
         private void btnHelp_Click(object sender, EventArgs e)
@@ -445,6 +508,7 @@ namespace InventoryManagementSystem
                 btnAuditLogs.Visible = false;
                 btnUserManagement.Visible = false;
                 btnCustomerManagement.Visible = false;
+                btnCloseShift.Visible = false;
                 btnHelp.Visible = true;
 
                 // Show only Sales section
@@ -466,6 +530,7 @@ namespace InventoryManagementSystem
                 btnCouponManager.Visible = true;
                 btnCustomerManagement.Visible = true;
                 btnAuditLogs.Visible = true;
+                btnCloseShift.Visible = true;
                 btnHelp.Visible = true;
                 
                 // Managers cannot manage users

@@ -36,6 +36,10 @@ namespace InventoryManagementSystem
             _btnRefresh.Font = new Font(clsFormTheme.MainFontName, 11F);
             clsFormTheme.ApplySecondaryButtonStyle(_btnRefresh, clsFormTheme.Icons.Refresh);
 
+            _btnShiftHistory.Text = "Shift History";
+            _btnShiftHistory.Font = new Font(clsFormTheme.MainFontName, 11F);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnShiftHistory, clsFormTheme.Icons.History);
+
             _btnExportCsv.Text = "Export CSV";
             _btnExportCsv.Font = new Font(clsFormTheme.MainFontName, 11F);
             clsFormTheme.ApplySuccessButtonStyle(_btnExportCsv, clsFormTheme.Icons.Export);

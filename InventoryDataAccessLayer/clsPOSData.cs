@@ -79,15 +79,15 @@ namespace InventoryDataAccessLayer
 
         public static bool CompleteOrder(DataTable orderItems, decimal taxRate, out int orderID, out string errorMessage)
         {
-            return CompleteOrder(orderItems, taxRate, null, null, null, 0, null, out orderID, out errorMessage);
+            return CompleteOrder(orderItems, taxRate, null, null, null, 0, null, null, out orderID, out errorMessage);
         }
 
         public static bool CompleteOrder(DataTable orderItems, decimal taxRate, int? customerID, string paymentMethod, string paymentDetails, out int orderID, out string errorMessage)
         {
-            return CompleteOrder(orderItems, taxRate, customerID, paymentMethod, paymentDetails, 0, null, out orderID, out errorMessage);
+            return CompleteOrder(orderItems, taxRate, customerID, paymentMethod, paymentDetails, 0, null, null, out orderID, out errorMessage);
         }
 
-        public static bool CompleteOrder(DataTable orderItems, decimal taxRate, int? customerID, string paymentMethod, string paymentDetails, decimal discountAmount, string couponCode, out int orderID, out string errorMessage)
+        public static bool CompleteOrder(DataTable orderItems, decimal taxRate, int? customerID, string paymentMethod, string paymentDetails, decimal discountAmount, string couponCode, int? shiftID, out int orderID, out string errorMessage)
         {
             orderID = -1;
             errorMessage = "";
@@ -137,8 +137,8 @@ namespace InventoryDataAccessLayer
                         decimal totalAmount = subtotal - discount + taxAmount;
 
                         string orderQuery = @"
-                            INSERT INTO Orders (OrderDate, Subtotal, DiscountAmount, CouponCode, TaxAmount, TotalAmount, CustomerID, PaymentMethod, PaymentDetails)
-                            VALUES (GETDATE(), @Subtotal, @DiscountAmount, @CouponCode, @TaxAmount, @TotalAmount, @CustomerID, @PaymentMethod, @PaymentDetails);
+                            INSERT INTO Orders (OrderDate, Subtotal, DiscountAmount, CouponCode, TaxAmount, TotalAmount, CustomerID, PaymentMethod, PaymentDetails, ShiftID)
+                            VALUES (GETDATE(), @Subtotal, @DiscountAmount, @CouponCode, @TaxAmount, @TotalAmount, @CustomerID, @PaymentMethod, @PaymentDetails, @ShiftID);
                             SELECT SCOPE_IDENTITY();";
 
                         using (SqlCommand orderCommand = new SqlCommand(orderQuery, connection, transaction))
@@ -151,6 +151,7 @@ namespace InventoryDataAccessLayer
                             orderCommand.Parameters.AddWithValue("@CustomerID", customerID.HasValue ? (object)customerID.Value : DBNull.Value);
                             orderCommand.Parameters.AddWithValue("@PaymentMethod", paymentMethod ?? (object)DBNull.Value);
                             orderCommand.Parameters.AddWithValue("@PaymentDetails", paymentDetails ?? (object)DBNull.Value);
+                            orderCommand.Parameters.AddWithValue("@ShiftID", shiftID.HasValue ? (object)shiftID.Value : DBNull.Value);
 
                             orderID = Convert.ToInt32(orderCommand.ExecuteScalar());
                         }
