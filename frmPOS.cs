@@ -542,9 +542,10 @@ namespace InventoryManagementSystem
             table.Columns.Add("ProductName", typeof(string));
             table.Columns.Add("Quantity", typeof(int));
             table.Columns.Add("UnitPrice", typeof(decimal));
+            table.Columns.Add("Subtotal", typeof(decimal));
 
             foreach (ReceiptItem item in _receiptItems)
-                table.Rows.Add(item.ProductID, item.ProductName, item.Quantity, item.UnitPrice);
+                table.Rows.Add(item.ProductID, item.ProductName, item.Quantity, item.UnitPrice, item.Subtotal);
 
             return table;
         }

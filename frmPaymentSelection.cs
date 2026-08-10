@@ -23,15 +23,13 @@ namespace InventoryManagementSystem
             clsFormTheme.CreateHeaderPanel(this, "Select Payment Method", clsFormTheme.Icons.Money);
 
             // Style controls
-            clsFormTheme.ApplyTextBoxStyle(_txtCardLastFour);
             clsFormTheme.ApplyPrimaryButtonStyle(_btnCash);
             clsFormTheme.ApplyPrimaryButtonStyle(_btnCard);
             clsFormTheme.ApplyPrimaryButtonStyle(_btnSplit);
             clsFormTheme.ApplySecondaryButtonStyle(_btnCancel);
 
             // Set initial values
-            _lblTotalAmount.Text = "Total Amount: " + TotalAmount.ToString("C2");
-            _txtCardLastFour.MaxLength = 4;
+            _lblTotalAmount.Text = "Total: " + TotalAmount.ToString("C2");
         }
 
         private void _btnCash_Click(object sender, EventArgs e)

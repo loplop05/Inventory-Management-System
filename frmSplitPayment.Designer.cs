@@ -35,106 +35,117 @@ namespace InventoryManagementSystem
             // _lblTotalAmount
             // 
             this._lblTotalAmount.AutoSize = true;
-            this._lblTotalAmount.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this._lblTotalAmount.Location = new System.Drawing.Point(20, 20);
+            this._lblTotalAmount.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this._lblTotalAmount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(62)))), ((int)(((byte)(80)))));
+            this._lblTotalAmount.Location = new System.Drawing.Point(30, 20);
             this._lblTotalAmount.Name = "_lblTotalAmount";
-            this._lblTotalAmount.Size = new System.Drawing.Size(120, 21);
+            this._lblTotalAmount.Size = new System.Drawing.Size(140, 29);
             this._lblTotalAmount.TabIndex = 0;
-            this._lblTotalAmount.Text = "Total Amount: $0.00";
+            this._lblTotalAmount.Text = "Total: $0.00";
             // 
             // _lblCashAmount
             // 
             this._lblCashAmount.AutoSize = true;
-            this._lblCashAmount.Location = new System.Drawing.Point(20, 60);
+            this._lblCashAmount.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this._lblCashAmount.Location = new System.Drawing.Point(30, 70);
             this._lblCashAmount.Name = "_lblCashAmount";
-            this._lblCashAmount.Size = new System.Drawing.Size(75, 13);
+            this._lblCashAmount.Size = new System.Drawing.Size(85, 20);
             this._lblCashAmount.TabIndex = 1;
-            this._lblCashAmount.Text = "Cash Amount:";
+            this._lblCashAmount.Text = "💵 Cash:";
             // 
             // _txtCashAmount
             // 
-            this._txtCashAmount.Location = new System.Drawing.Point(20, 80);
+            this._txtCashAmount.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this._txtCashAmount.Location = new System.Drawing.Point(30, 95);
             this._txtCashAmount.Name = "_txtCashAmount";
-            this._txtCashAmount.Size = new System.Drawing.Size(150, 20);
+            this._txtCashAmount.Size = new System.Drawing.Size(150, 25);
             this._txtCashAmount.TabIndex = 2;
             this._txtCashAmount.Text = "$0.00";
             // 
             // _lblCardAmount
             // 
             this._lblCardAmount.AutoSize = true;
-            this._lblCardAmount.Location = new System.Drawing.Point(200, 60);
+            this._lblCardAmount.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this._lblCardAmount.Location = new System.Drawing.Point(220, 70);
             this._lblCardAmount.Name = "_lblCardAmount";
-            this._lblCardAmount.Size = new System.Drawing.Size(72, 13);
+            this._lblCardAmount.Size = new System.Drawing.Size(82, 20);
             this._lblCardAmount.TabIndex = 3;
-            this._lblCardAmount.Text = "Card Amount:";
+            this._lblCardAmount.Text = "💳 Card:";
             // 
             // _txtCardAmount
             // 
-            this._txtCardAmount.Location = new System.Drawing.Point(200, 80);
+            this._txtCardAmount.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this._txtCardAmount.Location = new System.Drawing.Point(220, 95);
             this._txtCardAmount.Name = "_txtCardAmount";
-            this._txtCardAmount.Size = new System.Drawing.Size(150, 20);
+            this._txtCardAmount.Size = new System.Drawing.Size(150, 25);
             this._txtCardAmount.TabIndex = 4;
             this._txtCardAmount.Text = "$0.00";
             // 
             // _lblCardType
             // 
             this._lblCardType.AutoSize = true;
-            this._lblCardType.Location = new System.Drawing.Point(200, 110);
+            this._lblCardType.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this._lblCardType.Location = new System.Drawing.Point(220, 130);
             this._lblCardType.Name = "_lblCardType";
-            this._lblCardType.Size = new System.Drawing.Size(56, 13);
+            this._lblCardType.Size = new System.Drawing.Size(72, 20);
             this._lblCardType.TabIndex = 5;
             this._lblCardType.Text = "Card Type:";
             // 
             // _cmbCardType
             // 
             this._cmbCardType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this._cmbCardType.Location = new System.Drawing.Point(200, 130);
+            this._cmbCardType.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this._cmbCardType.Location = new System.Drawing.Point(220, 155);
             this._cmbCardType.Name = "_cmbCardType";
-            this._cmbCardType.Size = new System.Drawing.Size(150, 21);
+            this._cmbCardType.Size = new System.Drawing.Size(150, 25);
             this._cmbCardType.TabIndex = 6;
             // 
             // _lblCardLastFour
             // 
             this._lblCardLastFour.AutoSize = true;
-            this._lblCardLastFour.Location = new System.Drawing.Point(200, 160);
+            this._lblCardLastFour.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this._lblCardLastFour.Location = new System.Drawing.Point(220, 190);
             this._lblCardLastFour.Name = "_lblCardLastFour";
-            this._lblCardLastFour.Size = new System.Drawing.Size(82, 13);
+            this._lblCardLastFour.Size = new System.Drawing.Size(96, 20);
             this._lblCardLastFour.TabIndex = 7;
             this._lblCardLastFour.Text = "Last 4 Digits:";
             // 
             // _txtCardLastFour
             // 
-            this._txtCardLastFour.Location = new System.Drawing.Point(200, 180);
+            this._txtCardLastFour.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this._txtCardLastFour.Location = new System.Drawing.Point(220, 215);
             this._txtCardLastFour.MaxLength = 4;
             this._txtCardLastFour.Name = "_txtCardLastFour";
-            this._txtCardLastFour.Size = new System.Drawing.Size(80, 20);
+            this._txtCardLastFour.Size = new System.Drawing.Size(80, 25);
             this._txtCardLastFour.TabIndex = 8;
             // 
             // _lblSplitTotal
             // 
             this._lblSplitTotal.AutoSize = true;
-            this._lblSplitTotal.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this._lblSplitTotal.Location = new System.Drawing.Point(20, 220);
+            this._lblSplitTotal.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this._lblSplitTotal.Location = new System.Drawing.Point(30, 260);
             this._lblSplitTotal.Name = "_lblSplitTotal";
-            this._lblSplitTotal.Size = new System.Drawing.Size(110, 21);
+            this._lblSplitTotal.Size = new System.Drawing.Size(110, 24);
             this._lblSplitTotal.TabIndex = 9;
-            this._lblSplitTotal.Text = "Split Total: $0.00";
+            this._lblSplitTotal.Text = "Split: $0.00";
             // 
             // _btnConfirm
             // 
-            this._btnConfirm.Location = new System.Drawing.Point(20, 260);
+            this._btnConfirm.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this._btnConfirm.Location = new System.Drawing.Point(30, 300);
             this._btnConfirm.Name = "_btnConfirm";
-            this._btnConfirm.Size = new System.Drawing.Size(100, 30);
+            this._btnConfirm.Size = new System.Drawing.Size(100, 40);
             this._btnConfirm.TabIndex = 10;
-            this._btnConfirm.Text = "Confirm";
+            this._btnConfirm.Text = "✓ Confirm";
             this._btnConfirm.UseVisualStyleBackColor = true;
             this._btnConfirm.Click += new System.EventHandler(this._btnConfirm_Click);
             // 
             // _btnCancel
             // 
-            this._btnCancel.Location = new System.Drawing.Point(130, 260);
+            this._btnCancel.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this._btnCancel.Location = new System.Drawing.Point(140, 300);
             this._btnCancel.Name = "_btnCancel";
-            this._btnCancel.Size = new System.Drawing.Size(100, 30);
+            this._btnCancel.Size = new System.Drawing.Size(100, 40);
             this._btnCancel.TabIndex = 11;
             this._btnCancel.Text = "Cancel";
             this._btnCancel.UseVisualStyleBackColor = true;
@@ -142,9 +153,10 @@ namespace InventoryManagementSystem
             // 
             // _btnFullCash
             // 
-            this._btnFullCash.Location = new System.Drawing.Point(20, 300);
+            this._btnFullCash.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this._btnFullCash.Location = new System.Drawing.Point(30, 350);
             this._btnFullCash.Name = "_btnFullCash";
-            this._btnFullCash.Size = new System.Drawing.Size(80, 25);
+            this._btnFullCash.Size = new System.Drawing.Size(90, 30);
             this._btnFullCash.TabIndex = 12;
             this._btnFullCash.Text = "Full Cash";
             this._btnFullCash.UseVisualStyleBackColor = true;
@@ -152,9 +164,10 @@ namespace InventoryManagementSystem
             // 
             // _btnFullCard
             // 
-            this._btnFullCard.Location = new System.Drawing.Point(110, 300);
+            this._btnFullCard.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this._btnFullCard.Location = new System.Drawing.Point(130, 350);
             this._btnFullCard.Name = "_btnFullCard";
-            this._btnFullCard.Size = new System.Drawing.Size(80, 25);
+            this._btnFullCard.Size = new System.Drawing.Size(90, 30);
             this._btnFullCard.TabIndex = 13;
             this._btnFullCard.Text = "Full Card";
             this._btnFullCard.UseVisualStyleBackColor = true;
@@ -162,11 +175,12 @@ namespace InventoryManagementSystem
             // 
             // _btn5050
             // 
-            this._btn5050.Location = new System.Drawing.Point(200, 300);
+            this._btn5050.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this._btn5050.Location = new System.Drawing.Point(230, 350);
             this._btn5050.Name = "_btn5050";
-            this._btn5050.Size = new System.Drawing.Size(80, 25);
+            this._btn5050.Size = new System.Drawing.Size(90, 30);
             this._btn5050.TabIndex = 14;
-            this._btn5050.Text = "50/50";
+            this._btn5050.Text = "50/50 Split";
             this._btn5050.UseVisualStyleBackColor = true;
             this._btn5050.Click += new System.EventHandler(this._btn5050_Click);
             // 
@@ -174,7 +188,7 @@ namespace InventoryManagementSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(380, 340);
+            this.ClientSize = new System.Drawing.Size(400, 400);
             this.Controls.Add(this._btn5050);
             this.Controls.Add(this._btnFullCard);
             this.Controls.Add(this._btnFullCash);
