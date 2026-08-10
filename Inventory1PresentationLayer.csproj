@@ -322,6 +322,18 @@
     <Compile Include="frmInputBox.Designer.cs">
       <DependentUpon>frmInputBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmPaymentSelection.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmPaymentSelection.Designer.cs">
+      <DependentUpon>frmPaymentSelection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmSplitPayment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSplitPayment.Designer.cs">
+      <DependentUpon>frmSplitPayment.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -460,6 +472,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmInputBox.resx">
       <DependentUpon>frmInputBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmPaymentSelection.resx">
+      <DependentUpon>frmPaymentSelection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSplitPayment.resx">
+      <DependentUpon>frmSplitPayment.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmThemedMessageBox.resx">
       <DependentUpon>frmThemedMessageBox.cs</DependentUpon>

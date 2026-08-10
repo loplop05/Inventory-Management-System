@@ -616,7 +616,7 @@ namespace InventoryManagementSystem
                 int orderID;
                 string errorMessage;
 
-                bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, _selectedCustomerID, paymentMethod, paymentDetails, totalDiscount, _couponCode, out orderID, out errorMessage);
+                bool saved = clsPOS.CompleteOrder(BuildOrderItemsTable(), TaxRate, _selectedCustomerID, paymentMethod, paymentDetails, totalDiscount, _appliedCouponCode, out orderID, out errorMessage);
 
                 if (!saved)
                 {
@@ -631,9 +631,9 @@ namespace InventoryManagementSystem
                 _orderNotes = "";
                 _manualDiscountAmount = 0;
                 _manualDiscountType = "percentage";
-                _couponCode = "";
+                _appliedCouponCode = "";
                 _couponDiscountAmount = 0;
-                UpdateTotals();
+                RefreshReceiptTotals();
                 LoadProducts();
 
                 // Ask if user wants to print receipt

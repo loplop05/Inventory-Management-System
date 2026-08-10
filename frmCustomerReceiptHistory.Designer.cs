@@ -167,6 +167,7 @@ namespace InventoryManagementSystem
             this.panelCustomerInfo.Padding = new System.Windows.Forms.Padding(20, 0, 20, 5);
             this.panelCustomerInfo.Size = new System.Drawing.Size(900, 10);
             this.panelCustomerInfo.TabIndex = 8;
+            this.panelCustomerInfo.Paint += new System.Windows.Forms.PaintEventHandler(this.panelCustomerInfo_Paint);
             // 
             // frmCustomerReceiptHistory
             // 
