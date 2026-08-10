@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using InventoryBusinessLayer;
+using InventoryDataAccessLayer;
 
 namespace InventoryManagementSystem
 {
@@ -313,8 +316,8 @@ namespace InventoryManagementSystem
         {
             await RefreshGridDataAsync();
             
-            // Action-level permission check: Delete is Admin-only
-            if (!clsUserManagement.IsAdmin)
+            // Action-level permission check: Delete is Admin-only or with ManageProducts permission
+            if (!clsUserManagement.IsAdmin && !clsUserManagement.HasPermission(clsPermissions.ManageProducts))
             {
                 _btnDeleteProduct.Visible = false;
             }

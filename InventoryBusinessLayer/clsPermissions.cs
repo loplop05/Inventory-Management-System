@@ -50,13 +50,6 @@ namespace InventoryBusinessLayer
             }
         }
 
-        public static bool HasPermission(string permission)
-        {
-            // Note: This overload requires the current user to be set via a session/context mechanism
-            // For now, this method should not be used - use HasPermission(int userID, string permission) instead
-            return false;
-        }
-
         public static List<string> GetUserPermissions(int userID)
         {
             try

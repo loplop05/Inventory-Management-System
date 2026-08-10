@@ -236,8 +236,8 @@ namespace InventoryManagementSystem
         {
             await RefreshGridDataAsync();
             
-            // Action-level permission check: Delete is Admin-only
-            if (!clsUserManagement.IsAdmin)
+            // Action-level permission check: Delete is Admin-only or with ManageCustomers permission
+            if (!clsUserManagement.IsAdmin && !clsUserManagement.HasPermission(clsPermissions.ManageCustomers))
             {
                 btnDeleteCustomer.Visible = false;
             }

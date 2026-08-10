@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using InventoryDataAccessLayer;
+using InventoryBusinessLayer;
 
 namespace InventoryManagementSystem
 {
@@ -85,6 +86,17 @@ namespace InventoryManagementSystem
         public static void Logout()
         {
             _currentUser = null;
+        }
+
+        /// <summary>
+        /// Checks if the current user has a specific permission.
+        /// Admins always have full access.
+        /// </summary>
+        public static bool HasPermission(string permission)
+        {
+            if (_currentUser == null) return false;
+            if (_currentUser.Role == UserRole.Admin) return true; // Admin always full access
+            return clsPermissions.HasPermission(_currentUser.UserID, permission);
         }
 
         /// <summary>
