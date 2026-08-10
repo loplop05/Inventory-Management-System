@@ -78,6 +78,12 @@ namespace InventoryManagementSystem
                     _lblNextTier.Text = "Next Tier: " + nextTier;
                     _lblAmountToNextTier.Text = amountToNextTier > 0 ? "Amount to " + nextTier + ": $" + amountToNextTier.ToString("F2") : "You are at the highest tier!";
                     _lblDiscountAvailable.Text = "Available Discount: $" + discountAvailable.ToString("F2");
+
+                    // Add progress toward next tier
+                    UpdateTierProgress(tier, points);
+                    
+                    // Add repeat-buyer info
+                    UpdateRepeatBuyerInfo(loyaltyInfo);
                 }
                 else
                 {
@@ -87,6 +93,87 @@ namespace InventoryManagementSystem
             catch (Exception ex)
             {
                 clsFormTheme.ShowError(this, "Error loading customer data: " + ex.Message, "Error");
+            }
+        }
+
+        private void UpdateTierProgress(string currentTier, int points)
+        {
+            int currentThreshold = 0;
+            int nextThreshold = 0;
+            
+            switch (currentTier)
+            {
+                case "Bronze":
+                    currentThreshold = 0;
+                    nextThreshold = 500;
+                    break;
+                case "Silver":
+                    currentThreshold = 500;
+                    nextThreshold = 2000;
+                    break;
+                case "Gold":
+                    currentThreshold = 2000;
+                    nextThreshold = 2000; // Max tier
+                    break;
+            }
+            
+            if (currentTier == "Gold")
+            {
+                _lblTierProgress.Text = "Progress: Max Tier Reached";
+                _lblTierProgress.ForeColor = clsFormTheme.SuccessColor;
+            }
+            else
+            {
+                int progress = points - currentThreshold;
+                int needed = nextThreshold - currentThreshold;
+                double percentage = (double)progress / needed * 100;
+                _lblTierProgress.Text = $"Progress: {progress}/{needed} points ({percentage:F0}%)";
+                _lblTierProgress.ForeColor = Color.FromArgb(44, 62, 80);
+            }
+        }
+
+        private void UpdateRepeatBuyerInfo(DataTable loyaltyInfo)
+        {
+            try
+            {
+                // Get order count from customer orders
+                DataTable orders = clsCustomer.GetCustomerOrders(_customerID);
+                int orderCount = orders != null ? orders.Rows.Count : 0;
+                
+                // Calculate days since last purchase
+                DateTime? lastPurchase = null;
+                if (loyaltyInfo.Rows.Count > 0 && loyaltyInfo.Rows[0]["LastPurchaseDate"] != DBNull.Value)
+                {
+                    lastPurchase = Convert.ToDateTime(loyaltyInfo.Rows[0]["LastPurchaseDate"]);
+                }
+                
+                int daysSinceLastPurchase = 0;
+                if (lastPurchase.HasValue)
+                {
+                    daysSinceLastPurchase = (DateTime.Now - lastPurchase.Value).Days;
+                }
+                
+                // Display repeat-buyer info
+                _lblOrderCount.Text = "Total Orders: " + orderCount.ToString();
+                _lblDaysSinceLastPurchase.Text = "Days Since Last Purchase: " + (daysSinceLastPurchase > 0 ? daysSinceLastPurchase.ToString() : "Never");
+                
+                // Flag repeat buyers (3+ orders)
+                if (orderCount >= 3)
+                {
+                    _lblRepeatBuyerBadge.Text = "★ Repeat Buyer";
+                    _lblRepeatBuyerBadge.ForeColor = clsFormTheme.SuccessColor;
+                    _lblRepeatBuyerBadge.Visible = true;
+                }
+                else
+                {
+                    _lblRepeatBuyerBadge.Visible = false;
+                }
+            }
+            catch
+            {
+                _lblOrderCount.Text = "Total Orders: 0";
+                _lblDaysSinceLastPurchase.Text = "Days Since Last Purchase: N/A";
+                _lblRepeatBuyerBadge.Visible = false;
             }
         }
 

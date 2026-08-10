@@ -623,6 +623,29 @@ namespace InventoryManagementSystem
                     return;
                 }
 
+                // Award loyalty points if customer is attached
+                if (_selectedCustomerID.HasValue && _selectedCustomerID.Value > 0)
+                {
+                    try
+                    {
+                        string loyaltyError;
+                        bool pointsEarned = clsLoyaltyProgram.EarnPointsForOrder(_selectedCustomerID.Value, orderID, total, out loyaltyError);
+                        
+                        if (!pointsEarned)
+                        {
+                            // Log error but don't block - loyalty failure should never block checkout
+                            clsAuditLog.LogError("LoyaltyPointsEarnFailed", $"CustomerID={_selectedCustomerID}, OrderID={orderID}, Error={loyaltyError}");
+                            // Show non-blocking notification
+                            clsFormTheme.ShowInfo(this, "Order completed but loyalty points could not be awarded.", "Loyalty Points");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log any unexpected errors
+                        clsAuditLog.LogError("LoyaltyPointsException", $"CustomerID={_selectedCustomerID}, OrderID={orderID}, Exception={ex.Message}");
+                    }
+                }
+
                 // Clear receipt after successful order
                 _receiptItems.Clear();
                 _selectedCustomerID = null;

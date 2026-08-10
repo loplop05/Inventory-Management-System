@@ -63,6 +63,9 @@ namespace InventoryManagementSystem
             this._customerInfoPanel.Controls.Add(this._lblPoints);
             this._customerInfoPanel.Controls.Add(this._lblTotalSpent);
             this._customerInfoPanel.Controls.Add(this._lblLastPurchase);
+            this._customerInfoPanel.Controls.Add(this._lblOrderCount);
+            this._customerInfoPanel.Controls.Add(this._lblDaysSinceLastPurchase);
+            this._customerInfoPanel.Controls.Add(this._lblRepeatBuyerBadge);
             this._customerInfoPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._customerInfoPanel.Location = new System.Drawing.Point(3, 3);
             this._customerInfoPanel.Name = "_customerInfoPanel";
@@ -125,12 +128,41 @@ namespace InventoryManagementSystem
             this._lblLastPurchase.Size = new System.Drawing.Size(0, 20);
             this._lblLastPurchase.TabIndex = 5;
             // 
+            // _lblOrderCount
+            // 
+            this._lblOrderCount.AutoSize = true;
+            this._lblOrderCount.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this._lblOrderCount.Location = new System.Drawing.Point(10, 95);
+            this._lblOrderCount.Name = "_lblOrderCount";
+            this._lblOrderCount.Size = new System.Drawing.Size(0, 20);
+            this._lblOrderCount.TabIndex = 6;
+            // 
+            // _lblDaysSinceLastPurchase
+            // 
+            this._lblDaysSinceLastPurchase.AutoSize = true;
+            this._lblDaysSinceLastPurchase.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this._lblDaysSinceLastPurchase.Location = new System.Drawing.Point(200, 95);
+            this._lblDaysSinceLastPurchase.Name = "_lblDaysSinceLastPurchase";
+            this._lblDaysSinceLastPurchase.Size = new System.Drawing.Size(0, 20);
+            this._lblDaysSinceLastPurchase.TabIndex = 7;
+            // 
+            // _lblRepeatBuyerBadge
+            // 
+            this._lblRepeatBuyerBadge.AutoSize = true;
+            this._lblRepeatBuyerBadge.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this._lblRepeatBuyerBadge.Location = new System.Drawing.Point(400, 95);
+            this._lblRepeatBuyerBadge.Name = "_lblRepeatBuyerBadge";
+            this._lblRepeatBuyerBadge.Size = new System.Drawing.Size(0, 20);
+            this._lblRepeatBuyerBadge.TabIndex = 8;
+            this._lblRepeatBuyerBadge.Visible = false;
+            // 
             // _loyaltyPanel
             // 
             this._loyaltyPanel.Controls.Add(this._lblLoyaltyTitle);
             this._loyaltyPanel.Controls.Add(this._lblNextTier);
             this._loyaltyPanel.Controls.Add(this._lblAmountToNextTier);
             this._loyaltyPanel.Controls.Add(this._lblDiscountAvailable);
+            this._loyaltyPanel.Controls.Add(this._lblTierProgress);
             this._loyaltyPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._loyaltyPanel.Location = new System.Drawing.Point(3, 103);
             this._loyaltyPanel.Name = "_loyaltyPanel";
@@ -174,6 +206,15 @@ namespace InventoryManagementSystem
             this._lblDiscountAvailable.Name = "_lblDiscountAvailable";
             this._lblDiscountAvailable.Size = new System.Drawing.Size(0, 19);
             this._lblDiscountAvailable.TabIndex = 3;
+            // 
+            // _lblTierProgress
+            // 
+            this._lblTierProgress.AutoSize = true;
+            this._lblTierProgress.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this._lblTierProgress.Location = new System.Drawing.Point(10, 110);
+            this._lblTierProgress.Name = "_lblTierProgress";
+            this._lblTierProgress.Size = new System.Drawing.Size(0, 19);
+            this._lblTierProgress.TabIndex = 4;
             // 
             // _ordersPanel
             // 
@@ -268,11 +309,15 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Label _lblPoints;
         private System.Windows.Forms.Label _lblTotalSpent;
         private System.Windows.Forms.Label _lblLastPurchase;
+        private System.Windows.Forms.Label _lblOrderCount;
+        private System.Windows.Forms.Label _lblDaysSinceLastPurchase;
+        private System.Windows.Forms.Label _lblRepeatBuyerBadge;
         private System.Windows.Forms.Panel _loyaltyPanel;
         private System.Windows.Forms.Label _lblLoyaltyTitle;
         private System.Windows.Forms.Label _lblNextTier;
         private System.Windows.Forms.Label _lblAmountToNextTier;
         private System.Windows.Forms.Label _lblDiscountAvailable;
+        private System.Windows.Forms.Label _lblTierProgress;
         private System.Windows.Forms.Panel _ordersPanel;
         private System.Windows.Forms.Label _lblOrdersTitle;
         private System.Windows.Forms.DataGridView gridCustomerOrders;

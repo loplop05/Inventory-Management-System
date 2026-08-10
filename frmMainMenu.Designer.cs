@@ -38,6 +38,7 @@ namespace InventoryManagementSystem
             this.btnAuditLogs = new System.Windows.Forms.Button();
             this.btnUserManagement = new System.Windows.Forms.Button();
             this.btnCustomerManagement = new System.Windows.Forms.Button();
+            this.btnCloseShift = new System.Windows.Forms.Button();
             this._sectionInsights = new System.Windows.Forms.Panel();
             this._lblInsights = new System.Windows.Forms.Label();
             this._flowInsights = new System.Windows.Forms.FlowLayoutPanel();
