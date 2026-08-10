@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using InventoryBusinessLayer;
 
 namespace InventoryManagementSystem
 {
@@ -308,6 +309,15 @@ namespace InventoryManagementSystem
 
                 // Show all sections
                 SetSectionVisibility(true, true, true, true);
+            }
+
+            // Permission-based visibility upgrades for Manager/Cashier
+            if (!clsUserManagement.IsAdmin)
+            {
+                if (clsUserManagement.HasPermission(clsPermissions.ManageUsers))
+                    btnUserManagement.Visible = true;
+                if (clsUserManagement.HasPermission(clsPermissions.ViewAuditLogs))
+                    btnAuditLogs.Visible = true;
             }
         }
 
