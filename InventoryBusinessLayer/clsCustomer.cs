@@ -105,6 +105,26 @@ namespace InventoryBusinessLayer
             return clsCustomerData.UpdateCustomerPoints(customerID, loyaltyPoints, out errorMessage);
         }
 
+        public static bool UpdateCustomerPoints(int customerID, int loyaltyPoints, string source, int? orderID, out string errorMessage)
+        {
+            return clsCustomerData.UpdateCustomerPoints(customerID, loyaltyPoints, source, orderID, out errorMessage);
+        }
+
+        public static bool UpdateCustomerPoints(int customerID, int loyaltyPoints, string reason, string source, int? orderID, out string errorMessage)
+        {
+            return clsCustomerData.UpdateCustomerPoints(customerID, loyaltyPoints, reason, source, orderID, out errorMessage);
+        }
+
+        public static string GetLoyaltyTier(int customerID)
+        {
+            return clsCustomerData.GetLoyaltyTier(customerID);
+        }
+
+        public static bool UpdateLoyaltyTier(int customerID, string tier)
+        {
+            return clsCustomerData.UpdateLoyaltyTier(customerID, tier);
+        }
+
         public static bool RedeemLoyaltyPoints(int customerID, int pointsToRedeem, out string errorMessage)
         {
             return clsCustomerData.RedeemLoyaltyPoints(customerID, pointsToRedeem, out errorMessage);

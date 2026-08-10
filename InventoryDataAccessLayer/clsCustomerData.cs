@@ -500,6 +500,120 @@ namespace InventoryDataAccessLayer
             }
         }
 
+        public static bool UpdateCustomerPoints(int customerID, int loyaltyPoints, string source, int? orderID, out string errorMessage)
+        {
+            return UpdateCustomerPoints(customerID, loyaltyPoints, null, source, orderID, out errorMessage);
+        }
+
+        public static bool UpdateCustomerPoints(int customerID, int loyaltyPoints, string reason, string source, int? orderID, out string errorMessage)
+        {
+            errorMessage = "";
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    EnsureLoyaltyColumns(connection);
+
+                    // Get current points
+                    int currentPoints = GetLoyaltyPoints(customerID);
+                    int changeAmount = loyaltyPoints - currentPoints;
+
+                    // Update customer points
+                    string updateQuery = @"
+                        UPDATE Customers
+                        SET LoyaltyPoints = @LoyaltyPoints
+                        WHERE CustomerID = @CustomerID";
+
+                    using (SqlCommand updateCommand = new SqlCommand(updateQuery, connection))
+                    {
+                        updateCommand.Parameters.AddWithValue("@CustomerID", customerID);
+                        updateCommand.Parameters.AddWithValue("@LoyaltyPoints", loyaltyPoints);
+                        updateCommand.ExecuteNonQuery();
+                    }
+
+                    // Insert into history
+                    if (changeAmount != 0)
+                    {
+                        string historyQuery = @"
+                            INSERT INTO LoyaltyPointsHistory (CustomerID, ChangeAmount, Reason, Source, OrderID, CreatedByUserID)
+                            VALUES (@CustomerID, @ChangeAmount, @Reason, @Source, @OrderID, @CreatedByUserID)";
+
+                        using (SqlCommand historyCommand = new SqlCommand(historyQuery, connection))
+                        {
+                            historyCommand.Parameters.AddWithValue("@CustomerID", customerID);
+                            historyCommand.Parameters.AddWithValue("@ChangeAmount", changeAmount);
+                            historyCommand.Parameters.AddWithValue("@Reason", (object)reason ?? DBNull.Value);
+                            historyCommand.Parameters.AddWithValue("@Source", source);
+                            historyCommand.Parameters.AddWithValue("@OrderID", (object)orderID ?? DBNull.Value);
+                            historyCommand.Parameters.AddWithValue("@CreatedByUserID", (object)clsUserManagement.CurrentUser?.UserID ?? DBNull.Value);
+                            historyCommand.ExecuteNonQuery();
+                        }
+                    }
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    errorMessage = ex.Message;
+                    clsErrorLog.LogException("clsCustomerData.UpdateCustomerPoints (with history)", ex);
+                    return false;
+                }
+            }
+        }
+
+        public static string GetLoyaltyTier(int customerID)
+        {
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    EnsureLoyaltyColumns(connection);
+
+                    string query = "SELECT LoyaltyTier FROM Customers WHERE CustomerID = @CustomerID";
+                    
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@CustomerID", customerID);
+                        object result = command.ExecuteScalar();
+                        return result?.ToString() ?? "Bronze";
+                    }
+                }
+                catch
+                {
+                    return "Bronze";
+                }
+            }
+        }
+
+        public static bool UpdateLoyaltyTier(int customerID, string tier)
+        {
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    EnsureLoyaltyColumns(connection);
+
+                    string query = "UPDATE Customers SET LoyaltyTier = @Tier WHERE CustomerID = @CustomerID";
+                    
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@CustomerID", customerID);
+                        command.Parameters.AddWithValue("@Tier", tier);
+                        command.ExecuteNonQuery();
+                        return true;
+                    }
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+        }
+
         public static bool RedeemLoyaltyPoints(int customerID, int pointsToRedeem, out string errorMessage)
         {
             errorMessage = "";

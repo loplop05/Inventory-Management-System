@@ -74,7 +74,7 @@ namespace InventoryManagementSystem
             int currentPoints = clsCustomer.GetLoyaltyPoints(_customerID);
             int newPoints = currentPoints + pointsToAdd;
             
-            if (clsCustomer.UpdateCustomerPoints(_customerID, newPoints, out errorMessage))
+            if (clsCustomer.UpdateCustomerPoints(_customerID, newPoints, reason, "ManualAdjust", null, out errorMessage))
             {
                 clsFormTheme.ShowSuccess(this, $"Added {pointsToAdd} points successfully.", "Success");
                 DialogResult = DialogResult.OK;
