@@ -22,23 +22,12 @@ namespace InventoryBusinessLayer
                 return true; // Not an error, just no points earned
             }
 
-            int pointsEarned = (int)Math.Floor(orderTotal * PointsPerDollar);
-            
-            if (pointsEarned <= 0)
-                return true;
-
-            int currentPoints = clsCustomer.GetLoyaltyPoints(customerID);
-            int newPoints = currentPoints + pointsEarned;
-            
-            bool updated = clsCustomer.UpdateCustomerPoints(customerID, newPoints, out errorMessage);
+            // Update customer loyalty with purchase amount - this will add points and total spent
+            bool updated = clsCustomer.UpdateCustomerLoyalty(customerID, orderTotal, out errorMessage);
             
             if (!updated)
                 return false;
-
-            // Update tier based on new points
-            string newTier = CalculateTier(newPoints);
-            string tierError;
-            clsCustomer.UpdateCustomerLoyalty(customerID, newPoints, 0, newTier, out tierError);
+            
             return true;
         }
 

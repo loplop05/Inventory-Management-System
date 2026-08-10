@@ -44,21 +44,22 @@ namespace InventoryManagementSystem
             this._mainPanel.Location = new System.Drawing.Point(0, 0);
             this._mainPanel.Name = "_mainPanel";
             this._mainPanel.RowCount = 3;
-            this._mainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this._mainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
             this._mainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._mainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this._mainPanel.Size = new System.Drawing.Size(450, 400);
+            this._mainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this._mainPanel.Size = new System.Drawing.Size(500, 450);
             this._mainPanel.TabIndex = 0;
             // 
             // _lblTitle
             // 
             this._lblTitle.AutoSize = true;
-            this._lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this._lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
+            this._lblTitle.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
+            this._lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(58)))), ((int)(((byte)(138)))));
             this._lblTitle.Location = new System.Drawing.Point(3, 0);
             this._lblTitle.Name = "_lblTitle";
-            this._lblTitle.Size = new System.Drawing.Size(0, 31);
+            this._lblTitle.Size = new System.Drawing.Size(0, 37);
             this._lblTitle.TabIndex = 0;
+            this._lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // _infoPanel
             // 
@@ -90,10 +91,11 @@ namespace InventoryManagementSystem
             // _lblStartingCash
             // 
             this._lblStartingCash.AutoSize = true;
-            this._lblStartingCash.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this._lblStartingCash.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this._lblStartingCash.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
             this._lblStartingCash.Location = new System.Drawing.Point(3, 3);
             this._lblStartingCash.Name = "_lblStartingCash";
-            this._lblStartingCash.Size = new System.Drawing.Size(0, 20);
+            this._lblStartingCash.Size = new System.Drawing.Size(0, 21);
             this._lblStartingCash.TabIndex = 0;
             // 
             // _lblStartingCashValue

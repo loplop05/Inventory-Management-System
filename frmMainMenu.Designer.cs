@@ -30,6 +30,7 @@ namespace InventoryManagementSystem
         {
             this._contentPanel = new System.Windows.Forms.Panel();
             this._footerPanel = new System.Windows.Forms.Panel();
+            this.btnSignOut = new System.Windows.Forms.Button();
             this.btnThemeToggle = new System.Windows.Forms.Button();
             this.btnHelp = new System.Windows.Forms.Button();
             this._sectionAdministration = new System.Windows.Forms.Panel();
@@ -93,6 +94,7 @@ namespace InventoryManagementSystem
             // 
             // _footerPanel
             // 
+            this._footerPanel.Controls.Add(this.btnSignOut);
             this._footerPanel.Controls.Add(this.btnThemeToggle);
             this._footerPanel.Controls.Add(this.btnHelp);
             this._footerPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -125,19 +127,37 @@ namespace InventoryManagementSystem
             // 
             this.btnHelp.AutoSize = true;
             this.btnHelp.BackColor = System.Drawing.Color.Transparent;
-            this.btnHelp.FlatAppearance.BorderSize = 0;
             this.btnHelp.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
             this.btnHelp.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
             this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHelp.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnHelp.ForeColor = clsFormTheme.TextSecondary;
-            this.btnHelp.Location = new System.Drawing.Point(0, 10);
+            this.btnHelp.Location = new System.Drawing.Point(1150, 10);
             this.btnHelp.Name = "btnHelp";
             this.btnHelp.Size = new System.Drawing.Size(30, 20);
-            this.btnHelp.TabIndex = 0;
-            this.btnHelp.Text = "? Help";
+            this.btnHelp.TabIndex = 2;
+            this.btnHelp.Text = "❓";
             this.btnHelp.UseVisualStyleBackColor = false;
             this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            // 
+            // btnSignOut
+            // 
+            this.btnSignOut.Anchor = System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right;
+            this.btnSignOut.AutoSize = true;
+            this.btnSignOut.BackColor = System.Drawing.Color.Transparent;
+            this.btnSignOut.FlatAppearance.BorderSize = 0;
+            this.btnSignOut.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.btnSignOut.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.btnSignOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSignOut.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.btnSignOut.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
+            this.btnSignOut.Location = new System.Drawing.Point(1080, 10);
+            this.btnSignOut.Name = "btnSignOut";
+            this.btnSignOut.Size = new System.Drawing.Size(60, 20);
+            this.btnSignOut.TabIndex = 0;
+            this.btnSignOut.Text = "Sign Out";
+            this.btnSignOut.UseVisualStyleBackColor = false;
+            this.btnSignOut.Click += new System.EventHandler(this.btnSignOut_Click);
             // 
             // _sectionAdministration
             // 
@@ -595,6 +615,7 @@ namespace InventoryManagementSystem
 
         private System.Windows.Forms.Panel _contentPanel;
         private System.Windows.Forms.Panel _footerPanel;
+        private System.Windows.Forms.Button btnSignOut;
         private System.Windows.Forms.Button btnThemeToggle;
         private System.Windows.Forms.Button btnHelp;
         private System.Windows.Forms.Panel _sectionAdministration;

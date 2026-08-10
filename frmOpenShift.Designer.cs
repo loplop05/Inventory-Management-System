@@ -40,59 +40,63 @@ namespace InventoryManagementSystem
             this._mainPanel.Location = new System.Drawing.Point(0, 0);
             this._mainPanel.Name = "_mainPanel";
             this._mainPanel.RowCount = 6;
-            this._mainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this._mainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this._mainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this._mainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this._mainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
+            this._mainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this._mainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
+            this._mainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this._mainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this._mainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._mainPanel.Size = new System.Drawing.Size(400, 300);
+            this._mainPanel.Size = new System.Drawing.Size(450, 380);
             this._mainPanel.TabIndex = 0;
             // 
             // _lblTitle
             // 
             this._lblTitle.AutoSize = true;
-            this._lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this._lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
+            this._lblTitle.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
+            this._lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(58)))), ((int)(((byte)(138)))));
             this._lblTitle.Location = new System.Drawing.Point(3, 0);
             this._lblTitle.Name = "_lblTitle";
-            this._lblTitle.Size = new System.Drawing.Size(0, 31);
+            this._lblTitle.Size = new System.Drawing.Size(0, 37);
             this._lblTitle.TabIndex = 0;
+            this._lblTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // _lblCashierName
             // 
             this._lblCashierName.AutoSize = true;
-            this._lblCashierName.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this._lblCashierName.Location = new System.Drawing.Point(3, 50);
+            this._lblCashierName.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this._lblCashierName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(114)))), ((int)(((byte)(128)))));
+            this._lblCashierName.Location = new System.Drawing.Point(3, 60);
             this._lblCashierName.Name = "_lblCashierName";
-            this._lblCashierName.Size = new System.Drawing.Size(0, 20);
+            this._lblCashierName.Size = new System.Drawing.Size(0, 21);
             this._lblCashierName.TabIndex = 1;
             // 
             // _lblDate
             // 
             this._lblDate.AutoSize = true;
-            this._lblDate.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this._lblDate.Location = new System.Drawing.Point(3, 80);
+            this._lblDate.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this._lblDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(107)))), ((int)(((byte)(114)))), ((int)(((byte)(128)))));
+            this._lblDate.Location = new System.Drawing.Point(3, 95);
             this._lblDate.Name = "_lblDate";
-            this._lblDate.Size = new System.Drawing.Size(0, 20);
+            this._lblDate.Size = new System.Drawing.Size(0, 21);
             this._lblDate.TabIndex = 2;
             // 
             // _lblStartingCash
             // 
             this._lblStartingCash.AutoSize = true;
-            this._lblStartingCash.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this._lblStartingCash.Location = new System.Drawing.Point(3, 110);
+            this._lblStartingCash.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this._lblStartingCash.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(41)))), ((int)(((byte)(59)))));
+            this._lblStartingCash.Location = new System.Drawing.Point(3, 130);
             this._lblStartingCash.Name = "_lblStartingCash";
-            this._lblStartingCash.Size = new System.Drawing.Size(0, 20);
+            this._lblStartingCash.Size = new System.Drawing.Size(0, 21);
             this._lblStartingCash.TabIndex = 3;
             // 
             // _txtStartingCash
             // 
             this._txtStartingCash.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._txtStartingCash.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this._txtStartingCash.Location = new System.Drawing.Point(3, 140);
+            this._txtStartingCash.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this._txtStartingCash.Location = new System.Drawing.Point(3, 165);
             this._txtStartingCash.Name = "_txtStartingCash";
-            this._txtStartingCash.Size = new System.Drawing.Size(394, 25);
+            this._txtStartingCash.Size = new System.Drawing.Size(444, 28);
             this._txtStartingCash.TabIndex = 4;
             // 
             // _buttonsPanel
@@ -102,34 +106,34 @@ namespace InventoryManagementSystem
             this._buttonsPanel.Controls.Add(this._btnCancel);
             this._buttonsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._buttonsPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this._buttonsPanel.Location = new System.Drawing.Point(3, 193);
+            this._buttonsPanel.Location = new System.Drawing.Point(3, 218);
             this._buttonsPanel.Name = "_buttonsPanel";
-            this._buttonsPanel.Size = new System.Drawing.Size(394, 104);
+            this._buttonsPanel.Size = new System.Drawing.Size(444, 159);
             this._buttonsPanel.TabIndex = 5;
             // 
             // _btnOpen
             // 
-            this._btnOpen.Location = new System.Drawing.Point(275, 3);
+            this._btnOpen.Location = new System.Drawing.Point(319, 3);
             this._btnOpen.Name = "_btnOpen";
-            this._btnOpen.Size = new System.Drawing.Size(100, 35);
+            this._btnOpen.Size = new System.Drawing.Size(120, 45);
             this._btnOpen.TabIndex = 0;
             this._btnOpen.Text = "Open Shift";
             this._btnOpen.UseVisualStyleBackColor = true;
             // 
             // _btnSkip
             // 
-            this._btnSkip.Location = new System.Drawing.Point(169, 3);
+            this._btnSkip.Location = new System.Drawing.Point(193, 3);
             this._btnSkip.Name = "_btnSkip";
-            this._btnSkip.Size = new System.Drawing.Size(100, 35);
+            this._btnSkip.Size = new System.Drawing.Size(120, 45);
             this._btnSkip.TabIndex = 1;
             this._btnSkip.Text = "Skip";
             this._btnSkip.UseVisualStyleBackColor = true;
             // 
             // _btnCancel
             // 
-            this._btnCancel.Location = new System.Drawing.Point(63, 3);
+            this._btnCancel.Location = new System.Drawing.Point(67, 3);
             this._btnCancel.Name = "_btnCancel";
-            this._btnCancel.Size = new System.Drawing.Size(100, 35);
+            this._btnCancel.Size = new System.Drawing.Size(120, 45);
             this._btnCancel.TabIndex = 2;
             this._btnCancel.Text = "Cancel";
             this._btnCancel.UseVisualStyleBackColor = true;
@@ -138,7 +142,8 @@ namespace InventoryManagementSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(400, 300);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(250)))), ((int)(((byte)(252)))));
+            this.ClientSize = new System.Drawing.Size(450, 380);
             this.Controls.Add(this._mainPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;

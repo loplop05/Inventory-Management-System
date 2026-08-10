@@ -57,7 +57,7 @@ namespace InventoryManagementSystem
                 }
             }
 
-            // After successful login, check if user needs to open a shift (for cashiers)
+            // After successful login, check if user needs to open a shift (for cashiers only)
             if (clsUserManagement.CurrentUser != null && clsUserManagement.IsCashier)
             {
                 // Check if user already has an open shift

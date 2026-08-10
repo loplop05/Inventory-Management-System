@@ -49,7 +49,7 @@ namespace InventoryDataAccessLayer
                                 PasswordHash NVARCHAR(256) NOT NULL,
                                 PasswordSalt NVARCHAR(128) NOT NULL,
                                 DisplayName NVARCHAR(100) NOT NULL,
-                                Role NVARCHAR(20) NOT NULL CHECK (Role IN ('Admin', 'Cashier')),
+                                Role NVARCHAR(20) NOT NULL CHECK (Role IN ('Admin', 'Manager', 'Cashier')),
                                 IsActive BIT NOT NULL DEFAULT 1,
                                 CreatedDate DATETIME NOT NULL DEFAULT GETDATE()
                             )";
