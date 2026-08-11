@@ -72,8 +72,8 @@ namespace InventoryManagementSystem
 
         private void LoadReport()
         {
-            
             string errorMessage;
+            
             if (!clsPOS.EnsurePosSetupAndSampleData(out errorMessage))
             {
                 clsFormTheme.ShowError(this, errorMessage, "Report Setup Failed");
@@ -122,7 +122,11 @@ namespace InventoryManagementSystem
                 _lblRevenue.ForeColor = Color.White;
             }
 
-            _ordersTable = clsPOS.GetTodayOrders();
+            _ordersTable = clsPOS.GetTodayOrders(out errorMessage);
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+                clsFormTheme.ShowError(this, "Error loading today's orders: " + errorMessage, "Data Load Error");
+            }
             _topProductsTable = clsPOS.GetTodayTopSellingProducts();
 
             _gridOrders.DataSource = _ordersTable;
@@ -465,6 +469,12 @@ namespace InventoryManagementSystem
 
         private void frmDailyReport_Load(object sender, EventArgs e)
         {
+            // Wire up context menu buttons
+            _menuViewDetails.Click += _menuViewDetails_Click;
+            _menuPrintReceipt.Click += _menuPrintReceipt_Click;
+            _menuRefund.Click += _menuRefund_Click;
+            _menuVoid.Click += _menuVoid_Click;
+            
             LoadReport();
         }
 

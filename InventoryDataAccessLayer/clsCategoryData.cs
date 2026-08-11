@@ -291,9 +291,9 @@ namespace InventoryDataAccessLayer
                         reader.Close();
 
                     }
-                    catch
+                    catch (Exception ex)
                     {
-
+                        clsErrorLog.LogException("clsCategoryData.GetAllCategories", ex);
                     }
                 }
             }

@@ -58,26 +58,26 @@ namespace InventoryDataAccessLayer
 
         private static void EnsureLoyaltyColumns(SqlConnection connection)
         {
-            try
-            {
-                string sql = @"
-                    IF COL_LENGTH('Customers', 'LoyaltyPoints') IS NULL
-                        ALTER TABLE Customers ADD LoyaltyPoints INT DEFAULT 0;
-                    
-                    IF COL_LENGTH('Customers', 'TotalSpent') IS NULL
-                        ALTER TABLE Customers ADD TotalSpent DECIMAL(10,2) DEFAULT 0;
-                    
-                    IF COL_LENGTH('Customers', 'Tier') IS NULL
-                        ALTER TABLE Customers ADD Tier NVARCHAR(20) DEFAULT 'Bronze';";
+            string sql = @"
+                IF COL_LENGTH('Customers', 'LoyaltyPoints') IS NULL
+                    ALTER TABLE Customers ADD LoyaltyPoints INT DEFAULT 0;
                 
-                using (SqlCommand command = new SqlCommand(sql, connection))
+                IF COL_LENGTH('Customers', 'TotalSpent') IS NULL
+                    ALTER TABLE Customers ADD TotalSpent DECIMAL(10,2) DEFAULT 0;
+                
+                IF COL_LENGTH('Customers', 'Tier') IS NULL
+                    ALTER TABLE Customers ADD Tier NVARCHAR(20) DEFAULT 'Bronze';";
+            
+            using (SqlCommand command = new SqlCommand(sql, connection))
+            {
+                try
                 {
                     command.ExecuteNonQuery();
                 }
-            }
-            catch
-            {
-                // Ignore errors if columns already exist
+                catch (Exception ex)
+                {
+                    clsErrorLog.LogException("clsCustomerData.EnsureLoyaltyColumns", ex);
+                }
             }
         }
 

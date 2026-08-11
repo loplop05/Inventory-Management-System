@@ -426,8 +426,9 @@ namespace InventoryDataAccessLayer
             return dt;
         }
 
-        public static DataTable GetTodayOrders()
+        public static DataTable GetTodayOrders(out string errorMessage)
         {
+            errorMessage = "";
             DataTable dt = new DataTable();
 
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
@@ -453,8 +454,10 @@ namespace InventoryDataAccessLayer
                             dt.Load(reader);
                         }
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        errorMessage = ex.Message;
+                        clsErrorLog.LogException("clsPOSData.GetTodayOrders", ex);
                     }
                 }
             }

@@ -40,6 +40,7 @@ namespace InventoryManagementSystem
             this.btnUserManagement = new System.Windows.Forms.Button();
             this.btnCustomerManagement = new System.Windows.Forms.Button();
             this.btnCloseShift = new System.Windows.Forms.Button();
+            this.btnShiftHistory = new System.Windows.Forms.Button();
             this._sectionInsights = new System.Windows.Forms.Panel();
             this._lblInsights = new System.Windows.Forms.Label();
             this._flowInsights = new System.Windows.Forms.FlowLayoutPanel();
@@ -101,7 +102,7 @@ namespace InventoryManagementSystem
             this._footerPanel.Location = new System.Drawing.Point(20, 680);
             this._footerPanel.Name = "_footerPanel";
             this._footerPanel.Padding = new System.Windows.Forms.Padding(0, 10, 0, 10);
-            this._footerPanel.Size = new System.Drawing.Size(1220, 20);
+            this._footerPanel.Size = new System.Drawing.Size(1220, 60);
             this._footerPanel.TabIndex = 4;
             // 
             // btnThemeToggle
@@ -132,11 +133,11 @@ namespace InventoryManagementSystem
             this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnHelp.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnHelp.ForeColor = clsFormTheme.TextSecondary;
-            this.btnHelp.Location = new System.Drawing.Point(1150, 10);
+            this.btnHelp.Location = new System.Drawing.Point(1100, 15);
             this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Size = new System.Drawing.Size(30, 20);
+            this.btnHelp.Size = new System.Drawing.Size(50, 30);
             this.btnHelp.TabIndex = 2;
-            this.btnHelp.Text = "❓";
+            this.btnHelp.Text = "Help";
             this.btnHelp.UseVisualStyleBackColor = false;
             this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
@@ -151,9 +152,9 @@ namespace InventoryManagementSystem
             this.btnSignOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSignOut.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnSignOut.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(38)))), ((int)(((byte)(38)))));
-            this.btnSignOut.Location = new System.Drawing.Point(1080, 10);
+            this.btnSignOut.Location = new System.Drawing.Point(1020, 15);
             this.btnSignOut.Name = "btnSignOut";
-            this.btnSignOut.Size = new System.Drawing.Size(60, 20);
+            this.btnSignOut.Size = new System.Drawing.Size(70, 30);
             this.btnSignOut.TabIndex = 0;
             this.btnSignOut.Text = "Sign Out";
             this.btnSignOut.UseVisualStyleBackColor = false;
@@ -166,7 +167,7 @@ namespace InventoryManagementSystem
             this._sectionAdministration.Dock = System.Windows.Forms.DockStyle.Top;
             this._sectionAdministration.Location = new System.Drawing.Point(20, 20);
             this._sectionAdministration.Name = "_sectionAdministration";
-            this._sectionAdministration.Size = new System.Drawing.Size(1220, 150);
+            this._sectionAdministration.Size = new System.Drawing.Size(1220, 145);
             this._sectionAdministration.TabIndex = 3;
             // 
             // _lblAdministration
@@ -187,11 +188,13 @@ namespace InventoryManagementSystem
             this._flowAdministration.Controls.Add(this.btnUserManagement);
             this._flowAdministration.Controls.Add(this.btnCustomerManagement);
             this._flowAdministration.Controls.Add(this.btnCloseShift);
+            this._flowAdministration.Controls.Add(this.btnShiftHistory);
             this._flowAdministration.Dock = System.Windows.Forms.DockStyle.Top;
             this._flowAdministration.FlowDirection = System.Windows.Forms.FlowDirection.LeftToRight;
             this._flowAdministration.Location = new System.Drawing.Point(0, 25);
+            this._flowAdministration.Margin = new System.Windows.Forms.Padding(0);
             this._flowAdministration.Name = "_flowAdministration";
-            this._flowAdministration.Size = new System.Drawing.Size(1220, 120);
+            this._flowAdministration.Size = new System.Drawing.Size(1220, 110);
             this._flowAdministration.TabIndex = 1;
             this._flowAdministration.WrapContents = false;
             // 
@@ -259,14 +262,30 @@ namespace InventoryManagementSystem
             this.btnCloseShift.UseVisualStyleBackColor = false;
             this.btnCloseShift.Click += new System.EventHandler(this.btnCloseShift_Click);
             // 
+            // btnShiftHistory
+            // 
+            this.btnShiftHistory.BackColor = clsFormTheme.CardColor;
+            this.btnShiftHistory.FlatAppearance.BorderColor = clsFormTheme.CardBorderColor;
+            this.btnShiftHistory.FlatAppearance.BorderSize = 1;
+            this.btnShiftHistory.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnShiftHistory.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.btnShiftHistory.ForeColor = clsFormTheme.TextPrimary;
+            this.btnShiftHistory.Location = new System.Drawing.Point(827, 3);
+            this.btnShiftHistory.Name = "btnShiftHistory";
+            this.btnShiftHistory.Size = new System.Drawing.Size(200, 110);
+            this.btnShiftHistory.TabIndex = 3;
+            this.btnShiftHistory.Text = "Shift History";
+            this.btnShiftHistory.UseVisualStyleBackColor = false;
+            this.btnShiftHistory.Click += new System.EventHandler(this.btnShiftHistory_Click);
+            // 
             // _sectionInsights
             // 
             this._sectionInsights.Controls.Add(this._lblInsights);
             this._sectionInsights.Controls.Add(this._flowInsights);
             this._sectionInsights.Dock = System.Windows.Forms.DockStyle.Top;
-            this._sectionInsights.Location = new System.Drawing.Point(20, 170);
+            this._sectionInsights.Location = new System.Drawing.Point(20, 165);
             this._sectionInsights.Name = "_sectionInsights";
-            this._sectionInsights.Size = new System.Drawing.Size(1220, 150);
+            this._sectionInsights.Size = new System.Drawing.Size(1220, 145);
             this._sectionInsights.TabIndex = 2;
             // 
             // _lblInsights
@@ -290,8 +309,9 @@ namespace InventoryManagementSystem
             this._flowInsights.Dock = System.Windows.Forms.DockStyle.Top;
             this._flowInsights.FlowDirection = System.Windows.Forms.FlowDirection.LeftToRight;
             this._flowInsights.Location = new System.Drawing.Point(0, 25);
+            this._flowInsights.Margin = new System.Windows.Forms.Padding(0);
             this._flowInsights.Name = "_flowInsights";
-            this._flowInsights.Size = new System.Drawing.Size(1220, 120);
+            this._flowInsights.Size = new System.Drawing.Size(1220, 110);
             this._flowInsights.TabIndex = 1;
             this._flowInsights.WrapContents = false;
             // 
@@ -364,9 +384,9 @@ namespace InventoryManagementSystem
             this._sectionCatalog.Controls.Add(this._lblCatalog);
             this._sectionCatalog.Controls.Add(this._flowCatalog);
             this._sectionCatalog.Dock = System.Windows.Forms.DockStyle.Top;
-            this._sectionCatalog.Location = new System.Drawing.Point(20, 320);
+            this._sectionCatalog.Location = new System.Drawing.Point(20, 310);
             this._sectionCatalog.Name = "_sectionCatalog";
-            this._sectionCatalog.Size = new System.Drawing.Size(1220, 150);
+            this._sectionCatalog.Size = new System.Drawing.Size(1220, 145);
             this._sectionCatalog.TabIndex = 1;
             // 
             // _lblCatalog
@@ -390,8 +410,9 @@ namespace InventoryManagementSystem
             this._flowCatalog.Dock = System.Windows.Forms.DockStyle.Top;
             this._flowCatalog.FlowDirection = System.Windows.Forms.FlowDirection.LeftToRight;
             this._flowCatalog.Location = new System.Drawing.Point(0, 25);
+            this._flowCatalog.Margin = new System.Windows.Forms.Padding(0);
             this._flowCatalog.Name = "_flowCatalog";
-            this._flowCatalog.Size = new System.Drawing.Size(1220, 120);
+            this._flowCatalog.Size = new System.Drawing.Size(1220, 110);
             this._flowCatalog.TabIndex = 1;
             this._flowCatalog.WrapContents = false;
             // 
@@ -464,9 +485,9 @@ namespace InventoryManagementSystem
             this._sectionSales.Controls.Add(this._lblSales);
             this._sectionSales.Controls.Add(this._flowSales);
             this._sectionSales.Dock = System.Windows.Forms.DockStyle.Top;
-            this._sectionSales.Location = new System.Drawing.Point(20, 470);
+            this._sectionSales.Location = new System.Drawing.Point(20, 455);
             this._sectionSales.Name = "_sectionSales";
-            this._sectionSales.Size = new System.Drawing.Size(1220, 150);
+            this._sectionSales.Size = new System.Drawing.Size(1220, 145);
             this._sectionSales.TabIndex = 0;
             // 
             // _lblSales
@@ -489,8 +510,9 @@ namespace InventoryManagementSystem
             this._flowSales.Dock = System.Windows.Forms.DockStyle.Top;
             this._flowSales.FlowDirection = System.Windows.Forms.FlowDirection.LeftToRight;
             this._flowSales.Location = new System.Drawing.Point(0, 25);
+            this._flowSales.Margin = new System.Windows.Forms.Padding(0);
             this._flowSales.Name = "_flowSales";
-            this._flowSales.Size = new System.Drawing.Size(1220, 120);
+            this._flowSales.Size = new System.Drawing.Size(1220, 110);
             this._flowSales.TabIndex = 1;
             this._flowSales.WrapContents = false;
             // 
@@ -645,6 +667,7 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button btnUserManagement;
         private System.Windows.Forms.Button btnCustomerManagement;
         private System.Windows.Forms.Button btnCloseShift;
+        private System.Windows.Forms.Button btnShiftHistory;
         private System.Windows.Forms.TextBox _txtQuickSearch;
         private System.Windows.Forms.Panel _searchResultsPanel;
         private System.Windows.Forms.ListBox _lstSearchResults;

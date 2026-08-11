@@ -95,9 +95,10 @@ namespace InventoryManagementSystem
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // Ignore errors loading categories
+                clsErrorLog.LogException("frmProductsManagment.LoadCategories", ex);
+                _cmbCategoryFilter.Enabled = false;
             }
         }
 

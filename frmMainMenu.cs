@@ -511,6 +511,7 @@ namespace InventoryManagementSystem
                 btnCustomerManagement.Visible = false;
                 btnCloseShift.Visible = false;
                 btnHelp.Visible = true;
+                btnSignOut.Visible = true;
 
                 // Show only Sales section
                 SetSectionVisibility(true, false, false, false);
@@ -533,6 +534,7 @@ namespace InventoryManagementSystem
                 btnAuditLogs.Visible = true;
                 btnCloseShift.Visible = true;
                 btnHelp.Visible = true;
+                btnSignOut.Visible = true;
                 
                 // Managers cannot manage users
                 btnUserManagement.Visible = false;
@@ -557,7 +559,10 @@ namespace InventoryManagementSystem
                 btnAuditLogs.Visible = true;
                 btnUserManagement.Visible = true;
                 btnCustomerManagement.Visible = true;
+                btnCloseShift.Visible = true;
+                btnShiftHistory.Visible = true;
                 btnHelp.Visible = true;
+                btnSignOut.Visible = true;
 
                 // Show all sections
                 SetSectionVisibility(true, true, true, true);
@@ -614,6 +619,14 @@ namespace InventoryManagementSystem
             // Sign out
             clsUserManagement.Logout();
             Application.Restart();
+        }
+
+        private void btnShiftHistory_Click(object sender, EventArgs e)
+        {
+            using (var shiftHistoryForm = new frmShiftHistory())
+            {
+                shiftHistoryForm.ShowDialog(this);
+            }
         }
     }
 }

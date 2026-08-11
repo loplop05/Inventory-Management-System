@@ -33,7 +33,7 @@ namespace InventoryManagementSystem
             this._rootPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._rootPanel.Location = new System.Drawing.Point(0, 0);
             this._rootPanel.Name = "_rootPanel";
-            this._rootPanel.Size = new System.Drawing.Size(186, 600);
+            this._rootPanel.Size = new System.Drawing.Size(175, 600);
             this._rootPanel.TabIndex = 0;
             // 
             // _navItemsPanel
@@ -43,7 +43,7 @@ namespace InventoryManagementSystem
             this._navItemsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._navItemsPanel.Location = new System.Drawing.Point(0, 0);
             this._navItemsPanel.Name = "_navItemsPanel";
-            this._navItemsPanel.Size = new System.Drawing.Size(186, 546);
+            this._navItemsPanel.Size = new System.Drawing.Size(175, 546);
             this._navItemsPanel.TabIndex = 1;
             this._navItemsPanel.Paint += new System.Windows.Forms.PaintEventHandler(this._navItemsPanel_Paint);
             // 
@@ -52,7 +52,7 @@ namespace InventoryManagementSystem
             this._supportPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this._supportPanel.Location = new System.Drawing.Point(0, 546);
             this._supportPanel.Name = "_supportPanel";
-            this._supportPanel.Size = new System.Drawing.Size(186, 54);
+            this._supportPanel.Size = new System.Drawing.Size(175, 54);
             this._supportPanel.TabIndex = 2;
             // 
             // _lblTitle
@@ -84,7 +84,7 @@ namespace InventoryManagementSystem
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
             this.Controls.Add(this._rootPanel);
             this.Name = "ucSidebarNav";
-            this.Size = new System.Drawing.Size(186, 600);
+            this.Size = new System.Drawing.Size(175, 600);
             this._rootPanel.ResumeLayout(false);
             this._rootPanel.PerformLayout();
             this.ResumeLayout(false);

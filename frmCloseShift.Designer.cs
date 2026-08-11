@@ -222,6 +222,7 @@ namespace InventoryManagementSystem
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Close Shift";
+            this.Load += new System.EventHandler(this.frmCloseShift_Load);
             this._mainPanel.ResumeLayout(false);
             this._mainPanel.PerformLayout();
             this._infoPanel.ResumeLayout(false);

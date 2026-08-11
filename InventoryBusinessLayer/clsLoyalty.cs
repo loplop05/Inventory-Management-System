@@ -4,6 +4,15 @@ using InventoryDataAccessLayer;
 
 namespace InventoryBusinessLayer
 {
+    /// <summary>
+    /// DEPRECATED: This class is legacy code and should not be used.
+    /// Use clsLoyaltyProgram.cs instead for all loyalty operations.
+    /// clsLoyaltyProgram.cs provides a simpler, cleaner implementation based on LoyaltyPoints (not TotalSpent)
+    /// and only includes Bronze, Silver, Gold tiers (no Platinum).
+    /// 
+    /// This class is kept for backward compatibility only and will be removed in a future version.
+    /// </summary>
+    [Obsolete("Use clsLoyaltyProgram instead. This class is deprecated.", false)]
     public static class clsLoyalty
     {
         // Loyalty tier thresholds

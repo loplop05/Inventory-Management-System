@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using InventoryDataAccessLayer;
 
 namespace InventoryManagementSystem
 {
@@ -200,9 +201,10 @@ namespace InventoryManagementSystem
                         break;
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // Invalid filter, return empty
+                // Invalid filter - log as action (not error) since malformed user input isn't a system error
+                clsAuditLog.LogAction("SearchHelper", $"Invalid filter: {filter.ColumnName} = {filter.Value} - {ex.Message}", "System");
             }
 
             return string.Empty;

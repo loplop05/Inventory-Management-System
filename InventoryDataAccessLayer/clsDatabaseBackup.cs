@@ -169,7 +169,10 @@ namespace InventoryDataAccessLayer
                         }
                     }
                 }
-                catch { }
+                catch (Exception resetEx)
+                {
+                    clsErrorLog.LogException("clsDatabaseBackup.RestoreBackup_ResetMultiUser", resetEx);
+                }
 
                 return false;
             }

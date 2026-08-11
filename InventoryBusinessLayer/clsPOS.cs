@@ -64,9 +64,9 @@ namespace InventoryBusinessLayer
             return clsPOSData.GetTodayOrderSummary();
         }
 
-        public static DataTable GetTodayOrders()
+        public static DataTable GetTodayOrders(out string errorMessage)
         {
-            return clsPOSData.GetTodayOrders();
+            return clsPOSData.GetTodayOrders(out errorMessage);
         }
 
         public static DataTable GetTodayTopSellingProducts()

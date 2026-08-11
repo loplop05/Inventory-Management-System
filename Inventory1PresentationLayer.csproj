@@ -304,6 +304,12 @@
     <Compile Include="frmOpenShift.Designer.cs">
       <DependentUpon>frmOpenShift.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmShiftHistory.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmShiftHistory.Designer.cs">
+      <DependentUpon>frmShiftHistory.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmCloseShift.cs">
       <SubType>Form</SubType>
     </Compile>
