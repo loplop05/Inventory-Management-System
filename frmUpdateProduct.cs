@@ -61,7 +61,6 @@ namespace InventoryManagementSystem
         {
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Update Product");
-            _lblPageTitle.Text = clsLanguageManager.GetString("Update Product");
             btnSearch.Text = clsLanguageManager.GetString("Find Product");
             btnCancel.Text = clsLanguageManager.GetString("Cancel");
         }

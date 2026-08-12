@@ -78,7 +78,6 @@ namespace InventoryManagementSystem
         {
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Suppliers Management");
-            _lblHeaderTitle.Text = clsLanguageManager.GetString("Suppliers Management");
             btnAddSupplier.Text = clsLanguageManager.GetString("Add");
             btnDeleteSupplier.Text = clsLanguageManager.GetString("Delete");
             btnUpdateSupplier.Text = clsLanguageManager.GetString("Update");

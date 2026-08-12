@@ -45,7 +45,6 @@ namespace InventoryManagementSystem
         {
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Audit Logs");
-            _lblHeaderTitle.Text = clsLanguageManager.GetString("Audit Logs");
             lblModule.Text = clsLanguageManager.GetString("Module") + ":";
             lblSearch.Text = clsLanguageManager.GetString("Search") + ":";
             btnExport.Text = clsLanguageManager.GetString("Export CSV");

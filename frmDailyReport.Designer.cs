@@ -17,8 +17,6 @@ namespace InventoryManagementSystem
         private void InitializeComponent()
         {
             this._contentPanel = new System.Windows.Forms.Panel();
-            this._headerPanel = new System.Windows.Forms.Panel();
-            this._lblHeaderTitle = new System.Windows.Forms.Label();
             this._rootLayout = new System.Windows.Forms.TableLayoutPanel();
             this._summaryPanel = new System.Windows.Forms.TableLayoutPanel();
             this._lblOrders = new System.Windows.Forms.Label();
@@ -44,7 +42,6 @@ namespace InventoryManagementSystem
             this._menuRefund = new System.Windows.Forms.ToolStripMenuItem();
             this._menuVoid = new System.Windows.Forms.ToolStripMenuItem();
             this._contentPanel.SuspendLayout();
-            this._headerPanel.SuspendLayout();
             this._rootLayout.SuspendLayout();
             this._summaryPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
@@ -60,34 +57,12 @@ namespace InventoryManagementSystem
             // 
             // _contentPanel
             // 
-            this._contentPanel.Controls.Add(this._headerPanel);
             this._contentPanel.Controls.Add(this._rootLayout);
             this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._contentPanel.Location = new System.Drawing.Point(0, 0);
             this._contentPanel.Name = "_contentPanel";
             this._contentPanel.Size = new System.Drawing.Size(1400, 800);
             this._contentPanel.TabIndex = 1;
-            // 
-            // _headerPanel
-            // 
-            this._headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(58)))), ((int)(((byte)(138)))));
-            this._headerPanel.Controls.Add(this._lblHeaderTitle);
-            this._headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this._headerPanel.Location = new System.Drawing.Point(0, 0);
-            this._headerPanel.Name = "_headerPanel";
-            this._headerPanel.Size = new System.Drawing.Size(1150, 60);
-            this._headerPanel.TabIndex = 0;
-            // 
-            // _lblHeaderTitle
-            // 
-            this._lblHeaderTitle.AutoSize = true;
-            this._lblHeaderTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this._lblHeaderTitle.ForeColor = System.Drawing.Color.White;
-            this._lblHeaderTitle.Location = new System.Drawing.Point(20, 15);
-            this._lblHeaderTitle.Name = "_lblHeaderTitle";
-            this._lblHeaderTitle.Size = new System.Drawing.Size(180, 32);
-            this._lblHeaderTitle.TabIndex = 0;
-            this._lblHeaderTitle.Text = "Daily Report";
             // 
             // _rootLayout
             // 
@@ -97,7 +72,7 @@ namespace InventoryManagementSystem
             this._rootLayout.Controls.Add(this._splitContainer, 0, 1);
             this._rootLayout.Controls.Add(this._buttonsPanel, 0, 2);
             this._rootLayout.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._rootLayout.Location = new System.Drawing.Point(0, 60);
+            this._rootLayout.Location = new System.Drawing.Point(0, 0);
             this._rootLayout.Name = "_rootLayout";
             this._rootLayout.RowCount = 3;
             this._rootLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 96F));
@@ -356,8 +331,6 @@ namespace InventoryManagementSystem
             this.Text = "End-of-Day Report";
             this.Load += new System.EventHandler(this.frmDailyReport_Load);
             this._contentPanel.ResumeLayout(false);
-            this._headerPanel.ResumeLayout(false);
-            this._headerPanel.PerformLayout();
             this._rootLayout.ResumeLayout(false);
             this._summaryPanel.ResumeLayout(false);
             this._splitContainer.Panel1.ResumeLayout(false);
@@ -374,8 +347,6 @@ namespace InventoryManagementSystem
         }
 
         private System.Windows.Forms.Panel _contentPanel;
-        private System.Windows.Forms.Panel _headerPanel;
-        private System.Windows.Forms.Label _lblHeaderTitle;
         private System.Windows.Forms.TableLayoutPanel _rootLayout;
         private System.Windows.Forms.TableLayoutPanel _summaryPanel;
         private System.Windows.Forms.Label _lblOrders;

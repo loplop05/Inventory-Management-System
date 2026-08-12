@@ -18,8 +18,6 @@ namespace InventoryManagementSystem
         private void InitializeComponent()
         {
             this._contentPanel = new System.Windows.Forms.Panel();
-            this._headerPanel = new System.Windows.Forms.Panel();
-            this._lblHeaderTitle = new System.Windows.Forms.Label();
             this.dgvAuditLogs = new System.Windows.Forms.DataGridView();
             this.panelTop = new System.Windows.Forms.Panel();
             this.lblModule = new System.Windows.Forms.Label();
@@ -32,14 +30,12 @@ namespace InventoryManagementSystem
             this.btnClose = new System.Windows.Forms.Button();
             this.lblStatus = new System.Windows.Forms.Label();
             this._contentPanel.SuspendLayout();
-            this._headerPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAuditLogs)).BeginInit();
             this.panelTop.SuspendLayout();
             this.SuspendLayout();
             // 
             // _contentPanel
             // 
-            this._contentPanel.Controls.Add(this._headerPanel);
             this._contentPanel.Controls.Add(this.panelTop);
             this._contentPanel.Controls.Add(this.dgvAuditLogs);
             this._contentPanel.Controls.Add(this.btnClose);
@@ -48,27 +44,6 @@ namespace InventoryManagementSystem
             this._contentPanel.Name = "_contentPanel";
             this._contentPanel.Size = new System.Drawing.Size(1400, 800);
             this._contentPanel.TabIndex = 1;
-            // 
-            // _headerPanel
-            // 
-            this._headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(58)))), ((int)(((byte)(138)))));
-            this._headerPanel.Controls.Add(this._lblHeaderTitle);
-            this._headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this._headerPanel.Location = new System.Drawing.Point(0, 0);
-            this._headerPanel.Name = "_headerPanel";
-            this._headerPanel.Size = new System.Drawing.Size(1150, 60);
-            this._headerPanel.TabIndex = 0;
-            // 
-            // _lblHeaderTitle
-            // 
-            this._lblHeaderTitle.AutoSize = true;
-            this._lblHeaderTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this._lblHeaderTitle.ForeColor = System.Drawing.Color.White;
-            this._lblHeaderTitle.Location = new System.Drawing.Point(20, 15);
-            this._lblHeaderTitle.Name = "_lblHeaderTitle";
-            this._lblHeaderTitle.Size = new System.Drawing.Size(260, 32);
-            this._lblHeaderTitle.TabIndex = 0;
-            this._lblHeaderTitle.Text = "System Audit Logs";
             // 
             // panelTop
             // 
@@ -80,7 +55,7 @@ namespace InventoryManagementSystem
             this.panelTop.Controls.Add(this.btnRefresh);
             this.panelTop.Controls.Add(this.btnClear);
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panelTop.Location = new System.Drawing.Point(0, 60);
+            this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
             this.panelTop.Size = new System.Drawing.Size(1150, 60);
             this.panelTop.TabIndex = 1;
@@ -199,8 +174,6 @@ namespace InventoryManagementSystem
             this.Activated += new System.EventHandler(this.frmAuditLog_Activated);
             this.Load += new System.EventHandler(this.frmAuditLog_Load);
             this._contentPanel.ResumeLayout(false);
-            this._headerPanel.ResumeLayout(false);
-            this._headerPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvAuditLogs)).EndInit();
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();
@@ -210,8 +183,6 @@ namespace InventoryManagementSystem
         #endregion
 
         private System.Windows.Forms.Panel _contentPanel;
-        private System.Windows.Forms.Panel _headerPanel;
-        private System.Windows.Forms.Label _lblHeaderTitle;
         private System.Windows.Forms.DataGridView dgvAuditLogs;
         private System.Windows.Forms.Panel panelTop;
         private System.Windows.Forms.Label lblModule;

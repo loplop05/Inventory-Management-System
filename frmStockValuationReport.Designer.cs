@@ -29,8 +29,6 @@ namespace InventoryManagementSystem
         private void InitializeComponent()
         {
             this._contentPanel = new System.Windows.Forms.Panel();
-            this._headerPanel = new System.Windows.Forms.Panel();
-            this._lblHeaderTitle = new System.Windows.Forms.Label();
             this._buttonsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.btnExportCsv = new System.Windows.Forms.Button();
             this.btnRefresh = new System.Windows.Forms.Button();
@@ -39,14 +37,12 @@ namespace InventoryManagementSystem
             this.lblTotalStockValue = new System.Windows.Forms.Label();
             this.lblEmptyState = new System.Windows.Forms.Label();
             this._contentPanel.SuspendLayout();
-            this._headerPanel.SuspendLayout();
             this._buttonsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataGVStockValuation)).BeginInit();
             this.SuspendLayout();
             // 
             // _contentPanel
             // 
-            this._contentPanel.Controls.Add(this._headerPanel);
             this._contentPanel.Controls.Add(this._buttonsPanel);
             this._contentPanel.Controls.Add(this.DataGVStockValuation);
             this._contentPanel.Controls.Add(this.lblTotalStockValue);
@@ -57,27 +53,6 @@ namespace InventoryManagementSystem
             this._contentPanel.Size = new System.Drawing.Size(1400, 800);
             this._contentPanel.TabIndex = 1;
             // 
-            // _headerPanel
-            // 
-            this._headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(58)))), ((int)(((byte)(138)))));
-            this._headerPanel.Controls.Add(this._lblHeaderTitle);
-            this._headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this._headerPanel.Location = new System.Drawing.Point(0, 0);
-            this._headerPanel.Name = "_headerPanel";
-            this._headerPanel.Size = new System.Drawing.Size(1150, 60);
-            this._headerPanel.TabIndex = 0;
-            // 
-            // _lblHeaderTitle
-            // 
-            this._lblHeaderTitle.AutoSize = true;
-            this._lblHeaderTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this._lblHeaderTitle.ForeColor = System.Drawing.Color.White;
-            this._lblHeaderTitle.Location = new System.Drawing.Point(20, 15);
-            this._lblHeaderTitle.Name = "_lblHeaderTitle";
-            this._lblHeaderTitle.Size = new System.Drawing.Size(215, 32);
-            this._lblHeaderTitle.TabIndex = 0;
-            this._lblHeaderTitle.Text = "Stock Valuation";
-            // 
             // _buttonsPanel
             // 
             this._buttonsPanel.Controls.Add(this.btnClose);
@@ -85,7 +60,7 @@ namespace InventoryManagementSystem
             this._buttonsPanel.Controls.Add(this.btnExportCsv);
             this._buttonsPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this._buttonsPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
-            this._buttonsPanel.Location = new System.Drawing.Point(0, 60);
+            this._buttonsPanel.Location = new System.Drawing.Point(0, 0);
             this._buttonsPanel.Name = "_buttonsPanel";
             this._buttonsPanel.Size = new System.Drawing.Size(1150, 50);
             this._buttonsPanel.TabIndex = 1;
@@ -171,8 +146,6 @@ namespace InventoryManagementSystem
             this.AutoScroll = true;
             this.Load += new System.EventHandler(this.frmStockValuationReport_Load);
             this._contentPanel.ResumeLayout(false);
-            this._headerPanel.ResumeLayout(false);
-            this._headerPanel.PerformLayout();
             this._buttonsPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.DataGVStockValuation)).EndInit();
             this.ResumeLayout(false);
@@ -183,8 +156,6 @@ namespace InventoryManagementSystem
         #endregion
 
         private System.Windows.Forms.Panel _contentPanel;
-        private System.Windows.Forms.Panel _headerPanel;
-        private System.Windows.Forms.Label _lblHeaderTitle;
         private System.Windows.Forms.FlowLayoutPanel _buttonsPanel;
         private System.Windows.Forms.Button btnExportCsv;
         private System.Windows.Forms.Button btnRefresh;

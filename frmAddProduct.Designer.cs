@@ -28,8 +28,6 @@ namespace InventoryManagementSystem
         /// </summary>
         private void InitializeComponent()
         {
-            this._headerPanel = new System.Windows.Forms.Panel();
-            this._lblPageTitle = new System.Windows.Forms.Label();
             this._contentPanel = new System.Windows.Forms.Panel();
             this._fieldsPanel = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
@@ -50,39 +48,18 @@ namespace InventoryManagementSystem
             this._buttonPanel = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
-            this._headerPanel.SuspendLayout();
             this._contentPanel.SuspendLayout();
             this._fieldsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._picPreview)).BeginInit();
             this._buttonPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // _headerPanel
-            // 
-            this._headerPanel.Controls.Add(this._lblPageTitle);
-            this._headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this._headerPanel.Location = new System.Drawing.Point(0, 0);
-            this._headerPanel.Name = "_headerPanel";
-            this._headerPanel.Size = new System.Drawing.Size(498, 60);
-            this._headerPanel.TabIndex = 0;
-            // 
-            // _lblPageTitle
-            // 
-            this._lblPageTitle.AutoSize = true;
-            this._lblPageTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this._lblPageTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
-            this._lblPageTitle.Location = new System.Drawing.Point(20, 15);
-            this._lblPageTitle.Name = "_lblPageTitle";
-            this._lblPageTitle.Size = new System.Drawing.Size(196, 41);
-            this._lblPageTitle.TabIndex = 0;
-            this._lblPageTitle.Text = "Add Product";
-            // 
             // _contentPanel
             // 
             this._contentPanel.Controls.Add(this._fieldsPanel);
             this._contentPanel.Controls.Add(this._buttonPanel);
             this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._contentPanel.Location = new System.Drawing.Point(0, 60);
+            this._contentPanel.Location = new System.Drawing.Point(0, 0);
             this._contentPanel.Name = "_contentPanel";
             this._contentPanel.Size = new System.Drawing.Size(498, 551);
             this._contentPanel.TabIndex = 1;
@@ -317,21 +294,7 @@ namespace InventoryManagementSystem
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // frmAddProduct
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(498, 611);
-            this.Controls.Add(this._contentPanel);
-            this.Controls.Add(this._headerPanel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "frmAddProduct";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Add Product";
             this.Load += new System.EventHandler(this.frmAddProduct_Load);
-            this._headerPanel.ResumeLayout(false);
-            this._headerPanel.PerformLayout();
             this._contentPanel.ResumeLayout(false);
             this._fieldsPanel.ResumeLayout(false);
             this._fieldsPanel.PerformLayout();
@@ -343,8 +306,6 @@ namespace InventoryManagementSystem
 
         #endregion
 
-        private System.Windows.Forms.Panel _headerPanel;
-        private System.Windows.Forms.Label _lblPageTitle;
         private System.Windows.Forms.Panel _contentPanel;
         private System.Windows.Forms.TableLayoutPanel _fieldsPanel;
         private System.Windows.Forms.Label label2;

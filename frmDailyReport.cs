@@ -64,7 +64,6 @@ namespace InventoryManagementSystem
         {
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Daily Sales Report");
-            _lblHeaderTitle.Text = clsLanguageManager.GetString("Daily Sales Report");
             _btnRefresh.Text = clsLanguageManager.GetString("Refresh");
             _btnExportCsv.Text = clsLanguageManager.GetString("Export CSV");
             _btnClose.Text = clsLanguageManager.GetString("Close");

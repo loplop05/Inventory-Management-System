@@ -18,8 +18,6 @@ namespace InventoryManagementSystem
         private void InitializeComponent()
         {
             this._contentPanel = new System.Windows.Forms.Panel();
-            this._headerPanel = new System.Windows.Forms.Panel();
-            this._lblHeaderTitle = new System.Windows.Forms.Label();
             this._mainLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this._searchPanel = new System.Windows.Forms.Panel();
             this._lblOrderID = new System.Windows.Forms.Label();
@@ -41,7 +39,6 @@ namespace InventoryManagementSystem
             this._btnExchange = new System.Windows.Forms.Button();
             this._btnClose = new System.Windows.Forms.Button();
             this._contentPanel.SuspendLayout();
-            this._headerPanel.SuspendLayout();
             this._mainLayoutPanel.SuspendLayout();
             this._searchPanel.SuspendLayout();
             this._panelOrderDetails.SuspendLayout();
@@ -52,34 +49,12 @@ namespace InventoryManagementSystem
             // 
             // _contentPanel
             // 
-            this._contentPanel.Controls.Add(this._headerPanel);
             this._contentPanel.Controls.Add(this._mainLayoutPanel);
             this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._contentPanel.Location = new System.Drawing.Point(0, 0);
             this._contentPanel.Name = "_contentPanel";
             this._contentPanel.Size = new System.Drawing.Size(1400, 800);
             this._contentPanel.TabIndex = 1;
-            // 
-            // _headerPanel
-            // 
-            this._headerPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(58)))), ((int)(((byte)(138)))));
-            this._headerPanel.Controls.Add(this._lblHeaderTitle);
-            this._headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this._headerPanel.Location = new System.Drawing.Point(0, 0);
-            this._headerPanel.Name = "_headerPanel";
-            this._headerPanel.Size = new System.Drawing.Size(1150, 60);
-            this._headerPanel.TabIndex = 0;
-            // 
-            // _lblHeaderTitle
-            // 
-            this._lblHeaderTitle.AutoSize = true;
-            this._lblHeaderTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this._lblHeaderTitle.ForeColor = System.Drawing.Color.White;
-            this._lblHeaderTitle.Location = new System.Drawing.Point(20, 15);
-            this._lblHeaderTitle.Name = "_lblHeaderTitle";
-            this._lblHeaderTitle.Size = new System.Drawing.Size(140, 32);
-            this._lblHeaderTitle.TabIndex = 0;
-            this._lblHeaderTitle.Text = "Receipt Search";
             // 
             // _mainLayoutPanel
             // 
@@ -89,7 +64,7 @@ namespace InventoryManagementSystem
             this._mainLayoutPanel.Controls.Add(this._panelOrderDetails, 0, 1);
             this._mainLayoutPanel.Controls.Add(this._actionsPanel, 0, 2);
             this._mainLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._mainLayoutPanel.Location = new System.Drawing.Point(0, 60);
+            this._mainLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this._mainLayoutPanel.Name = "_mainLayoutPanel";
             this._mainLayoutPanel.Padding = new System.Windows.Forms.Padding(20);
             this._mainLayoutPanel.RowCount = 3;
@@ -316,8 +291,6 @@ namespace InventoryManagementSystem
             this.Text = "Search Receipt";
             this.Load += new System.EventHandler(this.frmReceiptSearch_Load);
             this._contentPanel.ResumeLayout(false);
-            this._headerPanel.ResumeLayout(false);
-            this._headerPanel.PerformLayout();
             this._mainLayoutPanel.ResumeLayout(false);
             this._searchPanel.ResumeLayout(false);
             this._searchPanel.PerformLayout();
@@ -334,8 +307,6 @@ namespace InventoryManagementSystem
         #endregion
 
         private System.Windows.Forms.Panel _contentPanel;
-        private System.Windows.Forms.Panel _headerPanel;
-        private System.Windows.Forms.Label _lblHeaderTitle;
         private System.Windows.Forms.TableLayoutPanel _mainLayoutPanel;
         private System.Windows.Forms.Panel _searchPanel;
         private System.Windows.Forms.Label _lblOrderID;

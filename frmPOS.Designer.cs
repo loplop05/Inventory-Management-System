@@ -65,8 +65,6 @@ namespace InventoryManagementSystem
             this._btnRemoveItem = new System.Windows.Forms.Button();
             this._btnCompleteOrder = new System.Windows.Forms.Button();
             this._lblReceiptTitle = new System.Windows.Forms.Label();
-            this._headerPanel = new System.Windows.Forms.Panel();
-            this._lblPageTitle = new System.Windows.Forms.Label();
             this._contentPanel.SuspendLayout();
             this._mainLayoutPanel.SuspendLayout();
             this._topPanel.SuspendLayout();
@@ -80,13 +78,11 @@ namespace InventoryManagementSystem
             this._receiptPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._gridReceipt)).BeginInit();
             this._totalsPanel.SuspendLayout();
-            this._headerPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // _contentPanel
             // 
             this._contentPanel.Controls.Add(this._mainLayoutPanel);
-            this._contentPanel.Controls.Add(this._headerPanel);
             this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._contentPanel.Location = new System.Drawing.Point(0, 0);
             this._contentPanel.Name = "_contentPanel";
@@ -100,7 +96,7 @@ namespace InventoryManagementSystem
             this._mainLayoutPanel.Controls.Add(this._topPanel, 0, 0);
             this._mainLayoutPanel.Controls.Add(this._splitContainer, 0, 1);
             this._mainLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._mainLayoutPanel.Location = new System.Drawing.Point(0, 61);
+            this._mainLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this._mainLayoutPanel.Name = "_mainLayoutPanel";
             this._mainLayoutPanel.RowCount = 2;
             this._mainLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 135F));
@@ -607,26 +603,6 @@ namespace InventoryManagementSystem
             this._lblReceiptTitle.TabIndex = 0;
             this._lblReceiptTitle.Text = "Receipt";
             // 
-            // _headerPanel
-            // 
-            this._headerPanel.Controls.Add(this._lblPageTitle);
-            this._headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this._headerPanel.Location = new System.Drawing.Point(0, 0);
-            this._headerPanel.Name = "_headerPanel";
-            this._headerPanel.Size = new System.Drawing.Size(1297, 61);
-            this._headerPanel.TabIndex = 0;
-            // 
-            // _lblPageTitle
-            // 
-            this._lblPageTitle.AutoSize = true;
-            this._lblPageTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this._lblPageTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
-            this._lblPageTitle.Location = new System.Drawing.Point(20, 15);
-            this._lblPageTitle.Name = "_lblPageTitle";
-            this._lblPageTitle.Size = new System.Drawing.Size(196, 41);
-            this._lblPageTitle.TabIndex = 0;
-            this._lblPageTitle.Text = "Point of Sale";
-            // 
             // frmPOS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -655,8 +631,6 @@ namespace InventoryManagementSystem
             this._receiptPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._gridReceipt)).EndInit();
             this._totalsPanel.ResumeLayout(false);
-            this._headerPanel.ResumeLayout(false);
-            this._headerPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -708,7 +682,5 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Label _lblBarcode;
         private System.Windows.Forms.TextBox _txtBarcode;
         private System.Windows.Forms.Button _btnAddByBarcode;
-        private System.Windows.Forms.Panel _headerPanel;
-        private System.Windows.Forms.Label _lblPageTitle;
     }
 }

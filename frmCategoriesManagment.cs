@@ -80,7 +80,6 @@ namespace InventoryManagementSystem
         {
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Categories Management");
-            _lblHeaderTitle.Text = clsLanguageManager.GetString("Categories Management");
             btnAddCategory.Text = clsLanguageManager.GetString("Add");
             btnDeleteCategory.Text = clsLanguageManager.GetString("Delete");
             btnUpdateCategory.Text = clsLanguageManager.GetString("Update");

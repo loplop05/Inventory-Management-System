@@ -62,7 +62,6 @@ namespace InventoryManagementSystem
         {
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Stock Valuation Report");
-            _lblHeaderTitle.Text = clsLanguageManager.GetString("Stock Valuation Report");
             btnExportCsv.Text = clsLanguageManager.GetString("Export CSV");
             btnRefresh.Text = clsLanguageManager.GetString("Refresh");
             btnClose.Text = clsLanguageManager.GetString("Close");

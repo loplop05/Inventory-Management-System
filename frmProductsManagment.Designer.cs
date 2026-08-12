@@ -38,20 +38,16 @@ namespace InventoryManagementSystem
             this._btnAddProduct = new System.Windows.Forms.Button();
             this._btnUpdateProduct = new System.Windows.Forms.Button();
             this._btnDeleteProduct = new System.Windows.Forms.Button();
-            this._headerPanel = new System.Windows.Forms.Panel();
-            this._lblPageTitle = new System.Windows.Forms.Label();
             this._contentPanel.SuspendLayout();
             this._gridPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataGVProducts)).BeginInit();
             this._toolbarPanel.SuspendLayout();
-            this._headerPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // _contentPanel
             // 
             this._contentPanel.Controls.Add(this._gridPanel);
             this._contentPanel.Controls.Add(this._toolbarPanel);
-            this._contentPanel.Controls.Add(this._headerPanel);
             this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._contentPanel.Location = new System.Drawing.Point(0, 0);
             this._contentPanel.Name = "_contentPanel";
@@ -104,9 +100,9 @@ namespace InventoryManagementSystem
             this._toolbarPanel.Controls.Add(this._btnUpdateProduct);
             this._toolbarPanel.Controls.Add(this._btnDeleteProduct);
             this._toolbarPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this._toolbarPanel.Location = new System.Drawing.Point(0, 60);
+            this._toolbarPanel.Location = new System.Drawing.Point(0, 0);
             this._toolbarPanel.Name = "_toolbarPanel";
-            this._toolbarPanel.Size = new System.Drawing.Size(1126, 50);
+            this._toolbarPanel.Size = new System.Drawing.Size(1126, 110);
             this._toolbarPanel.TabIndex = 1;
             // 
             // _txtSearch
@@ -163,26 +159,6 @@ namespace InventoryManagementSystem
             this._btnDeleteProduct.UseVisualStyleBackColor = true;
             this._btnDeleteProduct.Click += new System.EventHandler(this._btnDeleteProduct_Click);
             // 
-            // _headerPanel
-            // 
-            this._headerPanel.Controls.Add(this._lblPageTitle);
-            this._headerPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this._headerPanel.Location = new System.Drawing.Point(0, 0);
-            this._headerPanel.Name = "_headerPanel";
-            this._headerPanel.Size = new System.Drawing.Size(1126, 60);
-            this._headerPanel.TabIndex = 0;
-            // 
-            // _lblPageTitle
-            // 
-            this._lblPageTitle.AutoSize = true;
-            this._lblPageTitle.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this._lblPageTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
-            this._lblPageTitle.Location = new System.Drawing.Point(20, 15);
-            this._lblPageTitle.Name = "_lblPageTitle";
-            this._lblPageTitle.Size = new System.Drawing.Size(155, 41);
-            this._lblPageTitle.TabIndex = 0;
-            this._lblPageTitle.Text = "Inventory";
-            // 
             // frmProductsManagment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -199,8 +175,6 @@ namespace InventoryManagementSystem
             ((System.ComponentModel.ISupportInitialize)(this.DataGVProducts)).EndInit();
             this._toolbarPanel.ResumeLayout(false);
             this._toolbarPanel.PerformLayout();
-            this._headerPanel.ResumeLayout(false);
-            this._headerPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -208,16 +182,14 @@ namespace InventoryManagementSystem
         #endregion
 
         private System.Windows.Forms.Panel _contentPanel;
-        private System.Windows.Forms.Panel _headerPanel;
-        private System.Windows.Forms.Label _lblPageTitle;
+        private System.Windows.Forms.Panel _gridPanel;
+        private System.Windows.Forms.DataGridView DataGVProducts;
+        private System.Windows.Forms.Label _lblEmptyState;
         private System.Windows.Forms.Panel _toolbarPanel;
         private System.Windows.Forms.TextBox _txtSearch;
         private System.Windows.Forms.ComboBox _cmbCategoryFilter;
         private System.Windows.Forms.Button _btnAddProduct;
         private System.Windows.Forms.Button _btnUpdateProduct;
         private System.Windows.Forms.Button _btnDeleteProduct;
-        private System.Windows.Forms.Panel _gridPanel;
-        private System.Windows.Forms.Label _lblEmptyState;
-        private System.Windows.Forms.DataGridView DataGVProducts;
     }
 }

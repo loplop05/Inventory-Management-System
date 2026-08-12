@@ -65,7 +65,6 @@ namespace InventoryManagementSystem
         {
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Receipt Search");
-            _lblHeaderTitle.Text = clsLanguageManager.GetString("Receipt Search");
             _btnSearch.Text = clsLanguageManager.GetString("Search");
             _btnViewByPhone.Text = clsLanguageManager.GetString("By Phone");
             _btnExchange.Text = clsLanguageManager.GetString("Exchange");
