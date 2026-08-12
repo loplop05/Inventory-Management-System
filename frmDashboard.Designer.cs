@@ -23,6 +23,7 @@ namespace InventoryManagementSystem
             this._btnSectionSales = new System.Windows.Forms.Button();
             this._btnSectionInventory = new System.Windows.Forms.Button();
             this._btnSectionCustomers = new System.Windows.Forms.Button();
+            this._btnSectionForecast = new System.Windows.Forms.Button();
             this._pnlSectionOverview = new System.Windows.Forms.Panel();
             this._summaryCardsPanel = new System.Windows.Forms.TableLayoutPanel();
             this._cardTodaySales = new System.Windows.Forms.Panel();
@@ -58,6 +59,11 @@ namespace InventoryManagementSystem
             this.gridLowStockProducts = new System.Windows.Forms.DataGridView();
             this.lblInventoryTitle = new System.Windows.Forms.Label();
             this._pnlSectionCustomers = new System.Windows.Forms.Panel();
+            this._pnlSectionForecast = new System.Windows.Forms.Panel();
+            this._forecastPanel = new System.Windows.Forms.Panel();
+            this._btnRunForecast = new System.Windows.Forms.Button();
+            this._gridForecast = new System.Windows.Forms.DataGridView();
+            this._lblForecastTitle = new System.Windows.Forms.Label();
             this._loyaltyPanel = new System.Windows.Forms.Panel();
             this.pnlLoyaltyChart = new System.Windows.Forms.Panel();
             this.lblLoyaltyTitle = new System.Windows.Forms.Label();
@@ -85,6 +91,9 @@ namespace InventoryManagementSystem
             this._pnlSectionInventory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridLowStockProducts)).BeginInit();
             this._pnlSectionCustomers.SuspendLayout();
+            this._pnlSectionForecast.SuspendLayout();
+            this._forecastPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._gridForecast)).BeginInit();
             this._loyaltyPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridTopLoyaltyMembers)).BeginInit();
             this._customerAnalyticsPanel.SuspendLayout();
@@ -93,6 +102,7 @@ namespace InventoryManagementSystem
             // 
             // _contentPanel
             // 
+            this._contentPanel.Controls.Add(this._pnlSectionForecast);
             this._contentPanel.Controls.Add(this._pnlSectionCustomers);
             this._contentPanel.Controls.Add(this._pnlSectionInventory);
             this._contentPanel.Controls.Add(this._pnlSectionSales);
@@ -106,6 +116,7 @@ namespace InventoryManagementSystem
             // 
             // _sectionTogglePanel
             // 
+            this._sectionTogglePanel.Controls.Add(this._btnSectionForecast);
             this._sectionTogglePanel.Controls.Add(this._btnSectionCustomers);
             this._sectionTogglePanel.Controls.Add(this._btnSectionInventory);
             this._sectionTogglePanel.Controls.Add(this._btnSectionSales);
@@ -151,6 +162,15 @@ namespace InventoryManagementSystem
             this._btnSectionCustomers.TabIndex = 3;
             this._btnSectionCustomers.Text = "Customers";
             this._btnSectionCustomers.UseVisualStyleBackColor = true;
+            // 
+            // _btnSectionForecast
+            // 
+            this._btnSectionForecast.Location = new System.Drawing.Point(470, 10);
+            this._btnSectionForecast.Name = "_btnSectionForecast";
+            this._btnSectionForecast.Size = new System.Drawing.Size(100, 30);
+            this._btnSectionForecast.TabIndex = 4;
+            this._btnSectionForecast.Text = "Forecast";
+            this._btnSectionForecast.UseVisualStyleBackColor = true;
             // 
             // _pnlSectionOverview
             // 
@@ -488,6 +508,64 @@ namespace InventoryManagementSystem
             this.lblCustomerAnalyticsTitle.TabIndex = 0;
             this.lblCustomerAnalyticsTitle.Text = "Customer Analytics";
             // 
+            // _pnlSectionForecast
+            // 
+            this._pnlSectionForecast.Controls.Add(this._forecastPanel);
+            this._pnlSectionForecast.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._pnlSectionForecast.Location = new System.Drawing.Point(0, 50);
+            this._pnlSectionForecast.Name = "_pnlSectionForecast";
+            this._pnlSectionForecast.Size = new System.Drawing.Size(1139, 686);
+            this._pnlSectionForecast.TabIndex = 4;
+            this._pnlSectionForecast.Visible = false;
+            // 
+            // _forecastPanel
+            // 
+            this._forecastPanel.Controls.Add(this._gridForecast);
+            this._forecastPanel.Controls.Add(this._lblForecastTitle);
+            this._forecastPanel.Controls.Add(this._btnRunForecast);
+            this._forecastPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._forecastPanel.Location = new System.Drawing.Point(0, 0);
+            this._forecastPanel.Name = "_forecastPanel";
+            this._forecastPanel.Padding = new System.Windows.Forms.Padding(20);
+            this._forecastPanel.Size = new System.Drawing.Size(1139, 686);
+            this._forecastPanel.TabIndex = 0;
+            // 
+            // _btnRunForecast
+            // 
+            this._btnRunForecast.Location = new System.Drawing.Point(20, 20);
+            this._btnRunForecast.Name = "_btnRunForecast";
+            this._btnRunForecast.Size = new System.Drawing.Size(150, 40);
+            this._btnRunForecast.TabIndex = 0;
+            this._btnRunForecast.Text = "Run Forecast";
+            this._btnRunForecast.UseVisualStyleBackColor = true;
+            // 
+            // _lblForecastTitle
+            // 
+            this._lblForecastTitle.AutoSize = true;
+            this._lblForecastTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this._lblForecastTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
+            this._lblForecastTitle.Location = new System.Drawing.Point(180, 30);
+            this._lblForecastTitle.Name = "_lblForecastTitle";
+            this._lblForecastTitle.Size = new System.Drawing.Size(0, 28);
+            this._lblForecastTitle.TabIndex = 1;
+            // 
+            // _gridForecast
+            // 
+            this._gridForecast.AllowUserToAddRows = false;
+            this._gridForecast.AllowUserToDeleteRows = false;
+            this._gridForecast.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this._gridForecast.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this._gridForecast.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._gridForecast.Location = new System.Drawing.Point(20, 70);
+            this._gridForecast.Name = "_gridForecast";
+            this._gridForecast.ReadOnly = true;
+            this._gridForecast.RowHeadersVisible = false;
+            this._gridForecast.RowHeadersWidth = 51;
+            this._gridForecast.RowTemplate.Height = 24;
+            this._gridForecast.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this._gridForecast.Size = new System.Drawing.Size(1099, 596);
+            this._gridForecast.TabIndex = 2;
+            // 
             // gridCustomerAnalytics
             // 
             this.gridCustomerAnalytics.AllowUserToAddRows = false;
@@ -683,6 +761,9 @@ namespace InventoryManagementSystem
             this._pnlSectionInventory.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridLowStockProducts)).EndInit();
             this._pnlSectionCustomers.ResumeLayout(false);
+            this._pnlSectionForecast.ResumeLayout(false);
+            this._forecastPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this._gridForecast)).EndInit();
             this._loyaltyPanel.ResumeLayout(false);
             this._loyaltyPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridTopLoyaltyMembers)).EndInit();
@@ -701,6 +782,7 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button _btnSectionSales;
         private System.Windows.Forms.Button _btnSectionInventory;
         private System.Windows.Forms.Button _btnSectionCustomers;
+        private System.Windows.Forms.Button _btnSectionForecast;
         private System.Windows.Forms.Panel _pnlSectionOverview;
         private System.Windows.Forms.TableLayoutPanel _summaryCardsPanel;
         private System.Windows.Forms.Panel _cardTodaySales;
@@ -736,6 +818,11 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.DataGridView gridLowStockProducts;
         private System.Windows.Forms.Label lblInventoryTitle;
         private System.Windows.Forms.Panel _pnlSectionCustomers;
+        private System.Windows.Forms.Panel _pnlSectionForecast;
+        private System.Windows.Forms.Panel _forecastPanel;
+        private System.Windows.Forms.Button _btnRunForecast;
+        private System.Windows.Forms.DataGridView _gridForecast;
+        private System.Windows.Forms.Label _lblForecastTitle;
         private System.Windows.Forms.Panel _loyaltyPanel;
         private System.Windows.Forms.Panel pnlLoyaltyChart;
         private System.Windows.Forms.Label lblLoyaltyTitle;

@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -58,6 +59,8 @@
     <Compile Include="clsReport.cs" />
     <Compile Include="clsSupplier.cs" />
     <Compile Include="clsPermissions.cs" />
+    <Compile Include="clsForecast.cs" />
+    <Compile Include="clsMLServiceClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

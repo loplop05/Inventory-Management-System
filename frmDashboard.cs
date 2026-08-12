@@ -63,15 +63,23 @@ namespace InventoryManagementSystem
             _btnSectionSales.Click += (s, e) => SwitchSection("Sales");
             _btnSectionInventory.Click += (s, e) => SwitchSection("Inventory");
             _btnSectionCustomers.Click += (s, e) => SwitchSection("Customers");
+            _btnSectionForecast.Click += (s, e) => SwitchSection("Forecast");
 
             // Apply pill toggle styling
             clsFormTheme.ApplyPillToggleStyle(_btnSectionOverview, true);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionSales, false);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionInventory, false);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionCustomers, false);
+            clsFormTheme.ApplyPillToggleStyle(_btnSectionForecast, false);
 
             // Wire up loyalty chart paint event
             pnlLoyaltyChart.Paint += pnlLoyaltyChart_Paint;
+
+            // Wire up forecast button
+            _btnRunForecast.Click += _btnRunForecast_Click;
+
+            // Apply grid styling
+            clsFormTheme.ApplyGridStyle(_gridForecast);
         }
 
         private void ApplyLocalization()
@@ -133,12 +141,14 @@ namespace InventoryManagementSystem
             _pnlSectionSales.Visible = false;
             _pnlSectionInventory.Visible = false;
             _pnlSectionCustomers.Visible = false;
+            _pnlSectionForecast.Visible = false;
 
             // Reset all button styles
             clsFormTheme.ApplyPillToggleStyle(_btnSectionOverview, false);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionSales, false);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionInventory, false);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionCustomers, false);
+            clsFormTheme.ApplyPillToggleStyle(_btnSectionForecast, false);
 
             // Show selected section and style button
             switch (section)
@@ -158,6 +168,11 @@ namespace InventoryManagementSystem
                 case "Customers":
                     _pnlSectionCustomers.Visible = true;
                     clsFormTheme.ApplyPillToggleStyle(_btnSectionCustomers, true);
+                    break;
+                case "Forecast":
+                    _pnlSectionForecast.Visible = true;
+                    clsFormTheme.ApplyPillToggleStyle(_btnSectionForecast, true);
+                    LoadForecastData();
                     break;
             }
         }
@@ -891,6 +906,70 @@ namespace InventoryManagementSystem
                 case "Support":
                     // Help system integration - to be implemented
                     break;
+            }
+        }
+
+        private void LoadForecastData()
+        {
+            try
+            {
+                string errorMessage;
+                DataTable forecastData = clsForecast.GetNext7DayForecastSummary(out errorMessage);
+
+                if (forecastData != null)
+                {
+                    _gridForecast.DataSource = forecastData;
+                    _gridForecast.AutoGenerateColumns = true;
+                    _lblForecastTitle.Text = $"Sales Forecast (Next 7 Days) - {forecastData.Rows.Count} Products";
+                }
+                else if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    _lblForecastTitle.Text = "Error loading forecast data";
+                    clsFormTheme.ShowWarning(this, errorMessage, "Forecast");
+                }
+                else
+                {
+                    _lblForecastTitle.Text = "No forecast data available. Click 'Run Forecast' to generate predictions.";
+                    _gridForecast.DataSource = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                _lblForecastTitle.Text = "Error loading forecast data";
+                clsFormTheme.ShowWarning(this, ex.Message, "Forecast");
+            }
+        }
+
+        private async void _btnRunForecast_Click(object sender, EventArgs e)
+        {
+            _btnRunForecast.Enabled = false;
+            _lblForecastTitle.Text = "Training forecast model... Please wait.";
+
+            try
+            {
+                string errorMessage = "";
+                bool success = await System.Threading.Tasks.Task.Run(() => 
+                    clsMLServiceClient.TriggerForecastTraining(out errorMessage));
+
+                if (success)
+                {
+                    clsFormTheme.ShowToastSuccess(this, "Forecast training completed successfully!", "ML Service");
+                    LoadForecastData();
+                }
+                else
+                {
+                    _lblForecastTitle.Text = "Forecast training failed";
+                    clsFormTheme.ShowWarning(this, errorMessage, "ML Service");
+                }
+            }
+            catch (Exception ex)
+            {
+                _lblForecastTitle.Text = "Forecast training failed";
+                clsFormTheme.ShowWarning(this, ex.Message, "ML Service");
+            }
+            finally
+            {
+                _btnRunForecast.Enabled = true;
             }
         }
 
