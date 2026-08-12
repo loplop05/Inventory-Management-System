@@ -62,6 +62,7 @@ namespace InventoryManagementSystem
                 if (_chkRememberMe.Checked)
                 {
                     SaveCredentials(username, password);
+                    MessageBox.Show("Credentials saved!", "Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
@@ -117,15 +118,25 @@ namespace InventoryManagementSystem
         {
             try
             {
+                MessageBox.Show($"Attempting to save: Username={username}, Password length={password.Length}", "Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
                 using (RegistryKey key = Registry.CurrentUser.CreateSubKey(@"Software\InventoryManagementSystem"))
                 {
+                    if (key == null)
+                    {
+                        MessageBox.Show("Failed to create registry key", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    
                     key.SetValue("Username", username);
                     key.SetValue("Password", password);
+                    
+                    MessageBox.Show("Credentials saved to registry successfully!", "Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error saving credentials: {ex.Message}");
+                MessageBox.Show($"Error saving credentials: {ex.Message}\n\nStack trace: {ex.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -133,25 +144,38 @@ namespace InventoryManagementSystem
         {
             try
             {
+                MessageBox.Show("Attempting to load saved credentials...", "Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
                 using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\InventoryManagementSystem"))
                 {
-                    if (key != null)
+                    if (key == null)
                     {
-                        string username = key.GetValue("Username") as string;
-                        string password = key.GetValue("Password") as string;
+                        MessageBox.Show("Registry key not found - no saved credentials exist", "Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
+                    
+                    string username = key.GetValue("Username") as string;
+                    string password = key.GetValue("Password") as string;
+                    
+                    MessageBox.Show($"Loaded from registry: Username={username}, Password length={password?.Length ?? 0}", "Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                        if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
-                        {
-                            _txtUsername.Text = username;
-                            _txtPassword.Text = password;
-                            _chkRememberMe.Checked = true;
-                        }
+                    if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+                    {
+                        _txtUsername.Text = username;
+                        _txtPassword.Text = password;
+                        _chkRememberMe.Checked = true;
+                        
+                        MessageBox.Show("Credentials loaded into form fields!", "Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Saved credentials are empty", "Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error loading credentials: {ex.Message}");
+                MessageBox.Show($"Error loading credentials: {ex.Message}\n\nStack trace: {ex.StackTrace}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -170,7 +194,7 @@ namespace InventoryManagementSystem
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"Error clearing credentials: {ex.Message}");
+                MessageBox.Show($"Error clearing credentials: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
