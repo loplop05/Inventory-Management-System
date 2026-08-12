@@ -24,6 +24,8 @@ namespace InventoryManagementSystem
             this._btnSectionInventory = new System.Windows.Forms.Button();
             this._btnSectionCustomers = new System.Windows.Forms.Button();
             this._btnSectionForecast = new System.Windows.Forms.Button();
+            this._btnSectionAssociations = new System.Windows.Forms.Button();
+            this._btnSectionSegmentation = new System.Windows.Forms.Button();
             this._pnlSectionOverview = new System.Windows.Forms.Panel();
             this._summaryCardsPanel = new System.Windows.Forms.TableLayoutPanel();
             this._cardTodaySales = new System.Windows.Forms.Panel();

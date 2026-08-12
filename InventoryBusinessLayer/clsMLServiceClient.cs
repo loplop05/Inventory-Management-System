@@ -11,12 +11,48 @@ namespace InventoryBusinessLayer
 
         public static bool TriggerForecastTraining(out string errorMessage)
         {
-            return Trigger("/train/forecast", out errorMessage);
+            errorMessage = "";
+            try
+            {
+                var response = _http.PostAsync($"{BaseUrl}/train/forecast", null).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    errorMessage = $"ML service returned {response.StatusCode}";
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
         }
 
         public static bool TriggerAssociationTraining(out string errorMessage)
         {
-            return Trigger("/train/associations", out errorMessage);
+            errorMessage = "";
+            try
+            {
+                var response = _http.PostAsync($"{BaseUrl}/train/associations", null).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    errorMessage = $"ML service returned {response.StatusCode}";
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                errorMessage = ex.Message;
+                return false;
+            }
         }
 
         public static bool TriggerSegmentTraining(out string errorMessage)
