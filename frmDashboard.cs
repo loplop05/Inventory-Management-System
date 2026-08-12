@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using InventoryBusinessLayer;
+using InventoryDataAccessLayer;
 
 namespace InventoryManagementSystem
 {
@@ -63,18 +64,12 @@ namespace InventoryManagementSystem
             _btnSectionSales.Click += (s, e) => SwitchSection("Sales");
             _btnSectionInventory.Click += (s, e) => SwitchSection("Inventory");
             _btnSectionCustomers.Click += (s, e) => SwitchSection("Customers");
-            _btnSectionForecast.Click += (s, e) => SwitchSection("Forecast");
-            _btnSectionAssociations.Click += (s, e) => SwitchSection("Associations");
-            _btnSectionSegmentation.Click += (s, e) => SwitchSection("Segmentation");
 
             // Apply pill toggle styling
             clsFormTheme.ApplyPillToggleStyle(_btnSectionOverview, true);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionSales, false);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionInventory, false);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionCustomers, false);
-            clsFormTheme.ApplyPillToggleStyle(_btnSectionForecast, false);
-            clsFormTheme.ApplyPillToggleStyle(_btnSectionAssociations, false);
-            clsFormTheme.ApplyPillToggleStyle(_btnSectionSegmentation, false);
 
             // Wire up loyalty chart paint event
             pnlLoyaltyChart.Paint += pnlLoyaltyChart_Paint;
@@ -82,16 +77,13 @@ namespace InventoryManagementSystem
             // Wire up forecast button
             _btnRunForecast.Click += _btnRunForecast_Click;
 
-            // Wire up associations button
-            _btnRunAssociations.Click += _btnRunAssociations_Click;
-
             // Wire up segmentation button
             _btnRunSegmentation.Click += _btnRunSegmentation_Click;
 
             // Apply grid styling
             clsFormTheme.ApplyGridStyle(_gridForecast);
-            clsFormTheme.ApplyGridStyle(_gridAssociations);
             clsFormTheme.ApplyGridStyle(_gridSegmentation);
+            clsFormTheme.ApplyGridStyle(_gridAssociations);
         }
 
         private void ApplyLocalization()
@@ -106,9 +98,6 @@ namespace InventoryManagementSystem
             {
                 // Load today's sales
                 LoadTodaySales();
-
-                // Load low stock alerts
-                LoadLowStockAlerts();
 
                 // Load recent orders
                 LoadRecentOrders();
@@ -128,17 +117,22 @@ namespace InventoryManagementSystem
                 // Load payment method breakdown
                 LoadPaymentMethods();
 
-                // Load low stock products for inventory section
+                // Load low stock products for inventory section (also populates summary card)
                 LoadLowStockProducts();
 
-                // Load loyalty analytics for customers section
+                // Load loyalty analytics
                 LoadLoyaltyAnalytics();
 
-                // Load customer analytics for customers section
+                // Load customer analytics
                 LoadCustomerAnalytics();
 
                 // Load profit margin for customers section
                 LoadProfitMargin();
+
+                // Load ML data
+                LoadForecastData();
+                LoadSegmentationData();
+                LoadAssociationsData();
             }
             catch (Exception ex)
             {
@@ -153,18 +147,12 @@ namespace InventoryManagementSystem
             _pnlSectionSales.Visible = false;
             _pnlSectionInventory.Visible = false;
             _pnlSectionCustomers.Visible = false;
-            _pnlSectionForecast.Visible = false;
-            _pnlSectionAssociations.Visible = false;
-            _pnlSegmentation.Visible = false;
 
             // Reset all button styles
             clsFormTheme.ApplyPillToggleStyle(_btnSectionOverview, false);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionSales, false);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionInventory, false);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionCustomers, false);
-            clsFormTheme.ApplyPillToggleStyle(_btnSectionForecast, false);
-            clsFormTheme.ApplyPillToggleStyle(_btnSectionAssociations, false);
-            clsFormTheme.ApplyPillToggleStyle(_btnSectionSegmentation, false);
 
             // Show selected section and style button
             switch (section)
@@ -185,21 +173,6 @@ namespace InventoryManagementSystem
                     _pnlSectionCustomers.Visible = true;
                     clsFormTheme.ApplyPillToggleStyle(_btnSectionCustomers, true);
                     break;
-                case "Forecast":
-                    _pnlSectionForecast.Visible = true;
-                    clsFormTheme.ApplyPillToggleStyle(_btnSectionForecast, true);
-                    LoadForecastData();
-                    break;
-                case "Associations":
-                    _pnlSectionAssociations.Visible = true;
-                    clsFormTheme.ApplyPillToggleStyle(_btnSectionAssociations, true);
-                    LoadAssociationsData();
-                    break;
-                case "Segmentation":
-                    _pnlSegmentation.Visible = true;
-                    clsFormTheme.ApplyPillToggleStyle(_btnSectionSegmentation, true);
-                    LoadSegmentationData();
-                    break;
             }
         }
 
@@ -208,7 +181,7 @@ namespace InventoryManagementSystem
             try
             {
                 DataTable salesData = clsReport.GetDailySales(DateTime.Today);
-                
+
                 if (salesData != null && salesData.Rows.Count > 0)
                 {
                     var row = salesData.Rows[0];
@@ -220,52 +193,15 @@ namespace InventoryManagementSystem
                 }
                 else
                 {
-                    lblTodaySalesValue.Text = "$0.00";
+                    lblTodaySalesValue.Text = 0m.ToString("C");
                     lblTotalOrdersValue.Text = "0";
                 }
-
-                // Load 7-day trend data for sparklines
-                LoadSparklineData();
-
-                // Load hourly sales data
-                LoadHourlySales();
-
-                // Load category performance data
-                LoadCategoryPerformance();
-
-                // Load payment method breakdown
-                LoadPaymentMethods();
-
-                // Load low stock products for inventory section
-                LoadLowStockProducts();
             }
-            catch
+            catch (Exception ex)
             {
-                lblTodaySalesValue.Text = "$0.00";
+                clsErrorLog.LogException("frmDashboard.LoadTodaySales", ex);
+                lblTodaySalesValue.Text = 0m.ToString("C");
                 lblTotalOrdersValue.Text = "0";
-            }
-        }
-
-        private void LoadLowStockAlerts()
-        {
-            try
-            {
-                DataTable lowStock = clsPOS.GetLowStockProducts(5); // Products with quantity < 5
-                
-                if (lowStock != null && lowStock.Rows.Count > 0)
-                {
-                    lblLowStockValue.Text = lowStock.Rows.Count.ToString();
-                    lblLowStockValue.ForeColor = clsFormTheme.WarningColor;
-                }
-                else
-                {
-                    lblLowStockValue.Text = "0";
-                    lblLowStockValue.ForeColor = clsFormTheme.SuccessColor;
-                }
-            }
-            catch
-            {
-                lblLowStockValue.Text = "0";
             }
         }
 
@@ -311,8 +247,9 @@ namespace InventoryManagementSystem
                     gridRecentOrders.DataSource = null;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                clsErrorLog.LogException("frmDashboard.LoadRecentOrders", ex);
                 gridRecentOrders.DataSource = null;
             }
         }
@@ -359,8 +296,9 @@ namespace InventoryManagementSystem
                     gridTopProducts.DataSource = null;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                clsErrorLog.LogException("frmDashboard.LoadTopProducts", ex);
                 gridTopProducts.DataSource = null;
             }
         }
@@ -375,55 +313,47 @@ namespace InventoryManagementSystem
             try
             {
                 string errorMessage;
-                // Get last 7 days of sales data
                 DateTime startDate = DateTime.Today.AddDays(-6);
                 DateTime endDate = DateTime.Today;
                 DataTable salesData = clsAnalytics.GetSalesByDateRange(startDate, endDate, out errorMessage);
-                
-                if (salesData != null && salesData.Rows.Count > 0)
+
+                _salesTrendData = new List<decimal>();
+                _ordersTrendData = new List<int>();
+
+                // Build a lookup keyed by date, independent of column-name assumptions on Select()
+                var byDate = new Dictionary<DateTime, (decimal sales, int orders)>();
+                if (salesData != null)
                 {
-                    _salesTrendData = new List<decimal>();
-                    _ordersTrendData = new List<int>();
-                    
-                    // Group by day and extract values
-                    for (int i = 0; i < 7; i++)
+                    foreach (DataRow row in salesData.Rows)
                     {
-                        DateTime day = startDate.AddDays(i);
-                        var dayRows = salesData.Select("OrderDate = '" + day.ToString("yyyy-MM-dd") + "'");
-                        
-                        if (dayRows.Length > 0)
-                        {
-                            decimal daySales = 0;
-                            int dayOrders = 0;
-                            foreach (DataRow row in dayRows)
-                            {
-                                if (row["TotalSales"] != DBNull.Value)
-                                    daySales += Convert.ToDecimal(row["TotalSales"]);
-                                if (row["OrderCount"] != DBNull.Value)
-                                    dayOrders += Convert.ToInt32(row["OrderCount"]);
-                            }
-                            _salesTrendData.Add(daySales);
-                            _ordersTrendData.Add(dayOrders);
-                        }
-                        else
-                        {
-                            _salesTrendData.Add(0);
-                            _ordersTrendData.Add(0);
-                        }
+                        DateTime saleDate = Convert.ToDateTime(row["SaleDate"]).Date;
+                        decimal sales = row["TotalSales"] != DBNull.Value ? Convert.ToDecimal(row["TotalSales"]) : 0;
+                        int orders = row["OrderCount"] != DBNull.Value ? Convert.ToInt32(row["OrderCount"]) : 0;
+                        byDate[saleDate] = (sales, orders);
                     }
                 }
-                else
+
+                for (int i = 0; i < 7; i++)
                 {
-                    _salesTrendData = new List<decimal>(new decimal[7]);
-                    _ordersTrendData = new List<int>(new int[7]);
+                    DateTime day = startDate.AddDays(i).Date;
+                    if (byDate.TryGetValue(day, out var dayData))
+                    {
+                        _salesTrendData.Add(dayData.sales);
+                        _ordersTrendData.Add(dayData.orders);
+                    }
+                    else
+                    {
+                        _salesTrendData.Add(0);
+                        _ordersTrendData.Add(0);
+                    }
                 }
-                
-                // Refresh sparklines
+
                 pnlSalesSparkline.Invalidate();
                 pnlOrdersSparkline.Invalidate();
             }
-            catch
+            catch (Exception ex)
             {
+                clsErrorLog.LogException("frmDashboard.LoadSparklineData", ex);
                 _salesTrendData = new List<decimal>(new decimal[7]);
                 _ordersTrendData = new List<int>(new int[7]);
             }
@@ -506,8 +436,9 @@ namespace InventoryManagementSystem
                 
                 pnlHourlyChart.Invalidate();
             }
-            catch
+            catch (Exception ex)
             {
+                clsErrorLog.LogException("frmDashboard.LoadHourlySales", ex);
                 _hourlySalesData = new Dictionary<int, decimal>();
             }
         }
@@ -587,8 +518,9 @@ namespace InventoryManagementSystem
                 
                 pnlCategoryChart.Invalidate();
             }
-            catch
+            catch (Exception ex)
             {
+                clsErrorLog.LogException("frmDashboard.LoadCategoryPerformance", ex);
                 _categoryData = new Dictionary<string, decimal>();
             }
         }
@@ -633,7 +565,7 @@ namespace InventoryManagementSystem
                     g.FillRectangle(barBrush, padding + labelWidth, y, barWidthPixels, barHeight);
                     
                     // Draw value
-                    string value = "$" + kvp.Value.ToString("F0");
+                    string value = clsFormTheme.FormatCurrency(kvp.Value);
                     SizeF valueSize = g.MeasureString(value, font);
                     g.DrawString(value, font, textBrush, padding + labelWidth + barWidthPixels + 5, y);
                     
@@ -650,37 +582,35 @@ namespace InventoryManagementSystem
                 DateTime startDate = DateTime.Today.AddDays(-7);
                 DateTime endDate = DateTime.Today;
                 DataTable paymentData = clsAnalytics.GetPaymentMethodDistribution(startDate, endDate, out errorMessage);
-                
-                if (paymentData != null && paymentData.Rows.Count > 0)
+
+                _paymentData = new Dictionary<string, decimal>();
+                if (paymentData != null)
                 {
-                    _paymentData = new Dictionary<string, decimal>();
-                    
                     foreach (DataRow row in paymentData.Rows)
                     {
                         string method = row["PaymentMethod"].ToString();
                         decimal amount = row["TotalAmount"] != DBNull.Value ? Convert.ToDecimal(row["TotalAmount"]) : 0;
                         _paymentData[method] = amount;
                     }
-                    
-                    // Update UI labels
-                    decimal cashAmount = _paymentData.ContainsKey("Cash") ? _paymentData["Cash"] : 0;
-                    decimal visaAmount = _paymentData.ContainsKey("Visa") ? _paymentData["Visa"] : 0;
-                    
-                    lblPaymentCash.Text = "Cash: $" + cashAmount.ToString("F0");
-                    lblPaymentVisa.Text = "Visa: $" + visaAmount.ToString("F0");
                 }
-                else
-                {
-                    _paymentData = new Dictionary<string, decimal>();
-                    lblPaymentCash.Text = "Cash: $0";
-                    lblPaymentVisa.Text = "Visa: $0";
-                }
+
+                decimal cashAmount = _paymentData.ContainsKey("Cash") ? _paymentData["Cash"] : 0;
+                decimal visaAmount = _paymentData.ContainsKey("Visa") ? _paymentData["Visa"] : 0;
+                decimal otherAmount = _paymentData
+                    .Where(kvp => kvp.Key != "Cash" && kvp.Key != "Visa")
+                    .Sum(kvp => kvp.Value);
+
+                lblPaymentCash.Text = "Cash: " + clsFormTheme.FormatCurrency(cashAmount);
+                lblPaymentVisa.Text = "Visa: " + clsFormTheme.FormatCurrency(visaAmount);
+                lblPaymentOther.Text = "Other: " + clsFormTheme.FormatCurrency(otherAmount);
             }
-            catch
+            catch (Exception ex)
             {
+                clsErrorLog.LogException("frmDashboard.LoadPaymentMethods", ex);
                 _paymentData = new Dictionary<string, decimal>();
-                lblPaymentCash.Text = "Cash: $0";
-                lblPaymentVisa.Text = "Visa: $0";
+                lblPaymentCash.Text = "Cash: " + clsFormTheme.FormatCurrency(0);
+                lblPaymentVisa.Text = "Visa: " + clsFormTheme.FormatCurrency(0);
+                lblPaymentOther.Text = "Other: " + clsFormTheme.FormatCurrency(0);
             }
         }
 
@@ -690,14 +620,17 @@ namespace InventoryManagementSystem
             {
                 string errorMessage;
                 DataTable lowStockData = clsAnalytics.GetLowStockProducts(5, out errorMessage);
-                
+
                 if (lowStockData != null && lowStockData.Rows.Count > 0)
                 {
+                    // Populate summary card label
+                    lblLowStockValue.Text = lowStockData.Rows.Count.ToString();
+                    lblLowStockValue.ForeColor = clsFormTheme.WarningColor;
+
+                    // Bind to grid
                     gridLowStockProducts.DataSource = lowStockData;
                     gridLowStockProducts.Columns["ProductID"].Visible = false;
-                    gridLowStockProducts.Columns["CategoryID"].Visible = false;
-                    gridLowStockProducts.Columns["SupplierID"].Visible = false;
-                    gridLowStockProducts.Columns["ProductName"].HeaderText = "Product";
+                    gridLowStockProducts.Columns["ProductName"].HeaderText = "Product Name";
                     gridLowStockProducts.Columns["CategoryName"].HeaderText = "Category";
                     gridLowStockProducts.Columns["StockQuantity"].HeaderText = "Quantity";
                     gridLowStockProducts.Columns["Price"].HeaderText = "Price";
@@ -705,11 +638,16 @@ namespace InventoryManagementSystem
                 }
                 else
                 {
+                    // Populate summary card label with 0
+                    lblLowStockValue.Text = "0";
+                    lblLowStockValue.ForeColor = clsFormTheme.SuccessColor;
                     gridLowStockProducts.DataSource = null;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                clsErrorLog.LogException("frmDashboard.LoadLowStockProducts", ex);
+                lblLowStockValue.Text = "0";
                 gridLowStockProducts.DataSource = null;
             }
         }
@@ -752,8 +690,9 @@ namespace InventoryManagementSystem
                     gridTopLoyaltyMembers.Columns["Tier"].HeaderText = "Tier";
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                clsErrorLog.LogException("frmDashboard.LoadLoyaltyAnalytics", ex);
                 _loyaltyTierData = new Dictionary<string, int>();
             }
         }
@@ -782,8 +721,9 @@ namespace InventoryManagementSystem
                     gridCustomerAnalytics.DataSource = null;
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                clsErrorLog.LogException("frmDashboard.LoadCustomerAnalytics", ex);
                 gridCustomerAnalytics.DataSource = null;
             }
         }
@@ -839,10 +779,170 @@ namespace InventoryManagementSystem
                     lblProfitMargin.ForeColor = Color.FromArgb(148, 163, 184);
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                clsErrorLog.LogException("frmDashboard.LoadProfitMargin", ex);
                 lblProfitMargin.Text = "Cost data not populated";
                 lblProfitMargin.ForeColor = Color.FromArgb(148, 163, 184);
+            }
+        }
+
+        private void LoadForecastData()
+        {
+            try
+            {
+                string errorMessage;
+                DataTable forecastData = clsForecast.GetNext7DayForecastSummary(out errorMessage);
+
+                if (forecastData != null)
+                {
+                    _gridForecast.DataSource = forecastData;
+                    _gridForecast.AutoGenerateColumns = true;
+                    _lblForecastTitle.Text = $"Sales Forecast (Next 7 Days) - {forecastData.Rows.Count} Products";
+                }
+                else if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    _lblForecastTitle.Text = "Error loading forecast data";
+                    clsFormTheme.ShowWarning(this, errorMessage, "Forecast");
+                }
+                else
+                {
+                    _gridForecast.DataSource = null;
+                    _lblForecastTitle.Text = "No forecast data available";
+                }
+            }
+            catch (Exception ex)
+            {
+                _lblForecastTitle.Text = "Error loading forecast data";
+                clsFormTheme.ShowWarning(this, ex.Message, "Forecast");
+            }
+        }
+
+        private async void _btnRunForecast_Click(object sender, EventArgs e)
+        {
+            _btnRunForecast.Enabled = false;
+            _lblForecastTitle.Text = "Training forecast model... Please wait.";
+
+            try
+            {
+                string errorMessage = "";
+                bool success = await System.Threading.Tasks.Task.Run(() =>
+                    clsMLServiceClient.TriggerForecastTraining(out errorMessage));
+
+                if (success)
+                {
+                    clsFormTheme.ShowToastSuccess(this, "Forecast training completed successfully!", "ML Service");
+                    LoadForecastData();
+                }
+                else
+                {
+                    _lblForecastTitle.Text = "Forecast training failed";
+                    clsFormTheme.ShowWarning(this, errorMessage, "ML Service");
+                }
+            }
+            catch (Exception ex)
+            {
+                _lblForecastTitle.Text = "Forecast training failed";
+                clsFormTheme.ShowWarning(this, ex.Message, "ML Service");
+            }
+            finally
+            {
+                _btnRunForecast.Enabled = true;
+            }
+        }
+
+        private void LoadSegmentationData()
+        {
+            try
+            {
+                string errorMessage;
+                DataTable segmentationData = clsSegment.GetAllSegments(out errorMessage);
+
+                if (segmentationData != null)
+                {
+                    _gridSegmentation.DataSource = segmentationData;
+                    _gridSegmentation.AutoGenerateColumns = true;
+                    _lblSegmentationTitle.Text = $"Customer Segments - {segmentationData.Rows.Count} Customers";
+                }
+                else if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    _lblSegmentationTitle.Text = "Error loading segmentation data";
+                    clsFormTheme.ShowWarning(this, errorMessage, "Segmentation");
+                }
+                else
+                {
+                    _gridSegmentation.DataSource = null;
+                    _lblSegmentationTitle.Text = "No segmentation data available";
+                }
+            }
+            catch (Exception ex)
+            {
+                _lblSegmentationTitle.Text = "Error loading segmentation data";
+                clsFormTheme.ShowWarning(this, ex.Message, "Segmentation");
+            }
+        }
+
+        private async void _btnRunSegmentation_Click(object sender, EventArgs e)
+        {
+            _btnRunSegmentation.Enabled = false;
+            _lblSegmentationTitle.Text = "Running customer segmentation... Please wait.";
+
+            try
+            {
+                string errorMessage = "";
+                bool success = await System.Threading.Tasks.Task.Run(() =>
+                    clsMLServiceClient.TriggerSegmentTraining(out errorMessage));
+
+                if (success)
+                {
+                    clsFormTheme.ShowToastSuccess(this, "Customer segmentation completed successfully!", "ML Service");
+                    LoadSegmentationData();
+                }
+                else
+                {
+                    _lblSegmentationTitle.Text = "Customer segmentation failed";
+                    clsFormTheme.ShowWarning(this, errorMessage, "ML Service");
+                }
+            }
+            catch (Exception ex)
+            {
+                _lblSegmentationTitle.Text = "Customer segmentation failed";
+                clsFormTheme.ShowWarning(this, ex.Message, "ML Service");
+            }
+            finally
+            {
+                _btnRunSegmentation.Enabled = true;
+            }
+        }
+
+        private void LoadAssociationsData()
+        {
+            try
+            {
+                string errorMessage;
+                DataTable associationsData = clsAssociation.GetAllAssociations(50, out errorMessage);
+
+                if (associationsData != null)
+                {
+                    _gridAssociations.DataSource = associationsData;
+                    _gridAssociations.AutoGenerateColumns = true;
+                    _lblAssociationsTitle.Text = $"Product Associations (Top 50 by Lift) - {associationsData.Rows.Count} Rules";
+                }
+                else if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    _lblAssociationsTitle.Text = "Error loading association data";
+                    clsFormTheme.ShowWarning(this, errorMessage, "Associations");
+                }
+                else
+                {
+                    _gridAssociations.DataSource = null;
+                    _lblAssociationsTitle.Text = "No association data available";
+                }
+            }
+            catch (Exception ex)
+            {
+                _lblAssociationsTitle.Text = "Error loading association data";
+                clsFormTheme.ShowWarning(this, ex.Message, "Associations");
             }
         }
 
@@ -870,8 +970,10 @@ namespace InventoryManagementSystem
             {
                 Color.FromArgb(37, 99, 235),   // Blue
                 Color.FromArgb(34, 197, 94),   // Green
-                Color.FromArgb(234, 179, 8),  // Yellow
-                Color.FromArgb(168, 85, 247)   // Purple
+                Color.FromArgb(234, 179, 8),   // Yellow
+                Color.FromArgb(168, 85, 247),  // Purple
+                Color.FromArgb(236, 72, 153),  // Pink
+                Color.FromArgb(20, 184, 166)   // Teal
             };
             
             float startAngle = 0;
@@ -899,231 +1001,6 @@ namespace InventoryManagementSystem
                     startAngle += sweepAngle;
                     colorIndex++;
                 }
-            }
-        }
-
-        private void OnSidebarNavigation(string screenKey)
-        {
-            switch (screenKey)
-            {
-                case "Dashboard":
-                    // Already on Dashboard
-                    break;
-                case "POS":
-                    var posForm = new frmPOS();
-                    posForm.Show();
-                    this.Close();
-                    break;
-                case "Inventory":
-                    var productsForm = new frmProductsManagment();
-                    productsForm.Show();
-                    this.Close();
-                    break;
-                case "Orders":
-                    var receiptForm = new frmReceiptSearch();
-                    receiptForm.Show();
-                    this.Close();
-                    break;
-                case "Reports":
-                    var reportForm = new frmDailyReport();
-                    reportForm.Show();
-                    this.Close();
-                    break;
-                case "Support":
-                    // Help system integration - to be implemented
-                    break;
-            }
-        }
-
-        private void LoadForecastData()
-        {
-            try
-            {
-                string errorMessage;
-                DataTable forecastData = clsForecast.GetNext7DayForecastSummary(out errorMessage);
-
-                if (forecastData != null)
-                {
-                    _gridForecast.DataSource = forecastData;
-                    _gridForecast.AutoGenerateColumns = true;
-                    _lblForecastTitle.Text = $"Sales Forecast (Next 7 Days) - {forecastData.Rows.Count} Products";
-                }
-                else if (!string.IsNullOrEmpty(errorMessage))
-                {
-                    _lblForecastTitle.Text = "Error loading forecast data";
-                    clsFormTheme.ShowWarning(this, errorMessage, "Forecast");
-                }
-                else
-                {
-                    _lblForecastTitle.Text = "No forecast data available. Click 'Run Forecast' to generate predictions.";
-                    _gridForecast.DataSource = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                _lblForecastTitle.Text = "Error loading forecast data";
-                clsFormTheme.ShowWarning(this, ex.Message, "Forecast");
-            }
-        }
-
-        private async void _btnRunForecast_Click(object sender, EventArgs e)
-        {
-            _btnRunForecast.Enabled = false;
-            _lblForecastTitle.Text = "Training forecast model... Please wait.";
-
-            try
-            {
-                string errorMessage = "";
-                bool success = await System.Threading.Tasks.Task.Run(() => 
-                    clsMLServiceClient.TriggerForecastTraining(out errorMessage));
-
-                if (success)
-                {
-                    clsFormTheme.ShowToastSuccess(this, "Forecast training completed successfully!", "ML Service");
-                    LoadForecastData();
-                }
-                else
-                {
-                    _lblForecastTitle.Text = "Forecast training failed";
-                    clsFormTheme.ShowWarning(this, errorMessage, "ML Service");
-                }
-            }
-            catch (Exception ex)
-            {
-                _lblForecastTitle.Text = "Forecast training failed";
-                clsFormTheme.ShowWarning(this, ex.Message, "ML Service");
-            }
-            finally
-            {
-                _btnRunForecast.Enabled = true;
-            }
-        }
-
-        private void LoadAssociationsData()
-        {
-            try
-            {
-                string errorMessage;
-                DataTable associationsData = clsAssociation.GetAllAssociations(50, out errorMessage);
-
-                if (associationsData != null && associationsData.Rows.Count > 0)
-                {
-                    _gridAssociations.DataSource = associationsData;
-                    _gridAssociations.AutoGenerateColumns = true;
-                    _lblAssociationsTitle.Text = $"Product Associations (Top 50 by Lift) - {associationsData.Rows.Count} Rules";
-                }
-                else if (!string.IsNullOrEmpty(errorMessage))
-                {
-                    _lblAssociationsTitle.Text = "Error loading association data";
-                    clsFormTheme.ShowWarning(this, errorMessage, "Associations");
-                }
-                else
-                {
-                    _lblAssociationsTitle.Text = "No association data available. Click 'Run Analysis' to generate rules.";
-                    _gridAssociations.DataSource = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                _lblAssociationsTitle.Text = "Error loading association data";
-                clsFormTheme.ShowWarning(this, ex.Message, "Associations");
-            }
-        }
-
-        private async void _btnRunAssociations_Click(object sender, EventArgs e)
-        {
-            _btnRunAssociations.Enabled = false;
-            _lblAssociationsTitle.Text = "Running association analysis... Please wait.";
-
-            try
-            {
-                string errorMessage = "";
-                bool success = await System.Threading.Tasks.Task.Run(() => 
-                    clsMLServiceClient.TriggerAssociationTraining(out errorMessage));
-
-                if (success)
-                {
-                    clsFormTheme.ShowToastSuccess(this, "Association analysis completed successfully!", "ML Service");
-                    LoadAssociationsData();
-                }
-                else
-                {
-                    _lblAssociationsTitle.Text = "Association analysis failed";
-                    clsFormTheme.ShowWarning(this, errorMessage, "ML Service");
-                }
-            }
-            catch (Exception ex)
-            {
-                _lblAssociationsTitle.Text = "Association analysis failed";
-                clsFormTheme.ShowWarning(this, ex.Message, "ML Service");
-            }
-            finally
-            {
-                _btnRunAssociations.Enabled = true;
-            }
-        }
-
-        private void LoadSegmentationData()
-        {
-            try
-            {
-                string errorMessage;
-                DataTable segmentationData = clsSegment.GetAllSegments(out errorMessage);
-
-                if (segmentationData != null && segmentationData.Rows.Count > 0)
-                {
-                    _gridSegmentation.DataSource = segmentationData;
-                    _gridSegmentation.AutoGenerateColumns = true;
-                    _lblSegmentationTitle.Text = $"Customer Segments - {segmentationData.Rows.Count} Customers";
-                }
-                else if (!string.IsNullOrEmpty(errorMessage))
-                {
-                    _lblSegmentationTitle.Text = "Error loading segmentation data";
-                    clsFormTheme.ShowWarning(this, errorMessage, "Segmentation");
-                }
-                else
-                {
-                    _lblSegmentationTitle.Text = "No segmentation data available. Click 'Run Segmentation' to generate segments.";
-                    _gridSegmentation.DataSource = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                _lblSegmentationTitle.Text = "Error loading segmentation data";
-                clsFormTheme.ShowWarning(this, ex.Message, "Segmentation");
-            }
-        }
-
-        private async void _btnRunSegmentation_Click(object sender, EventArgs e)
-        {
-            _btnRunSegmentation.Enabled = false;
-            _lblSegmentationTitle.Text = "Running customer segmentation... Please wait.";
-
-            try
-            {
-                string errorMessage = "";
-                bool success = await System.Threading.Tasks.Task.Run(() => 
-                    clsMLServiceClient.TriggerSegmentTraining(out errorMessage));
-
-                if (success)
-                {
-                    clsFormTheme.ShowToastSuccess(this, "Customer segmentation completed successfully!", "ML Service");
-                    LoadSegmentationData();
-                }
-                else
-                {
-                    _lblSegmentationTitle.Text = "Customer segmentation failed";
-                    clsFormTheme.ShowWarning(this, errorMessage, "ML Service");
-                }
-            }
-            catch (Exception ex)
-            {
-                _lblSegmentationTitle.Text = "Customer segmentation failed";
-                clsFormTheme.ShowWarning(this, ex.Message, "ML Service");
-            }
-            finally
-            {
-                _btnRunSegmentation.Enabled = true;
             }
         }
 

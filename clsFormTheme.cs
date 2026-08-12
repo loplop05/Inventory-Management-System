@@ -2,6 +2,7 @@ using System;
 using System.Configuration;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace InventoryManagementSystem
@@ -10,6 +11,14 @@ namespace InventoryManagementSystem
     {
         // ─── Theme Mode ─────────────────────────────────────────────────────────
         public static bool IsDarkMode { get; private set; } = false;
+
+        /// <summary>
+        /// Formats a decimal amount as currency using the current culture.
+        /// </summary>
+        public static string FormatCurrency(decimal amount)
+        {
+            return amount.ToString("C", CultureInfo.CurrentCulture);
+        }
 
         /// <summary>
         /// Toggles between light and dark mode.
