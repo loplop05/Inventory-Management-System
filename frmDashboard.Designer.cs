@@ -64,6 +64,16 @@ namespace InventoryManagementSystem
             this._btnRunForecast = new System.Windows.Forms.Button();
             this._gridForecast = new System.Windows.Forms.DataGridView();
             this._lblForecastTitle = new System.Windows.Forms.Label();
+            this._pnlSectionAssociations = new System.Windows.Forms.Panel();
+            this._associationsPanel = new System.Windows.Forms.Panel();
+            this._btnRunAssociations = new System.Windows.Forms.Button();
+            this._gridAssociations = new System.Windows.Forms.DataGridView();
+            this._lblAssociationsTitle = new System.Windows.Forms.Label();
+            this._pnlSegmentation = new System.Windows.Forms.Panel();
+            this._segmentationPanel = new System.Windows.Forms.Panel();
+            this._btnRunSegmentation = new System.Windows.Forms.Button();
+            this._gridSegmentation = new System.Windows.Forms.DataGridView();
+            this._lblSegmentationTitle = new System.Windows.Forms.Label();
             this._loyaltyPanel = new System.Windows.Forms.Panel();
             this.pnlLoyaltyChart = new System.Windows.Forms.Panel();
             this.lblLoyaltyTitle = new System.Windows.Forms.Label();
@@ -94,6 +104,12 @@ namespace InventoryManagementSystem
             this._pnlSectionForecast.SuspendLayout();
             this._forecastPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._gridForecast)).BeginInit();
+            this._pnlSectionAssociations.SuspendLayout();
+            this._associationsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._gridAssociations)).BeginInit();
+            this._pnlSegmentation.SuspendLayout();
+            this._segmentationPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._gridSegmentation)).BeginInit();
             this._loyaltyPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridTopLoyaltyMembers)).BeginInit();
             this._customerAnalyticsPanel.SuspendLayout();
@@ -102,6 +118,8 @@ namespace InventoryManagementSystem
             // 
             // _contentPanel
             // 
+            this._contentPanel.Controls.Add(this._pnlSegmentation);
+            this._contentPanel.Controls.Add(this._pnlSectionAssociations);
             this._contentPanel.Controls.Add(this._pnlSectionForecast);
             this._contentPanel.Controls.Add(this._pnlSectionCustomers);
             this._contentPanel.Controls.Add(this._pnlSectionInventory);
@@ -116,6 +134,8 @@ namespace InventoryManagementSystem
             // 
             // _sectionTogglePanel
             // 
+            this._sectionTogglePanel.Controls.Add(this._btnSectionSegmentation);
+            this._sectionTogglePanel.Controls.Add(this._btnSectionAssociations);
             this._sectionTogglePanel.Controls.Add(this._btnSectionForecast);
             this._sectionTogglePanel.Controls.Add(this._btnSectionCustomers);
             this._sectionTogglePanel.Controls.Add(this._btnSectionInventory);
@@ -171,6 +191,24 @@ namespace InventoryManagementSystem
             this._btnSectionForecast.TabIndex = 4;
             this._btnSectionForecast.Text = "Forecast";
             this._btnSectionForecast.UseVisualStyleBackColor = true;
+            // 
+            // _btnSectionAssociations
+            // 
+            this._btnSectionAssociations.Location = new System.Drawing.Point(580, 10);
+            this._btnSectionAssociations.Name = "_btnSectionAssociations";
+            this._btnSectionAssociations.Size = new System.Drawing.Size(120, 30);
+            this._btnSectionAssociations.TabIndex = 5;
+            this._btnSectionAssociations.Text = "Associations";
+            this._btnSectionAssociations.UseVisualStyleBackColor = true;
+            // 
+            // _btnSectionSegmentation
+            // 
+            this._btnSectionSegmentation.Location = new System.Drawing.Point(710, 10);
+            this._btnSectionSegmentation.Name = "_btnSectionSegmentation";
+            this._btnSectionSegmentation.Size = new System.Drawing.Size(120, 30);
+            this._btnSectionSegmentation.TabIndex = 6;
+            this._btnSectionSegmentation.Text = "Segments";
+            this._btnSectionSegmentation.UseVisualStyleBackColor = true;
             // 
             // _pnlSectionOverview
             // 
@@ -566,6 +604,122 @@ namespace InventoryManagementSystem
             this._gridForecast.Size = new System.Drawing.Size(1099, 596);
             this._gridForecast.TabIndex = 2;
             // 
+            // _pnlSectionAssociations
+            // 
+            this._pnlSectionAssociations.Controls.Add(this._associationsPanel);
+            this._pnlSectionAssociations.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._pnlSectionAssociations.Location = new System.Drawing.Point(0, 50);
+            this._pnlSectionAssociations.Name = "_pnlSectionAssociations";
+            this._pnlSectionAssociations.Size = new System.Drawing.Size(1139, 686);
+            this._pnlSectionAssociations.TabIndex = 5;
+            this._pnlSectionAssociations.Visible = false;
+            // 
+            // _associationsPanel
+            // 
+            this._associationsPanel.Controls.Add(this._gridAssociations);
+            this._associationsPanel.Controls.Add(this._lblAssociationsTitle);
+            this._associationsPanel.Controls.Add(this._btnRunAssociations);
+            this._associationsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._associationsPanel.Location = new System.Drawing.Point(0, 0);
+            this._associationsPanel.Name = "_associationsPanel";
+            this._associationsPanel.Padding = new System.Windows.Forms.Padding(20);
+            this._associationsPanel.Size = new System.Drawing.Size(1139, 686);
+            this._associationsPanel.TabIndex = 0;
+            // 
+            // _btnRunAssociations
+            // 
+            this._btnRunAssociations.Location = new System.Drawing.Point(20, 20);
+            this._btnRunAssociations.Name = "_btnRunAssociations";
+            this._btnRunAssociations.Size = new System.Drawing.Size(150, 40);
+            this._btnRunAssociations.TabIndex = 0;
+            this._btnRunAssociations.Text = "Run Analysis";
+            this._btnRunAssociations.UseVisualStyleBackColor = true;
+            // 
+            // _lblAssociationsTitle
+            // 
+            this._lblAssociationsTitle.AutoSize = true;
+            this._lblAssociationsTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this._lblAssociationsTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
+            this._lblAssociationsTitle.Location = new System.Drawing.Point(180, 30);
+            this._lblAssociationsTitle.Name = "_lblAssociationsTitle";
+            this._lblAssociationsTitle.Size = new System.Drawing.Size(0, 28);
+            this._lblAssociationsTitle.TabIndex = 1;
+            // 
+            // _gridAssociations
+            // 
+            this._gridAssociations.AllowUserToAddRows = false;
+            this._gridAssociations.AllowUserToDeleteRows = false;
+            this._gridAssociations.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this._gridAssociations.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this._gridAssociations.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._gridAssociations.Location = new System.Drawing.Point(20, 70);
+            this._gridAssociations.Name = "_gridAssociations";
+            this._gridAssociations.ReadOnly = true;
+            this._gridAssociations.RowHeadersVisible = false;
+            this._gridAssociations.RowHeadersWidth = 51;
+            this._gridAssociations.RowTemplate.Height = 24;
+            this._gridAssociations.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this._gridAssociations.Size = new System.Drawing.Size(1099, 596);
+            this._gridAssociations.TabIndex = 2;
+            // 
+            // _pnlSegmentation
+            // 
+            this._pnlSegmentation.Controls.Add(this._segmentationPanel);
+            this._pnlSegmentation.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._pnlSegmentation.Location = new System.Drawing.Point(0, 50);
+            this._pnlSegmentation.Name = "_pnlSegmentation";
+            this._pnlSegmentation.Size = new System.Drawing.Size(1139, 686);
+            this._pnlSegmentation.TabIndex = 6;
+            this._pnlSegmentation.Visible = false;
+            // 
+            // _segmentationPanel
+            // 
+            this._segmentationPanel.Controls.Add(this._gridSegmentation);
+            this._segmentationPanel.Controls.Add(this._lblSegmentationTitle);
+            this._segmentationPanel.Controls.Add(this._btnRunSegmentation);
+            this._segmentationPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._segmentationPanel.Location = new System.Drawing.Point(0, 0);
+            this._segmentationPanel.Name = "_segmentationPanel";
+            this._segmentationPanel.Padding = new System.Windows.Forms.Padding(20);
+            this._segmentationPanel.Size = new System.Drawing.Size(1139, 686);
+            this._segmentationPanel.TabIndex = 0;
+            // 
+            // _btnRunSegmentation
+            // 
+            this._btnRunSegmentation.Location = new System.Drawing.Point(20, 20);
+            this._btnRunSegmentation.Name = "_btnRunSegmentation";
+            this._btnRunSegmentation.Size = new System.Drawing.Size(150, 40);
+            this._btnRunSegmentation.TabIndex = 0;
+            this._btnRunSegmentation.Text = "Run Segmentation";
+            this._btnRunSegmentation.UseVisualStyleBackColor = true;
+            // 
+            // _lblSegmentationTitle
+            // 
+            this._lblSegmentationTitle.AutoSize = true;
+            this._lblSegmentationTitle.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            this._lblSegmentationTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
+            this._lblSegmentationTitle.Location = new System.Drawing.Point(180, 30);
+            this._lblSegmentationTitle.Name = "_lblSegmentationTitle";
+            this._lblSegmentationTitle.Size = new System.Drawing.Size(0, 28);
+            this._lblSegmentationTitle.TabIndex = 1;
+            // 
+            // _gridSegmentation
+            // 
+            this._gridSegmentation.AllowUserToAddRows = false;
+            this._gridSegmentation.AllowUserToDeleteRows = false;
+            this._gridSegmentation.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this._gridSegmentation.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this._gridSegmentation.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._gridSegmentation.Location = new System.Drawing.Point(20, 70);
+            this._gridSegmentation.Name = "_gridSegmentation";
+            this._gridSegmentation.ReadOnly = true;
+            this._gridSegmentation.RowHeadersVisible = false;
+            this._gridSegmentation.RowHeadersWidth = 51;
+            this._gridSegmentation.RowTemplate.Height = 24;
+            this._gridSegmentation.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this._gridSegmentation.Size = new System.Drawing.Size(1099, 596);
+            this._gridSegmentation.TabIndex = 2;
+            // 
             // gridCustomerAnalytics
             // 
             this.gridCustomerAnalytics.AllowUserToAddRows = false;
@@ -764,6 +918,12 @@ namespace InventoryManagementSystem
             this._pnlSectionForecast.ResumeLayout(false);
             this._forecastPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._gridForecast)).EndInit();
+            this._pnlSectionAssociations.ResumeLayout(false);
+            this._associationsPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this._gridAssociations)).EndInit();
+            this._pnlSegmentation.ResumeLayout(false);
+            this._segmentationPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this._gridSegmentation)).EndInit();
             this._loyaltyPanel.ResumeLayout(false);
             this._loyaltyPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridTopLoyaltyMembers)).EndInit();
@@ -783,6 +943,8 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Button _btnSectionInventory;
         private System.Windows.Forms.Button _btnSectionCustomers;
         private System.Windows.Forms.Button _btnSectionForecast;
+        private System.Windows.Forms.Button _btnSectionAssociations;
+        private System.Windows.Forms.Button _btnSectionSegmentation;
         private System.Windows.Forms.Panel _pnlSectionOverview;
         private System.Windows.Forms.TableLayoutPanel _summaryCardsPanel;
         private System.Windows.Forms.Panel _cardTodaySales;
@@ -819,10 +981,20 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Label lblInventoryTitle;
         private System.Windows.Forms.Panel _pnlSectionCustomers;
         private System.Windows.Forms.Panel _pnlSectionForecast;
+        private System.Windows.Forms.Panel _pnlSectionAssociations;
+        private System.Windows.Forms.Panel _pnlSegmentation;
         private System.Windows.Forms.Panel _forecastPanel;
         private System.Windows.Forms.Button _btnRunForecast;
         private System.Windows.Forms.DataGridView _gridForecast;
         private System.Windows.Forms.Label _lblForecastTitle;
+        private System.Windows.Forms.Panel _associationsPanel;
+        private System.Windows.Forms.Button _btnRunAssociations;
+        private System.Windows.Forms.DataGridView _gridAssociations;
+        private System.Windows.Forms.Label _lblAssociationsTitle;
+        private System.Windows.Forms.Panel _segmentationPanel;
+        private System.Windows.Forms.Button _btnRunSegmentation;
+        private System.Windows.Forms.DataGridView _gridSegmentation;
+        private System.Windows.Forms.Label _lblSegmentationTitle;
         private System.Windows.Forms.Panel _loyaltyPanel;
         private System.Windows.Forms.Panel pnlLoyaltyChart;
         private System.Windows.Forms.Label lblLoyaltyTitle;

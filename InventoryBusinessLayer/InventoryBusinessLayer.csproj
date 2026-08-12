@@ -61,6 +61,8 @@
     <Compile Include="clsPermissions.cs" />
     <Compile Include="clsForecast.cs" />
     <Compile Include="clsMLServiceClient.cs" />
+    <Compile Include="clsAssociation.cs" />
+    <Compile Include="clsSegment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

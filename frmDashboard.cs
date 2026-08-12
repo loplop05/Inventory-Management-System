@@ -64,6 +64,8 @@ namespace InventoryManagementSystem
             _btnSectionInventory.Click += (s, e) => SwitchSection("Inventory");
             _btnSectionCustomers.Click += (s, e) => SwitchSection("Customers");
             _btnSectionForecast.Click += (s, e) => SwitchSection("Forecast");
+            _btnSectionAssociations.Click += (s, e) => SwitchSection("Associations");
+            _btnSectionSegmentation.Click += (s, e) => SwitchSection("Segmentation");
 
             // Apply pill toggle styling
             clsFormTheme.ApplyPillToggleStyle(_btnSectionOverview, true);
@@ -71,6 +73,8 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyPillToggleStyle(_btnSectionInventory, false);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionCustomers, false);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionForecast, false);
+            clsFormTheme.ApplyPillToggleStyle(_btnSectionAssociations, false);
+            clsFormTheme.ApplyPillToggleStyle(_btnSectionSegmentation, false);
 
             // Wire up loyalty chart paint event
             pnlLoyaltyChart.Paint += pnlLoyaltyChart_Paint;
@@ -78,8 +82,16 @@ namespace InventoryManagementSystem
             // Wire up forecast button
             _btnRunForecast.Click += _btnRunForecast_Click;
 
+            // Wire up associations button
+            _btnRunAssociations.Click += _btnRunAssociations_Click;
+
+            // Wire up segmentation button
+            _btnRunSegmentation.Click += _btnRunSegmentation_Click;
+
             // Apply grid styling
             clsFormTheme.ApplyGridStyle(_gridForecast);
+            clsFormTheme.ApplyGridStyle(_gridAssociations);
+            clsFormTheme.ApplyGridStyle(_gridSegmentation);
         }
 
         private void ApplyLocalization()
@@ -142,6 +154,8 @@ namespace InventoryManagementSystem
             _pnlSectionInventory.Visible = false;
             _pnlSectionCustomers.Visible = false;
             _pnlSectionForecast.Visible = false;
+            _pnlSectionAssociations.Visible = false;
+            _pnlSegmentation.Visible = false;
 
             // Reset all button styles
             clsFormTheme.ApplyPillToggleStyle(_btnSectionOverview, false);
@@ -149,6 +163,8 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyPillToggleStyle(_btnSectionInventory, false);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionCustomers, false);
             clsFormTheme.ApplyPillToggleStyle(_btnSectionForecast, false);
+            clsFormTheme.ApplyPillToggleStyle(_btnSectionAssociations, false);
+            clsFormTheme.ApplyPillToggleStyle(_btnSectionSegmentation, false);
 
             // Show selected section and style button
             switch (section)
@@ -173,6 +189,16 @@ namespace InventoryManagementSystem
                     _pnlSectionForecast.Visible = true;
                     clsFormTheme.ApplyPillToggleStyle(_btnSectionForecast, true);
                     LoadForecastData();
+                    break;
+                case "Associations":
+                    _pnlSectionAssociations.Visible = true;
+                    clsFormTheme.ApplyPillToggleStyle(_btnSectionAssociations, true);
+                    LoadAssociationsData();
+                    break;
+                case "Segmentation":
+                    _pnlSegmentation.Visible = true;
+                    clsFormTheme.ApplyPillToggleStyle(_btnSectionSegmentation, true);
+                    LoadSegmentationData();
                     break;
             }
         }
@@ -970,6 +996,134 @@ namespace InventoryManagementSystem
             finally
             {
                 _btnRunForecast.Enabled = true;
+            }
+        }
+
+        private void LoadAssociationsData()
+        {
+            try
+            {
+                string errorMessage;
+                DataTable associationsData = clsAssociation.GetAllAssociations(50, out errorMessage);
+
+                if (associationsData != null && associationsData.Rows.Count > 0)
+                {
+                    _gridAssociations.DataSource = associationsData;
+                    _gridAssociations.AutoGenerateColumns = true;
+                    _lblAssociationsTitle.Text = $"Product Associations (Top 50 by Lift) - {associationsData.Rows.Count} Rules";
+                }
+                else if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    _lblAssociationsTitle.Text = "Error loading association data";
+                    clsFormTheme.ShowWarning(this, errorMessage, "Associations");
+                }
+                else
+                {
+                    _lblAssociationsTitle.Text = "No association data available. Click 'Run Analysis' to generate rules.";
+                    _gridAssociations.DataSource = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                _lblAssociationsTitle.Text = "Error loading association data";
+                clsFormTheme.ShowWarning(this, ex.Message, "Associations");
+            }
+        }
+
+        private async void _btnRunAssociations_Click(object sender, EventArgs e)
+        {
+            _btnRunAssociations.Enabled = false;
+            _lblAssociationsTitle.Text = "Running association analysis... Please wait.";
+
+            try
+            {
+                string errorMessage = "";
+                bool success = await System.Threading.Tasks.Task.Run(() => 
+                    clsMLServiceClient.TriggerAssociationTraining(out errorMessage));
+
+                if (success)
+                {
+                    clsFormTheme.ShowToastSuccess(this, "Association analysis completed successfully!", "ML Service");
+                    LoadAssociationsData();
+                }
+                else
+                {
+                    _lblAssociationsTitle.Text = "Association analysis failed";
+                    clsFormTheme.ShowWarning(this, errorMessage, "ML Service");
+                }
+            }
+            catch (Exception ex)
+            {
+                _lblAssociationsTitle.Text = "Association analysis failed";
+                clsFormTheme.ShowWarning(this, ex.Message, "ML Service");
+            }
+            finally
+            {
+                _btnRunAssociations.Enabled = true;
+            }
+        }
+
+        private void LoadSegmentationData()
+        {
+            try
+            {
+                string errorMessage;
+                DataTable segmentationData = clsSegment.GetAllSegments(out errorMessage);
+
+                if (segmentationData != null && segmentationData.Rows.Count > 0)
+                {
+                    _gridSegmentation.DataSource = segmentationData;
+                    _gridSegmentation.AutoGenerateColumns = true;
+                    _lblSegmentationTitle.Text = $"Customer Segments - {segmentationData.Rows.Count} Customers";
+                }
+                else if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    _lblSegmentationTitle.Text = "Error loading segmentation data";
+                    clsFormTheme.ShowWarning(this, errorMessage, "Segmentation");
+                }
+                else
+                {
+                    _lblSegmentationTitle.Text = "No segmentation data available. Click 'Run Segmentation' to generate segments.";
+                    _gridSegmentation.DataSource = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                _lblSegmentationTitle.Text = "Error loading segmentation data";
+                clsFormTheme.ShowWarning(this, ex.Message, "Segmentation");
+            }
+        }
+
+        private async void _btnRunSegmentation_Click(object sender, EventArgs e)
+        {
+            _btnRunSegmentation.Enabled = false;
+            _lblSegmentationTitle.Text = "Running customer segmentation... Please wait.";
+
+            try
+            {
+                string errorMessage = "";
+                bool success = await System.Threading.Tasks.Task.Run(() => 
+                    clsMLServiceClient.TriggerSegmentTraining(out errorMessage));
+
+                if (success)
+                {
+                    clsFormTheme.ShowToastSuccess(this, "Customer segmentation completed successfully!", "ML Service");
+                    LoadSegmentationData();
+                }
+                else
+                {
+                    _lblSegmentationTitle.Text = "Customer segmentation failed";
+                    clsFormTheme.ShowWarning(this, errorMessage, "ML Service");
+                }
+            }
+            catch (Exception ex)
+            {
+                _lblSegmentationTitle.Text = "Customer segmentation failed";
+                clsFormTheme.ShowWarning(this, ex.Message, "ML Service");
+            }
+            finally
+            {
+                _btnRunSegmentation.Enabled = true;
             }
         }
 

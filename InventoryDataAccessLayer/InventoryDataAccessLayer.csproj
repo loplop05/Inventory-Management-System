@@ -63,6 +63,7 @@
     <Compile Include="clsDatabaseMigration.cs" />
     <Compile Include="clsForecastData.cs" />
     <Compile Include="clsAssociationData.cs" />
+    <Compile Include="clsSegmentData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

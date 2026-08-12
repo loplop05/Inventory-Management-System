@@ -21,25 +21,23 @@ namespace InventoryBusinessLayer
 
         public static bool TriggerSegmentTraining(out string errorMessage)
         {
-            return Trigger("/train/segments", out errorMessage);
-        }
-
-        private static bool Trigger(string path, out string errorMessage)
-        {
             errorMessage = "";
             try
             {
-                var response = _http.PostAsync(BaseUrl + path, null).Result;
-                if (!response.IsSuccessStatusCode)
+                var response = _http.PostAsync($"{BaseUrl}/train/segments", null).Result;
+                if (response.IsSuccessStatusCode)
                 {
-                    errorMessage = $"ML service returned {(int)response.StatusCode}.";
+                    return true;
+                }
+                else
+                {
+                    errorMessage = $"ML service returned {response.StatusCode}";
                     return false;
                 }
-                return true;
             }
             catch (Exception ex)
             {
-                errorMessage = "Could not reach ML service. Is it running? " + ex.Message;
+                errorMessage = ex.Message;
                 return false;
             }
         }

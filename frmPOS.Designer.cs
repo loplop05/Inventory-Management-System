@@ -17,8 +17,8 @@ namespace InventoryManagementSystem
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this._contentPanel = new System.Windows.Forms.Panel();
             this._mainLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this._topPanel = new System.Windows.Forms.Panel();
@@ -403,8 +403,8 @@ namespace InventoryManagementSystem
             // _colUnitPrice
             // 
             this._colUnitPrice.DataPropertyName = "UnitPrice";
-            dataGridViewCellStyle3.Format = "C2";
-            this._colUnitPrice.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Format = "C2";
+            this._colUnitPrice.DefaultCellStyle = dataGridViewCellStyle1;
             this._colUnitPrice.FillWeight = 70F;
             this._colUnitPrice.HeaderText = "Price";
             this._colUnitPrice.MinimumWidth = 6;
@@ -415,8 +415,8 @@ namespace InventoryManagementSystem
             // _colSubtotal
             // 
             this._colSubtotal.DataPropertyName = "Subtotal";
-            dataGridViewCellStyle4.Format = "C2";
-            this._colSubtotal.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Format = "C2";
+            this._colSubtotal.DefaultCellStyle = dataGridViewCellStyle2;
             this._colSubtotal.FillWeight = 80F;
             this._colSubtotal.HeaderText = "Subtotal";
             this._colSubtotal.MinimumWidth = 6;

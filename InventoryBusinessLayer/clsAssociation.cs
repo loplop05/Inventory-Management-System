@@ -21,5 +21,15 @@ namespace InventoryBusinessLayer
 
             return clsAssociationData.GetSuggestionsForProduct(productId, topN, out errorMessage);
         }
+
+        public static DataTable GetAllAssociations(int topN, out string errorMessage)
+        {
+            if (topN <= 0)
+            {
+                topN = 50; // Default to 50 rules
+            }
+
+            return clsAssociationData.GetAllAssociations(topN, out errorMessage);
+        }
     }
 }
