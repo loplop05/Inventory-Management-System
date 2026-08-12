@@ -218,14 +218,7 @@ namespace InventoryManagementSystem
             if (_currentOrderID == -1)
                 return;
 
-            DialogResult result = clsFormTheme.ShowYesNo(this,
-                "Do you want to print this receipt?",
-                "Print Receipt");
-
-            if (result == DialogResult.Yes)
-            {
-                PrintReceipt();
-            }
+            PrintReceipt();
         }
 
         private void PrintReceipt()
