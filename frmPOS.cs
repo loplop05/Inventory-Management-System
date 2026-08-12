@@ -680,8 +680,7 @@ namespace InventoryManagementSystem
 
                 // Show receipt preview before asking to print
                 var receiptForm = new frmPrintReceipt();
-                receiptForm.OrderIDTextBox.Text = orderID.ToString();
-                receiptForm.SearchOrder();
+                receiptForm.AutoLoadOrderID = orderID;
                 receiptForm.ShowDialog();
             }
         }

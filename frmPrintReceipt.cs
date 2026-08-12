@@ -16,6 +16,8 @@ namespace InventoryManagementSystem
         private int _currentPrintLine = 0;
         private string[] _receiptLines = null;
         private int _currentPageNumber = 0;
+        private bool _autoLoaded = false;
+        private int _pendingOrderID = -1;
 
         public frmPrintReceipt()
         {
@@ -26,6 +28,16 @@ namespace InventoryManagementSystem
         {
             ApplyTheme();
             ClearDisplay();
+
+            // Auto-load pending order ID if set
+            if (_pendingOrderID > 0)
+            {
+                _txtOrderID.Text = _pendingOrderID.ToString();
+                _txtOrderID.ReadOnly = true;
+                _btnSearch.Visible = false;
+                _autoLoaded = true;
+                LoadOrderDetails(_pendingOrderID);
+            }
         }
 
         private void ApplyTheme()
@@ -72,6 +84,17 @@ namespace InventoryManagementSystem
         public TextBox OrderIDTextBox
         {
             get { return _txtOrderID; }
+        }
+
+        public int AutoLoadOrderID
+        {
+            set
+            {
+                if (value > 0)
+                {
+                    _pendingOrderID = value;
+                }
+            }
         }
 
         public void SearchOrder()
