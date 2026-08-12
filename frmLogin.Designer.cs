@@ -149,6 +149,7 @@ namespace InventoryManagementSystem
             this.Name = "frmLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Inventory Management - Login";
+            this.Load += new System.EventHandler(this.frmLogin_Load);
             this._loginCard.ResumeLayout(false);
             this._loginCard.PerformLayout();
             this.ResumeLayout(false);

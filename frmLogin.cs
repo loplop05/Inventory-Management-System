@@ -62,7 +62,6 @@ namespace InventoryManagementSystem
                 if (_chkRememberMe.Checked)
                 {
                     SaveCredentials(username, password);
-                    MessageBox.Show("Credentials saved!", "Debug", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
