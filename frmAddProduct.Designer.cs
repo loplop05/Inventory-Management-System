@@ -294,6 +294,17 @@ namespace InventoryManagementSystem
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
             // frmAddProduct
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(450, 550);
+            this.Controls.Add(this._contentPanel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "frmAddProduct";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Add New Product";
             this.Load += new System.EventHandler(this.frmAddProduct_Load);
             this._contentPanel.ResumeLayout(false);
             this._fieldsPanel.ResumeLayout(false);
