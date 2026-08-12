@@ -138,9 +138,9 @@ namespace InventoryManagementSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1400, 800);
+            this.ClientSize = new System.Drawing.Size(1000, 650);
             this.Controls.Add(this._contentPanel);
-            this.MinimumSize = new System.Drawing.Size(1200, 650);
+            this.MinimumSize = new System.Drawing.Size(900, 550);
             this.Name = "frmStockValuationReport";
             this.Text = "Stock Valuation Report";
             this.AutoScroll = true;

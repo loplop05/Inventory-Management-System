@@ -607,10 +607,10 @@ namespace InventoryManagementSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1487, 783);
+            this.ClientSize = new System.Drawing.Size(1200, 700);
             this.Controls.Add(this._contentPanel);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.MinimumSize = new System.Drawing.Size(1200, 650);
+            this.MinimumSize = new System.Drawing.Size(1000, 600);
             this.Name = "frmPOS";
             this.Text = "Point of Sale";
             this.Load += new System.EventHandler(this.frmPOS_Load);

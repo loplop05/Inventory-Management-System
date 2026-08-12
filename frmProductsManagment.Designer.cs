@@ -163,9 +163,9 @@ namespace InventoryManagementSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1366, 768);
+            this.ClientSize = new System.Drawing.Size(1000, 650);
             this.Controls.Add(this._contentPanel);
-            this.MinimumSize = new System.Drawing.Size(1200, 600);
+            this.MinimumSize = new System.Drawing.Size(900, 550);
             this.Name = "frmProductsManagment";
             this.Text = "Products Management";
             this.Load += new System.EventHandler(this.frmProductsManagment_Load);
