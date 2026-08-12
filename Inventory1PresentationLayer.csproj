@@ -393,6 +393,9 @@
     <EmbeddedResource Include="frmOpenShift.resx">
       <DependentUpon>frmOpenShift.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmPOS.resx">
+      <DependentUpon>frmPOS.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmShowCategoryToUpdate.resx">
       <DependentUpon>frmShowCategoryToUpdate.cs</DependentUpon>
     </EmbeddedResource>

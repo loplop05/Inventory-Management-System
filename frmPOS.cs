@@ -678,15 +678,11 @@ namespace InventoryManagementSystem
                 RefreshReceiptTotals();
                 LoadProducts();
 
-                // Ask if user wants to print receipt
-                var result = MessageBox.Show("Order completed successfully!\n\nPrint receipt?", "Success", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result == DialogResult.Yes)
-                {
-                    var orderDetails = clsCustomer.GetOrderDetails(orderID);
-                    var orderItems = clsCustomer.GetOrderItems(orderID);
-                    string customerName = _selectedCustomerName ?? "Guest";
-                    clsPrintHelper.PrintReceipt(orderDetails, orderItems, customerName);
-                }
+                // Show receipt preview before asking to print
+                var receiptForm = new frmPrintReceipt();
+                receiptForm.OrderIDTextBox.Text = orderID.ToString();
+                receiptForm.SearchOrder();
+                receiptForm.ShowDialog();
             }
         }
 
