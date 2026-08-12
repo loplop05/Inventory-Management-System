@@ -61,9 +61,9 @@ namespace InventoryManagementSystem
 
             // Wire up section toggle buttons
             _btnSectionOverview.Click += (s, e) => SwitchSection("Overview");
-            _btnSectionSales.Click += (s, e) => SwitchSection("Sales");
-            _btnSectionInventory.Click += (s, e) => SwitchSection("Inventory");
-            _btnSectionCustomers.Click += (s, e) => SwitchSection("Customers");
+            _btnSectionSales.Click += (s, e) => OpenSalesDashboard();
+            _btnSectionInventory.Click += (s, e) => OpenInventoryDashboard();
+            _btnSectionCustomers.Click += (s, e) => OpenCustomersDashboard();
 
             // Apply pill toggle styling
             clsFormTheme.ApplyPillToggleStyle(_btnSectionOverview, true);
@@ -73,17 +73,30 @@ namespace InventoryManagementSystem
 
             // Wire up loyalty chart paint event
             pnlLoyaltyChart.Paint += pnlLoyaltyChart_Paint;
+        }
 
-            // Wire up forecast button
-            _btnRunForecast.Click += _btnRunForecast_Click;
+        private void OpenSalesDashboard()
+        {
+            using (var dashboard = new frmSalesDashboard())
+            {
+                dashboard.ShowDialog();
+            }
+        }
 
-            // Wire up segmentation button
-            _btnRunSegmentation.Click += _btnRunSegmentation_Click;
+        private void OpenCustomersDashboard()
+        {
+            using (var dashboard = new frmCustomersDashboard())
+            {
+                dashboard.ShowDialog();
+            }
+        }
 
-            // Apply grid styling
-            clsFormTheme.ApplyGridStyle(_gridForecast);
-            clsFormTheme.ApplyGridStyle(_gridSegmentation);
-            clsFormTheme.ApplyGridStyle(_gridAssociations);
+        private void OpenInventoryDashboard()
+        {
+            using (var dashboard = new frmInventoryDashboard())
+            {
+                dashboard.ShowDialog();
+            }
         }
 
         private void ApplyLocalization()
