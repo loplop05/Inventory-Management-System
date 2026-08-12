@@ -19,7 +19,6 @@ namespace InventoryManagementSystem
         private void frmChangePassword_Load(object sender, EventArgs e)
         {
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Change Password", clsFormTheme.Icons.Refresh);
 
             clsFormTheme.ApplyTextBoxStyle(txtNewPassword);
             clsFormTheme.ApplyTextBoxStyle(txtConfirmPassword);

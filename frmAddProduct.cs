@@ -26,7 +26,7 @@ namespace InventoryManagementSystem
 
             clsFormTheme.ApplyFormStyle(this);
 
-            // Style buttons
+            btnAdd.Text = "Save Product";
             clsFormTheme.ApplyPrimaryButtonStyle(btnAdd, clsFormTheme.Icons.Save);
             clsFormTheme.ApplySecondaryButtonStyle(btnCancel);
 

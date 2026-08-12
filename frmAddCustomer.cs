@@ -26,7 +26,6 @@ namespace InventoryManagementSystem
         private void ApplyTheme()
         {
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Add New Customer", clsFormTheme.Icons.User);
             clsFormTheme.ApplyTextBoxStyle(txtPhoneNumber);
             clsFormTheme.ApplyTextBoxStyle(txtCustomerName);
             clsFormTheme.ApplyPrimaryButtonStyle(btnAdd, clsFormTheme.Icons.Save);

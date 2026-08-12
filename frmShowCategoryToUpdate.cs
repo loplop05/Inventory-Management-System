@@ -27,7 +27,6 @@ namespace InventoryManagementSystem
             _errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Edit Category", clsFormTheme.Icons.Update);
             btnUpdate.Text = "Save Changes";
             btnUpdate.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnUpdate, clsFormTheme.Icons.Save);

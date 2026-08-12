@@ -30,6 +30,7 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyPrimaryButtonStyle(_btnSearch, clsFormTheme.Icons.Search);
             clsFormTheme.ApplySecondaryButtonStyle(_btnViewByPhone, clsFormTheme.Icons.User);
             clsFormTheme.ApplySuccessButtonStyle(_btnExchange, clsFormTheme.Icons.Exchange);
+            clsFormTheme.ApplySecondaryButtonStyle(_btnClose, clsFormTheme.Icons.Close);
             clsFormTheme.ApplyGridStyle(_gridOrderItems);
 
             // Setup keyboard shortcuts
@@ -68,6 +69,7 @@ namespace InventoryManagementSystem
             _btnSearch.Text = clsLanguageManager.GetString("Search");
             _btnViewByPhone.Text = clsLanguageManager.GetString("By Phone");
             _btnExchange.Text = clsLanguageManager.GetString("Exchange");
+            _btnClose.Text = clsLanguageManager.GetString("Close");
         }
 
         private void ClearDisplay()

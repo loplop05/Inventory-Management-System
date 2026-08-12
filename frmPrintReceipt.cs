@@ -55,6 +55,7 @@ namespace InventoryManagementSystem
         {
             clsLanguageManager.ApplyLanguage(this);
             Text = clsLanguageManager.GetString("Print Receipt");
+            _btnClose.Text = clsLanguageManager.GetString("Close");
         }
 
         private void ClearDisplay()

@@ -39,6 +39,7 @@ namespace InventoryManagementSystem
             this._lblPaymentInfo = new System.Windows.Forms.Label();
             this._actionsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this._btnExchange = new System.Windows.Forms.Button();
+            this._btnClose = new System.Windows.Forms.Button();
             this._contentPanel.SuspendLayout();
             this._headerPanel.SuspendLayout();
             this._mainLayoutPanel.SuspendLayout();
@@ -269,6 +270,7 @@ namespace InventoryManagementSystem
             // 
             // _actionsPanel
             // 
+            this._actionsPanel.Controls.Add(this._btnClose);
             this._actionsPanel.Controls.Add(this._btnExchange);
             this._actionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._actionsPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
@@ -287,6 +289,17 @@ namespace InventoryManagementSystem
             this._btnExchange.Text = "Exchange";
             this._btnExchange.UseVisualStyleBackColor = true;
             this._btnExchange.Click += new System.EventHandler(this.btnExchange_Click);
+            // 
+            // _btnClose
+            // 
+            this._btnClose.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this._btnClose.Location = new System.Drawing.Point(545, 3);
+            this._btnClose.Name = "_btnClose";
+            this._btnClose.Size = new System.Drawing.Size(100, 51);
+            this._btnClose.TabIndex = 1;
+            this._btnClose.Text = "Close";
+            this._btnClose.UseVisualStyleBackColor = true;
+            this._btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // frmReceiptSearch
             // 
@@ -342,5 +355,6 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Label _lblPaymentInfo;
         private System.Windows.Forms.FlowLayoutPanel _actionsPanel;
         private System.Windows.Forms.Button _btnExchange;
+        private System.Windows.Forms.Button _btnClose;
     }
 }

@@ -24,10 +24,10 @@ namespace InventoryManagementSystem
             _errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Edit Supplier", clsFormTheme.Icons.Update);
             btnUpdate.Text = "Save Changes";
             btnUpdate.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnUpdate, clsFormTheme.Icons.Save);
+            clsFormTheme.ApplySecondaryButtonStyle(btnCancel, clsFormTheme.Icons.Close);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewSupplierName);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewPhone);
             clsFormTheme.ApplyTextBoxStyle(txtBoxNewEmail);
@@ -245,7 +245,16 @@ namespace InventoryManagementSystem
         private void frmShowSupplierToUpdate_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
-                Close();
+            {
+                btnCancel.PerformClick();
+                e.SuppressKeyPress = true;
+            }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
         }
     }
 }

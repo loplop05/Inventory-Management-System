@@ -16,7 +16,6 @@ namespace InventoryManagementSystem
         private void frmShiftHistory_Load(object sender, EventArgs e)
         {
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Shift History", clsFormTheme.Icons.History);
             clsFormTheme.ApplyTextBoxStyle(_txtSearch);
             
             _btnRefresh.Font = new System.Drawing.Font(clsFormTheme.MainFontName, 10F, System.Drawing.FontStyle.Bold);

@@ -27,6 +27,7 @@ namespace InventoryManagementSystem
             this._actionsPanel = new System.Windows.Forms.FlowLayoutPanel();
             this._btnPrint = new System.Windows.Forms.Button();
             this._btnVoid = new System.Windows.Forms.Button();
+            this._btnClose = new System.Windows.Forms.Button();
             this._mainLayoutPanel.SuspendLayout();
             this._searchPanel.SuspendLayout();
             this._panelReceipt.SuspendLayout();
@@ -119,6 +120,7 @@ namespace InventoryManagementSystem
             // 
             // _actionsPanel
             // 
+            this._actionsPanel.Controls.Add(this._btnClose);
             this._actionsPanel.Controls.Add(this._btnVoid);
             this._actionsPanel.Controls.Add(this._btnPrint);
             this._actionsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -149,6 +151,17 @@ namespace InventoryManagementSystem
             this._btnVoid.Text = "Void";
             this._btnVoid.UseVisualStyleBackColor = true;
             this._btnVoid.Click += new System.EventHandler(this.btnVoid_Click);
+            // 
+            // _btnClose
+            // 
+            this._btnClose.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this._btnClose.Location = new System.Drawing.Point(220, 0);
+            this._btnClose.Name = "_btnClose";
+            this._btnClose.Size = new System.Drawing.Size(100, 34);
+            this._btnClose.TabIndex = 2;
+            this._btnClose.Text = "Close";
+            this._btnClose.UseVisualStyleBackColor = true;
+            this._btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // frmPrintReceipt
             // 
@@ -185,5 +198,6 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.FlowLayoutPanel _actionsPanel;
         private System.Windows.Forms.Button _btnPrint;
         private System.Windows.Forms.Button _btnVoid;
+        private System.Windows.Forms.Button _btnClose;
     }
 }

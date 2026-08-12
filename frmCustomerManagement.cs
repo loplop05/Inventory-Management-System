@@ -21,7 +21,6 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Customer Management", clsFormTheme.Icons.User);
 
             // Setup keyboard shortcuts
             clsKeyboardShortcuts.SetupCommonShortcuts(

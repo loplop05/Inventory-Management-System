@@ -31,7 +31,6 @@ namespace InventoryManagementSystem
         private void frmAddEditUser_Load(object sender, EventArgs e)
         {
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, _userID.HasValue ? "Edit User" : "Add User", clsFormTheme.Icons.User);
 
             clsFormTheme.ApplyTextBoxStyle(txtUsername);
             clsFormTheme.ApplyTextBoxStyle(txtDisplayName);

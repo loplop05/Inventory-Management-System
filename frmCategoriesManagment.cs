@@ -293,5 +293,10 @@ namespace InventoryManagementSystem
                 Close();
             }
         }
+
+        private void _headerPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

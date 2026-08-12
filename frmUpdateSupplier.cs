@@ -20,7 +20,6 @@ namespace InventoryManagementSystem
             _errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Update Supplier", clsFormTheme.Icons.Update);
             btnSearch.Text = "Find Supplier";
             btnSearch.Font = new Font(clsFormTheme.MainFontName, 10F, FontStyle.Bold);
             clsFormTheme.ApplyPrimaryButtonStyle(btnSearch, clsFormTheme.Icons.Search);

@@ -20,7 +20,6 @@ namespace InventoryManagementSystem
         private void InitializeForm()
         {
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Select Payment Method", clsFormTheme.Icons.Money);
 
             // Style controls
             clsFormTheme.ApplyPrimaryButtonStyle(_btnCash);

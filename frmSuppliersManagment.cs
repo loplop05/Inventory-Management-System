@@ -287,7 +287,6 @@ namespace InventoryManagementSystem
             })
             {
                 clsFormTheme.ApplyFormStyle(perfForm);
-                clsFormTheme.CreateHeaderPanel(perfForm, "Supplier Performance", clsFormTheme.Icons.Chart);
 
                 var mainPanel = new TableLayoutPanel
                 {

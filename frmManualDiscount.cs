@@ -22,7 +22,6 @@ namespace InventoryManagementSystem
         private void frmManualDiscount_Load(object sender, EventArgs e)
         {
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Manual Discount", clsFormTheme.Icons.Money);
 
             clsFormTheme.ApplyTextBoxStyle(txtDiscountValue);
             clsFormTheme.ApplyPrimaryButtonStyle(btnApply, clsFormTheme.Icons.Check);

@@ -12,7 +12,6 @@ namespace InventoryManagementSystem
         {
             InitializeComponent();
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Reorder Suggestions", clsFormTheme.Icons.Reports);
             clsFormTheme.ApplyPrimaryButtonStyle(btnExport, clsFormTheme.Icons.Export);
             clsFormTheme.ApplySecondaryButtonStyle(btnClose, clsFormTheme.Icons.Exit);
             clsFormTheme.ApplyGridStyle(dgvReorders);

@@ -18,7 +18,6 @@ namespace InventoryManagementSystem
             InitializeComponent();
 
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Inventory Management System", clsFormTheme.Icons.Home);
 
             // Style quick search
             clsFormTheme.ApplyTextBoxStyle(_txtQuickSearch);

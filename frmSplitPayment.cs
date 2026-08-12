@@ -25,7 +25,6 @@ namespace InventoryManagementSystem
         private void InitializeForm()
         {
             clsFormTheme.ApplyFormStyle(this);
-            clsFormTheme.CreateHeaderPanel(this, "Split Payment", clsFormTheme.Icons.Money);
 
             // Style controls
             clsFormTheme.ApplyTextBoxStyle(_txtCashAmount);
