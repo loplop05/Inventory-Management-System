@@ -21,6 +21,7 @@ namespace InventoryManagementSystem
             this._txtPassword = new System.Windows.Forms.TextBox();
             this._btnLogin = new System.Windows.Forms.Button();
             this._btnExit = new System.Windows.Forms.Button();
+            this._chkRememberMe = new System.Windows.Forms.CheckBox();
             this._loginCard.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -33,11 +34,12 @@ namespace InventoryManagementSystem
             this._loginCard.Controls.Add(this._txtUsername);
             this._loginCard.Controls.Add(this._lblPassword);
             this._loginCard.Controls.Add(this._txtPassword);
+            this._loginCard.Controls.Add(this._chkRememberMe);
             this._loginCard.Controls.Add(this._btnLogin);
             this._loginCard.Controls.Add(this._btnExit);
             this._loginCard.Location = new System.Drawing.Point(200, 150);
             this._loginCard.Name = "_loginCard";
-            this._loginCard.Size = new System.Drawing.Size(400, 350);
+            this._loginCard.Size = new System.Drawing.Size(400, 380);
             this._loginCard.TabIndex = 0;
             // 
             // _lblTitle
@@ -102,12 +104,24 @@ namespace InventoryManagementSystem
             this._txtPassword.TabIndex = 5;
             this._txtPassword.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPassword_KeyDown);
             // 
+            // _chkRememberMe
+            // 
+            this._chkRememberMe.AutoSize = true;
+            this._chkRememberMe.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this._chkRememberMe.ForeColor = System.Drawing.Color.FromArgb(30, 41, 59);
+            this._chkRememberMe.Location = new System.Drawing.Point(30, 230);
+            this._chkRememberMe.Name = "_chkRememberMe";
+            this._chkRememberMe.Size = new System.Drawing.Size(110, 19);
+            this._chkRememberMe.TabIndex = 6;
+            this._chkRememberMe.Text = "Remember me";
+            this._chkRememberMe.UseVisualStyleBackColor = true;
+            // 
             // _btnLogin
             // 
             this._btnLogin.Location = new System.Drawing.Point(30, 260);
             this._btnLogin.Name = "_btnLogin";
             this._btnLogin.Size = new System.Drawing.Size(340, 40);
-            this._btnLogin.TabIndex = 6;
+            this._btnLogin.TabIndex = 7;
             this._btnLogin.Text = "Login";
             this._btnLogin.UseVisualStyleBackColor = true;
             this._btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
@@ -118,7 +132,7 @@ namespace InventoryManagementSystem
             this._btnExit.Location = new System.Drawing.Point(30, 310);
             this._btnExit.Name = "_btnExit";
             this._btnExit.Size = new System.Drawing.Size(340, 35);
-            this._btnExit.TabIndex = 7;
+            this._btnExit.TabIndex = 8;
             this._btnExit.Text = "Exit";
             this._btnExit.UseVisualStyleBackColor = true;
             this._btnExit.Click += new System.EventHandler(this.btnExit_Click);
@@ -147,6 +161,7 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.TextBox _txtUsername;
         private System.Windows.Forms.Label _lblPassword;
         private System.Windows.Forms.TextBox _txtPassword;
+        private System.Windows.Forms.CheckBox _chkRememberMe;
         private System.Windows.Forms.Button _btnLogin;
         private System.Windows.Forms.Button _btnExit;
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace InventoryManagementSystem
 {
@@ -29,6 +30,7 @@ namespace InventoryManagementSystem
         {
             _txtUsername.Focus();
             ApplyLocalization();
+            LoadSavedCredentials();
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -56,6 +58,16 @@ namespace InventoryManagementSystem
             {
                 clsUserManagement.CurrentUser = user;
                 clsAuditLog.LogAction("User Login", $"User {user.DisplayName} logged in as {user.Role}", "System");
+                
+                if (_chkRememberMe.Checked)
+                {
+                    SaveCredentials(username, password);
+                }
+                else
+                {
+                    ClearSavedCredentials();
+                }
+                
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
@@ -99,6 +111,67 @@ namespace InventoryManagementSystem
             _lblPassword.Text = clsLanguageManager.GetString("Password") + ":";
             _btnLogin.Text = clsLanguageManager.GetString("Login");
             _btnExit.Text = clsLanguageManager.GetString("Exit");
+        }
+
+        private void SaveCredentials(string username, string password)
+        {
+            try
+            {
+                using (RegistryKey key = Registry.CurrentUser.CreateSubKey(@"Software\InventoryManagementSystem"))
+                {
+                    key.SetValue("Username", username);
+                    key.SetValue("Password", password);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error saving credentials: {ex.Message}");
+            }
+        }
+
+        private void LoadSavedCredentials()
+        {
+            try
+            {
+                using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\InventoryManagementSystem"))
+                {
+                    if (key != null)
+                    {
+                        string username = key.GetValue("Username") as string;
+                        string password = key.GetValue("Password") as string;
+
+                        if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
+                        {
+                            _txtUsername.Text = username;
+                            _txtPassword.Text = password;
+                            _chkRememberMe.Checked = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error loading credentials: {ex.Message}");
+            }
+        }
+
+        private void ClearSavedCredentials()
+        {
+            try
+            {
+                using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\InventoryManagementSystem", true))
+                {
+                    if (key != null)
+                    {
+                        key.DeleteValue("Username", false);
+                        key.DeleteValue("Password", false);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error clearing credentials: {ex.Message}");
+            }
         }
     }
 }
