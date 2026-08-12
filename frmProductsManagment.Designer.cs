@@ -40,7 +40,6 @@ namespace InventoryManagementSystem
             this._btnDeleteProduct = new System.Windows.Forms.Button();
             this._headerPanel = new System.Windows.Forms.Panel();
             this._lblPageTitle = new System.Windows.Forms.Label();
-            this._sidebar = new InventoryManagementSystem.ucSidebarNav();
             this._contentPanel.SuspendLayout();
             this._gridPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.DataGVProducts)).BeginInit();
@@ -54,9 +53,9 @@ namespace InventoryManagementSystem
             this._contentPanel.Controls.Add(this._toolbarPanel);
             this._contentPanel.Controls.Add(this._headerPanel);
             this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._contentPanel.Location = new System.Drawing.Point(240, 0);
+            this._contentPanel.Location = new System.Drawing.Point(0, 0);
             this._contentPanel.Name = "_contentPanel";
-            this._contentPanel.Size = new System.Drawing.Size(1126, 768);
+            this._contentPanel.Size = new System.Drawing.Size(1366, 768);
             this._contentPanel.TabIndex = 1;
             // 
             // _gridPanel
@@ -184,22 +183,12 @@ namespace InventoryManagementSystem
             this._lblPageTitle.TabIndex = 0;
             this._lblPageTitle.Text = "Inventory";
             // 
-            // _sidebar
-            // 
-            this._sidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
-            this._sidebar.Dock = System.Windows.Forms.DockStyle.Left;
-            this._sidebar.Location = new System.Drawing.Point(0, 0);
-            this._sidebar.Name = "_sidebar";
-            this._sidebar.Size = new System.Drawing.Size(240, 768);
-            this._sidebar.TabIndex = 0;
-            // 
             // frmProductsManagment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1366, 768);
             this.Controls.Add(this._contentPanel);
-            this.Controls.Add(this._sidebar);
             this.MinimumSize = new System.Drawing.Size(1200, 600);
             this.Name = "frmProductsManagment";
             this.Text = "Products Management";
@@ -218,7 +207,6 @@ namespace InventoryManagementSystem
 
         #endregion
 
-        private ucSidebarNav _sidebar;
         private System.Windows.Forms.Panel _contentPanel;
         private System.Windows.Forms.Panel _headerPanel;
         private System.Windows.Forms.Label _lblPageTitle;

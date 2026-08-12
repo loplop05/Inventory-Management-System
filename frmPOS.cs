@@ -87,10 +87,6 @@ namespace InventoryManagementSystem
 
             clsFormTheme.ApplyFormStyle(this);
 
-            // Wire sidebar navigation
-            _sidebar.NavigationRequested += OnSidebarNavigation;
-            _sidebar.SetActive("POS");
-
             clsFormTheme.ApplyTextBoxStyle(_txtSearch);
             clsFormTheme.ApplyTextBoxStyle(_txtCustomerPhone);
             clsFormTheme.ApplyTextBoxStyle(_txtPaymentDetails);

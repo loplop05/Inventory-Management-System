@@ -370,12 +370,6 @@
     <Compile Include="frmToastNotification.Designer.cs">
       <DependentUpon>frmToastNotification.cs</DependentUpon>
     </Compile>
-    <Compile Include="ucSidebarNav.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="ucSidebarNav.Designer.cs">
-      <DependentUpon>ucSidebarNav.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="frmAddCategory.resx">
@@ -499,9 +493,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmToastNotification.resx">
       <DependentUpon>frmToastNotification.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ucSidebarNav.resx">
-      <DependentUpon>ucSidebarNav.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

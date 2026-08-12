@@ -17,7 +17,6 @@ namespace InventoryManagementSystem
 
         private void InitializeComponent()
         {
-            this._sidebar = new InventoryManagementSystem.ucSidebarNav();
             this._contentPanel = new System.Windows.Forms.Panel();
             this._sectionTogglePanel = new System.Windows.Forms.Panel();
             this._btnSectionOverview = new System.Windows.Forms.Button();
@@ -92,15 +91,6 @@ namespace InventoryManagementSystem
             ((System.ComponentModel.ISupportInitialize)(this.gridCustomerAnalytics)).BeginInit();
             this.SuspendLayout();
             // 
-            // _sidebar
-            // 
-            this._sidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
-            this._sidebar.Dock = System.Windows.Forms.DockStyle.Left;
-            this._sidebar.Location = new System.Drawing.Point(0, 0);
-            this._sidebar.Name = "_sidebar";
-            this._sidebar.Size = new System.Drawing.Size(240, 736);
-            this._sidebar.TabIndex = 0;
-            // 
             // _contentPanel
             // 
             this._contentPanel.Controls.Add(this._pnlSectionCustomers);
@@ -109,9 +99,9 @@ namespace InventoryManagementSystem
             this._contentPanel.Controls.Add(this._pnlSectionOverview);
             this._contentPanel.Controls.Add(this._sectionTogglePanel);
             this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._contentPanel.Location = new System.Drawing.Point(240, 0);
+            this._contentPanel.Location = new System.Drawing.Point(0, 0);
             this._contentPanel.Name = "_contentPanel";
-            this._contentPanel.Size = new System.Drawing.Size(1139, 736);
+            this._contentPanel.Size = new System.Drawing.Size(1379, 736);
             this._contentPanel.TabIndex = 1;
             // 
             // _sectionTogglePanel
@@ -659,9 +649,8 @@ namespace InventoryManagementSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1379, 736);
+            this.ClientSize = new System.Drawing.Size(1619, 736);
             this.Controls.Add(this._contentPanel);
-            this.Controls.Add(this._sidebar);
             this.MinimumSize = new System.Drawing.Size(1200, 600);
             this.Name = "frmDashboard";
             this.Text = "Dashboard";
@@ -706,7 +695,6 @@ namespace InventoryManagementSystem
 
         #endregion
 
-        private ucSidebarNav _sidebar;
         private System.Windows.Forms.Panel _contentPanel;
         private System.Windows.Forms.Panel _sectionTogglePanel;
         private System.Windows.Forms.Button _btnSectionOverview;

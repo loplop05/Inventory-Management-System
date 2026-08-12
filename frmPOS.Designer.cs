@@ -67,7 +67,6 @@ namespace InventoryManagementSystem
             this._lblReceiptTitle = new System.Windows.Forms.Label();
             this._headerPanel = new System.Windows.Forms.Panel();
             this._lblPageTitle = new System.Windows.Forms.Label();
-            this._sidebar = new InventoryManagementSystem.ucSidebarNav();
             this._contentPanel.SuspendLayout();
             this._mainLayoutPanel.SuspendLayout();
             this._topPanel.SuspendLayout();
@@ -89,9 +88,9 @@ namespace InventoryManagementSystem
             this._contentPanel.Controls.Add(this._mainLayoutPanel);
             this._contentPanel.Controls.Add(this._headerPanel);
             this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._contentPanel.Location = new System.Drawing.Point(190, 0);
+            this._contentPanel.Location = new System.Drawing.Point(0, 0);
             this._contentPanel.Name = "_contentPanel";
-            this._contentPanel.Size = new System.Drawing.Size(1297, 783);
+            this._contentPanel.Size = new System.Drawing.Size(1487, 783);
             this._contentPanel.TabIndex = 1;
             // 
             // _mainLayoutPanel
@@ -628,22 +627,12 @@ namespace InventoryManagementSystem
             this._lblPageTitle.TabIndex = 0;
             this._lblPageTitle.Text = "Point of Sale";
             // 
-            // _sidebar
-            // 
-            this._sidebar.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(15)))), ((int)(((byte)(23)))), ((int)(((byte)(42)))));
-            this._sidebar.Dock = System.Windows.Forms.DockStyle.Left;
-            this._sidebar.Location = new System.Drawing.Point(0, 0);
-            this._sidebar.Name = "_sidebar";
-            this._sidebar.Size = new System.Drawing.Size(190, 783);
-            this._sidebar.TabIndex = 0;
-            // 
             // frmPOS
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1487, 783);
             this.Controls.Add(this._contentPanel);
-            this.Controls.Add(this._sidebar);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.MinimumSize = new System.Drawing.Size(1200, 650);
             this.Name = "frmPOS";
@@ -672,7 +661,6 @@ namespace InventoryManagementSystem
 
         }
 
-        private ucSidebarNav _sidebar;
         private System.Windows.Forms.Panel _contentPanel;
         private System.Windows.Forms.TableLayoutPanel _mainLayoutPanel;
         private System.Windows.Forms.Panel _topPanel;

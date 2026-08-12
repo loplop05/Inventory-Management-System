@@ -32,10 +32,6 @@ namespace InventoryManagementSystem
         {
             clsFormTheme.ApplyFormStyle(this);
 
-            // Wire sidebar navigation
-            _sidebar.NavigationRequested += OnSidebarNavigation;
-            _sidebar.SetActive("Dashboard");
-
             // Setup keyboard shortcuts
             clsKeyboardShortcuts.SetupCommonShortcuts(
                 this,

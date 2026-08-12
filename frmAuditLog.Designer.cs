@@ -13,9 +13,10 @@ namespace InventoryManagementSystem
             base.Dispose(disposing);
         }
 
+        #region Windows Form Designer generated code
+
         private void InitializeComponent()
         {
-            this._sidebar = new InventoryManagementSystem.ucSidebarNav();
             this._contentPanel = new System.Windows.Forms.Panel();
             this._headerPanel = new System.Windows.Forms.Panel();
             this._lblHeaderTitle = new System.Windows.Forms.Label();
@@ -36,14 +37,6 @@ namespace InventoryManagementSystem
             this.panelTop.SuspendLayout();
             this.SuspendLayout();
             // 
-            // _sidebar
-            // 
-            this._sidebar.Dock = System.Windows.Forms.DockStyle.Left;
-            this._sidebar.Location = new System.Drawing.Point(0, 0);
-            this._sidebar.Name = "_sidebar";
-            this._sidebar.Size = new System.Drawing.Size(250, 800);
-            this._sidebar.TabIndex = 0;
-            // 
             // _contentPanel
             // 
             this._contentPanel.Controls.Add(this._headerPanel);
@@ -51,9 +44,9 @@ namespace InventoryManagementSystem
             this._contentPanel.Controls.Add(this.dgvAuditLogs);
             this._contentPanel.Controls.Add(this.btnClose);
             this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._contentPanel.Location = new System.Drawing.Point(250, 0);
+            this._contentPanel.Location = new System.Drawing.Point(0, 0);
             this._contentPanel.Name = "_contentPanel";
-            this._contentPanel.Size = new System.Drawing.Size(1150, 800);
+            this._contentPanel.Size = new System.Drawing.Size(1400, 800);
             this._contentPanel.TabIndex = 1;
             // 
             // _headerPanel
@@ -196,7 +189,6 @@ namespace InventoryManagementSystem
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1400, 800);
-            this.Controls.Add(this._sidebar);
             this.Controls.Add(this._contentPanel);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -213,10 +205,10 @@ namespace InventoryManagementSystem
             this.panelTop.ResumeLayout(false);
             this.panelTop.PerformLayout();
             this.ResumeLayout(false);
-
         }
 
-        private InventoryManagementSystem.ucSidebarNav _sidebar;
+        #endregion
+
         private System.Windows.Forms.Panel _contentPanel;
         private System.Windows.Forms.Panel _headerPanel;
         private System.Windows.Forms.Label _lblHeaderTitle;
