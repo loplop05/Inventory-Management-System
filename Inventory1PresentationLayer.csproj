@@ -358,24 +358,6 @@
     <Compile Include="frmDashboard.Designer.cs">
       <DependentUpon>frmDashboard.cs</DependentUpon>
     </Compile>
-    <Compile Include="frmSalesDashboard.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmSalesDashboard.Designer.cs">
-      <DependentUpon>frmSalesDashboard.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmCustomersDashboard.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmCustomersDashboard.Designer.cs">
-      <DependentUpon>frmCustomersDashboard.cs</DependentUpon>
-    </Compile>
-    <Compile Include="frmInventoryDashboard.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="frmInventoryDashboard.Designer.cs">
-      <DependentUpon>frmInventoryDashboard.cs</DependentUpon>
-    </Compile>
     <Compile Include="frmThemedMessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
