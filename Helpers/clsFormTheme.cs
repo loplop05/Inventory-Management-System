@@ -113,12 +113,20 @@ namespace InventoryManagementSystem
 
         // ─── Dark Mode Palette ────────────────────────────────────────────────────
         // Background tones
-        public static readonly Color DarkFormBackColor        = Color.FromArgb(30,  41,  59);   // Slate 900
-        public static readonly Color DarkFormBackColorAlt     = Color.FromArgb(51,  65,  85);   // Slate 700
+        public static readonly Color DarkAppBackColor         = Color.FromArgb(13,  17,  28);   // #0D111C - Outermost app canvas
+        public static readonly Color DarkFormBackColor        = Color.FromArgb(17,  24,  39);   // #111827 - Form background
+        public static readonly Color DarkFormBackColorAlt     = Color.FromArgb(24,  32,  51);   // #182033 - Gradient partner
+        public static readonly Color DarkCardColor            = Color.FromArgb(30,  39,  59);   // #1E273B - Cards/panels
+        public static readonly Color DarkCardColorElevated    = Color.FromArgb(37,  48,  71);   // #253047 - Modals/dropdowns/hover
+        public static readonly Color DarkCardBorderColor      = Color.FromArgb(51,  63,  89);   // #333F59 - Card borders
+        public static readonly Color DarkRowAltColor          = Color.FromArgb(22,  30,  47);   // #161E2F - Alternating grid rows
+        public static readonly Color DarkDividerColor         = Color.FromArgb(41,  51,  74);   // #29334A - Divider lines
 
-        // Brand / accent (same as light mode for consistency)
-        public static readonly Color DarkPrimaryColor         = Color.FromArgb(96,  165, 250);  // Lighter blue for dark mode
-        public static readonly Color DarkPrimaryHoverColor    = Color.FromArgb(59,  130,  246);  // Blue 500
+        // Brand / accent
+        public static readonly Color DarkPrimaryColor         = Color.FromArgb(99,  179, 255);  // #63B3FF
+        public static readonly Color DarkPrimaryHoverColor    = Color.FromArgb(59,  130, 246);  // #3B82F6
+        public static readonly Color DarkPrimaryPressedColor  = Color.FromArgb(37,  99,  235);  // #2563EB
+        public static readonly Color DarkPrimarySoftColor     = Color.FromArgb(30,  58,  95);   // #1E3A5F - Soft background
         public static readonly Color DarkPrimaryLightColor    = Color.FromArgb(37,  99,  235);  // Blue 600
 
         // Secondary / neutral
@@ -126,56 +134,66 @@ namespace InventoryManagementSystem
         public static readonly Color DarkSecondaryHoverColor  = Color.FromArgb(203, 213, 225);  // Slate 300
 
         // Semantic (adjusted for dark mode)
-        public static readonly Color DarkSuccessColor         = Color.FromArgb(74,  222, 128);  // Emerald 400
+        public static readonly Color DarkSuccessColor         = Color.FromArgb(74,  222, 128);  // #4ADE80
         public static readonly Color DarkSuccessHoverColor    = Color.FromArgb(52,  211, 153);  // Emerald 500
         public static readonly Color DarkSuccessLightColor    = Color.FromArgb(6,   95,  70);   // Emerald 900
-        public static readonly Color DarkDangerColor          = Color.FromArgb(248, 113, 113);  // Red 400
+        public static readonly Color DarkSuccessSoft          = Color.FromArgb(20,  51,  38);   // #143326 - Soft background
+        public static readonly Color DarkDangerColor          = Color.FromArgb(248, 113, 113);  // #F87171
         public static readonly Color DarkDangerHoverColor     = Color.FromArgb(239, 68,  68);   // Red 500
         public static readonly Color DarkDangerLightColor     = Color.FromArgb(127, 29,  29);   // Red 900
-        public static readonly Color DarkWarningColor         = Color.FromArgb(251, 191, 36);  // Amber 400
+        public static readonly Color DarkDangerSoft            = Color.FromArgb(59,  24,  24);   // #3B1818 - Soft background
+        public static readonly Color DarkWarningColor         = Color.FromArgb(251, 191, 36);  // #FBBF24
         public static readonly Color DarkWarningLightColor    = Color.FromArgb(120, 53,  15);   // Amber 900
-        public static readonly Color DarkInfoColor            = Color.FromArgb(34,  211, 238);  // Cyan 400
+        public static readonly Color DarkWarningSoft          = Color.FromArgb(58,  44,  12);   // #3A2C0C - Soft background
+        public static readonly Color DarkInfoColor            = Color.FromArgb(56,  189, 248);  // #38BDF8
 
         // Surface / structural
-        public static readonly Color DarkHeaderColor          = Color.FromArgb(15,  23,  42);   // Slate 950
-        public static readonly Color DarkHeaderGradientEnd    = Color.FromArgb(30,  58,  138);  // Blue 900
-        public static readonly Color DarkCardColor            = Color.FromArgb(51,  65,  85);   // Slate 700
-        public static readonly Color DarkCardBorderColor      = Color.FromArgb(71,  85,  105);  // Slate 600
-        public static readonly Color DarkRowAltColor          = Color.FromArgb(71,  85,  105);  // Slate 600
-        public static readonly Color DarkSelectionBackColor   = Color.FromArgb(37,  99,  235);  // Blue 600
+        public static readonly Color DarkHeaderColor          = Color.FromArgb(8,   12,  22);   // #080C16
+        public static readonly Color DarkHeaderGradientEnd    = Color.FromArgb(24,  45,  92);   // #182D5C
+        public static readonly Color DarkSelectionBackColor   = Color.FromArgb(37,  99,  235);  // #2563EB
         public static readonly Color DarkSelectionForeColor   = Color.FromArgb(255, 255, 255);  // White
 
         // Text
-        public static readonly Color DarkTextPrimary          = Color.FromArgb(248, 250, 252);  // Slate 50
-        public static readonly Color DarkTextSecondary        = Color.FromArgb(203, 213, 225);  // Slate 300
-        public static readonly Color DarkTextMuted            = Color.FromArgb(148, 163, 184);  // Slate 400
+        public static readonly Color DarkTextPrimary          = Color.FromArgb(241, 245, 249);  // #F1F5F9
+        public static readonly Color DarkTextSecondary        = Color.FromArgb(180, 190, 208);  // #B4BED0
+        public static readonly Color DarkTextMuted            = Color.FromArgb(122, 133, 156);  // #7A859C
+        public static readonly Color DarkTextOnAccent         = Color.FromArgb(255, 255, 255);  // #FFFFFF
 
         // ─── Current Theme Colors (computed based on mode) ─────────────────────────
+        public static Color AppBackColor => IsDarkMode ? DarkAppBackColor : LightFormBackColor;
         public static Color FormBackColor => IsDarkMode ? DarkFormBackColor : LightFormBackColor;
         public static Color FormBackColorAlt => IsDarkMode ? DarkFormBackColorAlt : LightFormBackColorAlt;
         public static Color HeaderColor => IsDarkMode ? DarkHeaderColor : LightHeaderColor;
         public static Color HeaderGradientEnd => IsDarkMode ? DarkHeaderGradientEnd : LightHeaderGradientEnd;
         public static Color CardColor => IsDarkMode ? DarkCardColor : LightCardColor;
+        public static Color CardColorElevated => IsDarkMode ? DarkCardColorElevated : LightCardColor;
         public static Color CardBorderColor => IsDarkMode ? DarkCardBorderColor : LightCardBorderColor;
         public static Color RowAltColor => IsDarkMode ? DarkRowAltColor : LightRowAltColor;
+        public static Color DividerColor => IsDarkMode ? DarkDividerColor : LightCardBorderColor;
         public static Color SelectionBackColor => IsDarkMode ? DarkSelectionBackColor : LightSelectionBackColor;
         public static Color SelectionForeColor => IsDarkMode ? DarkSelectionForeColor : LightSelectionForeColor;
         public static Color TextPrimary => IsDarkMode ? DarkTextPrimary : LightTextPrimary;
         public static Color TextSecondary => IsDarkMode ? DarkTextSecondary : LightTextSecondary;
         public static Color TextMuted => IsDarkMode ? DarkTextMuted : LightTextMuted;
+        public static Color TextOnAccent => IsDarkMode ? DarkTextOnAccent : Color.White;
         public static Color CurrentPrimaryColor => IsDarkMode ? DarkPrimaryColor : PrimaryColor;
         public static Color CurrentPrimaryHoverColor => IsDarkMode ? DarkPrimaryHoverColor : PrimaryHoverColor;
+        public static Color CurrentPrimaryPressedColor => IsDarkMode ? DarkPrimaryPressedColor : ControlPaint.Dark(PrimaryColor, 0.15f);
+        public static Color CurrentPrimarySoftColor => IsDarkMode ? DarkPrimarySoftColor : PrimaryLightColor;
         public static Color CurrentPrimaryLightColor => IsDarkMode ? DarkPrimaryLightColor : PrimaryLightColor;
         public static Color CurrentSecondaryColor => IsDarkMode ? DarkSecondaryColor : SecondaryColor;
         public static Color CurrentSecondaryHoverColor => IsDarkMode ? DarkSecondaryHoverColor : SecondaryHoverColor;
         public static Color CurrentSuccessColor => IsDarkMode ? DarkSuccessColor : SuccessColor;
         public static Color CurrentSuccessHoverColor => IsDarkMode ? DarkSuccessHoverColor : SuccessHoverColor;
         public static Color CurrentSuccessLightColor => IsDarkMode ? DarkSuccessLightColor : SuccessLightColor;
+        public static Color CurrentSuccessSoft => IsDarkMode ? DarkSuccessSoft : SuccessLightColor;
         public static Color CurrentDangerColor => IsDarkMode ? DarkDangerColor : DangerColor;
         public static Color CurrentDangerHoverColor => IsDarkMode ? DarkDangerHoverColor : DangerHoverColor;
         public static Color CurrentDangerLightColor => IsDarkMode ? DarkDangerLightColor : DangerLightColor;
+        public static Color CurrentDangerSoft => IsDarkMode ? DarkDangerSoft : DangerLightColor;
         public static Color CurrentWarningColor => IsDarkMode ? DarkWarningColor : WarningColor;
         public static Color CurrentWarningLightColor => IsDarkMode ? DarkWarningLightColor : WarningLightColor;
+        public static Color CurrentWarningSoft => IsDarkMode ? DarkWarningSoft : WarningLightColor;
         public static Color CurrentInfoColor => IsDarkMode ? DarkInfoColor : InfoColor;
 
         // ─── Typography ─────────────────────────────────────────────────────────
@@ -320,7 +338,8 @@ namespace InventoryManagementSystem
         {
             comboBox.Font      = BodyFont;
             comboBox.ForeColor = TextPrimary;
-            comboBox.BackColor = Color.White;
+            comboBox.BackColor = CardColor;
+            ApplyFocusRing(comboBox);
         }
 
         /// <summary>
@@ -673,15 +692,71 @@ namespace InventoryManagementSystem
         }
 
         // ════════════════════════════════════════════════════════════════════════
+        //  FOCUS RING HANDLERS
+        // ════════════════════════════════════════════════════════════════════════
+
+        /// <summary>
+        /// Applies focus ring behavior to a control (TextBox, ComboBox, etc.).
+        /// Shows a 2px PrimaryColor border when focused, removes when unfocused.
+        /// </summary>
+        public static void ApplyFocusRing(Control control)
+        {
+            if (control == null) return;
+
+            control.Enter += (s, e) =>
+            {
+                var parent = control.Parent;
+                if (parent != null)
+                {
+                    parent.Paint -= FocusRing_Paint;
+                    parent.Paint += FocusRing_Paint;
+                    parent.Tag = control; // Store reference to focused control
+                    parent.Invalidate();
+                }
+            };
+
+            control.Leave += (s, e) =>
+            {
+                var parent = control.Parent;
+                if (parent != null)
+                {
+                    parent.Paint -= FocusRing_Paint;
+                    parent.Tag = null;
+                    parent.Invalidate();
+                }
+            };
+        }
+
+        private static void FocusRing_Paint(object sender, PaintEventArgs e)
+        {
+            if (sender is Control parent && parent.Tag is Control focusedControl)
+            {
+                // Get control's position relative to parent
+                var rect = new Rectangle(
+                    focusedControl.Left - 2,
+                    focusedControl.Top - 2,
+                    focusedControl.Width + 4,
+                    focusedControl.Height + 4
+                );
+
+                using (Pen pen = new Pen(CurrentPrimaryColor, 2))
+                {
+                    e.Graphics.DrawRectangle(pen, rect);
+                }
+            }
+        }
+
+        // ════════════════════════════════════════════════════════════════════════
         //  TEXTBOX STYLING
         // ════════════════════════════════════════════════════════════════════════
 
         public static void ApplyTextBoxStyle(TextBox textBox)
         {
-            textBox.BackColor   = Color.White;
+            textBox.BackColor   = CardColor;
             textBox.ForeColor   = TextPrimary;
             textBox.Font        = new Font(MainFontName, 10F);
             textBox.BorderStyle = BorderStyle.FixedSingle;
+            ApplyFocusRing(textBox);
         }
 
         // ════════════════════════════════════════════════════════════════════════
@@ -693,8 +768,8 @@ namespace InventoryManagementSystem
         /// </summary>
         public static void ShowInputError(TextBox textBox, ErrorProvider errorProvider, string message)
         {
-            textBox.BackColor = Color.FromArgb(254, 226, 226);  // Red 100
-            textBox.ForeColor = DangerColor;
+            textBox.BackColor = CurrentDangerSoft;
+            textBox.ForeColor = CurrentDangerColor;
             errorProvider.SetError(textBox, message);
         }
 
@@ -703,8 +778,8 @@ namespace InventoryManagementSystem
         /// </summary>
         public static void ShowInputError(Control control, ErrorProvider errorProvider, string message)
         {
-            control.BackColor = Color.FromArgb(254, 226, 226);  // Red 100
-            control.ForeColor = DangerColor;
+            control.BackColor = CurrentDangerSoft;
+            control.ForeColor = CurrentDangerColor;
             errorProvider.SetError(control, message);
         }
 
@@ -713,7 +788,7 @@ namespace InventoryManagementSystem
         /// </summary>
         public static void ClearInputError(TextBox textBox, ErrorProvider errorProvider)
         {
-            textBox.BackColor = Color.White;
+            textBox.BackColor = CardColor;
             textBox.ForeColor = TextPrimary;
             errorProvider.SetError(textBox, string.Empty);
         }
@@ -967,7 +1042,7 @@ namespace InventoryManagementSystem
             // Hover highlight
             tile.MouseEnter += (s, e) =>
             {
-                if (inStock) tile.BackColor = Color.FromArgb(239, 246, 255);  // Blue 50
+                if (inStock) tile.BackColor = CardColorElevated;
                 tile.Invalidate();
             };
             tile.MouseLeave += (s, e) => tile.Invalidate();

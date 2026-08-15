@@ -42,7 +42,12 @@ namespace InventoryManagementSystem
 
         private void ApplyTheme()
         {
-            clsFormTheme.ApplyFormStyle(this);
+            // Print receipt form is exempt from dark theme to keep it printer-friendly
+            // Use light mode colors regardless of current theme setting
+            BackColor = Color.White;
+            ForeColor = Color.Black;
+            Font = new Font("Segoe UI", 10F);
+            
             clsFormTheme.ApplyTextBoxStyle(_txtOrderID);
             clsFormTheme.ApplyPrimaryButtonStyle(_btnSearch, clsFormTheme.Icons.Search);
             clsFormTheme.ApplySuccessButtonStyle(_btnPrint, clsFormTheme.Icons.Print);
