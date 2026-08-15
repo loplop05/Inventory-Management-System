@@ -128,7 +128,7 @@ namespace InventoryManagementSystem
                 int needed = nextThreshold - currentThreshold;
                 double percentage = (double)progress / needed * 100;
                 _lblTierProgress.Text = $"Progress: {progress}/{needed} points ({percentage:F0}%)";
-                _lblTierProgress.ForeColor = Color.FromArgb(44, 62, 80);
+                _lblTierProgress.ForeColor = clsFormTheme.TextSecondary;
             }
         }
 

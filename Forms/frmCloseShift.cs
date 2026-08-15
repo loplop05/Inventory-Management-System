@@ -98,7 +98,7 @@ namespace InventoryManagementSystem
             else
             {
                 _lblCashDifferenceValue.Text = "---";
-                _lblCashDifferenceValue.ForeColor = Color.Gray;
+                _lblCashDifferenceValue.ForeColor = clsFormTheme.TextMuted;
             }
         }
 
