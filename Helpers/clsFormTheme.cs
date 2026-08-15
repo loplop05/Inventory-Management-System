@@ -196,6 +196,58 @@ namespace InventoryManagementSystem
         public static Color CurrentWarningSoft => IsDarkMode ? DarkWarningSoft : WarningLightColor;
         public static Color CurrentInfoColor => IsDarkMode ? DarkInfoColor : InfoColor;
 
+        // ─── Helper to fix designer-hardcoded colors ───────────────────────────────
+        /// <summary>
+        /// Recursively updates all controls in a form to use theme-aware colors.
+        /// This fixes hardcoded colors set by the visual designer.
+        /// </summary>
+        public static void FixDesignerColors(Control parent)
+        {
+            foreach (Control control in parent.Controls)
+            {
+                // Fix labels with hardcoded dark colors
+                if (control is Label label)
+                {
+                    // Check for common hardcoded dark colors and replace with theme colors
+                    if (label.ForeColor.R < 100 && label.ForeColor.G < 100 && label.ForeColor.B < 100)
+                    {
+                        // Dark color detected - use theme primary
+                        label.ForeColor = TextPrimary;
+                    }
+                    else if (label.ForeColor.R == 148 && label.ForeColor.G == 163 && label.ForeColor.B == 184)
+                    {
+                        // Slate 400 - use text muted
+                        label.ForeColor = TextMuted;
+                    }
+                    else if (label.ForeColor.R == 71 && label.ForeColor.G == 85 && label.ForeColor.B == 105)
+                    {
+                        // Slate 600 - use text secondary
+                        label.ForeColor = TextSecondary;
+                    }
+                    else if (label.ForeColor == Color.Gray)
+                    {
+                        label.ForeColor = TextMuted;
+                    }
+                }
+
+                // Fix PictureBox backgrounds
+                if (control is PictureBox pictureBox)
+                {
+                    if (pictureBox.BackColor == Color.FromArgb(240, 242, 245) || // Slate 100
+                        pictureBox.BackColor == Color.FromArgb(241, 245, 249))
+                    {
+                        pictureBox.BackColor = CardColor;
+                    }
+                }
+
+                // Recursively process child controls
+                if (control.HasChildren)
+                {
+                    FixDesignerColors(control);
+                }
+            }
+        }
+
         // ─── Typography ─────────────────────────────────────────────────────────
         public static readonly string MainFontName  = "Segoe UI";
         public static readonly string IconFontName  = "Segoe MDL2 Assets";
@@ -270,6 +322,9 @@ namespace InventoryManagementSystem
             form.StartPosition    = FormStartPosition.CenterScreen;
             form.Font             = new Font(MainFontName, 10F);
             form.KeyPreview       = true;
+
+            // Fix designer-hardcoded colors
+            FixDesignerColors(form);
 
             // Subtle diagonal gradient background
             form.Paint += (s, e) =>

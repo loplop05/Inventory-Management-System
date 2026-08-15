@@ -104,7 +104,7 @@ namespace InventoryManagementSystem
 
                 if (total != TotalAmount)
                 {
-                    _lblSplitTotal.ForeColor = Color.Red;
+                    _lblSplitTotal.ForeColor = clsFormTheme.CurrentDangerColor;
                     _btnConfirm.Enabled = false;
                 }
                 else
@@ -116,7 +116,7 @@ namespace InventoryManagementSystem
             catch
             {
                 // On any error, disable confirm and show red
-                _lblSplitTotal.ForeColor = Color.Red;
+                _lblSplitTotal.ForeColor = clsFormTheme.CurrentDangerColor;
                 _btnConfirm.Enabled = false;
                 _lblSplitTotal.Text = "Error";
             }

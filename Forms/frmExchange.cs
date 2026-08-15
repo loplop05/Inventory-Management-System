@@ -214,7 +214,7 @@ namespace InventoryManagementSystem
             // Calculate price difference
             decimal refundAmount = _newTotal;
             lblPriceDifference.Text = $"Refund / Credit amount: {refundAmount:C2}";
-            lblPriceDifference.ForeColor = Color.FromArgb(40, 167, 69);
+            lblPriceDifference.ForeColor = clsFormTheme.CurrentSuccessColor;
         }
 
         private void btnRemoveExchange_Click(object sender, EventArgs e)

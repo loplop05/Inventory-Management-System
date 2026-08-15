@@ -94,14 +94,14 @@ namespace InventoryManagementSystem
                 _lblRevenue.Text = "Revenue" + Environment.NewLine + clsLanguageManager.CurrencySymbol + " " + totalRevenue.ToString("0.00");
 
                 // Apply colors to KPI cards
-                _lblOrders.BackColor = Color.FromArgb(59, 130, 246); // Blue
-                _lblOrders.ForeColor = Color.White;
-                _lblSubtotal.BackColor = Color.FromArgb(16, 185, 129); // Green
-                _lblSubtotal.ForeColor = Color.White;
-                _lblTax.BackColor = Color.FromArgb(245, 158, 11); // Orange
-                _lblTax.ForeColor = Color.White;
-                _lblRevenue.BackColor = Color.FromArgb(139, 92, 246); // Purple
-                _lblRevenue.ForeColor = Color.White;
+                _lblOrders.BackColor = clsFormTheme.CurrentPrimaryColor;
+                _lblOrders.ForeColor = clsFormTheme.TextOnAccent;
+                _lblSubtotal.BackColor = clsFormTheme.CurrentSuccessColor;
+                _lblSubtotal.ForeColor = clsFormTheme.TextOnAccent;
+                _lblTax.BackColor = clsFormTheme.CurrentWarningColor;
+                _lblTax.ForeColor = clsFormTheme.TextOnAccent;
+                _lblRevenue.BackColor = clsFormTheme.CurrentInfoColor;
+                _lblRevenue.ForeColor = clsFormTheme.TextOnAccent;
             }
             else
             {
@@ -111,14 +111,14 @@ namespace InventoryManagementSystem
                 _lblRevenue.Text = "Revenue" + Environment.NewLine + clsLanguageManager.CurrencySymbol + " 0.00";
 
                 // Default gray color when no data
-                _lblOrders.BackColor = Color.FromArgb(148, 163, 184);
-                _lblOrders.ForeColor = Color.White;
-                _lblSubtotal.BackColor = Color.FromArgb(148, 163, 184);
-                _lblSubtotal.ForeColor = Color.White;
-                _lblTax.BackColor = Color.FromArgb(148, 163, 184);
-                _lblTax.ForeColor = Color.White;
-                _lblRevenue.BackColor = Color.FromArgb(148, 163, 184);
-                _lblRevenue.ForeColor = Color.White;
+                _lblOrders.BackColor = clsFormTheme.TextMuted;
+                _lblOrders.ForeColor = clsFormTheme.TextOnAccent;
+                _lblSubtotal.BackColor = clsFormTheme.TextMuted;
+                _lblSubtotal.ForeColor = clsFormTheme.TextOnAccent;
+                _lblTax.BackColor = clsFormTheme.TextMuted;
+                _lblTax.ForeColor = clsFormTheme.TextOnAccent;
+                _lblRevenue.BackColor = clsFormTheme.TextMuted;
+                _lblRevenue.ForeColor = clsFormTheme.TextOnAccent;
             }
 
             _ordersTable = clsPOS.GetTodayOrders(out errorMessage);

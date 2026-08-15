@@ -275,7 +275,7 @@ namespace InventoryManagementSystem
                 Text = _favoriteProductIDs.Contains(productID) ? "★" : "☆",
                 BackColor = Color.Transparent,
                 FlatStyle = FlatStyle.Flat,
-                ForeColor = _favoriteProductIDs.Contains(productID) ? Color.FromArgb(255, 193, 7) : Color.Gray,
+                ForeColor = _favoriteProductIDs.Contains(productID) ? clsFormTheme.CurrentWarningColor : clsFormTheme.TextMuted,
                 Font = new Font("Segoe UI", 12F),
                 Cursor = Cursors.Hand,
                 Tag = productID
@@ -291,7 +291,7 @@ namespace InventoryManagementSystem
                 Height = 100,
                 Location = new Point(41, 16),
                 SizeMode = PictureBoxSizeMode.Zoom,
-                BackColor = Color.FromArgb(241, 245, 249)  // Slate 100
+                BackColor = clsFormTheme.CardColor
             };
 
             if (!string.IsNullOrWhiteSpace(imagePath))
@@ -358,7 +358,7 @@ namespace InventoryManagementSystem
             }
             else
             {
-                addButton.BackColor = Color.FromArgb(226, 232, 240);  // Slate 200
+                addButton.BackColor = clsFormTheme.CardBorderColor;
                 addButton.ForeColor = clsFormTheme.TextMuted;
                 addButton.FlatStyle = FlatStyle.Flat;
                 addButton.FlatAppearance.BorderSize = 0;
@@ -734,7 +734,7 @@ namespace InventoryManagementSystem
                 decimal discountAvailable = clsLoyalty.CalculateDiscountFromPoints(loyaltyPoints);
 
                 _lblCustomerName.Text = _selectedCustomerName + " | " + tier + " | " + loyaltyPoints + " pts ($" + discountAvailable.ToString("F2") + ")";
-                _lblCustomerName.ForeColor = Color.FromArgb(44, 62, 80);
+                _lblCustomerName.ForeColor = clsFormTheme.TextPrimary;
                 _btnAddCustomer.Text = "Change";
             }
             else
@@ -742,7 +742,7 @@ namespace InventoryManagementSystem
                 _selectedCustomerID = null;
                 _selectedCustomerName = "";
                 _lblCustomerName.Text = "New customer";
-                _lblCustomerName.ForeColor = Color.FromArgb(96, 125, 139);
+                _lblCustomerName.ForeColor = clsFormTheme.TextMuted;
                 _btnAddCustomer.Text = "+ New";
             }
         }
@@ -765,7 +765,7 @@ namespace InventoryManagementSystem
                     _selectedCustomerName = addCustomerForm.CustomerName;
                     _txtCustomerPhone.Text = addCustomerForm.PhoneNumber;
                     _lblCustomerName.Text = _selectedCustomerName;
-                    _lblCustomerName.ForeColor = Color.FromArgb(44, 62, 80);
+                    _lblCustomerName.ForeColor = clsFormTheme.TextPrimary;
                     _btnAddCustomer.Text = "Change";
                 }
             }
@@ -1020,7 +1020,7 @@ namespace InventoryManagementSystem
             {
                 _previewPanel = new Panel
                 {
-                    BackColor = Color.FromArgb(255, 255, 255),
+                    BackColor = clsFormTheme.CardColorElevated,
                     BorderStyle = BorderStyle.FixedSingle,
                     Size = new Size(200, 120),
                     Location = new Point(tile.Right + 5, tile.Top),
@@ -1099,14 +1099,14 @@ namespace InventoryManagementSystem
             {
                 _favoriteProductIDs.Remove(productID);
                 btnFavorite.Text = "☆";
-                btnFavorite.ForeColor = Color.Gray;
+                btnFavorite.ForeColor = clsFormTheme.TextMuted;
                 clsFormTheme.ShowToastInfo(this, "Removed from favorites", "Favorites");
             }
             else
             {
                 _favoriteProductIDs.Add(productID);
                 btnFavorite.Text = "★";
-                btnFavorite.ForeColor = Color.FromArgb(255, 193, 7);
+                btnFavorite.ForeColor = clsFormTheme.CurrentWarningColor;
                 clsFormTheme.ShowToastSuccess(this, "Added to favorites", "Favorites");
             }
         }
