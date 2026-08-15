@@ -31,10 +31,10 @@ namespace InventoryDataAccessLayer
         /// Expected CSV format: ProductName,CategoryID,SupplierID,Price,Quantity,Description,Barcode
         /// </summary>
         /// <param name="csvFilePath">Path to the CSV file.</param>
-        /// <param name="skipFirstRow">Whether to skip the header row.</param>
         /// <param name="errorMessage">Output parameter for error messages.</param>
+        /// <param name="skipFirstRow">Whether to skip the header row.</param>
         /// <returns>ImportResult containing details of the import operation.</returns>
-        public static ImportResult ImportFromCSV(string csvFilePath, bool skipFirstRow = true, out string errorMessage)
+        public static ImportResult ImportFromCSV(string csvFilePath, out string errorMessage, bool skipFirstRow = true)
         {
             errorMessage = string.Empty;
             var result = new ImportResult();

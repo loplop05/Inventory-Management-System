@@ -35,10 +35,10 @@ namespace InventoryDataAccessLayer
         /// <summary>
         /// Creates a full database backup.
         /// </summary>
-        /// <param name="backupName">Optional custom name for the backup file.</param>
         /// <param name="errorMessage">Output parameter for error messages.</param>
+        /// <param name="backupName">Optional custom name for the backup file.</param>
         /// <returns>True if backup succeeded, false otherwise.</returns>
-        public static bool CreateBackup(string backupName = null, out string errorMessage)
+        public static bool CreateBackup(out string errorMessage, string backupName = null)
         {
             errorMessage = string.Empty;
 

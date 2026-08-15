@@ -25,7 +25,9 @@ namespace InventoryManagementSystem
             _cardTodaySales.BackColor = System.Drawing.Color.White;
             _cardTotalOrders.BackColor = System.Drawing.Color.White;
             _cardLowStock.BackColor = System.Drawing.Color.White;
+            _cardMLStatus.BackColor = System.Drawing.Color.White;
             _cardLowStock.Cursor = Cursors.Hand;
+            _cardMLStatus.Cursor = Cursors.Hand;
         }
 
         private void LoadDashboardData()
@@ -36,6 +38,7 @@ namespace InventoryManagementSystem
                 LoadRecentOrders();
                 LoadTopProducts();
                 LoadLowStockAlerts();
+                CheckMLServiceStatus();
             }
             catch (Exception ex)
             {
@@ -129,6 +132,27 @@ namespace InventoryManagementSystem
                 clsErrorLog.LogException("frmDashboard._cardLowStock_Click", ex);
                 clsNotify.Error("Could not open products form.");
             }
+        }
+
+        private void CheckMLServiceStatus()
+        {
+            try
+            {
+                // ML features were removed, so status is always "Not Available"
+                lblMLStatusValue.Text = "Not Available";
+                lblMLStatusValue.ForeColor = System.Drawing.Color.FromArgb(148, 163, 184);
+            }
+            catch (Exception ex)
+            {
+                clsErrorLog.LogException("frmDashboard.CheckMLServiceStatus", ex);
+                lblMLStatusValue.Text = "Error";
+                lblMLStatusValue.ForeColor = System.Drawing.Color.FromArgb(239, 68, 68);
+            }
+        }
+
+        private void _cardMLStatus_Click(object sender, EventArgs e)
+        {
+            clsNotify.Warn("ML Service features have been removed from this version.");
         }
     }
 }

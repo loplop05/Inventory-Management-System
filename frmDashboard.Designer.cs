@@ -28,6 +28,9 @@ namespace InventoryManagementSystem
             this._cardLowStock = new System.Windows.Forms.Panel();
             this.lblLowStockValue = new System.Windows.Forms.Label();
             this.lblLowStockLabel = new System.Windows.Forms.Label();
+            this._cardMLStatus = new System.Windows.Forms.Panel();
+            this.lblMLStatusValue = new System.Windows.Forms.Label();
+            this.lblMLStatusLabel = new System.Windows.Forms.Label();
             this._recentActivityPanel = new System.Windows.Forms.Panel();
             this.gridRecentOrders = new System.Windows.Forms.DataGridView();
             this.lblRecentActivityTitle = new System.Windows.Forms.Label();
@@ -39,6 +42,7 @@ namespace InventoryManagementSystem
             this._cardTodaySales.SuspendLayout();
             this._cardTotalOrders.SuspendLayout();
             this._cardLowStock.SuspendLayout();
+            this._cardMLStatus.SuspendLayout();
             this._recentActivityPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridRecentOrders)).BeginInit();
             this._topProductsPanel.SuspendLayout();
@@ -49,13 +53,15 @@ namespace InventoryManagementSystem
             // 
             // _summaryCardsPanel
             // 
-            this._summaryCardsPanel.ColumnCount = 3;
-            this._summaryCardsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.333F));
-            this._summaryCardsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.333F));
-            this._summaryCardsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.333F));
+            this._summaryCardsPanel.ColumnCount = 4;
+            this._summaryCardsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this._summaryCardsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this._summaryCardsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this._summaryCardsPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this._summaryCardsPanel.Controls.Add(this._cardTodaySales, 0, 0);
             this._summaryCardsPanel.Controls.Add(this._cardTotalOrders, 1, 0);
             this._summaryCardsPanel.Controls.Add(this._cardLowStock, 2, 0);
+            this._summaryCardsPanel.Controls.Add(this._cardMLStatus, 3, 0);
             this._summaryCardsPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this._summaryCardsPanel.Location = new System.Drawing.Point(0, 0);
             this._summaryCardsPanel.Name = "_summaryCardsPanel";
@@ -71,7 +77,7 @@ namespace InventoryManagementSystem
             this._cardTodaySales.Dock = System.Windows.Forms.DockStyle.Fill;
             this._cardTodaySales.Location = new System.Drawing.Point(3, 3);
             this._cardTodaySales.Name = "_cardTodaySales";
-            this._cardTodaySales.Size = new System.Drawing.Size(533, 94);
+            this._cardTodaySales.Size = new System.Drawing.Size(399, 94);
             this._cardTodaySales.TabIndex = 0;
             // 
             // lblTodaySalesValue
@@ -101,9 +107,9 @@ namespace InventoryManagementSystem
             this._cardTotalOrders.Controls.Add(this.lblTotalOrdersValue);
             this._cardTotalOrders.Controls.Add(this.lblTotalOrdersLabel);
             this._cardTotalOrders.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._cardTotalOrders.Location = new System.Drawing.Point(542, 3);
+            this._cardTotalOrders.Location = new System.Drawing.Point(408, 3);
             this._cardTotalOrders.Name = "_cardTotalOrders";
-            this._cardTotalOrders.Size = new System.Drawing.Size(533, 94);
+            this._cardTotalOrders.Size = new System.Drawing.Size(399, 94);
             this._cardTotalOrders.TabIndex = 1;
             // 
             // lblTotalOrdersValue
@@ -133,9 +139,9 @@ namespace InventoryManagementSystem
             this._cardLowStock.Controls.Add(this.lblLowStockValue);
             this._cardLowStock.Controls.Add(this.lblLowStockLabel);
             this._cardLowStock.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._cardLowStock.Location = new System.Drawing.Point(1081, 3);
+            this._cardLowStock.Location = new System.Drawing.Point(813, 3);
             this._cardLowStock.Name = "_cardLowStock";
-            this._cardLowStock.Size = new System.Drawing.Size(535, 94);
+            this._cardLowStock.Size = new System.Drawing.Size(399, 94);
             this._cardLowStock.TabIndex = 2;
             this._cardLowStock.Click += new System.EventHandler(this._cardLowStock_Click);
             // 
@@ -160,6 +166,39 @@ namespace InventoryManagementSystem
             this.lblLowStockLabel.Size = new System.Drawing.Size(133, 23);
             this.lblLowStockLabel.TabIndex = 0;
             this.lblLowStockLabel.Text = "Low Stock Alerts";
+            // 
+            // _cardMLStatus
+            // 
+            this._cardMLStatus.Controls.Add(this.lblMLStatusValue);
+            this._cardMLStatus.Controls.Add(this.lblMLStatusLabel);
+            this._cardMLStatus.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._cardMLStatus.Location = new System.Drawing.Point(1218, 3);
+            this._cardMLStatus.Name = "_cardMLStatus";
+            this._cardMLStatus.Size = new System.Drawing.Size(398, 94);
+            this._cardMLStatus.TabIndex = 3;
+            this._cardMLStatus.Click += new System.EventHandler(this._cardMLStatus_Click);
+            // 
+            // lblMLStatusValue
+            // 
+            this.lblMLStatusValue.AutoSize = true;
+            this.lblMLStatusValue.Font = new System.Drawing.Font("Segoe UI", 20F, System.Drawing.FontStyle.Bold);
+            this.lblMLStatusValue.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(148)))), ((int)(((byte)(163)))), ((int)(((byte)(184)))));
+            this.lblMLStatusValue.Location = new System.Drawing.Point(10, 45);
+            this.lblMLStatusValue.Name = "lblMLStatusValue";
+            this.lblMLStatusValue.Size = new System.Drawing.Size(72, 48);
+            this.lblMLStatusValue.TabIndex = 1;
+            this.lblMLStatusValue.Text = "Checking...";
+            // 
+            // lblMLStatusLabel
+            // 
+            this.lblMLStatusLabel.AutoSize = true;
+            this.lblMLStatusLabel.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblMLStatusLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(116)))), ((int)(((byte)(139)))));
+            this.lblMLStatusLabel.Location = new System.Drawing.Point(10, 15);
+            this.lblMLStatusLabel.Name = "lblMLStatusLabel";
+            this.lblMLStatusLabel.Size = new System.Drawing.Size(68, 23);
+            this.lblMLStatusLabel.TabIndex = 0;
+            this.lblMLStatusLabel.Text = "ML Service";
             // 
             // _recentActivityPanel
             // 
@@ -280,6 +319,8 @@ namespace InventoryManagementSystem
             this._cardTotalOrders.PerformLayout();
             this._cardLowStock.ResumeLayout(false);
             this._cardLowStock.PerformLayout();
+            this._cardMLStatus.ResumeLayout(false);
+            this._cardMLStatus.PerformLayout();
             this._recentActivityPanel.ResumeLayout(false);
             this._recentActivityPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridRecentOrders)).EndInit();
@@ -305,6 +346,9 @@ namespace InventoryManagementSystem
         private System.Windows.Forms.Panel _cardLowStock;
         private System.Windows.Forms.Label lblLowStockValue;
         private System.Windows.Forms.Label lblLowStockLabel;
+        private System.Windows.Forms.Panel _cardMLStatus;
+        private System.Windows.Forms.Label lblMLStatusValue;
+        private System.Windows.Forms.Label lblMLStatusLabel;
         private System.Windows.Forms.Panel _recentActivityPanel;
         private System.Windows.Forms.DataGridView gridRecentOrders;
         private System.Windows.Forms.Label lblRecentActivityTitle;
