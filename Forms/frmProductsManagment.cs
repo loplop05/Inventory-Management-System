@@ -48,6 +48,17 @@ namespace InventoryManagementSystem
             // Apply dark header grid style
             clsFormTheme.ApplyDarkHeaderGridStyle(DataGVProducts);
 
+            // Setup context menu for DataGridView
+            clsContextMenuHelper.AttachDataGridViewContextMenu(
+                DataGVProducts,
+                onAdd: () => _btnAddProduct_Click(null, null),
+                onUpdate: () => _btnUpdateProduct_Click(null, null),
+                onDelete: () => _btnDeleteProduct_Click(null, null),
+                enableAdd: true,
+                enableUpdate: true,
+                enableDelete: _btnDeleteProduct.Visible // Respect permission-based visibility
+            );
+
             _toolTip.SetToolTip(_txtSearch, "Search by product ID, name, barcode, category, or supplier.");
 
             clsSearchHelper.SetupAutoComplete(_txtSearch, "ProductsSearch");

@@ -60,6 +60,17 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyTextBoxStyle(_txtSearch);
             clsFormTheme.ApplyGridStyle(DataGVSuppliers);
 
+            // Setup context menu for DataGridView
+            clsContextMenuHelper.AttachDataGridViewContextMenu(
+                DataGVSuppliers,
+                onAdd: () => btnAddSupplier_Click(null, null),
+                onUpdate: () => btnUpdateSupplier_Click(null, null),
+                onDelete: () => btnDeleteSupplier_Click(null, null),
+                enableAdd: true,
+                enableUpdate: true,
+                enableDelete: btnDeleteSupplier.Visible // Respect permission-based visibility
+            );
+
             _toolTip.SetToolTip(_txtSearch, "Search by supplier ID, name, phone, or email.");
             _toolTip.SetToolTip(_btnRefresh, "Refresh the supplier list (F5).");
 

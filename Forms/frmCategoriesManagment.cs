@@ -62,6 +62,17 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyTextBoxStyle(_txtSearch);
             clsFormTheme.ApplyGridStyle(DataGVCategories);
 
+            // Setup context menu for DataGridView
+            clsContextMenuHelper.AttachDataGridViewContextMenu(
+                DataGVCategories,
+                onAdd: () => btnAddCategory_Click(null, null),
+                onUpdate: () => btnUpdateCategory_Click(null, null),
+                onDelete: () => btnDeleteCategory_Click(null, null),
+                enableAdd: true,
+                enableUpdate: true,
+                enableDelete: btnDeleteCategory.Visible // Respect permission-based visibility
+            );
+
             _toolTip.SetToolTip(_txtSearch, "Search by category ID or name.");
             _toolTip.SetToolTip(_btnRefresh, "Refresh the category list (F5).");
 

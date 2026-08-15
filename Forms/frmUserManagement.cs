@@ -64,6 +64,17 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyTextBoxStyle(_txtSearch);
             clsFormTheme.ApplyGridStyle(DataGVUsers);
 
+            // Setup context menu for DataGridView
+            clsContextMenuHelper.AttachDataGridViewContextMenu(
+                DataGVUsers,
+                onAdd: () => btnAddUser_Click(null, null),
+                onUpdate: () => btnEditUser_Click(null, null),
+                onDelete: () => btnDeactivateUser_Click(null, null),
+                enableAdd: true,
+                enableUpdate: true,
+                enableDelete: btnDeactivateUser.Visible // Respect permission-based visibility
+            );
+
             _toolTip.SetToolTip(_txtSearch, "Search by username or display name.");
             _toolTip.SetToolTip(_btnRefresh, "Refresh the user list (F5).");
 

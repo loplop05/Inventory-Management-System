@@ -60,6 +60,17 @@ namespace InventoryManagementSystem
             clsFormTheme.ApplyTextBoxStyle(_txtSearch);
             clsFormTheme.ApplyGridStyle(DataGVCustomers);
 
+            // Setup context menu for DataGridView
+            clsContextMenuHelper.AttachDataGridViewContextMenu(
+                DataGVCustomers,
+                onAdd: () => btnAddCustomer_Click(null, null),
+                onUpdate: () => btnEditCustomer_Click(null, null),
+                onDelete: () => btnDeleteCustomer_Click(null, null),
+                enableAdd: true,
+                enableUpdate: true,
+                enableDelete: btnDeleteCustomer.Visible // Respect permission-based visibility
+            );
+
             _toolTip.SetToolTip(_txtSearch, "Search by phone number or customer name.");
             _toolTip.SetToolTip(_btnRefresh, "Refresh the customer list (F5).");
 

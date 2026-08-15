@@ -251,6 +251,7 @@
     <Compile Include="Helpers\clsBarcodeScanner.cs" />
     <Compile Include="Helpers\clsUserManagement.cs" />
     <Compile Include="Helpers\IconButtonRenderer.cs" />
+    <Compile Include="Helpers\clsContextMenuHelper.cs" />
     <Compile Include="Forms\frmUserManagement.cs">
       <SubType>Form</SubType>
     </Compile>
