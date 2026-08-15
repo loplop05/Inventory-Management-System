@@ -168,15 +168,10 @@ namespace InventoryDataAccessLayer
 
                         transaction.Commit();
 
-                        // Log to audit log
-                        clsAuditLog.LogAction("Product Import", 
-                            $"Imported {result.SuccessfulImports} products from CSV. Failed: {result.FailedImports}", 
-                            "Inventory");
-
                         errorMessage = $"Import completed. Success: {result.SuccessfulImports}, Failed: {result.FailedImports}";
                         return result;
                     }
-                    catch (Exception ex)
+                    catch
                     {
                         transaction.Rollback();
                         throw;

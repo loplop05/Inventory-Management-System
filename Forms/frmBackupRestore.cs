@@ -79,7 +79,7 @@ namespace InventoryManagementSystem
                 // Use the backup name (filename without extension) for the backup
                 string backupName = Path.GetFileNameWithoutExtension(txtBackupPath.Text);
                 
-                if (InventoryDataAccessLayer.clsDatabaseBackup.CreateBackup(backupName, out errorMessage))
+                if (InventoryDataAccessLayer.clsDatabaseBackup.CreateBackup(out errorMessage, backupName))
                 {
                     clsNotify.Success("Backup completed successfully!");
                     clsAuditLog.LogAction("Database Backup", 

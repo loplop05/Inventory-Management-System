@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Windows.Forms;
 using InventoryDataAccessLayer;
 
@@ -45,8 +46,8 @@ namespace InventoryManagementSystem
                 
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
-            string errorMessage;
-            if (InventoryDataAccessLayer.clsProductImport.GenerateTemplate(sfd.FileName, out errorMessage))
+                    string errorMessage;
+                    if (InventoryDataAccessLayer.clsProductImport.GenerateTemplate(sfd.FileName, out errorMessage))
                     {
                         clsNotify.Success("Template downloaded successfully!");
                         txtFilePath.Text = sfd.FileName;
@@ -74,7 +75,7 @@ namespace InventoryManagementSystem
             }
 
             string errorMessage;
-            var result = InventoryDataAccessLayer.clsProductImport.ImportFromCSV(txtFilePath.Text, true, out errorMessage);
+            var result = InventoryDataAccessLayer.clsProductImport.ImportFromCSV(txtFilePath.Text, out errorMessage, true);
 
             if (result.Success)
             {

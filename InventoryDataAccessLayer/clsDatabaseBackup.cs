@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace InventoryDataAccessLayer
@@ -71,7 +72,6 @@ namespace InventoryDataAccessLayer
                 }
 
                 errorMessage = $"Backup created successfully: {backupPath}";
-                clsAuditLog.LogAction("Database Backup", $"Backup created at {backupPath}", "System");
                 return true;
             }
             catch (Exception ex)
@@ -144,7 +144,6 @@ namespace InventoryDataAccessLayer
                 }
 
                 errorMessage = $"Database restored successfully from: {backupFilePath}";
-                clsAuditLog.LogAction("Database Restore", $"Database restored from {backupFilePath}", "System");
                 return true;
             }
             catch (Exception ex)
@@ -231,7 +230,6 @@ namespace InventoryDataAccessLayer
 
                 File.Delete(backupFilePath);
                 errorMessage = "Backup deleted successfully.";
-                clsAuditLog.LogAction("Backup Deletion", $"Deleted backup: {backupFilePath}", "System");
                 return true;
             }
             catch (Exception ex)
