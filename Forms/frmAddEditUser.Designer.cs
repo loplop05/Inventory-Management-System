@@ -30,14 +30,14 @@ namespace InventoryManagementSystem
         {
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.lblUsername = new System.Windows.Forms.Label();
-            this.lblDisplayName = new System.Windows.Forms.Label();
-            this.lblRole = new System.Windows.Forms.Label();
-            this.lblPassword = new System.Windows.Forms.Label();
-            this.lblConfirmPassword = new System.Windows.Forms.Label();
             this.txtUsername = new System.Windows.Forms.TextBox();
+            this.lblDisplayName = new System.Windows.Forms.Label();
             this.txtDisplayName = new System.Windows.Forms.TextBox();
+            this.lblRole = new System.Windows.Forms.Label();
             this.cmbRole = new System.Windows.Forms.ComboBox();
+            this.lblPassword = new System.Windows.Forms.Label();
             this.txtPassword = new System.Windows.Forms.TextBox();
+            this.lblConfirmPassword = new System.Windows.Forms.Label();
             this.txtConfirmPassword = new System.Windows.Forms.TextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -78,9 +78,19 @@ namespace InventoryManagementSystem
             this.lblUsername.AutoSize = true;
             this.lblUsername.Location = new System.Drawing.Point(3, 12);
             this.lblUsername.Name = "lblUsername";
-            this.lblUsername.Size = new System.Drawing.Size(60, 20);
+            this.lblUsername.Size = new System.Drawing.Size(73, 16);
             this.lblUsername.TabIndex = 0;
             this.lblUsername.Text = "Username:";
+            // 
+            // txtUsername
+            // 
+            this.txtUsername.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtUsername.Location = new System.Drawing.Point(123, 3);
+            this.txtUsername.MaxLength = 50;
+            this.txtUsername.Name = "txtUsername";
+            this.txtUsername.Size = new System.Drawing.Size(334, 22);
+            this.txtUsername.TabIndex = 5;
+            this.txtUsername.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUsername_KeyPress);
             // 
             // lblDisplayName
             // 
@@ -88,9 +98,18 @@ namespace InventoryManagementSystem
             this.lblDisplayName.AutoSize = true;
             this.lblDisplayName.Location = new System.Drawing.Point(3, 52);
             this.lblDisplayName.Name = "lblDisplayName";
-            this.lblDisplayName.Size = new System.Drawing.Size(85, 20);
+            this.lblDisplayName.Size = new System.Drawing.Size(96, 16);
             this.lblDisplayName.TabIndex = 1;
             this.lblDisplayName.Text = "Display Name:";
+            // 
+            // txtDisplayName
+            // 
+            this.txtDisplayName.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtDisplayName.Location = new System.Drawing.Point(123, 43);
+            this.txtDisplayName.MaxLength = 100;
+            this.txtDisplayName.Name = "txtDisplayName";
+            this.txtDisplayName.Size = new System.Drawing.Size(334, 22);
+            this.txtDisplayName.TabIndex = 6;
             // 
             // lblRole
             // 
@@ -98,50 +117,9 @@ namespace InventoryManagementSystem
             this.lblRole.AutoSize = true;
             this.lblRole.Location = new System.Drawing.Point(3, 92);
             this.lblRole.Name = "lblRole";
-            this.lblRole.Size = new System.Drawing.Size(38, 20);
+            this.lblRole.Size = new System.Drawing.Size(39, 16);
             this.lblRole.TabIndex = 2;
             this.lblRole.Text = "Role:";
-            // 
-            // lblPassword
-            // 
-            this.lblPassword.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblPassword.AutoSize = true;
-            this.lblPassword.Location = new System.Drawing.Point(3, 132);
-            this.lblPassword.Name = "lblPassword";
-            this.lblPassword.Size = new System.Drawing.Size(64, 20);
-            this.lblPassword.TabIndex = 3;
-            this.lblPassword.Text = "Password:";
-            // 
-            // lblConfirmPassword
-            // 
-            this.lblConfirmPassword.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblConfirmPassword.AutoSize = true;
-            this.lblConfirmPassword.Location = new System.Drawing.Point(3, 172);
-            this.lblConfirmPassword.Name = "lblConfirmPassword";
-            this.lblConfirmPassword.Size = new System.Drawing.Size(117, 20);
-            this.lblConfirmPassword.TabIndex = 4;
-            this.lblConfirmPassword.Text = "Confirm Password:";
-            // 
-            // txtUsername
-            // 
-            this.txtUsername.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtUsername.Location = new System.Drawing.Point(123, 3);
-            this.txtUsername.Margin = new System.Windows.Forms.Padding(3);
-            this.txtUsername.MaxLength = 50;
-            this.txtUsername.Name = "txtUsername";
-            this.txtUsername.Size = new System.Drawing.Size(314, 27);
-            this.txtUsername.TabIndex = 5;
-            this.txtUsername.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUsername_KeyPress);
-            // 
-            // txtDisplayName
-            // 
-            this.txtDisplayName.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDisplayName.Location = new System.Drawing.Point(123, 43);
-            this.txtDisplayName.Margin = new System.Windows.Forms.Padding(3);
-            this.txtDisplayName.MaxLength = 100;
-            this.txtDisplayName.Name = "txtDisplayName";
-            this.txtDisplayName.Size = new System.Drawing.Size(314, 27);
-            this.txtDisplayName.TabIndex = 6;
             // 
             // cmbRole
             // 
@@ -149,29 +127,46 @@ namespace InventoryManagementSystem
             this.cmbRole.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbRole.FormattingEnabled = true;
             this.cmbRole.Location = new System.Drawing.Point(123, 83);
-            this.cmbRole.Margin = new System.Windows.Forms.Padding(3);
             this.cmbRole.Name = "cmbRole";
-            this.cmbRole.Size = new System.Drawing.Size(314, 28);
+            this.cmbRole.Size = new System.Drawing.Size(334, 24);
             this.cmbRole.TabIndex = 7;
+            // 
+            // lblPassword
+            // 
+            this.lblPassword.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblPassword.AutoSize = true;
+            this.lblPassword.Location = new System.Drawing.Point(3, 132);
+            this.lblPassword.Name = "lblPassword";
+            this.lblPassword.Size = new System.Drawing.Size(70, 16);
+            this.lblPassword.TabIndex = 3;
+            this.lblPassword.Text = "Password:";
             // 
             // txtPassword
             // 
             this.txtPassword.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtPassword.Location = new System.Drawing.Point(123, 123);
-            this.txtPassword.Margin = new System.Windows.Forms.Padding(3);
             this.txtPassword.MaxLength = 50;
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(314, 27);
+            this.txtPassword.Size = new System.Drawing.Size(334, 22);
             this.txtPassword.TabIndex = 8;
+            // 
+            // lblConfirmPassword
+            // 
+            this.lblConfirmPassword.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblConfirmPassword.AutoSize = true;
+            this.lblConfirmPassword.Location = new System.Drawing.Point(3, 274);
+            this.lblConfirmPassword.Name = "lblConfirmPassword";
+            this.lblConfirmPassword.Size = new System.Drawing.Size(70, 32);
+            this.lblConfirmPassword.TabIndex = 4;
+            this.lblConfirmPassword.Text = "Confirm Password:";
             // 
             // txtConfirmPassword
             // 
             this.txtConfirmPassword.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtConfirmPassword.Location = new System.Drawing.Point(123, 163);
-            this.txtConfirmPassword.Margin = new System.Windows.Forms.Padding(3);
             this.txtConfirmPassword.MaxLength = 50;
             this.txtConfirmPassword.Name = "txtConfirmPassword";
-            this.txtConfirmPassword.Size = new System.Drawing.Size(314, 27);
+            this.txtConfirmPassword.Size = new System.Drawing.Size(334, 22);
             this.txtConfirmPassword.TabIndex = 9;
             // 
             // btnSave
@@ -205,15 +200,16 @@ namespace InventoryManagementSystem
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.tableLayoutPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.KeyPreview = true;
             this.Name = "frmAddEditUser";
             this.Text = "Add/Edit User";
             this.Load += new System.EventHandler(this.frmAddEditUser_Load);
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion

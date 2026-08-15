@@ -51,7 +51,7 @@ namespace InventoryManagementSystem
             this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._contentPanel.Location = new System.Drawing.Point(0, 0);
             this._contentPanel.Name = "_contentPanel";
-            this._contentPanel.Size = new System.Drawing.Size(605, 339);
+            this._contentPanel.Size = new System.Drawing.Size(500, 350);
             this._contentPanel.TabIndex = 1;
             // 
             // _searchPanel
@@ -72,7 +72,7 @@ namespace InventoryManagementSystem
             this._searchPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this._searchPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this._searchPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this._searchPanel.Size = new System.Drawing.Size(605, 249);
+            this._searchPanel.Size = new System.Drawing.Size(500, 260);
             this._searchPanel.TabIndex = 0;
             // 
             // label2
@@ -105,7 +105,7 @@ namespace InventoryManagementSystem
             this.txtUpdateProductID.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.txtUpdateProductID.Location = new System.Drawing.Point(183, 33);
             this.txtUpdateProductID.Name = "txtUpdateProductID";
-            this.txtUpdateProductID.Size = new System.Drawing.Size(419, 34);
+            this.txtUpdateProductID.Size = new System.Drawing.Size(314, 34);
             this.txtUpdateProductID.TabIndex = 0;
             this.txtUpdateProductID.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtUpdateProductID.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtUpdateProductID_KeyDown);
@@ -115,7 +115,7 @@ namespace InventoryManagementSystem
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label4.Location = new System.Drawing.Point(3, 153);
+            this.label4.Location = new System.Drawing.Point(3, 158);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(72, 23);
             this.label4.TabIndex = 2;
@@ -128,7 +128,7 @@ namespace InventoryManagementSystem
             this._picPreview.Dock = System.Windows.Forms.DockStyle.Fill;
             this._picPreview.Location = new System.Drawing.Point(183, 83);
             this._picPreview.Name = "_picPreview";
-            this._picPreview.Size = new System.Drawing.Size(419, 163);
+            this._picPreview.Size = new System.Drawing.Size(314, 174);
             this._picPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this._picPreview.TabIndex = 3;
             this._picPreview.TabStop = false;
@@ -138,15 +138,15 @@ namespace InventoryManagementSystem
             this._buttonPanel.Controls.Add(this.btnCancel);
             this._buttonPanel.Controls.Add(this.btnSearch);
             this._buttonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._buttonPanel.Location = new System.Drawing.Point(0, 249);
+            this._buttonPanel.Location = new System.Drawing.Point(0, 260);
             this._buttonPanel.Name = "_buttonPanel";
-            this._buttonPanel.Size = new System.Drawing.Size(605, 90);
+            this._buttonPanel.Size = new System.Drawing.Size(500, 90);
             this._buttonPanel.TabIndex = 1;
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(265, 25);
+            this.btnCancel.Location = new System.Drawing.Point(160, 25);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(120, 40);
             this.btnCancel.TabIndex = 1;
@@ -157,7 +157,7 @@ namespace InventoryManagementSystem
             // btnSearch
             // 
             this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSearch.Location = new System.Drawing.Point(405, 25);
+            this.btnSearch.Location = new System.Drawing.Point(300, 25);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(120, 40);
             this.btnSearch.TabIndex = 0;

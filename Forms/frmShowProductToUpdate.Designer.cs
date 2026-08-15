@@ -65,7 +65,7 @@ namespace InventoryManagementSystem
             this._contentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this._contentPanel.Location = new System.Drawing.Point(0, 0);
             this._contentPanel.Name = "_contentPanel";
-            this._contentPanel.Size = new System.Drawing.Size(500, 660);
+            this._contentPanel.Size = new System.Drawing.Size(621, 688);
             this._contentPanel.TabIndex = 1;
             // 
             // _fieldsPanel
@@ -107,7 +107,7 @@ namespace InventoryManagementSystem
             this._fieldsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
             this._fieldsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this._fieldsPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this._fieldsPanel.Size = new System.Drawing.Size(500, 600);
+            this._fieldsPanel.Size = new System.Drawing.Size(621, 628);
             this._fieldsPanel.TabIndex = 0;
             // 
             // label1
@@ -115,7 +115,7 @@ namespace InventoryManagementSystem
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(3, 8);
+            this.label1.Location = new System.Drawing.Point(3, 11);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(78, 23);
             this.label1.TabIndex = 0;
@@ -126,7 +126,7 @@ namespace InventoryManagementSystem
             this.lblProductName.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblProductName.AutoSize = true;
             this.lblProductName.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblProductName.Location = new System.Drawing.Point(153, 6);
+            this.lblProductName.Location = new System.Drawing.Point(153, 8);
             this.lblProductName.Name = "lblProductName";
             this.lblProductName.Size = new System.Drawing.Size(21, 28);
             this.lblProductName.TabIndex = 1;
@@ -137,7 +137,7 @@ namespace InventoryManagementSystem
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.label3.Location = new System.Drawing.Point(3, 48);
+            this.label3.Location = new System.Drawing.Point(3, 56);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(101, 23);
             this.label3.TabIndex = 3;
@@ -148,7 +148,7 @@ namespace InventoryManagementSystem
             this.lblProductID.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblProductID.AutoSize = true;
             this.lblProductID.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.lblProductID.Location = new System.Drawing.Point(153, 46);
+            this.lblProductID.Location = new System.Drawing.Point(153, 53);
             this.lblProductID.Name = "lblProductID";
             this.lblProductID.Size = new System.Drawing.Size(21, 28);
             this.lblProductID.TabIndex = 4;
@@ -159,7 +159,7 @@ namespace InventoryManagementSystem
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label2.Location = new System.Drawing.Point(3, 91);
+            this.label2.Location = new System.Drawing.Point(3, 106);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(99, 23);
             this.label2.TabIndex = 2;
@@ -170,9 +170,9 @@ namespace InventoryManagementSystem
             this.txtBoxNewProductName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtBoxNewProductName.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtBoxNewProductName.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtBoxNewProductName.Location = new System.Drawing.Point(153, 83);
+            this.txtBoxNewProductName.Location = new System.Drawing.Point(153, 93);
             this.txtBoxNewProductName.Name = "txtBoxNewProductName";
-            this.txtBoxNewProductName.Size = new System.Drawing.Size(344, 30);
+            this.txtBoxNewProductName.Size = new System.Drawing.Size(465, 30);
             this.txtBoxNewProductName.TabIndex = 0;
             // 
             // label4
@@ -180,7 +180,7 @@ namespace InventoryManagementSystem
             this.label4.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label4.Location = new System.Drawing.Point(3, 136);
+            this.label4.Location = new System.Drawing.Point(3, 161);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(90, 23);
             this.label4.TabIndex = 5;
@@ -191,9 +191,9 @@ namespace InventoryManagementSystem
             this.txtBoxNewPrice.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtBoxNewPrice.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtBoxNewPrice.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtBoxNewPrice.Location = new System.Drawing.Point(153, 128);
+            this.txtBoxNewPrice.Location = new System.Drawing.Point(153, 148);
             this.txtBoxNewPrice.Name = "txtBoxNewPrice";
-            this.txtBoxNewPrice.Size = new System.Drawing.Size(344, 30);
+            this.txtBoxNewPrice.Size = new System.Drawing.Size(465, 30);
             this.txtBoxNewPrice.TabIndex = 1;
             // 
             // label5
@@ -201,7 +201,7 @@ namespace InventoryManagementSystem
             this.label5.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label5.Location = new System.Drawing.Point(3, 181);
+            this.label5.Location = new System.Drawing.Point(3, 216);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(119, 23);
             this.label5.TabIndex = 7;
@@ -212,9 +212,9 @@ namespace InventoryManagementSystem
             this.txtBoxNewQuantity.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtBoxNewQuantity.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtBoxNewQuantity.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtBoxNewQuantity.Location = new System.Drawing.Point(153, 173);
+            this.txtBoxNewQuantity.Location = new System.Drawing.Point(153, 203);
             this.txtBoxNewQuantity.Name = "txtBoxNewQuantity";
-            this.txtBoxNewQuantity.Size = new System.Drawing.Size(344, 30);
+            this.txtBoxNewQuantity.Size = new System.Drawing.Size(465, 30);
             this.txtBoxNewQuantity.TabIndex = 2;
             // 
             // label6
@@ -222,7 +222,7 @@ namespace InventoryManagementSystem
             this.label6.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label6.Location = new System.Drawing.Point(3, 226);
+            this.label6.Location = new System.Drawing.Point(3, 271);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(115, 23);
             this.label6.TabIndex = 9;
@@ -233,9 +233,9 @@ namespace InventoryManagementSystem
             this.txtBoxNewBarcode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtBoxNewBarcode.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtBoxNewBarcode.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtBoxNewBarcode.Location = new System.Drawing.Point(153, 218);
+            this.txtBoxNewBarcode.Location = new System.Drawing.Point(153, 258);
             this.txtBoxNewBarcode.Name = "txtBoxNewBarcode";
-            this.txtBoxNewBarcode.Size = new System.Drawing.Size(344, 30);
+            this.txtBoxNewBarcode.Size = new System.Drawing.Size(465, 30);
             this.txtBoxNewBarcode.TabIndex = 3;
             // 
             // label7
@@ -243,7 +243,7 @@ namespace InventoryManagementSystem
             this.label7.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label7.Location = new System.Drawing.Point(3, 271);
+            this.label7.Location = new System.Drawing.Point(3, 326);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(122, 23);
             this.label7.TabIndex = 11;
@@ -255,9 +255,9 @@ namespace InventoryManagementSystem
             this.cmbNewCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbNewCategory.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cmbNewCategory.FormattingEnabled = true;
-            this.cmbNewCategory.Location = new System.Drawing.Point(153, 263);
+            this.cmbNewCategory.Location = new System.Drawing.Point(153, 313);
             this.cmbNewCategory.Name = "cmbNewCategory";
-            this.cmbNewCategory.Size = new System.Drawing.Size(344, 31);
+            this.cmbNewCategory.Size = new System.Drawing.Size(465, 31);
             this.cmbNewCategory.TabIndex = 4;
             // 
             // label8
@@ -265,7 +265,7 @@ namespace InventoryManagementSystem
             this.label8.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label8.AutoSize = true;
             this.label8.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label8.Location = new System.Drawing.Point(3, 314);
+            this.label8.Location = new System.Drawing.Point(3, 381);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(115, 23);
             this.label8.TabIndex = 13;
@@ -277,16 +277,16 @@ namespace InventoryManagementSystem
             this.cmbNewSupplier.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbNewSupplier.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cmbNewSupplier.FormattingEnabled = true;
-            this.cmbNewSupplier.Location = new System.Drawing.Point(153, 308);
+            this.cmbNewSupplier.Location = new System.Drawing.Point(153, 368);
             this.cmbNewSupplier.Name = "cmbNewSupplier";
-            this.cmbNewSupplier.Size = new System.Drawing.Size(344, 31);
+            this.cmbNewSupplier.Size = new System.Drawing.Size(465, 31);
             this.cmbNewSupplier.TabIndex = 5;
             // 
             // label9
             // 
             this.label9.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(3, 402);
+            this.label9.Location = new System.Drawing.Point(3, 487);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(48, 16);
             this.label9.TabIndex = 14;
@@ -297,9 +297,9 @@ namespace InventoryManagementSystem
             this._picPreview.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(242)))), ((int)(((byte)(245)))));
             this._picPreview.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this._picPreview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._picPreview.Location = new System.Drawing.Point(153, 349);
+            this._picPreview.Location = new System.Drawing.Point(153, 423);
             this._picPreview.Name = "_picPreview";
-            this._picPreview.Size = new System.Drawing.Size(344, 144);
+            this._picPreview.Size = new System.Drawing.Size(465, 144);
             this._picPreview.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this._picPreview.TabIndex = 15;
             this._picPreview.TabStop = false;
@@ -307,9 +307,9 @@ namespace InventoryManagementSystem
             // _btnBrowseImage
             // 
             this._btnBrowseImage.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this._btnBrowseImage.Location = new System.Drawing.Point(153, 497);
+            this._btnBrowseImage.Location = new System.Drawing.Point(153, 573);
             this._btnBrowseImage.Name = "_btnBrowseImage";
-            this._btnBrowseImage.Size = new System.Drawing.Size(180, 65);
+            this._btnBrowseImage.Size = new System.Drawing.Size(180, 52);
             this._btnBrowseImage.TabIndex = 16;
             this._btnBrowseImage.Text = "Choose Image";
             this._btnBrowseImage.UseVisualStyleBackColor = true;
@@ -320,15 +320,15 @@ namespace InventoryManagementSystem
             this._buttonPanel.Controls.Add(this.btnCancel);
             this._buttonPanel.Controls.Add(this.btnUpdate);
             this._buttonPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this._buttonPanel.Location = new System.Drawing.Point(0, 600);
+            this._buttonPanel.Location = new System.Drawing.Point(0, 628);
             this._buttonPanel.Name = "_buttonPanel";
-            this._buttonPanel.Size = new System.Drawing.Size(500, 60);
+            this._buttonPanel.Size = new System.Drawing.Size(621, 60);
             this._buttonPanel.TabIndex = 1;
             // 
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(220, 10);
+            this.btnCancel.Location = new System.Drawing.Point(341, 10);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(120, 40);
             this.btnCancel.TabIndex = 1;
@@ -340,9 +340,9 @@ namespace InventoryManagementSystem
             // 
             this.btnUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnUpdate.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.btnUpdate.Location = new System.Drawing.Point(360, 10);
+            this.btnUpdate.Location = new System.Drawing.Point(490, 10);
             this.btnUpdate.Name = "btnUpdate";
-            this.btnUpdate.Size = new System.Drawing.Size(120, 40);
+            this.btnUpdate.Size = new System.Drawing.Size(128, 40);
             this.btnUpdate.TabIndex = 0;
             this.btnUpdate.Text = "Update";
             this.btnUpdate.UseVisualStyleBackColor = true;
@@ -352,7 +352,7 @@ namespace InventoryManagementSystem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(450, 600);
+            this.ClientSize = new System.Drawing.Size(621, 688);
             this.Controls.Add(this._contentPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
