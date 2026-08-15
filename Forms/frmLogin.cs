@@ -115,63 +115,25 @@ namespace InventoryManagementSystem
 
         private void SaveCredentials(string username, string password)
         {
-            try
+            if (!clsCredentialManager.SaveCredentials(username, password))
             {
-                using (RegistryKey key = Registry.CurrentUser.CreateSubKey(@"Software\InventoryManagementSystem"))
-                {
-                    key.SetValue("Username", username);
-                    key.SetValue("Password", password);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error saving credentials: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                clsFormTheme.ShowWarning(this, "Could not save credentials securely.", "Login");
             }
         }
 
         private void LoadSavedCredentials()
         {
-            try
+            if (clsCredentialManager.LoadCredentials(out string username, out string password))
             {
-                using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\InventoryManagementSystem"))
-                {
-                    if (key != null)
-                    {
-                        string username = key.GetValue("Username") as string;
-                        string password = key.GetValue("Password") as string;
-
-                        if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
-                        {
-                            _txtUsername.Text = username;
-                            _txtPassword.Text = password;
-                            _chkRememberMe.Checked = true;
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error loading credentials: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _txtUsername.Text = username;
+                _txtPassword.Text = password;
+                _chkRememberMe.Checked = true;
             }
         }
 
         private void ClearSavedCredentials()
         {
-            try
-            {
-                using (RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\InventoryManagementSystem", true))
-                {
-                    if (key != null)
-                    {
-                        key.DeleteValue("Username", false);
-                        key.DeleteValue("Password", false);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error clearing credentials: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            clsCredentialManager.ClearCredentials();
         }
     }
 }

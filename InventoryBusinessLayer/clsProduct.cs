@@ -33,6 +33,7 @@ namespace InventoryBusinessLayer
         public string Barcode;
         public string ImagePath;
         public DateTime CreatedDate;
+        public int MinStock;
 
      
         public clsProduct()
@@ -46,13 +47,14 @@ namespace InventoryBusinessLayer
             this.Barcode = "";
             this.ImagePath = "";
             this.CreatedDate = DateTime.Now;
+            this.MinStock = 10;
 
             Mode = enMode.AddNew;
         }
 
         
         public clsProduct(int ProductID, string ProductName, int CategoryID, int SupplierID,
-                          decimal Price, int Quantity, string Barcode, string ImagePath, DateTime CreatedDate)
+                          decimal Price, int Quantity, string Barcode, string ImagePath, DateTime CreatedDate, int MinStock = 10)
         {
             this.ProductID = ProductID;
             this.ProductName = ProductName?.Trim() ?? "";
@@ -63,6 +65,7 @@ namespace InventoryBusinessLayer
             this.Barcode = Barcode?.Trim() ?? "";
             this.ImagePath = ImagePath?.Trim() ?? "";
             this.CreatedDate = CreatedDate;
+            this.MinStock = MinStock;
 
             this.Mode = enMode.Update;
         }
@@ -121,7 +124,8 @@ namespace InventoryBusinessLayer
                 this.Quantity,
                 this.Barcode,
                 this.ImagePath,
-                this.CreatedDate);
+                this.CreatedDate,
+                this.MinStock);
 
             return (this.ProductID != -1);
         }
@@ -136,7 +140,8 @@ namespace InventoryBusinessLayer
                 this.Price,
                 this.Quantity,
                 this.Barcode,
-                this.ImagePath);
+                this.ImagePath,
+                this.MinStock);
         }
 
         public static bool DeleteProduct(int ProductID)
@@ -238,6 +243,10 @@ namespace InventoryBusinessLayer
             }
 
             return false;
+        }
+        public static bool GetLowStockProducts(out DataTable products, out string errorMessage)
+        {
+            return clsProductData.GetLowStockProducts(out products, out errorMessage);
         }
     }
 }

@@ -385,5 +385,279 @@ namespace InventoryDataAccessLayer
 
             return dt;
         }
+
+        public static DataTable GetSalesByPaymentMethod(DateTime start, DateTime end)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT ISNULL(O.PaymentMethod, 'Unknown') AS PaymentMethod,
+                                        COUNT(DISTINCT O.OrderID) AS OrderCount,
+                                        ISNULL(SUM(O.TotalAmount), 0) AS TotalSales
+                                 FROM Orders O
+                                 WHERE O.OrderDate >= @Start AND O.OrderDate <= @End
+                                 GROUP BY O.PaymentMethod
+                                 ORDER BY TotalSales DESC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Start", start);
+                    command.Parameters.AddWithValue("@End", end);
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows) dt.Load(reader);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in GetSalesByPaymentMethod: {ex.Message}");
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetRefundReport(DateTime start, DateTime end)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT R.RefundID,
+                                        R.OrderID,
+                                        R.RefundDate,
+                                        R.RefundAmount,
+                                        R.RefundReason,
+                                        R.RefundType,
+                                        R.RefundMethod,
+                                        U.UserName AS ProcessedBy
+                                 FROM Refunds R
+                                 LEFT JOIN Users U ON R.ProcessedBy = U.UserID
+                                 WHERE R.RefundDate >= @Start AND R.RefundDate <= @End AND R.IsVoided = 0
+                                 ORDER BY R.RefundDate DESC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Start", start);
+                    command.Parameters.AddWithValue("@End", end);
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows) dt.Load(reader);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in GetRefundReport: {ex.Message}");
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetPurchaseReport(DateTime start, DateTime end)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT PO.PurchaseOrderID,
+                                        S.SupplierName,
+                                        PO.TotalCost,
+                                        PO.Status,
+                                        PO.CreatedDate,
+                                        PO.ExpectedDate,
+                                        U.UserName AS CreatedBy
+                                 FROM PurchaseOrders PO
+                                 LEFT JOIN Suppliers S ON PO.SupplierID = S.SupplierID
+                                 LEFT JOIN Users U ON PO.CreatedBy = U.UserID
+                                 WHERE PO.CreatedDate >= @Start AND PO.CreatedDate <= @End
+                                 ORDER BY PO.CreatedDate DESC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Start", start);
+                    command.Parameters.AddWithValue("@End", end);
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows) dt.Load(reader);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in GetPurchaseReport: {ex.Message}");
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetCashierShiftReport(DateTime start, DateTime end)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT S.ShiftID,
+                                        U.UserName AS Cashier,
+                                        S.OpeningTime,
+                                        S.ClosingTime,
+                                        S.StartingCash,
+                                        S.ClosingCash,
+                                        S.CashSales,
+                                        S.CardSales,
+                                        S.Refunds,
+                                        S.ExpectedCash,
+                                        S.ActualCash,
+                                        S.CashDifference,
+                                        S.Status
+                                 FROM Shifts S
+                                 LEFT JOIN Users U ON S.UserID = U.UserID
+                                 WHERE S.OpeningTime >= @Start AND S.OpeningTime <= @End
+                                 ORDER BY S.OpeningTime DESC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Start", start);
+                    command.Parameters.AddWithValue("@End", end);
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows) dt.Load(reader);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in GetCashierShiftReport: {ex.Message}");
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetWeeklySales(int year, int week)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT DATEPART(WEEKDAY, O.OrderDate) AS DayOfWeek,
+                                        COUNT(DISTINCT O.OrderID) AS OrderCount,
+                                        ISNULL(SUM(O.TotalAmount), 0) AS TotalSales
+                                 FROM Orders O
+                                 WHERE YEAR(O.OrderDate) = @Year AND DATEPART(WEEK, O.OrderDate) = @Week
+                                 GROUP BY DATEPART(WEEKDAY, O.OrderDate)
+                                 ORDER BY DayOfWeek";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Year", year);
+                    command.Parameters.AddWithValue("@Week", week);
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows) dt.Load(reader);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in GetWeeklySales: {ex.Message}");
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetMonthlySales(int year, int month)
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT CAST(O.OrderDate AS DATE) AS Date,
+                                        COUNT(DISTINCT O.OrderID) AS OrderCount,
+                                        ISNULL(SUM(O.TotalAmount), 0) AS TotalSales
+                                 FROM Orders O
+                                 WHERE YEAR(O.OrderDate) = @Year AND MONTH(O.OrderDate) = @Month
+                                 GROUP BY CAST(O.OrderDate AS DATE)
+                                 ORDER BY Date ASC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@Year", year);
+                    command.Parameters.AddWithValue("@Month", month);
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows) dt.Load(reader);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in GetMonthlySales: {ex.Message}");
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+        public static DataTable GetLowStockReport()
+        {
+            DataTable dt = new DataTable();
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT P.ProductID,
+                                        P.ProductName,
+                                        P.Quantity,
+                                        P.MinStock,
+                                        (P.MinStock - P.Quantity) AS Needed,
+                                        C.CategoryName,
+                                        P.Price
+                                 FROM Products P
+                                 LEFT JOIN Categories C ON P.CategoryID = C.CategoryID AND C.IsDeleted = 0
+                                 WHERE P.IsDeleted = 0 AND P.Quantity <= P.MinStock
+                                 ORDER BY (P.MinStock - P.Quantity) DESC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows) dt.Load(reader);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Error in GetLowStockReport: {ex.Message}");
+                    }
+                }
+            }
+
+            return dt;
+        }
     }
 }

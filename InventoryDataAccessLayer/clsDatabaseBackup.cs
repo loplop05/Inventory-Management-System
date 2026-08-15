@@ -5,16 +5,20 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Timers;
 
 namespace InventoryDataAccessLayer
 {
     /// <summary>
     /// Database backup and restore functionality.
-    /// Supports SQL Server backup/restore operations.
+    /// Supports SQL Server backup/restore operations with scheduled backups.
     /// </summary>
     public static class clsDatabaseBackup
     {
         private static string BackupDirectory = LoadBackupDirectory();
+        private static Timer _scheduledBackupTimer;
+        private static bool _isScheduledBackupEnabled = false;
+        private static readonly object _backupLock = new object();
 
         /// <summary>
         /// Loads the backup directory from configuration or uses default.
@@ -277,6 +281,130 @@ namespace InventoryDataAccessLayer
             public long Size { get; set; }
             public DateTime CreatedDate { get; set; }
             public string SizeFormatted { get; set; }
+        }
+
+        /// <summary>
+        /// Enables scheduled automatic backups.
+        /// </summary>
+        /// <param name="intervalHours">Backup interval in hours (default: 24 for daily)</param>
+        public static void EnableScheduledBackup(int intervalHours = 24)
+        {
+            lock (_backupLock)
+            {
+                if (_isScheduledBackupEnabled)
+                {
+                    DisableScheduledBackup();
+                }
+
+                _scheduledBackupTimer = new Timer
+                {
+                    Interval = intervalHours * 60 * 60 * 1000, // Convert hours to milliseconds
+                    AutoReset = true
+                };
+
+                _scheduledBackupTimer.Elapsed += ScheduledBackupCallback;
+                _scheduledBackupTimer.Start();
+                _isScheduledBackupEnabled = true;
+
+                clsErrorLog.LogMessage("clsDatabaseBackup", $"Scheduled backup enabled with {intervalHours} hour interval.");
+            }
+        }
+
+        /// <summary>
+        /// Disables scheduled automatic backups.
+        /// </summary>
+        public static void DisableScheduledBackup()
+        {
+            lock (_backupLock)
+            {
+                if (_scheduledBackupTimer != null)
+                {
+                    _scheduledBackupTimer.Stop();
+                    _scheduledBackupTimer.Elapsed -= ScheduledBackupCallback;
+                    _scheduledBackupTimer.Dispose();
+                    _scheduledBackupTimer = null;
+                }
+
+                _isScheduledBackupEnabled = false;
+                clsErrorLog.LogMessage("clsDatabaseBackup", "Scheduled backup disabled.");
+            }
+        }
+
+        /// <summary>
+        /// Callback for scheduled backup timer.
+        /// </summary>
+        private static void ScheduledBackupCallback(object sender, ElapsedEventArgs e)
+        {
+            lock (_backupLock)
+            {
+                try
+                {
+                    string errorMessage;
+                    bool success = CreateBackup(out errorMessage, $"Auto_{DateTime.Now:yyyyMMdd_HHmmss}");
+
+                    if (success)
+                    {
+                        clsErrorLog.LogMessage("clsDatabaseBackup", $"Scheduled backup completed: {errorMessage}");
+                    }
+                    else
+                    {
+                        clsErrorLog.LogMessage("clsDatabaseBackup", $"Scheduled backup failed: {errorMessage}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    clsErrorLog.LogException("clsDatabaseBackup.ScheduledBackupCallback", ex);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Checks if scheduled backup is enabled.
+        /// </summary>
+        public static bool IsScheduledBackupEnabled => _isScheduledBackupEnabled;
+
+        /// <summary>
+        /// Cleans up old backup files based on retention policy.
+        /// </summary>
+        /// <param name="errorMessage">Output parameter for error messages.</param>
+        /// <param name="retentionDays">Number of days to keep backups (default: 30)</param>
+        /// <returns>True if cleanup succeeded, false otherwise.</returns>
+        public static bool CleanupOldBackups(out string errorMessage, int retentionDays = 30)
+        {
+            errorMessage = string.Empty;
+
+            try
+            {
+                if (!Directory.Exists(BackupDirectory))
+                {
+                    errorMessage = "Backup directory does not exist.";
+                    return false;
+                }
+
+                DateTime cutoffDate = DateTime.Now.AddDays(-retentionDays);
+                var backupFiles = Directory.GetFiles(BackupDirectory, "*.bak");
+                int deletedCount = 0;
+
+                foreach (var file in backupFiles)
+                {
+                    var fileInfo = new FileInfo(file);
+                    if (fileInfo.CreationTime < cutoffDate)
+                    {
+                        File.Delete(file);
+                        deletedCount++;
+                    }
+                }
+
+                errorMessage = $"Cleaned up {deletedCount} old backup files older than {retentionDays} days.";
+                clsErrorLog.LogMessage("clsDatabaseBackup", errorMessage);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorMessage = "Failed to cleanup old backups: " + ex.Message;
+                clsErrorLog.LogException("clsDatabaseBackup.CleanupOldBackups", ex);
+                return false;
+            }
         }
     }
 }

@@ -7,14 +7,14 @@ namespace InventoryDataAccessLayer
     public static class clsProductData
     {
         
-        public static int AddNewProduct(string ProductName, int CategoryID, int SupplierID, decimal Price, int Quantity, string Barcode, string ImagePath, DateTime CreatedDate)
+        public static int AddNewProduct(string ProductName, int CategoryID, int SupplierID, decimal Price, int Quantity, string Barcode, string ImagePath, DateTime CreatedDate, int MinStock = 10)
         {
             int productID = -1;
 
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
-                string query = @"INSERT INTO Products (ProductName, CategoryID, SupplierID, Price, Quantity, Barcode, ImagePath, CreatedDate)
-                                 VALUES (@ProductName, @CategoryID, @SupplierID, @Price, @Quantity, @Barcode, @ImagePath, @CreatedDate);
+                string query = @"INSERT INTO Products (ProductName, CategoryID, SupplierID, Price, Quantity, Barcode, ImagePath, CreatedDate, MinStock)
+                                 VALUES (@ProductName, @CategoryID, @SupplierID, @Price, @Quantity, @Barcode, @ImagePath, @CreatedDate, @MinStock);
                                  SELECT SCOPE_IDENTITY();";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -27,6 +27,7 @@ namespace InventoryDataAccessLayer
                     command.Parameters.AddWithValue("@Barcode", Barcode);
                     command.Parameters.AddWithValue("@ImagePath", string.IsNullOrEmpty(ImagePath) ? DBNull.Value : (object)ImagePath);
                     command.Parameters.AddWithValue("@CreatedDate", CreatedDate);
+                    command.Parameters.AddWithValue("@MinStock", MinStock);
 
                     try
                     {
@@ -48,7 +49,7 @@ namespace InventoryDataAccessLayer
         }
 
        
-        public static bool UpdateProduct(int ProductID, string ProductName, int CategoryID, int SupplierID, decimal Price, int Quantity, string Barcode, string ImagePath)
+        public static bool UpdateProduct(int ProductID, string ProductName, int CategoryID, int SupplierID, decimal Price, int Quantity, string Barcode, string ImagePath, int MinStock)
         {
             int rowsAffected = 0;
 
@@ -56,7 +57,7 @@ namespace InventoryDataAccessLayer
             {
                 string query = @"UPDATE Products 
                                  SET ProductName = @ProductName, CategoryID = @CategoryID, SupplierID = @SupplierID, 
-                                     Price = @Price, Quantity = @Quantity, Barcode = @Barcode, ImagePath = @ImagePath
+                                     Price = @Price, Quantity = @Quantity, Barcode = @Barcode, ImagePath = @ImagePath, MinStock = @MinStock
                                  WHERE ProductID = @ProductID";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -69,6 +70,7 @@ namespace InventoryDataAccessLayer
                     command.Parameters.AddWithValue("@Quantity", Quantity);
                     command.Parameters.AddWithValue("@Barcode", Barcode);
                     command.Parameters.AddWithValue("@ImagePath", string.IsNullOrEmpty(ImagePath) ? DBNull.Value : (object)ImagePath);
+                    command.Parameters.AddWithValue("@MinStock", MinStock);
 
                     try
                     {
@@ -92,7 +94,8 @@ namespace InventoryDataAccessLayer
 
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
-                string query = "DELETE FROM Products WHERE ProductID = @ProductID";
+                // Soft delete - mark as deleted instead of physical deletion
+                string query = "UPDATE Products SET IsDeleted = 1 WHERE ProductID = @ProductID";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -121,7 +124,7 @@ namespace InventoryDataAccessLayer
 
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
-                string query = "SELECT P.ProductID, P.ProductName, P.CategoryID, ISNULL(C.CategoryName, 'Uncategorized') AS CategoryName, P.SupplierID, ISNULL(S.SupplierName, 'Unknown Supplier') AS SupplierName, P.Price, P.Quantity, P.Barcode, P.ImagePath, P.CreatedDate FROM Products P LEFT JOIN Categories C ON P.CategoryID = C.CategoryID LEFT JOIN Suppliers S ON P.SupplierID = S.SupplierID";
+                string query = "SELECT P.ProductID, P.ProductName, P.CategoryID, ISNULL(C.CategoryName, 'Uncategorized') AS CategoryName, P.SupplierID, ISNULL(S.SupplierName, 'Unknown Supplier') AS SupplierName, P.Price, P.Quantity, P.Barcode, P.ImagePath, P.CreatedDate FROM Products P LEFT JOIN Categories C ON P.CategoryID = C.CategoryID AND C.IsDeleted = 0 LEFT JOIN Suppliers S ON P.SupplierID = S.SupplierID AND S.IsDeleted = 0 WHERE P.IsDeleted = 0";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
@@ -150,7 +153,7 @@ namespace InventoryDataAccessLayer
             bool isFound = false;
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
-                string query = "SELECT ProductName, CategoryID, SupplierID, Price, Quantity, Barcode, ImagePath, CreatedDate FROM Products WHERE ProductID = @ProductID";
+                string query = "SELECT ProductName, CategoryID, SupplierID, Price, Quantity, Barcode, ImagePath, CreatedDate FROM Products WHERE ProductID = @ProductID AND IsDeleted = 0";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@ProductID", ProductID);
@@ -188,7 +191,7 @@ namespace InventoryDataAccessLayer
             bool isFound = false;
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
-                string query = "SELECT ProductID, ProductName, CategoryID, SupplierID, Price, Quantity, ImagePath, CreatedDate FROM Products WHERE Barcode = @Barcode";
+                string query = "SELECT ProductID, ProductName, CategoryID, SupplierID, Price, Quantity, ImagePath, CreatedDate FROM Products WHERE Barcode = @Barcode AND IsDeleted = 0";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Barcode", Barcode);
@@ -226,7 +229,7 @@ namespace InventoryDataAccessLayer
             bool isFound = false;
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
-                string query = "SELECT TOP 1 1 FROM Products WHERE ProductID = @ProductID";
+                string query = "SELECT TOP 1 1 FROM Products WHERE ProductID = @ProductID AND IsDeleted = 0";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@ProductID", ProductID);
@@ -246,7 +249,7 @@ namespace InventoryDataAccessLayer
             bool isFound = false;
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
-                string query = "SELECT TOP 1 1 FROM Products WHERE ProductName = @ProductName";
+                string query = "SELECT TOP 1 1 FROM Products WHERE ProductName = @ProductName AND IsDeleted = 0";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@ProductName", ProductName);
@@ -266,7 +269,7 @@ namespace InventoryDataAccessLayer
             bool isFound = false;
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
-                string query = "SELECT TOP 1 1 FROM Products WHERE Barcode = @Barcode";
+                string query = "SELECT TOP 1 1 FROM Products WHERE Barcode = @Barcode AND IsDeleted = 0";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Barcode", Barcode);
@@ -286,7 +289,7 @@ namespace InventoryDataAccessLayer
             bool isFound = false;
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
-                string query = "SELECT TOP 1 1 FROM Products WHERE ProductName = @ProductName AND ProductID <> @ProductID";
+                string query = "SELECT TOP 1 1 FROM Products WHERE ProductName = @ProductName AND ProductID <> @ProductID AND IsDeleted = 0";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@ProductName", ProductName);
@@ -307,7 +310,7 @@ namespace InventoryDataAccessLayer
             bool isFound = false;
             using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
             {
-                string query = "SELECT TOP 1 1 FROM Products WHERE Barcode = @Barcode AND ProductID <> @ProductID";
+                string query = "SELECT TOP 1 1 FROM Products WHERE Barcode = @Barcode AND ProductID <> @ProductID AND IsDeleted = 0";
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Barcode", Barcode);
@@ -350,6 +353,45 @@ namespace InventoryDataAccessLayer
                 }
             }
             return (rowsAffected > 0);
+        }
+
+        /// <summary>
+        /// Gets products with low stock (quantity <= MinStock)
+        /// </summary>
+        public static bool GetLowStockProducts(out DataTable products, out string errorMessage)
+        {
+            products = new DataTable();
+            errorMessage = "";
+
+            using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.connectionString))
+            {
+                string query = @"SELECT P.ProductID, P.ProductName, P.Quantity, P.MinStock, P.Price, 
+                                       ISNULL(C.CategoryName, 'Uncategorized') AS CategoryName,
+                                       (P.MinStock - P.Quantity) AS Needed
+                                FROM Products P
+                                LEFT JOIN Categories C ON P.CategoryID = C.CategoryID AND C.IsDeleted = 0
+                                WHERE P.IsDeleted = 0 AND P.Quantity <= P.MinStock
+                                ORDER BY (P.MinStock - P.Quantity) DESC";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.HasRows) products.Load(reader);
+                        }
+                        return true;
+                    }
+                    catch (Exception ex)
+                    {
+                        errorMessage = ex.Message;
+                        clsErrorLog.LogException("clsProductData.GetLowStockProducts", ex);
+                        return false;
+                    }
+                }
+            }
         }
     }
 }

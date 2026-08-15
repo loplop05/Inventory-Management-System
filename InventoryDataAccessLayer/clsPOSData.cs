@@ -52,8 +52,9 @@ namespace InventoryDataAccessLayer
                            P.Barcode,
                            P.ImagePath
                     FROM Products P
-                    LEFT JOIN Categories C ON P.CategoryID = C.CategoryID
-                    LEFT JOIN Suppliers S ON P.SupplierID = S.SupplierID
+                    LEFT JOIN Categories C ON P.CategoryID = C.CategoryID AND C.IsDeleted = 0
+                    LEFT JOIN Suppliers S ON P.SupplierID = S.SupplierID AND S.IsDeleted = 0
+                    WHERE P.IsDeleted = 0
                     ORDER BY ISNULL(C.CategoryName, 'Uncategorized'), P.ProductName";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
@@ -205,6 +206,7 @@ namespace InventoryDataAccessLayer
                 {
                     errorMessage = ex.Message;
                     orderID = -1;
+                    clsErrorLog.LogException("clsPOSData.CompleteOrder", ex);
                     return false;
                 }
             }

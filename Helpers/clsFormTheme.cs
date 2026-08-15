@@ -228,6 +228,11 @@ namespace InventoryManagementSystem
                     {
                         label.ForeColor = TextMuted;
                     }
+                    // Fix white text on light backgrounds (in dark mode)
+                    else if (IsDarkMode && label.ForeColor.R > 240 && label.ForeColor.G > 240 && label.ForeColor.B > 240)
+                    {
+                        label.ForeColor = TextPrimary;
+                    }
                 }
 
                 // Fix PictureBox backgrounds
@@ -237,6 +242,43 @@ namespace InventoryManagementSystem
                         pictureBox.BackColor == Color.FromArgb(241, 245, 249))
                     {
                         pictureBox.BackColor = CardColor;
+                    }
+                }
+
+                // Fix Panel backgrounds
+                if (control is Panel panel)
+                {
+                    if (panel.BackColor == Color.FromArgb(240, 242, 245) ||
+                        panel.BackColor == Color.FromArgb(241, 245, 249) ||
+                        panel.BackColor == Color.FromArgb(255, 255, 255))
+                    {
+                        panel.BackColor = CardColor;
+                    }
+                }
+
+                // Fix GroupBox backgrounds
+                if (control is GroupBox groupBox)
+                {
+                    if (groupBox.BackColor == Color.FromArgb(240, 242, 245) ||
+                        groupBox.BackColor == Color.FromArgb(241, 245, 249) ||
+                        groupBox.BackColor == Color.FromArgb(255, 255, 255))
+                    {
+                        groupBox.BackColor = CardColor;
+                    }
+                    if (groupBox.ForeColor.R < 100 && groupBox.ForeColor.G < 100 && groupBox.ForeColor.B < 100)
+                    {
+                        groupBox.ForeColor = TextPrimary;
+                    }
+                }
+
+                // Fix Button backgrounds
+                if (control is Button button && !(button is ToolStripButton))
+                {
+                    if (button.BackColor == Color.FromArgb(240, 242, 245) ||
+                        button.BackColor == Color.FromArgb(241, 245, 249))
+                    {
+                        button.BackColor = CardColor;
+                        button.ForeColor = TextPrimary;
                     }
                 }
 
